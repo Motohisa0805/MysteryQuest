@@ -4,12 +4,12 @@ using UnityEngine;
 namespace MyAssets
 {
     [System.Serializable]
-    public class MoveState : StateBase<string>
+    public class IdleState : StateBase<string>
     {
-        public static readonly string mStateKey = "Run";
+        public static readonly string mStateKey = "Idle";
         public override string Key => mStateKey;
-        PlayableChracterController mController;
 
+        PlayableChracterController mController;
 
 
         [SerializeField]
@@ -17,9 +17,9 @@ namespace MyAssets
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
-            if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsIdleTransition(actor, StateChanger, IdleState.mStateKey)); }
-            if (StateChanger.IsContain(StandingToCrouchState.mStateKey)) { re.Add(new IsStandingToCrouchTransition(actor, StateChanger, StandingToCrouchState.mStateKey)); }
+            if (StateChanger.IsContain(MoveState.mStateKey)) { re.Add(new IsMoveTransition(actor, StateChanger, MoveState.mStateKey)); }
             if (StateChanger.IsContain(JumpUpState.mStateKey)) { re.Add(new IsJumpUpTransition(actor, StateChanger, JumpUpState.mStateKey)); }
+            if (StateChanger.IsContain(StandingToCrouchState.mStateKey)) { re.Add(new IsStandingToCrouchTransition(actor, StateChanger, StandingToCrouchState.mStateKey)); }
             if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
             return re;
         }
@@ -40,7 +40,7 @@ namespace MyAssets
             base.Execute_Update(time);
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
-            mController.UpdateAnimation();
+            mController.UpdateIdleToRunAnimation();
         }
 
         public override void Execute_FixedUpdate(float time)

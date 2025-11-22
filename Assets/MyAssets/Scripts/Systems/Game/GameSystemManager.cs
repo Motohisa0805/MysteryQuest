@@ -10,6 +10,12 @@ namespace MyAssets
 
         public static GameSystemManager Instance => instance;
 
+        // シングルトン等で管理されているテーブルを参照
+        [SerializeField]
+        private ChemistryTable mChemistryTable;
+
+        public ChemistryTable ChemistryTable => mChemistryTable;
+
         private void Awake()
         {
             if (instance != null)

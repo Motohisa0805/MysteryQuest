@@ -22,6 +22,8 @@ namespace MyAssets
         [SerializeField]
         private MoveState mMoveState;
         [SerializeField]
+        private SpritDushState mSpritDushState;
+        [SerializeField]
         private JumpUpState mJumpUpState;
         [SerializeField]
         private JumpingState mJumpState;
@@ -43,6 +45,10 @@ namespace MyAssets
         public float MaxSpeed => mMaxSpeed;
 
         [SerializeField]
+        private float mDushMaxSpeed; //最高速度
+        public float DushMaxSpeed => mDushMaxSpeed;
+
+        [SerializeField]
         private float mCrouchMaxSpeed; //しゃがみ時の最高速度
         public float CrouchMaxSpeed => mCrouchMaxSpeed;
 
@@ -61,15 +67,23 @@ namespace MyAssets
         private Movement mMovement; //ムーブメント
         public Movement Movement => mMovement;
 
-        // クラス変数に追加: アニメーションのブレンドを滑らかにするための変数
+        //アニメーションのブレンドを滑らかにするための変数
         [SerializeField]
-        private float mAnimSpeed = 0f;          // 現在アニメーターに渡しているブレンド値
+        private float mAnimIdleToRunSpeed = 0f;          // 現在アニメーターに渡しているブレンド値
         [SerializeField]
         private float mAnimSmoothTime = 0.1f;   // ブレンドにかける時間 (0.1秒程度が滑らか)
         [SerializeField]
         private float mSmoothVelocity = 0f;     // SmoothDampで使用する参照速度（内部で自動更新される）
 
-        // クラス変数に追加: アニメーションのブレンドを滑らかにするための変数
+        //アニメーションのブレンドを滑らかにするための変数
+        [SerializeField]
+        private float mSpritDushSpeed = 0f;          // 現在アニメーターに渡しているブレンド値
+        [SerializeField]
+        private float mSpritDushSmoothTime = 0.1f;   // ブレンドにかける時間 (0.1秒程度が滑らか)
+        [SerializeField]
+        private float mSpritDushSmoothVelocity = 0f;     // SmoothDampで使用する参照速度（内部で自動更新される）
+
+        //アニメーションのブレンドを滑らかにするための変数
         [SerializeField]
         private float mCrouchAnimSpeed = 0f;          // 現在アニメーターに渡しているブレンド値
         [SerializeField]
@@ -104,6 +118,7 @@ namespace MyAssets
             {
                 mIdleState,
                 mMoveState,
+                mSpritDushState,
                 mJumpUpState,
                 mJumpState,
                 mJumpDownState,
@@ -182,7 +197,7 @@ namespace MyAssets
             return false;
         }
 
-        public void UpdateAnimation()
+        public void UpdateIdleToRunAnimation()
         {
             if (mAnimator == null)
             {
@@ -196,18 +211,75 @@ namespace MyAssets
             float targetBlendValue = targetSpeed / mMaxSpeed;
 
             // 3. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
-            mAnimSpeed = Mathf.SmoothDamp(
-                mAnimSpeed,             // 現在の値
+            mAnimIdleToRunSpeed = Mathf.SmoothDamp(
+                mAnimIdleToRunSpeed,             // 現在の値
                 targetBlendValue,       // 目標の値
                 ref mSmoothVelocity,    // 内部で使用される参照速度（毎回渡す）
                 mAnimSmoothTime         // 目標値に到達するまでにかける時間
             );
 
-            if (mAnimator.GetFloat("idleToRun") != mAnimSpeed)
+            if (mAnimator.GetFloat("idleToRun") != mAnimIdleToRunSpeed)
             {
                 // 4. アニメーターに滑らかになったブレンド値を渡す
                 // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // 修正前
-                mAnimator.SetFloat("idleToRun", mAnimSpeed);
+                mAnimator.SetFloat("idleToRun", mAnimIdleToRunSpeed);
+            }
+        }
+
+        public void UpdateSpritDushAnimation()
+        {
+            if (mAnimator == null)
+            {
+                return;
+            }
+
+            // 1. 物理速度の絶対値を取得
+            float targetSpeed = mRigidbody.linearVelocity.magnitude;
+
+            // 2. 速度を最高速度で正規化し、0～1の値に変換（ブレンドツリーの範囲に合わせる）
+            // ※ブレンドツリーの最大値が1の場合を想定
+            float targetBlendValue = targetSpeed / mDushMaxSpeed;
+
+            // 3. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
+            mSpritDushSpeed = Mathf.SmoothDamp(
+                mSpritDushSpeed,             // 現在の値
+                targetBlendValue,       // 目標の値
+                ref mSpritDushSmoothVelocity,    // 内部で使用される参照速度（毎回渡す）
+                mSpritDushSmoothTime         // 目標値に到達するまでにかける時間
+            );
+
+            if (mAnimator.GetFloat("spritDush") != mSpritDushSpeed)
+            {
+                // 4. アニメーターに滑らかになったブレンド値を渡す
+                // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // 修正前
+                mAnimator.SetFloat("spritDush", mSpritDushSpeed);
+            }
+        }
+
+        public void SpritDushClear()
+        {
+            if (mAnimator == null)
+            {
+                return;
+            }
+
+            // 1. 速度を最高速度で正規化し、0～1の値に変換（ブレンドツリーの範囲に合わせる）
+            // ※ブレンドツリーの最大値が1の場合を想定
+            float targetBlendValue = 0;
+
+            // 2. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
+            mSpritDushSpeed = Mathf.SmoothDamp(
+                mSpritDushSpeed,             // 現在の値
+                targetBlendValue,       // 目標の値
+                ref mSpritDushSmoothVelocity,    // 内部で使用される参照速度（毎回渡す）
+                mSpritDushSmoothTime         // 目標値に到達するまでにかける時間
+            );
+
+            if (mAnimator.GetFloat("spritDush") != mSpritDushSpeed)
+            {
+                // 4. アニメーターに滑らかになったブレンド値を渡す
+                // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // 修正前
+                mAnimator.SetFloat("spritDush", mSpritDushSpeed);
             }
         }
 
