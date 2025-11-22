@@ -72,6 +72,31 @@ namespace MyAssets
                                                mAnimator.GetCurrentAnimatorStateInfo(0).IsName("falling To Landing");
     }
 
+    public class IsSpritDushTransition : StateTransitionBase
+    {
+
+        readonly PlayableInput mInput;
+        public IsSpritDushTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+
+        }
+        public override bool IsTransition() => mInput.Sprit;
+    }
+
+    public class IsNotSpritDushTransition : StateTransitionBase
+    {
+
+        readonly PlayableInput mInput;
+        public IsNotSpritDushTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+
+        }
+        public override bool IsTransition() => !mInput.Sprit;
+    }
     public class IsJumpUpTransition : StateTransitionBase
     {
 
@@ -101,9 +126,15 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
+
+        private bool IsAnimationName()
+        {
+            return (mAnimator.GetCurrentAnimatorStateInfo(0).IsName("jumping Up") || mAnimator.GetCurrentAnimatorStateInfo(0).IsName("runJump"));
+        }
+
         public override bool IsTransition()
         {
-            return mAnimator.GetCurrentAnimatorStateInfo(0).IsName("jumping Up") && mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f&&
+            return IsAnimationName() && mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f&&
                 !mController.Grounded;
         }
     }
@@ -135,9 +166,14 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
+
+        private bool IsAnimationName()
+        {
+            return (mAnimator.GetCurrentAnimatorStateInfo(0).IsName("jumping Up") || mAnimator.GetCurrentAnimatorStateInfo(0).IsName("runJump"));
+        }
         public override bool IsTransition()
         {
-            return mAnimator.GetCurrentAnimatorStateInfo(0).IsName("jumping Up") &&
+            return IsAnimationName() &&
                 mController.Grounded;
         }
     }
