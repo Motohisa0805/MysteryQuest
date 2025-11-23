@@ -38,6 +38,9 @@ namespace MyAssets
 
         [Tooltip("発生させるエフェクト名やID")]
         public string mVfxName;
+
+        [Tooltip("発生させるエフェクトID")]
+        public EffectType mEffectType;
     }
     [Serializable]
     public class ReactionRule

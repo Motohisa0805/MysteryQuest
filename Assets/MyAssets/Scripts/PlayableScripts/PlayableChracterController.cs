@@ -188,7 +188,6 @@ namespace MyAssets
             //’n–Ê‚ÉÚ’n‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ì”»’è
             if (land)
             {
-                Debug.Log("Grounded");
                 mGrounded = true;
                 return true;
             }

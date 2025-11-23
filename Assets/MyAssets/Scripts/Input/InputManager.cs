@@ -24,12 +24,16 @@ namespace MyAssets
         ePrevious,
         eNext,
         eSprint,
+        /*
         eUpSelect,
         eDownSelect,
         eLeftSelect,
         eRightSelect,
         eDecide,
-        eESC
+        eESC,
+         */
+        eF1,
+        Num1
     };
     // InputManagerƒNƒ‰ƒX
     public class InputManager
@@ -67,6 +71,8 @@ namespace MyAssets
             mButtonActions.Add(mInputAction.UI.Decide);
             mButtonActions.Add(mInputAction.UI.Option);
              */
+            mButtonActions.Add(mInputAction.Debug.OnOff);
+            mButtonActions.Add(mInputAction.Debug.CreateWoodBox);
         }
 
         public static void Shutdown()

@@ -20,3 +20,4 @@ MonoBehaviour:
       gElementToAdd: 1
       gElementToRemove: 0
       mVfxName: 
+      mEffectType: 1
