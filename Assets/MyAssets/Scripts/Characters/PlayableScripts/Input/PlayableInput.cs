@@ -9,6 +9,10 @@ namespace MyAssets
 
         public Vector2  InputMove => mInputMove;
 
+
+        private bool    mInteract;
+        public bool     Interact => mInteract;
+
         private bool    mSprit;
 
         public bool     Sprit => mSprit;
@@ -35,8 +39,9 @@ namespace MyAssets
         {
             mInputMove = InputManager.GetKeyValue(KeyCode.eMove);
 
+            mInteract = InputManager.GetKeyDown(KeyCode.eInteract);
+
             mSprit = InputManager.GetKey(KeyCode.eSprint);
-            Debug.Log(mSprit);
 
             mInputJump = InputManager.GetKeyDown(KeyCode.eJump);
 

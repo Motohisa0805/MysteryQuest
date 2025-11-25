@@ -348,4 +348,93 @@ namespace MyAssets
                    mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f;
         }
     }
+
+    public class IsIdleToToLiftTransition : StateTransitionBase
+    {
+        readonly PlayableInput mInput;
+        readonly TakedObjectChecker mChecker;
+        public IsIdleToToLiftTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mChecker = actor.GetComponent<TakedObjectChecker>();
+        }
+        public override bool IsTransition()
+        {
+            return mChecker.TakedObject != null && mInput.Interact;
+        }
+    }
+
+    public class IsToLiftToToLiftIdleTransition : StateTransitionBase
+    {
+        readonly PlayableInput mInput;
+        readonly TakedObjectChecker mChecker;
+        readonly Animator mAnimator;
+        public IsToLiftToToLiftIdleTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mChecker = actor.GetComponent<TakedObjectChecker>();
+            mAnimator = actor.GetComponentInChildren<Animator>();
+        }
+        public override bool IsTransition()
+        {
+            return mAnimator.GetCurrentAnimatorStateInfo(0).IsName("to Lift") &&
+                   mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f;
+        }
+    }
+
+    public class IsToLiftIdleToToLiftRunTransition : StateTransitionBase
+    {
+        readonly PlayableInput mInput;
+        readonly TakedObjectChecker mChecker;
+        readonly Animator mAnimator;
+        public IsToLiftIdleToToLiftRunTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mChecker = actor.GetComponent<TakedObjectChecker>();
+            mAnimator = actor.GetComponentInChildren<Animator>();
+        }
+        public override bool IsTransition()
+        {
+            return mInput.InputMove.magnitude > 0.1f;
+        }
+    }
+
+    public class IsToLiftRunToToLiftIdleTransition : StateTransitionBase
+    {
+        readonly PlayableInput mInput;
+        readonly TakedObjectChecker mChecker;
+        readonly Animator mAnimator;
+        public IsToLiftRunToToLiftIdleTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mChecker = actor.GetComponent<TakedObjectChecker>();
+            mAnimator = actor.GetComponentInChildren<Animator>();
+        }
+        public override bool IsTransition()
+        {
+            return mInput.InputMove.magnitude < 0.1f;
+        }
+    }
+    //TODO : 持ち上げを解除クラスは後々変更
+    public class IsReleaseLiftTransition : StateTransitionBase
+    {
+        readonly PlayableInput mInput;
+        readonly TakedObjectChecker mChecker;
+        readonly Animator mAnimator;
+        public IsReleaseLiftTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mChecker = actor.GetComponent<TakedObjectChecker>();
+            mAnimator = actor.GetComponentInChildren<Animator>();
+        }
+        public override bool IsTransition()
+        {
+            return mChecker.TakedObject != null && mInput.Sprit;
+        }
+    }
 }
