@@ -1,14 +1,14 @@
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
-using UnityEngine.Rendering;
-using static UnityEditor.VersionControl.Asset;
 
 namespace MyAssets
 {
     [RequireComponent(typeof(PlayableInput))]
     [RequireComponent(typeof(Movement))]
+    [RequireComponent(typeof(TakedObjectChecker))]
     public class PlayableChracterController : MonoBehaviour
     {
+
+        [Header("キャラクター内部の処理")]
         [SerializeField]
         private string mCurrentStateKey; //現在の状態
         [SerializeField]
@@ -39,6 +39,14 @@ namespace MyAssets
         private CrouchToStandingState mCrouchToStandingState;
         [SerializeField]
         private FallState mFallState;
+        [SerializeField]
+        private ToLiftState mToLiftState;
+        [SerializeField]
+        private ToLiftIdleState mToLiftIdleState;
+        [SerializeField]
+        private ToLiftRunState mToLiftRunState;
+        [SerializeField]
+        private ReleaseLiftState mReleaseLiftState;
 
         [SerializeField]
         private float mMaxSpeed; //最高速度
@@ -85,6 +93,14 @@ namespace MyAssets
 
         //アニメーションのブレンドを滑らかにするための変数
         [SerializeField]
+        private float mToLiftIdleToRunSpeed = 0f;          // 現在アニメーターに渡しているブレンド値
+        [SerializeField]
+        private float mToLiftSmoothTime = 0.1f;   // ブレンドにかける時間 (0.1秒程度が滑らか)
+        [SerializeField]
+        private float mToLiftSmoothVelocity = 0f;     // SmoothDampで使用する参照速度（内部で自動更新される）
+
+        //アニメーションのブレンドを滑らかにするための変数
+        [SerializeField]
         private float mCrouchAnimSpeed = 0f;          // 現在アニメーターに渡しているブレンド値
         [SerializeField]
         private float mCrouchAnimSmoothTime = 0.1f;   // ブレンドにかける時間 (0.1秒程度が滑らか)
@@ -126,7 +142,11 @@ namespace MyAssets
                 mCrouchIdleState,
                 mCrouchMoveState,
                 mCrouchToStandingState,
-                mFallState
+                mFallState,
+                mToLiftState,
+                mToLiftIdleState,
+                mToLiftRunState,
+                mReleaseLiftState,
             };
             stateMachine.Setup(states);
             foreach (var state in states)
@@ -252,6 +272,35 @@ namespace MyAssets
                 // 4. アニメーターに滑らかになったブレンド値を渡す
                 // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // 修正前
                 mAnimator.SetFloat("spritDush", mSpritDushSpeed);
+            }
+        }
+
+        public void UpdateToLiftIdleToToLiftRunAnimation()
+        {
+            if (mAnimator == null)
+            {
+                return;
+            }
+            // 1. 物理速度の絶対値を取得
+            float targetSpeed = mRigidbody.linearVelocity.magnitude;
+
+            // 2. 速度を最高速度で正規化し、0～1の値に変換（ブレンドツリーの範囲に合わせる）
+            // ※ブレンドツリーの最大値が1の場合を想定
+            float targetBlendValue = targetSpeed / mMaxSpeed;
+
+            // 3. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
+            mToLiftIdleToRunSpeed = Mathf.SmoothDamp(
+                mToLiftIdleToRunSpeed,             // 現在の値
+                targetBlendValue,       // 目標の値
+                ref mToLiftSmoothVelocity,    // 内部で使用される参照速度（毎回渡す）
+                mToLiftSmoothTime         // 目標値に到達するまでにかける時間
+            );
+
+            if (mAnimator.GetFloat("to Lift Blend") != mToLiftIdleToRunSpeed)
+            {
+                // 4. アニメーターに滑らかになったブレンド値を渡す
+                // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // 修正前
+                mAnimator.SetFloat("to Lift Blend", mToLiftIdleToRunSpeed);
             }
         }
 
