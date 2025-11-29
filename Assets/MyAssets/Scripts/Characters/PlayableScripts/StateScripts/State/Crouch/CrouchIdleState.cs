@@ -16,6 +16,8 @@ namespace MyAssets
 
         private Animator mAnimator;
 
+        private PlayableAnimationFunction mAnimationFunction;
+
 
         [SerializeField]
         private float mCrouchHeight;
@@ -32,6 +34,7 @@ namespace MyAssets
             base.Setup(actor);
             mColliderController = actor.GetComponentInChildren<CapsuleColliderController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
         }
 
         public override void Enter()
@@ -62,6 +65,8 @@ namespace MyAssets
 
         private PlayableChracterController mController;
 
+        private PlayableAnimationFunction mAnimationFunction;
+
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -75,6 +80,7 @@ namespace MyAssets
             base.Setup(actor);
             mAnimator = actor.GetComponentInChildren<Animator>();
             mController = actor.GetComponent<PlayableChracterController>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
         }
 
         public override void Enter()
@@ -88,7 +94,7 @@ namespace MyAssets
             base.Execute_Update(time);
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
-            mController.UpdateCrouchAnimation();
+            mAnimationFunction.UpdateCrouchAnimation();
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -113,6 +119,8 @@ namespace MyAssets
 
         private PlayableChracterController mController;
 
+        private PlayableAnimationFunction mAnimationFunction;
+
         [SerializeField]
         private float mAcceleration; //加速度
 
@@ -129,6 +137,7 @@ namespace MyAssets
             base.Setup(actor);
             mAnimator = actor.GetComponentInChildren<Animator>();
             mController = actor.GetComponent<PlayableChracterController>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
         }
 
         public override void Enter()
@@ -142,7 +151,7 @@ namespace MyAssets
             base.Execute_Update(time);
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
-            mController.UpdateCrouchAnimation();
+            mAnimationFunction.UpdateCrouchAnimation();
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -150,9 +159,10 @@ namespace MyAssets
             //mController.Movement.Gravity();
             // Idle状態の特定の物理処理をここに追加できます
             // 例: 重力の適用、衝突判定など
-            mController.RotateYBody();
+            mController.InputVelocity();
             mController.Movement.Move(mController.CrouchMaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);
+            mController.RotateBody();
         }
 
     }

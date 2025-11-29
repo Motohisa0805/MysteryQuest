@@ -44,6 +44,21 @@ namespace MyAssets
         }
     }
 
+    public class IsIdleTransitionType4 : StateTransitionBase
+    {
+        //readonly IMoveInputProvider input;
+        readonly Animator mAnimator;
+        public IsIdleTransitionType4(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mAnimator = actor.GetComponentInChildren<Animator>();
+        }
+        public override bool IsTransition()
+        {
+            return mAnimator.GetCurrentAnimatorStateInfo(0).IsName("push End") && mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f;
+        }
+    }
+
     public class IsMoveTransition : StateTransitionBase
     {
 
@@ -352,12 +367,12 @@ namespace MyAssets
     public class IsIdleToToLiftTransition : StateTransitionBase
     {
         readonly PlayableInput mInput;
-        readonly TakedObjectChecker mChecker;
+        readonly PropsObjectChecker mChecker;
         public IsIdleToToLiftTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mChecker = actor.GetComponent<TakedObjectChecker>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
         }
         public override bool IsTransition()
         {
@@ -368,13 +383,13 @@ namespace MyAssets
     public class IsToLiftToToLiftIdleTransition : StateTransitionBase
     {
         readonly PlayableInput mInput;
-        readonly TakedObjectChecker mChecker;
+        readonly PropsObjectChecker mChecker;
         readonly Animator mAnimator;
         public IsToLiftToToLiftIdleTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mChecker = actor.GetComponent<TakedObjectChecker>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
@@ -387,13 +402,13 @@ namespace MyAssets
     public class IsToLiftIdleToToLiftRunTransition : StateTransitionBase
     {
         readonly PlayableInput mInput;
-        readonly TakedObjectChecker mChecker;
+        readonly PropsObjectChecker mChecker;
         readonly Animator mAnimator;
         public IsToLiftIdleToToLiftRunTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mChecker = actor.GetComponent<TakedObjectChecker>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
@@ -405,13 +420,13 @@ namespace MyAssets
     public class IsToLiftRunToToLiftIdleTransition : StateTransitionBase
     {
         readonly PlayableInput mInput;
-        readonly TakedObjectChecker mChecker;
+        readonly PropsObjectChecker mChecker;
         readonly Animator mAnimator;
         public IsToLiftRunToToLiftIdleTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mChecker = actor.GetComponent<TakedObjectChecker>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
@@ -423,18 +438,95 @@ namespace MyAssets
     public class IsReleaseLiftTransition : StateTransitionBase
     {
         readonly PlayableInput mInput;
-        readonly TakedObjectChecker mChecker;
+        readonly PropsObjectChecker mChecker;
         readonly Animator mAnimator;
         public IsReleaseLiftTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mChecker = actor.GetComponent<TakedObjectChecker>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
         {
             return mChecker.TakedObject != null && mInput.Sprit;
+        }
+    }
+
+    public class IsPushStartTransition : StateTransitionBase
+    {
+        readonly PlayableInput mInput;
+        readonly PropsObjectChecker mChecker;
+        readonly Animator mAnimator;
+        public IsPushStartTransition
+            (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
+            mAnimator = actor.GetComponentInChildren<Animator>();
+        }
+        public override bool IsTransition()
+        {
+            return mChecker.LargeObject != null && mChecker.PushEnabled;
+        }
+    }
+
+    public class IsPushingTransition : StateTransitionBase
+    {
+        readonly PlayableInput mInput;
+        readonly PropsObjectChecker mChecker;
+        readonly Animator mAnimator;
+        public IsPushingTransition
+            (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
+            mAnimator = actor.GetComponentInChildren<Animator>();
+        }
+        public override bool IsTransition()
+        {
+            return mAnimator.GetCurrentAnimatorStateInfo(0).IsName("push Start") &&
+                   mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f; ;
+        }
+    }
+
+    public class IsPushEndStartTransition : StateTransitionBase
+    {
+        readonly PlayableInput mInput;
+        readonly PropsObjectChecker mChecker;
+        readonly Animator mAnimator;
+        public IsPushEndStartTransition
+            (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
+            mAnimator = actor.GetComponentInChildren<Animator>();
+        }
+        public override bool IsTransition()
+        {
+            return (mChecker.LargeObject != null && !mChecker.PushEnabled)|| mInput.InputMove.magnitude <= 0.0f && !mChecker.PushEnabled;
+        }
+    }
+
+    public class IsPushEndTransition : StateTransitionBase
+    {
+        readonly PlayableInput mInput;
+        readonly PropsObjectChecker mChecker;
+        readonly Animator mAnimator;
+        public IsPushEndTransition
+            (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
+            mAnimator = actor.GetComponentInChildren<Animator>();
+        }
+        public override bool IsTransition()
+        {
+            return mChecker.CheckPushReleaseCondition() && !mChecker.PushEnabled;
         }
     }
 }

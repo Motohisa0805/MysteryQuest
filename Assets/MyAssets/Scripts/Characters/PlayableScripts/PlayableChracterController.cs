@@ -1,16 +1,17 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 namespace MyAssets
 {
+    [RequireComponent(typeof(PlayableAnimationFunction))]
     [RequireComponent(typeof(PlayableInput))]
     [RequireComponent(typeof(Movement))]
-    [RequireComponent(typeof(TakedObjectChecker))]
+    [RequireComponent(typeof(PropsObjectChecker))]
     public class PlayableChracterController : MonoBehaviour
     {
 
-        [Header("ƒLƒƒƒ‰ƒNƒ^[“à•”‚Ìˆ—")]
+        [Header("ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å†…éƒ¨ã®å‡¦ç†")]
         [SerializeField]
-        private string mCurrentStateKey; //Œ»İ‚Ìó‘Ô
+        private string mCurrentStateKey; //ç¾åœ¨ã®çŠ¶æ…‹
         [SerializeField]
         private StateMachine<string> stateMachine;
         public StateMachine<string> StateMachine => stateMachine;
@@ -47,83 +48,57 @@ namespace MyAssets
         private ToLiftRunState mToLiftRunState;
         [SerializeField]
         private ReleaseLiftState mReleaseLiftState;
+        [SerializeField]
+        private PushStartState mPushStartState;
+        [SerializeField]
+        private PushingState mPushingState;
+        [SerializeField]
+        private PushEndState mPushEndState;
 
         [SerializeField]
-        private float mMaxSpeed; //Å‚‘¬“x
+        private float mMaxSpeed; //æœ€é«˜é€Ÿåº¦
         public float MaxSpeed => mMaxSpeed;
 
         [SerializeField]
-        private float mDushMaxSpeed; //Å‚‘¬“x
+        private float mDushMaxSpeed; //æœ€é«˜é€Ÿåº¦
         public float DushMaxSpeed => mDushMaxSpeed;
 
         [SerializeField]
-        private float mCrouchMaxSpeed; //‚µ‚á‚ª‚İ‚ÌÅ‚‘¬“x
+        private float mCrouchMaxSpeed; //ã—ã‚ƒãŒã¿æ™‚ã®æœ€é«˜é€Ÿåº¦
         public float CrouchMaxSpeed => mCrouchMaxSpeed;
 
         [SerializeField]
-        private float mRotationSpeed; //‰ñ“]‘¬“x
+        private float mRotationSpeed; //å›è»¢é€Ÿåº¦
 
 
-        private Rigidbody mRigidbody; //ƒŠƒWƒbƒhƒ{ƒfƒB
+        private Rigidbody mRigidbody; //ãƒªã‚¸ãƒƒãƒ‰ãƒœãƒ‡ã‚£
+        public Rigidbody Rigidbody => mRigidbody;
 
-        private Animator mAnimator; //ƒAƒjƒ[ƒ^[
-
-        private PlayableInput mInput; //ƒCƒ“ƒvƒbƒg
+        private PlayableInput mInput; //ã‚¤ãƒ³ãƒ—ãƒƒãƒˆ
 
         public PlayableInput Input => mInput;
 
-        private Movement mMovement; //ƒ€[ƒuƒƒ“ƒg
+        private Movement mMovement; //ãƒ ãƒ¼ãƒ–ãƒ¡ãƒ³ãƒˆ
         public Movement Movement => mMovement;
 
-        //ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒh‚ğŠŠ‚ç‚©‚É‚·‚é‚½‚ß‚Ì•Ï”
-        [SerializeField]
-        private float mAnimIdleToRunSpeed = 0f;          // Œ»İƒAƒjƒ[ƒ^[‚É“n‚µ‚Ä‚¢‚éƒuƒŒƒ“ƒh’l
-        [SerializeField]
-        private float mAnimSmoothTime = 0.1f;   // ƒuƒŒƒ“ƒh‚É‚©‚¯‚éŠÔ (0.1•b’ö“x‚ªŠŠ‚ç‚©)
-        [SerializeField]
-        private float mSmoothVelocity = 0f;     // SmoothDamp‚Åg—p‚·‚éQÆ‘¬“xi“à•”‚Å©“®XV‚³‚ê‚éj
-
-        //ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒh‚ğŠŠ‚ç‚©‚É‚·‚é‚½‚ß‚Ì•Ï”
-        [SerializeField]
-        private float mSpritDushSpeed = 0f;          // Œ»İƒAƒjƒ[ƒ^[‚É“n‚µ‚Ä‚¢‚éƒuƒŒƒ“ƒh’l
-        [SerializeField]
-        private float mSpritDushSmoothTime = 0.1f;   // ƒuƒŒƒ“ƒh‚É‚©‚¯‚éŠÔ (0.1•b’ö“x‚ªŠŠ‚ç‚©)
-        [SerializeField]
-        private float mSpritDushSmoothVelocity = 0f;     // SmoothDamp‚Åg—p‚·‚éQÆ‘¬“xi“à•”‚Å©“®XV‚³‚ê‚éj
-
-        //ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒh‚ğŠŠ‚ç‚©‚É‚·‚é‚½‚ß‚Ì•Ï”
-        [SerializeField]
-        private float mToLiftIdleToRunSpeed = 0f;          // Œ»İƒAƒjƒ[ƒ^[‚É“n‚µ‚Ä‚¢‚éƒuƒŒƒ“ƒh’l
-        [SerializeField]
-        private float mToLiftSmoothTime = 0.1f;   // ƒuƒŒƒ“ƒh‚É‚©‚¯‚éŠÔ (0.1•b’ö“x‚ªŠŠ‚ç‚©)
-        [SerializeField]
-        private float mToLiftSmoothVelocity = 0f;     // SmoothDamp‚Åg—p‚·‚éQÆ‘¬“xi“à•”‚Å©“®XV‚³‚ê‚éj
-
-        //ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒh‚ğŠŠ‚ç‚©‚É‚·‚é‚½‚ß‚Ì•Ï”
-        [SerializeField]
-        private float mCrouchAnimSpeed = 0f;          // Œ»İƒAƒjƒ[ƒ^[‚É“n‚µ‚Ä‚¢‚éƒuƒŒƒ“ƒh’l
-        [SerializeField]
-        private float mCrouchAnimSmoothTime = 0.1f;   // ƒuƒŒƒ“ƒh‚É‚©‚¯‚éŠÔ (0.1•b’ö“x‚ªŠŠ‚ç‚©)
-        [SerializeField]
-        private float mCrouchSmoothVelocity = 0f;     // SmoothDamp‚Åg—p‚·‚éQÆ‘¬“xi“à•”‚Å©“®XV‚³‚ê‚éj
 
 
         [SerializeField]
-        private bool mGrounded; //’n–Ê‚ÉÚ’n‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+        private bool mGrounded; //åœ°é¢ã«æ¥åœ°ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
 
         public bool Grounded => mGrounded;
 
         [SerializeField]
-        private float mRayLength = 0.1f; //’n–Ê”»’è—p‚ÌRay‚Ì’·‚³
+        private float mRayLength = 0.1f; //åœ°é¢åˆ¤å®šç”¨ã®Rayã®é•·ã•
 
         [SerializeField]
-        private float mRayRadius = 0.5f; //’n–Ê”»’è—p‚ÌRay‚Ì”¼Œa
+        private float mRayRadius = 0.5f; //åœ°é¢åˆ¤å®šç”¨ã®Rayã®åŠå¾„
 
         [SerializeField]
-        private LayerMask mGroundLayer; //’n–Ê”»’è—p‚ÌƒŒƒCƒ„[
+        private LayerMask mGroundLayer; //åœ°é¢åˆ¤å®šç”¨ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼
 
         [SerializeField]
-        private float mGroundCheckOffsetY; // ’n–Ê”»’è—p‚Ì‹…‚Ì”¼Œa
+        private float mGroundCheckOffsetY; // åœ°é¢åˆ¤å®šç”¨ã®çƒã®åŠå¾„
 
 
 
@@ -147,6 +122,9 @@ namespace MyAssets
                 mToLiftIdleState,
                 mToLiftRunState,
                 mReleaseLiftState,
+                mPushStartState,
+                mPushingState,
+                mPushEndState,
             };
             stateMachine.Setup(states);
             foreach (var state in states)
@@ -160,12 +138,6 @@ namespace MyAssets
             if (mRigidbody == null)
             {
                 Debug.LogError("Rigidbody component not found on " + gameObject.name);
-            }
-
-            mAnimator = GetComponentInChildren<Animator>();
-            if (mAnimator == null)
-            {
-                Debug.LogError("Animator component not found on " + gameObject.name);
             }
 
             mInput = GetComponent<PlayableInput>();
@@ -198,14 +170,14 @@ namespace MyAssets
 
         public bool GroundCheck()
         {
-            //“–‚½‚Á‚½î•ñ‚ğæ“¾
+            //å½“ãŸã£ãŸæƒ…å ±ã‚’å–å¾—
             RaycastHit hit;
             bool land = false;
             land = Physics.SphereCast(transform.position + mGroundCheckOffsetY * Vector3.up,
                 mRayRadius, Vector3.down, out hit, mRayLength, mGroundLayer,
                 QueryTriggerInteraction.Ignore);
             Debug.DrawRay(transform.position + mGroundCheckOffsetY * Vector3.up, Vector3.down * (mRayLength + mRayRadius), Color.red);
-            //’n–Ê‚ÉÚ’n‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ì”»’è
+            //åœ°é¢ã«æ¥åœ°ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã®åˆ¤å®š
             if (land)
             {
                 mGrounded = true;
@@ -216,172 +188,42 @@ namespace MyAssets
             return false;
         }
 
-        public void UpdateIdleToRunAnimation()
-        {
-            if (mAnimator == null)
-            {
-                return;
-            }
-            // 1. •¨—‘¬“x‚Ìâ‘Î’l‚ğæ“¾
-            float targetSpeed = mRigidbody.linearVelocity.magnitude;
-
-            // 2. ‘¬“x‚ğÅ‚‘¬“x‚Å³‹K‰»‚µA0`1‚Ì’l‚É•ÏŠ·iƒuƒŒƒ“ƒhƒcƒŠ[‚Ì”ÍˆÍ‚É‡‚í‚¹‚éj
-            // ¦ƒuƒŒƒ“ƒhƒcƒŠ[‚ÌÅ‘å’l‚ª1‚Ìê‡‚ğ‘z’è
-            float targetBlendValue = targetSpeed / mMaxSpeed;
-
-            // 3. SmoothDamp‚ğg‚Á‚ÄAŒ»İ‚ÌƒuƒŒƒ“ƒh’l(mAnimSpeed)‚ğ–Ú•W’l(targetBlendValue)‚ÖŠŠ‚ç‚©‚É•Ï‰»‚³‚¹‚é
-            mAnimIdleToRunSpeed = Mathf.SmoothDamp(
-                mAnimIdleToRunSpeed,             // Œ»İ‚Ì’l
-                targetBlendValue,       // –Ú•W‚Ì’l
-                ref mSmoothVelocity,    // “à•”‚Åg—p‚³‚ê‚éQÆ‘¬“xi–ˆ‰ñ“n‚·j
-                mAnimSmoothTime         // –Ú•W’l‚É“’B‚·‚é‚Ü‚Å‚É‚©‚¯‚éŠÔ
-            );
-
-            if (mAnimator.GetFloat("idleToRun") != mAnimIdleToRunSpeed)
-            {
-                // 4. ƒAƒjƒ[ƒ^[‚ÉŠŠ‚ç‚©‚É‚È‚Á‚½ƒuƒŒƒ“ƒh’l‚ğ“n‚·
-                // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // C³‘O
-                mAnimator.SetFloat("idleToRun", mAnimIdleToRunSpeed);
-            }
-        }
-
-        public void UpdateSpritDushAnimation()
-        {
-            if (mAnimator == null)
-            {
-                return;
-            }
-
-            // 1. •¨—‘¬“x‚Ìâ‘Î’l‚ğæ“¾
-            float targetSpeed = mRigidbody.linearVelocity.magnitude;
-
-            // 2. ‘¬“x‚ğÅ‚‘¬“x‚Å³‹K‰»‚µA0`1‚Ì’l‚É•ÏŠ·iƒuƒŒƒ“ƒhƒcƒŠ[‚Ì”ÍˆÍ‚É‡‚í‚¹‚éj
-            // ¦ƒuƒŒƒ“ƒhƒcƒŠ[‚ÌÅ‘å’l‚ª1‚Ìê‡‚ğ‘z’è
-            float targetBlendValue = targetSpeed / mDushMaxSpeed;
-
-            // 3. SmoothDamp‚ğg‚Á‚ÄAŒ»İ‚ÌƒuƒŒƒ“ƒh’l(mAnimSpeed)‚ğ–Ú•W’l(targetBlendValue)‚ÖŠŠ‚ç‚©‚É•Ï‰»‚³‚¹‚é
-            mSpritDushSpeed = Mathf.SmoothDamp(
-                mSpritDushSpeed,             // Œ»İ‚Ì’l
-                targetBlendValue,       // –Ú•W‚Ì’l
-                ref mSpritDushSmoothVelocity,    // “à•”‚Åg—p‚³‚ê‚éQÆ‘¬“xi–ˆ‰ñ“n‚·j
-                mSpritDushSmoothTime         // –Ú•W’l‚É“’B‚·‚é‚Ü‚Å‚É‚©‚¯‚éŠÔ
-            );
-
-            if (mAnimator.GetFloat("spritDush") != mSpritDushSpeed)
-            {
-                // 4. ƒAƒjƒ[ƒ^[‚ÉŠŠ‚ç‚©‚É‚È‚Á‚½ƒuƒŒƒ“ƒh’l‚ğ“n‚·
-                // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // C³‘O
-                mAnimator.SetFloat("spritDush", mSpritDushSpeed);
-            }
-        }
-
-        public void UpdateToLiftIdleToToLiftRunAnimation()
-        {
-            if (mAnimator == null)
-            {
-                return;
-            }
-            // 1. •¨—‘¬“x‚Ìâ‘Î’l‚ğæ“¾
-            float targetSpeed = mRigidbody.linearVelocity.magnitude;
-
-            // 2. ‘¬“x‚ğÅ‚‘¬“x‚Å³‹K‰»‚µA0`1‚Ì’l‚É•ÏŠ·iƒuƒŒƒ“ƒhƒcƒŠ[‚Ì”ÍˆÍ‚É‡‚í‚¹‚éj
-            // ¦ƒuƒŒƒ“ƒhƒcƒŠ[‚ÌÅ‘å’l‚ª1‚Ìê‡‚ğ‘z’è
-            float targetBlendValue = targetSpeed / mMaxSpeed;
-
-            // 3. SmoothDamp‚ğg‚Á‚ÄAŒ»İ‚ÌƒuƒŒƒ“ƒh’l(mAnimSpeed)‚ğ–Ú•W’l(targetBlendValue)‚ÖŠŠ‚ç‚©‚É•Ï‰»‚³‚¹‚é
-            mToLiftIdleToRunSpeed = Mathf.SmoothDamp(
-                mToLiftIdleToRunSpeed,             // Œ»İ‚Ì’l
-                targetBlendValue,       // –Ú•W‚Ì’l
-                ref mToLiftSmoothVelocity,    // “à•”‚Åg—p‚³‚ê‚éQÆ‘¬“xi–ˆ‰ñ“n‚·j
-                mToLiftSmoothTime         // –Ú•W’l‚É“’B‚·‚é‚Ü‚Å‚É‚©‚¯‚éŠÔ
-            );
-
-            if (mAnimator.GetFloat("to Lift Blend") != mToLiftIdleToRunSpeed)
-            {
-                // 4. ƒAƒjƒ[ƒ^[‚ÉŠŠ‚ç‚©‚É‚È‚Á‚½ƒuƒŒƒ“ƒh’l‚ğ“n‚·
-                // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // C³‘O
-                mAnimator.SetFloat("to Lift Blend", mToLiftIdleToRunSpeed);
-            }
-        }
-
-        public void SpritDushClear()
-        {
-            if (mAnimator == null)
-            {
-                return;
-            }
-
-            // 1. ‘¬“x‚ğÅ‚‘¬“x‚Å³‹K‰»‚µA0`1‚Ì’l‚É•ÏŠ·iƒuƒŒƒ“ƒhƒcƒŠ[‚Ì”ÍˆÍ‚É‡‚í‚¹‚éj
-            // ¦ƒuƒŒƒ“ƒhƒcƒŠ[‚ÌÅ‘å’l‚ª1‚Ìê‡‚ğ‘z’è
-            float targetBlendValue = 0;
-
-            // 2. SmoothDamp‚ğg‚Á‚ÄAŒ»İ‚ÌƒuƒŒƒ“ƒh’l(mAnimSpeed)‚ğ–Ú•W’l(targetBlendValue)‚ÖŠŠ‚ç‚©‚É•Ï‰»‚³‚¹‚é
-            mSpritDushSpeed = Mathf.SmoothDamp(
-                mSpritDushSpeed,             // Œ»İ‚Ì’l
-                targetBlendValue,       // –Ú•W‚Ì’l
-                ref mSpritDushSmoothVelocity,    // “à•”‚Åg—p‚³‚ê‚éQÆ‘¬“xi–ˆ‰ñ“n‚·j
-                mSpritDushSmoothTime         // –Ú•W’l‚É“’B‚·‚é‚Ü‚Å‚É‚©‚¯‚éŠÔ
-            );
-
-            if (mAnimator.GetFloat("spritDush") != mSpritDushSpeed)
-            {
-                // 4. ƒAƒjƒ[ƒ^[‚ÉŠŠ‚ç‚©‚É‚È‚Á‚½ƒuƒŒƒ“ƒh’l‚ğ“n‚·
-                // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // C³‘O
-                mAnimator.SetFloat("spritDush", mSpritDushSpeed);
-            }
-        }
-
-        public void UpdateCrouchAnimation()
-        {
-            if (mAnimator == null)
-            {
-                return;
-            }
-            float targetSpeed = mRigidbody.linearVelocity.magnitude;
-            float targetBlendValue = targetSpeed / mCrouchMaxSpeed;
-            mCrouchAnimSpeed = Mathf.SmoothDamp(
-                mCrouchAnimSpeed,
-                targetBlendValue,
-                ref mCrouchSmoothVelocity,
-                mCrouchAnimSmoothTime
-            );
-            if (mAnimator.GetFloat("crouch_IdleToWalk") != mCrouchAnimSpeed)
-            {
-                mAnimator.SetFloat("crouch_IdleToWalk", mCrouchAnimSpeed);
-            }
-        }
-
         private void FixedUpdate()
         {
             float t = Time.fixedDeltaTime;
 
             stateMachine.FixedUpdate(t);
+            //RotateBody();
+        }
+
+        public void RotateBody()
+        {
             Vector3 v = mRigidbody.linearVelocity;
             v.y = 0;
             if (v.magnitude > 0.5f)
             {
                 Vector3 velocity = mRigidbody.linearVelocity;
-                velocity.y = 0; // …•½•ûŒü‚Ì‘¬“x‚Ì‚İ‚ğl—¶
+                velocity.y = 0; // æ°´å¹³æ–¹å‘ã®é€Ÿåº¦ã®ã¿ã‚’è€ƒæ…®
                 Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mRotationSpeed);
             }
         }
 
-        public void RotateYBody()
+        public void InputVelocity()
         {
-            // ƒJƒƒ‰‚ÌY²‰ñ“]‚ğæ“¾
+            // ã‚«ãƒ¡ãƒ©ã®Yè»¸å›è»¢ã‚’å–å¾—
             Quaternion cameraRotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
 
-            // “ü—ÍƒxƒNƒgƒ‹ (‘OŒã‚ÉmInputMove.yA¶‰E‚ÉmInputMove.x)
+            // å…¥åŠ›ãƒ™ã‚¯ãƒˆãƒ« (å‰å¾Œã«mInputMove.yã€å·¦å³ã«mInputMove.x)
             Vector3 inputVector = new Vector3(mInput.InputMove.x, 0, mInput.InputMove.y);
 
-            // “ü—Í‚ª‚ ‚ê‚Î³‹K‰» (Î‚ßˆÚ“®‚Ì‘¬“x‚ğˆê’è‚É‚·‚é‚½‚ß)
+            // å…¥åŠ›ãŒã‚ã‚Œã°æ­£è¦åŒ– (æ–œã‚ç§»å‹•ã®é€Ÿåº¦ã‚’ä¸€å®šã«ã™ã‚‹ãŸã‚)
             if (inputVector.sqrMagnitude > 1f)
             {
                 inputVector.Normalize();
             }
 
-            // ƒJƒƒ‰‚Ì‰ñ“]‚ğ“K—p‚µA–Ú•WˆÚ“®•ûŒü‚ğŒvZ
+            // ã‚«ãƒ¡ãƒ©ã®å›è»¢ã‚’é©ç”¨ã—ã€ç›®æ¨™ç§»å‹•æ–¹å‘ã‚’è¨ˆç®—
             mMovement.CurrentVelocity = cameraRotation * inputVector;
         }
 

@@ -12,6 +12,8 @@ namespace MyAssets
 
         PlayableChracterController mController;
 
+        PlayableAnimationFunction mAnimationFunction;
+
         [SerializeField]
         private float mAcceleration; //加速度
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
@@ -29,6 +31,7 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
         }
 
         public override void Enter()
@@ -42,7 +45,7 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             //mController.UpdateIdleToRunAnimation();
-            mController.UpdateSpritDushAnimation();
+            mAnimationFunction.UpdateSpritDushAnimation();
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -50,9 +53,10 @@ namespace MyAssets
             //mController.Movement.Gravity();
             // Idle状態の特定の物理処理をここに追加できます
             // 例: 重力の適用、衝突判定など
-            mController.RotateYBody();
+            mController.InputVelocity();
             mController.Movement.Move(mController.DushMaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);
+            mController.RotateBody();
         }
 
         public override void Exit()
