@@ -6,10 +6,12 @@ namespace MyAssets
     [System.Serializable]
     public class IdleState : StateBase<string>
     {
-        public static readonly string mStateKey = "Idle";
-        public override string Key => mStateKey;
+        public static readonly string   mStateKey = "Idle";
+        public override string          Key => mStateKey;
 
-        PlayableChracterController mController;
+        PlayableChracterController      mController;
+
+        PlayableAnimationFunction       mAnimationFunction;
 
 
         [SerializeField]
@@ -29,6 +31,7 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
         }
 
         public override void Enter()
@@ -41,7 +44,7 @@ namespace MyAssets
             base.Execute_Update(time);
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
-            mController.UpdateIdleToRunAnimation();
+            mAnimationFunction.UpdateIdleToRunAnimation();
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -49,9 +52,10 @@ namespace MyAssets
             //mController.Movement.Gravity();
             // Idle状態の特定の物理処理をここに追加できます
             // 例: 重力の適用、衝突判定など
-            mController.RotateYBody();
+            mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);
+            mController.RotateBody();
         }
 
         public override void Exit()

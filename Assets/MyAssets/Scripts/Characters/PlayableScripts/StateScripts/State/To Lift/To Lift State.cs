@@ -10,7 +10,9 @@ namespace MyAssets
         public override string Key => mStateKey;
         PlayableChracterController mController;
 
-        TakedObjectChecker mChecker;
+        private PlayableAnimationFunction mAnimationFunction;
+
+        PropsObjectChecker mChecker;
 
         private Animator mAnimator;//アニメーター
 
@@ -26,7 +28,9 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
 
-            mChecker = actor.GetComponent<TakedObjectChecker>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
+
+            mChecker = actor.GetComponent<PropsObjectChecker>();
 
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
@@ -70,7 +74,9 @@ namespace MyAssets
         public override string Key => mStateKey;
         PlayableChracterController mController;
 
-        TakedObjectChecker mChecker;
+        private PlayableAnimationFunction mAnimationFunction;
+
+        PropsObjectChecker mChecker;
 
         Animator mAnimator;
 
@@ -90,7 +96,9 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
 
-            mChecker = actor.GetComponent<TakedObjectChecker>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
+
+            mChecker = actor.GetComponent<PropsObjectChecker>();
 
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
@@ -107,7 +115,7 @@ namespace MyAssets
             mChecker.UpdateTakedObjectPosition();
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
-            mController.UpdateToLiftIdleToToLiftRunAnimation();
+            mAnimationFunction.UpdateToLiftIdleToToLiftRunAnimation();
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -115,9 +123,10 @@ namespace MyAssets
             //mController.Movement.Gravity();
             // Idle状態の特定の物理処理をここに追加できます
             // 例: 重力の適用、衝突判定など
-            mController.RotateYBody();
+            mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);
+            mController.RotateBody();
         }
 
         public override void Exit()
@@ -133,7 +142,9 @@ namespace MyAssets
         public override string Key => mStateKey;
         PlayableChracterController mController;
 
-        TakedObjectChecker mChecker;
+        private PlayableAnimationFunction mAnimationFunction;
+
+        PropsObjectChecker mChecker;
 
         [SerializeField]
         private float mAcceleration; //加速度
@@ -151,7 +162,9 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
 
-            mChecker = actor.GetComponent<TakedObjectChecker>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
+
+            mChecker = actor.GetComponent<PropsObjectChecker>();
         }
 
         public override void Enter()
@@ -165,7 +178,7 @@ namespace MyAssets
             mChecker.UpdateTakedObjectPosition();
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
-            mController.UpdateToLiftIdleToToLiftRunAnimation();
+            mAnimationFunction.UpdateToLiftIdleToToLiftRunAnimation();
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -173,9 +186,10 @@ namespace MyAssets
             //mController.Movement.Gravity();
             // Idle状態の特定の物理処理をここに追加できます
             // 例: 重力の適用、衝突判定など
-            mController.RotateYBody();
+            mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);
+            mController.RotateBody();
         }
 
         public override void Exit()
@@ -191,7 +205,9 @@ namespace MyAssets
         public override string Key => mStateKey;
         PlayableChracterController mController;
 
-        TakedObjectChecker mChecker;
+        private PlayableAnimationFunction mAnimationFunction;
+
+        PropsObjectChecker mChecker;
 
         Animator mAnimator;
 
@@ -211,7 +227,9 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
 
-            mChecker = actor.GetComponent<TakedObjectChecker>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
+
+            mChecker = actor.GetComponent<PropsObjectChecker>();
 
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
@@ -228,16 +246,17 @@ namespace MyAssets
             base.Execute_Update(time);
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
-            mController.UpdateIdleToRunAnimation();
+            mAnimationFunction.UpdateIdleToRunAnimation();
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             // Idle状態の特定の物理処理をここに追加できます
             // 例: 重力の適用、衝突判定など
-            mController.RotateYBody();
+            mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);
+            mController.RotateBody();
         }
 
         public override void Exit()

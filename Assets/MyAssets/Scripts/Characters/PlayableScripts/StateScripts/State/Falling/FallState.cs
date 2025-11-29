@@ -36,9 +36,10 @@ namespace MyAssets
 
         public override void Execute_FixedUpdate(float time)
         {
-            mController.RotateYBody();
+            mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, 5);
             base.Execute_FixedUpdate(time);
+            mController.RotateBody();
         }
 
         public override void Exit()

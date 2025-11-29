@@ -10,7 +10,9 @@ namespace MyAssets
         public override string Key => mStateKey;
         PlayableChracterController mController;
 
+        PropsObjectChecker mPropsChecker;
 
+        PlayableAnimationFunction mAnimationFunction;
 
         [SerializeField]
         private float mAcceleration; //加速度
@@ -20,6 +22,7 @@ namespace MyAssets
             if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsIdleTransition(actor, StateChanger, IdleState.mStateKey)); }
             if (StateChanger.IsContain(SpritDushState.mStateKey)) { re.Add(new IsSpritDushTransition(actor, StateChanger, SpritDushState.mStateKey)); }
             if (StateChanger.IsContain(StandingToCrouchState.mStateKey)) { re.Add(new IsStandingToCrouchTransition(actor, StateChanger, StandingToCrouchState.mStateKey)); }
+            if (StateChanger.IsContain(PushStartState.mStateKey)) { re.Add(new IsPushStartTransition(actor, StateChanger, PushStartState.mStateKey)); }
             if (StateChanger.IsContain(JumpUpState.mStateKey)) { re.Add(new IsJumpUpTransition(actor, StateChanger, JumpUpState.mStateKey)); }
             if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
             return re;
@@ -29,6 +32,8 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
+            mPropsChecker = actor.GetComponent<PropsObjectChecker>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
         }
 
         public override void Enter()
@@ -39,10 +44,11 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
+            //mPropsChecker.UpdatePushObjectCheck();
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
-            mController.UpdateIdleToRunAnimation();
-            mController.SpritDushClear();
+            mAnimationFunction.UpdateIdleToRunAnimation();
+            mAnimationFunction.SpritDushClear();
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -50,9 +56,10 @@ namespace MyAssets
             //mController.Movement.Gravity();
             // Idle状態の特定の物理処理をここに追加できます
             // 例: 重力の適用、衝突判定など
-            mController.RotateYBody();
+            mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);
+            mController.RotateBody();
         }
 
         public override void Exit()

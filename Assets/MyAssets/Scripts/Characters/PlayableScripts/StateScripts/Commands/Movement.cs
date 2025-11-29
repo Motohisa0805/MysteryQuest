@@ -73,6 +73,20 @@ namespace MyAssets
             mRigidbody.linearVelocity = currentVelocity;
         }
 
+        public void PushObjectMove(float speed)
+        {
+            //プレイヤーの移動
+            Vector3 direction = transform.forward * mCurrentVelocity.magnitude;
+
+            Vector3 currentVelocity = mRigidbody.linearVelocity;
+
+            Vector3 targetVelocityXZ = direction * speed;
+
+            currentVelocity.x = targetVelocityXZ.x;
+            currentVelocity.z = targetVelocityXZ.z;
+
+            mRigidbody.linearVelocity = currentVelocity;
+        }
         public void Gravity()
         {
             mRigidbody.linearVelocity += Physics.gravity * mGravityMultiply * Time.deltaTime;

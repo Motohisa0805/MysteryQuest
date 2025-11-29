@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 6637602271457041474}
   - component: {fileID: 8619529698685968900}
   - component: {fileID: 988013409420282574}
-  - component: {fileID: 1083627962162776388}
   - component: {fileID: 6154649441076757143}
+  - component: {fileID: 1083627962162776388}
+  - component: {fileID: -7185961238542235453}
   m_Layer: 0
   m_Name: Wood
   m_TagString: Untagged
@@ -113,21 +114,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1083627962162776388
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 432991507952276837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f1435df7cf42b24aaefae8eade6686a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ChemistryObject
-  mMaterial: 1
-  mCurrentElements: 0
-  mFireDestoryCount: 5
 --- !u!54 &6154649441076757143
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -136,7 +122,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 432991507952276837}
   serializedVersion: 5
-  m_Mass: 1
+  m_Mass: 30
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -155,3 +141,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1083627962162776388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432991507952276837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f1435df7cf42b24aaefae8eade6686a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ChemistryObject
+  mMaterial: 1
+  mCurrentElements: 0
+  mFireDestoryCount: 5
+--- !u!114 &-7185961238542235453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432991507952276837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a4820c4a0013354890ca25ffdbd8dd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ObjectSizeType
+  mSize: 2

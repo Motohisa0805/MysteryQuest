@@ -48,9 +48,10 @@ namespace MyAssets
         public override void Execute_FixedUpdate(float time)
         {
             //mController.Movement.Gravity();
-            mController.RotateYBody();
+            mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, 5);
             base.Execute_FixedUpdate(time);
+            mController.RotateBody();
         }
 
         public override void Exit()
@@ -101,9 +102,10 @@ namespace MyAssets
         public override void Execute_FixedUpdate(float time)
         {
             //mController.Movement.Gravity();
-            mController.RotateYBody();
+            mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);
+            mController.RotateBody();
         }
 
         public override void Exit()
@@ -155,9 +157,10 @@ namespace MyAssets
         public override void Execute_FixedUpdate(float time)
         {
             //mController.Movement.Gravity();
-            mController.RotateYBody();
+            mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, 100);
             base.Execute_FixedUpdate(time);
+            mController.RotateBody();
         }
 
         public override void Exit()
