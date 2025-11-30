@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace MyAssets
 {
@@ -36,20 +35,6 @@ namespace MyAssets
 
         private Quaternion mTargetRot;
         public Quaternion TargetRot => mTargetRot;
-        /*
-        [SerializeField]
-        private float mRayLength = 0.1f; //地面判定用のRayの長さ
-
-        [SerializeField]
-        private float mRayRadius = 0.5f; //地面判定用のRayの半径
-
-        [SerializeField]
-        private LayerMask mPushObjectLayer; //地面判定用のレイヤー
-
-
-        [SerializeField]
-        private Vector3 mOffset;
-         */
 
         public void SetReleaseTakedObject() 
         {
@@ -115,55 +100,12 @@ namespace MyAssets
             mSmallObject.transform.rotation = transform.rotation;
         }
 
-        public void UpdatePushObjectCheck()
-        {/*
-            //当たった情報を取得
-            RaycastHit hit;
-            bool push = false;
-            push = Physics.SphereCast(transform.position + mOffset,
-                mRayRadius, transform.forward, out hit, mRayLength, mPushObjectLayer,
-                QueryTriggerInteraction.Ignore);
-            Debug.DrawRay(transform.position + mOffset, transform.forward * mRayLength, Color.red);
-            //押せるオブジェクトがなかったら
-            if (!push)
-            {
-                mPushEnabled = false;
-                mLargeObject = null;
-            }
-            else
-            {
-                //オブジェクトに特定のスクリプトがあるか
-                mLargeObject = hit.transform.GetComponent<ObjectSizeType>();
-                if (mLargeObject == null || mLargeObject.Size != ObjectSizeType.SizeType.Large)
-                {
-                    return;
-                }
-
-                if (mLargeObject.GetComponent<Rigidbody>() != null)
-                {
-                    mLargeObjectMass = mLargeObject.GetComponent<Rigidbody>().mass;
-                }
-                //プレイヤーの向きで押すか押さないか
-                float dotProduct = Vector3.Dot(transform.forward, mController.Movement.CurrentVelocity);
-                if (dotProduct > 0.8f)
-                {
-                    mPushEnabled = true;
-                }
-                else
-                {
-                    mPushEnabled = false;
-                }
-            }
-          */
-        }
-
         private void Update()
         {
             /*
             if(mLargeObject)
             {
                 CalculateSnapTransform(mHitCollision, mLargeObject.transform,GetComponentInChildren<CapsuleCollider>().radius,out mTargetPos,out mTargetRot);
-                //transform.position = mTargetPos;
                 transform.rotation = mTargetRot;
             }
              */
@@ -216,31 +158,6 @@ namespace MyAssets
             // これにより、コライダーの表面同士がぴったり接触する位置になる
             targetPos = contact.point + (snappedWorldNormal * playerRadius);
             targetPos.y = transform.position.y;
-        }
-
-
-        public void PushObjectMove(float finalSpeed,Vector3 dir)
-        {
-            if(mLargeObject == null) { return; }
-            // 1. 押す対象のオブジェクトを取得
-            // (ここではmPropsCheckerから取得すると仮定)
-            Rigidbody pushTargetRb = mLargeObject.GetComponent<Rigidbody>();
-
-            if (pushTargetRb != null)
-            {
-                // 2. 移動の目標ベクトルを決定 (プレイヤーの向き * 最終速度)
-                // プレイヤーの移動方向（mRigidbody.linearVelocityのXZ方向）を使用
-                Vector3 playerDirection = dir;
-
-                Vector3 currentVelocity = pushTargetRb.linearVelocity;
-
-                Vector3 targetVelocityXZ = playerDirection * finalSpeed;
-
-                currentVelocity.x = targetVelocityXZ.x;
-                currentVelocity.z = targetVelocityXZ.z;
-
-                pushTargetRb.linearVelocity = currentVelocity;
-            }
         }
 
         public bool CheckPushReleaseCondition(float releaseThreshold = -0.5f)
@@ -298,9 +215,6 @@ namespace MyAssets
                         {
                             mLargeObjectMass = mLargeObject.GetComponent<Rigidbody>().mass;
                         }
-
-                        CalculateSnapTransform(mHitCollision, mLargeObject.transform, GetComponentInChildren<CapsuleCollider>().radius, out mTargetPos, out mTargetRot);
-                        transform.rotation = mTargetRot;
                     }
                     else
                     {
