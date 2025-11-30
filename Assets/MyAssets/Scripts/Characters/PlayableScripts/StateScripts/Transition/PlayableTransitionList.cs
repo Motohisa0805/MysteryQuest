@@ -526,7 +526,7 @@ namespace MyAssets
         }
         public override bool IsTransition()
         {
-            return mChecker.CheckPushReleaseCondition() && !mChecker.PushEnabled;
+            return mChecker.CheckPushReleaseCondition() || !mChecker.PushEnabled;
         }
     }
 }

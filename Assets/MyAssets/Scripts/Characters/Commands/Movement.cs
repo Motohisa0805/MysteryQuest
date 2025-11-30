@@ -1,3 +1,5 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 
 namespace MyAssets
@@ -6,22 +8,19 @@ namespace MyAssets
     {
         [SerializeField]
         private float mGravityMultiply;
-
         [SerializeField]
         private float maxFallSpeed = 20f;
-
 
         private Rigidbody mRigidbody;
 
 
         private Vector3 mCurrentVelocity;
-
         public Vector3 CurrentVelocity {  get { return mCurrentVelocity; } set { mCurrentVelocity = value; } }
 
+        [SerializeField]
+        private MovementCompensator mMovementCompensator;
 
-        private bool mJumping;
-
-        public bool Jumping => mJumping;
+        private bool isClimbing = false;
 
         private void Awake()
         {
@@ -30,6 +29,13 @@ namespace MyAssets
             {
                 Debug.LogError("Rigidbody component not found on " + gameObject.name);
             }
+
+            mMovementCompensator.Setup(transform);
+        }
+
+        private void Update()
+        {
+            mMovementCompensator.HandleStepClimbin();
         }
 
         public void FixedUpdate()
@@ -71,6 +77,9 @@ namespace MyAssets
             // Y軸速度はそのまま維持
             // XZ成分だけを更新したcurrentVelocityをリジッドボディに代入 (velocityに修正)
             mRigidbody.linearVelocity = currentVelocity;
+
+            //段差補正
+            StartClimbStep(mMovementCompensator.StepGoalPosition);
         }
 
         public void PushObjectMove(float speed)
@@ -87,6 +96,8 @@ namespace MyAssets
 
             mRigidbody.linearVelocity = currentVelocity;
         }
+
+
         public void Gravity()
         {
             mRigidbody.linearVelocity += Physics.gravity * mGravityMultiply * Time.deltaTime;
@@ -96,12 +107,57 @@ namespace MyAssets
         {
             //上方向に力を加える
             mRigidbody.AddForce(Vector3.up * power, ForceMode.VelocityChange);
-            mJumping = true;
+        }
+        public void StartClimbStep(Vector3 hitPoint)
+        {
+            // 既に登っている最中、またはターゲットが無効なら何もしない
+            if (isClimbing || hitPoint == Vector3.zero) { return; }
+
+            // コルーチン（時間経過処理）を開始
+            StartCoroutine(ProcessClimb(hitPoint));
         }
 
-        public void JumpFragReset()
+        private IEnumerator ProcessClimb(Vector3 targetPosition)
         {
-            mJumping = false;
+            isClimbing = true;
+
+            // 1. 物理演算の影響を一時的に切る
+            // これをしないと、登っている最中に重力で落とされたり、壁の摩擦で引っかかったりします
+            bool originalKinematic = mRigidbody.isKinematic;
+            mRigidbody.isKinematic = true;
+
+            // 移動開始前の座標と時間
+            Vector3 startPos = transform.position;
+            float elapsedTime = 0f;
+
+            Vector3 finalPos = targetPosition + Vector3.up * 0.01f;
+
+            // 2. 指定時間かけて滑らかに移動（Lerp）
+            while (elapsedTime < mMovementCompensator.ClimbDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                float t = elapsedTime / mMovementCompensator.ClimbDuration;
+
+                // EaseOut（最初は早く、最後はゆっくり）をかけると自然に見えます
+                t = Mathf.Sin(t * Mathf.PI * 0.5f);
+
+                // 座標を更新
+                mRigidbody.MovePosition(Vector3.Lerp(startPos, finalPos, t));
+
+                yield return null; // 1フレーム待機
+            }
+
+            // 念のため最終位置にきっちり合わせる
+            mRigidbody.MovePosition(finalPos);
+
+            // 3. 物理演算を元に戻す
+            mRigidbody.isKinematic = originalKinematic;
+            // mCollider.isTrigger = false;
+
+            // 速度をリセット（登った勢いで吹っ飛ばないように）
+            mRigidbody.linearVelocity = Vector3.zero;
+
+            isClimbing = false;
         }
     }
 }

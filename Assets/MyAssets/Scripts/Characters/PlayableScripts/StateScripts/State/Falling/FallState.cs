@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 namespace MyAssets
 {
@@ -17,7 +16,7 @@ namespace MyAssets
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
-            if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsFallingToLandTransition(actor, StateChanger, IdleState.mStateKey)); }
+            if (StateChanger.IsContain(JumpDownState.mStateKey)) { re.Add(new IsJumpDownTransition(actor, StateChanger, JumpDownState.mStateKey)); }
             return re;
         }
 
@@ -31,7 +30,7 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("fallState", 0);
+            mAnimator.SetInteger("jumpState", 1);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -45,7 +44,6 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            mAnimator.SetInteger("fallState", -1);
         }
     }
 }
