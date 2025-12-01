@@ -228,7 +228,7 @@ namespace MyAssets
         }
         public override bool IsTransition()
         {
-            return !mInput.InputJump && !mController.Grounded;
+            return !mInput.InputJump && !mController.Grounded && mController.FallTimer.IsEnd();
         }
     }
 
