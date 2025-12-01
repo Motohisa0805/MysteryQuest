@@ -1,5 +1,3 @@
-using System.Collections;
-using TMPro;
 using UnityEngine;
 
 namespace MyAssets
@@ -16,11 +14,11 @@ namespace MyAssets
 
         private Vector3 mCurrentVelocity;
         public Vector3 CurrentVelocity {  get { return mCurrentVelocity; } set { mCurrentVelocity = value; } }
+        private Vector3 mPastVelocity;
+        public Vector3 PastVelocity { get { return mPastVelocity; } set { mPastVelocity = value; } }
 
         [SerializeField]
         private MovementCompensator mMovementCompensator;
-
-        private bool isClimbing = false;
 
         private void Awake()
         {
@@ -35,12 +33,17 @@ namespace MyAssets
 
         private void Update()
         {
-            mMovementCompensator.HandleStepClimbin();
+            if (mCurrentVelocity != mPastVelocity)
+            {
+                mMovementCompensator.HandleStepClimbin();
+            }
         }
 
         public void FixedUpdate()
         {
-            if(mRigidbody.linearVelocity.y < -maxFallSpeed) 
+            mPastVelocity = mRigidbody.linearVelocity;
+            Gravity();
+            if (mRigidbody.linearVelocity.y < -maxFallSpeed) 
             {
                 mRigidbody.linearVelocity = new Vector3(mRigidbody.linearVelocity.x, -maxFallSpeed, mRigidbody.linearVelocity.z); 
             }
@@ -69,17 +72,28 @@ namespace MyAssets
                 accelerationForce = velocityChange;
             }
 
-            // 加速を現在の速度に適用
+            // 3. Y軸速度を強制補正
+            // 補正速度を計算
+            float stepUpVelocity = CalculateStepUpVelocity(
+                mMovementCompensator.StepGoalPosition,
+                mMovementCompensator.StepSmooth * 10f // *10fは感度調整
+            );
+
+            // XZ成分だけを更新したcurrentVelocityを準備
             currentVelocity.x += accelerationForce.x;
             currentVelocity.z += accelerationForce.z;
-            //Debug.Log(currentVelocity);
 
-            // Y軸速度はそのまま維持
-            // XZ成分だけを更新したcurrentVelocityをリジッドボディに代入 (velocityに修正)
+            // Y軸の処理
+            // StepUpVelocityは、重力などの影響を打ち消して、目標Y座標に移動させるための速度です。
+            // 重力の影響を打ち消すため、既存のY軸速度から一旦重力加速度分を引くか、
+            // 補正速度を直接現在のY軸速度に加算します。
+            if (mMovementCompensator.StepGoalPosition != Vector3.zero)
+            {
+                // シンプルな加算方式（Gravityの影響は残る）
+                currentVelocity.y = stepUpVelocity;
+            }
+
             mRigidbody.linearVelocity = currentVelocity;
-
-            //段差補正
-            StartClimbStep(mMovementCompensator.StepGoalPosition);
         }
 
         public void PushObjectMove(float speed)
@@ -96,8 +110,6 @@ namespace MyAssets
 
             mRigidbody.linearVelocity = currentVelocity;
         }
-
-
         public void Gravity()
         {
             mRigidbody.linearVelocity += Physics.gravity * mGravityMultiply * Time.deltaTime;
@@ -108,56 +120,27 @@ namespace MyAssets
             //上方向に力を加える
             mRigidbody.AddForce(Vector3.up * power, ForceMode.VelocityChange);
         }
-        public void StartClimbStep(Vector3 hitPoint)
+
+        private float CalculateStepUpVelocity(Vector3 targetPosition, float stepSmooth)
         {
-            // 既に登っている最中、またはターゲットが無効なら何もしない
-            if (isClimbing || hitPoint == Vector3.zero) { return; }
-
-            // コルーチン（時間経過処理）を開始
-            StartCoroutine(ProcessClimb(hitPoint));
-        }
-
-        private IEnumerator ProcessClimb(Vector3 targetPosition)
-        {
-            isClimbing = true;
-
-            // 1. 物理演算の影響を一時的に切る
-            // これをしないと、登っている最中に重力で落とされたり、壁の摩擦で引っかかったりします
-            bool originalKinematic = mRigidbody.isKinematic;
-            mRigidbody.isKinematic = true;
-
-            // 移動開始前の座標と時間
-            Vector3 startPos = transform.position;
-            float elapsedTime = 0f;
-
-            Vector3 finalPos = targetPosition + Vector3.up * 0.01f;
-
-            // 2. 指定時間かけて滑らかに移動（Lerp）
-            while (elapsedTime < mMovementCompensator.ClimbDuration)
+            // 段差が検知されていない場合は、補正速度はゼロ
+            if (targetPosition == Vector3.zero)
             {
-                elapsedTime += Time.deltaTime;
-                float t = elapsedTime / mMovementCompensator.ClimbDuration;
-
-                // EaseOut（最初は早く、最後はゆっくり）をかけると自然に見えます
-                t = Mathf.Sin(t * Mathf.PI * 0.5f);
-
-                // 座標を更新
-                mRigidbody.MovePosition(Vector3.Lerp(startPos, finalPos, t));
-
-                yield return null; // 1フレーム待機
+                return 0f;
             }
 
-            // 念のため最終位置にきっちり合わせる
-            mRigidbody.MovePosition(finalPos);
+            // 1. 目標Y座標と現在のY座標の差分（目標までの残りの距離）
+            float targetY = targetPosition.y;
+            float currentY = transform.position.y;
+            float heightDifference = targetY - currentY;
 
-            // 3. 物理演算を元に戻す
-            mRigidbody.isKinematic = originalKinematic;
-            // mCollider.isTrigger = false;
+            // 2. 減衰処理を使った速度計算
+            // 残りの距離（heightDifference）に滑らかさの係数（stepSmooth）を乗算することで、
+            // 目標に近づくにつれて速度が落ちる（Lerpのような効果）垂直速度を算出します。
+            // stepSmoothの値が大きいほど、追従速度が速くなります。
+            float requiredVelocityY = heightDifference * stepSmooth;
 
-            // 速度をリセット（登った勢いで吹っ飛ばないように）
-            mRigidbody.linearVelocity = Vector3.zero;
-
-            isClimbing = false;
+            return requiredVelocityY;
         }
     }
 }

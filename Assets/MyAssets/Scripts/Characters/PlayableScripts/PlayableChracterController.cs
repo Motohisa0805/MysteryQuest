@@ -85,8 +85,14 @@ namespace MyAssets
 
         [SerializeField]
         private bool mGrounded; //地面に接地しているかどうか
-
         public bool Grounded => mGrounded;
+
+        private bool mIsPastGrounded; //前フレームで地面に接地していたかどうか
+        [SerializeField]
+        private Timer mFallTimer;
+        public Timer FallTimer => mFallTimer;
+        [SerializeField]
+        private float mCount;
 
         [SerializeField]
         private float mRayLength = 0.1f; //地面判定用のRayの長さ
@@ -156,13 +162,16 @@ namespace MyAssets
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-        
+            
         }
 
         // Update is called once per frame
         private void Update()
         {
             float t = Time.deltaTime;
+
+            mFallTimer.Update(t);
+
             GroundCheck();
             stateMachine.Update(t);
             mCurrentStateKey = stateMachine.CurrentState.Key;
@@ -170,6 +179,7 @@ namespace MyAssets
 
         public bool GroundCheck()
         {
+            mIsPastGrounded = mGrounded;
             //当たった情報を取得
             RaycastHit hit;
             bool land = false;
@@ -181,11 +191,18 @@ namespace MyAssets
             if (land)
             {
                 mGrounded = true;
-                return true;
             }
-            mGrounded = false;
-            Debug.Log("Not Grounded");
-            return false;
+            else
+            {
+                mGrounded = false;
+                if(mIsPastGrounded != mGrounded)
+                {
+                    //地面から離れたときの処理
+                    mFallTimer.Start_NoReStart(mCount);
+                }
+            }
+
+            return true;
         }
 
         private void FixedUpdate()

@@ -7,8 +7,8 @@ namespace MyAssets
     public class MovementCompensator
     {
         [SerializeField]
-        private float mClimbDuration;
-        public float ClimbDuration => mClimbDuration;
+        private float mStepSmooth;
+        public float StepSmooth => mStepSmooth;
         [Header("Step Settings")]
         [SerializeField,Tooltip("æ‚è‰z‚¦‚ç‚ê‚éÅ‘å‚Ì’i·‚Ì‚‚³")]
         private float mMaxStepHeight;
@@ -24,12 +24,20 @@ namespace MyAssets
 
         private Transform mThisTransform;
 
+        private Rigidbody mRigidbody;
+
         private Vector3 mStepGoalPosition;
         public Vector3 StepGoalPosition => mStepGoalPosition;
 
         public void Setup(Transform thisTransform)
         {
             mThisTransform = thisTransform;
+            mRigidbody = thisTransform.GetComponent<Rigidbody>();
+        }
+
+        public void ClearStepGoalPosition()
+        {
+            mStepGoalPosition = Vector3.zero;
         }
 
         public void HandleStepClimbin()
