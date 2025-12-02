@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 namespace MyAssets
 {
@@ -11,14 +12,17 @@ namespace MyAssets
 
         private Rigidbody mRigidbody;
 
-
-        private Vector3 mCurrentVelocity;
-        public Vector3 CurrentVelocity {  get { return mCurrentVelocity; } set { mCurrentVelocity = value; } }
-        private Vector3 mPastVelocity;
-        public Vector3 PastVelocity { get { return mPastVelocity; } set { mPastVelocity = value; } }
+        [SerializeField]
+        private Vector3 mCurrentInputVelocity;
+        public Vector3 CurrentInputVelocity {  get { return mCurrentInputVelocity; } set { mCurrentInputVelocity = value; } }
 
         [SerializeField]
         private MovementCompensator mMovementCompensator;
+        public MovementCompensator MovementCompensator => mMovementCompensator;
+
+        private UpTimer mClimbJumpingTimer = new UpTimer();
+
+        public UpTimer ClimbJumpingTimer => mClimbJumpingTimer;
 
         private void Awake()
         {
@@ -31,9 +35,16 @@ namespace MyAssets
             mMovementCompensator.Setup(transform);
         }
 
+        private bool IsMovementChanged()
+        {
+            Vector2 current = new Vector2(mCurrentInputVelocity.x, mCurrentInputVelocity.z);
+            return current.magnitude > 0;
+        }
+
         private void Update()
         {
-            if (mCurrentVelocity != mPastVelocity)
+            mClimbJumpingTimer.Update(Time.deltaTime);
+            if (IsMovementChanged() && !mMovementCompensator.IsClimbJumping)
             {
                 mMovementCompensator.HandleStepClimbin();
             }
@@ -41,14 +52,12 @@ namespace MyAssets
 
         public void FixedUpdate()
         {
-            mPastVelocity = mRigidbody.linearVelocity;
             Gravity();
             if (mRigidbody.linearVelocity.y < -maxFallSpeed) 
             {
                 mRigidbody.linearVelocity = new Vector3(mRigidbody.linearVelocity.x, -maxFallSpeed, mRigidbody.linearVelocity.z); 
             }
         }
-
 
         public void Move(float maxSpeed,float accele)
         {
@@ -57,7 +66,7 @@ namespace MyAssets
 
             // 加速の目標方向と大きさ
             // mCurrentVelocityは既に正規化済みのベクトル（長さ0～1）
-            Vector3 targetVelocity = mCurrentVelocity * maxSpeed;
+            Vector3 targetVelocity = mCurrentInputVelocity * maxSpeed;
 
             // 現在のXZ速度と目標XZ速度の差分を計算
             // この差分が「必要な加速」となる
@@ -92,14 +101,13 @@ namespace MyAssets
                 // シンプルな加算方式（Gravityの影響は残る）
                 currentVelocity.y = stepUpVelocity;
             }
-
             mRigidbody.linearVelocity = currentVelocity;
         }
 
         public void PushObjectMove(float speed)
         {
             //プレイヤーの移動
-            Vector3 direction = transform.forward * mCurrentVelocity.magnitude;
+            Vector3 direction = transform.forward * mCurrentInputVelocity.magnitude;
 
             Vector3 currentVelocity = mRigidbody.linearVelocity;
 
@@ -128,12 +136,10 @@ namespace MyAssets
             {
                 return 0f;
             }
-
             // 1. 目標Y座標と現在のY座標の差分（目標までの残りの距離）
             float targetY = targetPosition.y;
             float currentY = transform.position.y;
             float heightDifference = targetY - currentY;
-
             // 2. 減衰処理を使った速度計算
             // 残りの距離（heightDifference）に滑らかさの係数（stepSmooth）を乗算することで、
             // 目標に近づくにつれて速度が落ちる（Lerpのような効果）垂直速度を算出します。
@@ -141,6 +147,27 @@ namespace MyAssets
             float requiredVelocityY = heightDifference * stepSmooth;
 
             return requiredVelocityY;
+        }
+
+        // 登りの動きを処理する関数
+        public void Climb()
+        {
+            if (!mMovementCompensator.IsClimbJumping) { return; }
+            //  よじ登りの時間は指定時間で行う
+            //仮
+            float f = mClimbJumpingTimer.GetNormalize();
+            //  左右は後半にかけて早く移動する
+            float x = Mathf.Lerp(mMovementCompensator.StepStartPosition.x, mMovementCompensator.StepGoalPosition.x, Ease(f));
+            float z = Mathf.Lerp(mMovementCompensator.StepStartPosition.z, mMovementCompensator.StepGoalPosition.z, Ease(f));
+            //  上下は等速直線で移動
+            float y = Mathf.Lerp(mMovementCompensator.StepStartPosition.y, mMovementCompensator.StepGoalPosition.y, f);
+            //  座標を更新
+            mRigidbody.MovePosition(new Vector3(x, y, z));
+        }
+        //  イージング関数
+        private float Ease(float x)
+        {
+            return x * x * x;
         }
     }
 }

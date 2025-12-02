@@ -10,64 +10,106 @@ namespace MyAssets
         //何度でも使えるアクション
         public event Action OnEnd;
         //現在のカウント
-        private float current = 0;
+        private float mCurrent = 0;
+        public float Current => mCurrent;
+        //カウント時の最大値
+        private float mMax = 0;
+        public float Max => mMax;
 
-        public float Current => current;
-        //カウント方式のフラグ
-        private bool up = false;
-        //カウント方式の設定
-        public void SetCountUp(bool u)
-        {
-            up = u;
-        }
         //カウントのスタート
         public void Start(float time)
         {
-            current = time;
-        }
-
-        public void Start_NoReStart(float time)
-        {
-            if (current > 0) { return; }
-            current = time;
+            mCurrent = time;
+            mMax = time;
         }
         //カウントの更新
         public void Update(float time)
         {
-            if (up)
+            if (mCurrent <= 0) { return; }
+            mCurrent -= time;
+            if (mCurrent <= 0)
             {
-                current += time;
-            }
-            else
-            {
-                if (current <= 0) { return; }
-                current -= time;
-                if (current <= 0)
-                {
-                    current = 0;
-                    End();
-                }
+                mCurrent = 0;
+                End();
             }
         }
         //カウントの終了
         public void End()
         {
-            current = 0;
+            mCurrent = 0;
             OnEnd?.Invoke();
             OnceEnd?.Invoke();
             OnceEnd = null;
         }
         //カウントが終わっているか
-        public bool IsEnd() { return current <= 0; }
+        public bool IsEnd() { return mCurrent <= 0; }
         //カウントを分に変換
         public int GetMinutes()
         {
-            return (int)current / 60;
+            return (int)mCurrent / 60;
         }
         //カウントを秒に変換
         public int GetSecond()
         {
-            return (int)current % 60;
+            return (int)mCurrent % 60;
+        }
+    }
+
+    [System.Serializable]
+    public class UpTimer
+    {
+        //一度きりのアクション
+        public event Action OnceEnd;
+        //何度でも使えるアクション
+        public event Action OnEnd;
+        //現在のカウント
+        private float mCurrent = 0;
+        public float Current => mCurrent;
+        //カウント時の最大値
+        private float mMax = 0;
+        public float Max => mMax;
+
+        public void Start(float time)
+        {
+            mCurrent = 0;
+            mMax = time;
+        }
+        public float GetNormalize()
+        {
+            if (mMax == 0) { return 1.0f; }
+            return mCurrent / mMax;
+        }
+        //カウントの更新
+        public void Update(float time)
+        {
+            if(mCurrent >= mMax) { return; }
+            mCurrent += time;
+            if (mCurrent >= mMax)
+            {
+                mCurrent = 0;
+                mMax = 0;
+                End();
+            }
+        }
+        //カウントの終了
+        public void End()
+        {
+            mCurrent = 0;
+            OnEnd?.Invoke();
+            OnceEnd?.Invoke();
+            OnceEnd = null;
+        }
+        //カウントが終わっているか
+        public bool IsEnd() { return mCurrent >= mMax; }
+        //カウントを分に変換
+        public int GetMinutes()
+        {
+            return (int)mCurrent / 60;
+        }
+        //カウントを秒に変換
+        public int GetSecond()
+        {
+            return (int)mCurrent % 60;
         }
     }
 }
