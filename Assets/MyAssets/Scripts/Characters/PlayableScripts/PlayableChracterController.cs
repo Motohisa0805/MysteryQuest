@@ -54,6 +54,8 @@ namespace MyAssets
         private PushingState mPushingState;
         [SerializeField]
         private PushEndState mPushEndState;
+        [SerializeField]
+        private ClimbJumpingState mClimbJumpingState;
 
         [SerializeField]
         private float mMaxSpeed; //最高速度
@@ -131,13 +133,14 @@ namespace MyAssets
                 mPushStartState,
                 mPushingState,
                 mPushEndState,
+                mClimbJumpingState,
             };
             stateMachine.Setup(states);
             foreach (var state in states)
             {
                 state.Setup(gameObject);
             }
-            stateMachine.ChangeState("Idle");
+            stateMachine.ChangeState(mCurrentStateKey);
 
 
             mRigidbody = GetComponent<Rigidbody>();
@@ -198,7 +201,7 @@ namespace MyAssets
                 if(mIsPastGrounded != mGrounded)
                 {
                     //地面から離れたときの処理
-                    mFallTimer.Start_NoReStart(mCount);
+                    mFallTimer.Start(mCount);
                 }
             }
 
@@ -210,7 +213,6 @@ namespace MyAssets
             float t = Time.fixedDeltaTime;
 
             stateMachine.FixedUpdate(t);
-            //RotateBody();
         }
 
         public void RotateBody()
@@ -239,9 +241,8 @@ namespace MyAssets
             {
                 inputVector.Normalize();
             }
-
             // カメラの回転を適用し、目標移動方向を計算
-            mMovement.CurrentVelocity = cameraRotation * inputVector;
+            mMovement.CurrentInputVelocity = cameraRotation * inputVector;
         }
 
         private void LateUpdate()

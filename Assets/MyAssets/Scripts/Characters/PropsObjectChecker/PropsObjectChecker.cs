@@ -166,7 +166,7 @@ namespace MyAssets
             forward.y = 0;
             forward.Normalize();
 
-            Vector3 targetMoveDirection = mController.Movement.CurrentVelocity;
+            Vector3 targetMoveDirection = mController.Movement.CurrentInputVelocity;
             targetMoveDirection.y = 0;
 
             float dotProduct = Vector3.Dot(forward, targetMoveDirection);
@@ -204,7 +204,7 @@ namespace MyAssets
                 if (obj.Size == ObjectSizeType.SizeType.Large)
                 {
                     //ƒvƒŒƒCƒ„[‚ÌŒü‚«‚Å‰Ÿ‚·‚©‰Ÿ‚³‚È‚¢‚©
-                    float dotProduct = Vector3.Dot(transform.forward, mController.Movement.CurrentVelocity);
+                    float dotProduct = Vector3.Dot(transform.forward, mController.Movement.CurrentInputVelocity);
                     if (dotProduct > 0.8f)
                     {
                         mLargeObject = obj;

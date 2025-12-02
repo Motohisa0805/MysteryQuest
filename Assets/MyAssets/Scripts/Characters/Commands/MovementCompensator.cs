@@ -23,27 +23,42 @@ namespace MyAssets
         private LayerMask mGroundMask;
 
         private Transform mThisTransform;
-
-        private Rigidbody mRigidbody;
-
+        private PlayableChracterController mController;
+        
+        [SerializeField]
         private Vector3 mStepGoalPosition;
         public Vector3 StepGoalPosition => mStepGoalPosition;
+        [SerializeField]
+        private Vector3 mStepStartPosition;
+        public Vector3 StepStartPosition => mStepStartPosition;
+
+        [SerializeField]
+        private bool mIsClimbJumping;
+        public bool IsClimbJumping => mIsClimbJumping;
+
+        public void SetIsClimbJumping(bool v)
+        {
+            mIsClimbJumping = v;
+        }
 
         public void Setup(Transform thisTransform)
         {
             mThisTransform = thisTransform;
-            mRigidbody = thisTransform.GetComponent<Rigidbody>();
+            mController = mThisTransform.GetComponent<PlayableChracterController>();
+            mIsClimbJumping = false;
         }
 
         public void ClearStepGoalPosition()
         {
             mStepGoalPosition = Vector3.zero;
+            mStepStartPosition = Vector3.zero;
         }
 
         public void HandleStepClimbin()
         {
             //初期化
             mStepGoalPosition = Vector3.zero;
+            mStepStartPosition = Vector3.zero;
 
             Vector3 forward = mThisTransform.forward;
             Vector3 position = mThisTransform.position;
@@ -56,11 +71,13 @@ namespace MyAssets
             //距離判定
             if (Physics.Raycast(lowerRay, out hitLower, mCheckDistance, mGroundMask))
             {
+                //ヒットオブジェクトがChemistryObjectか確認
+                ChemistryObject obj = hitLower.collider.GetComponent<ChemistryObject>();
                 //角度判定
                 //壁の法線と上方向の角度を計算
                 float angle = Vector3.Angle(hitLower.normal, Vector3.up);
                 //もし角度がスロープ制限以下なら、それは「歩ける坂」
-                if(angle < mMaxSlopeAngle)
+                if(angle < mMaxSlopeAngle || obj != null)
                 {
                     return;
                 }
@@ -85,6 +102,11 @@ namespace MyAssets
                         if (hitDown.point.y > position.y + mMinStepHeight)
                         {
                             mStepGoalPosition = hitDown.point;
+                            if(!mController.Grounded && mController.FallTimer.IsEnd())
+                            {
+                                mIsClimbJumping = true;
+                                mStepStartPosition = position;
+                            }
                         }
                     }
                     // デバッグ用描画（着地点確認）

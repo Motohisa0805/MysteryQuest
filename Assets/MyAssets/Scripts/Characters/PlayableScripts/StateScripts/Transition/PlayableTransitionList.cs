@@ -59,6 +59,22 @@ namespace MyAssets
         }
     }
 
+    public class IsIdleTransitionType5 : StateTransitionBase
+    {
+        readonly private Movement mMovement;
+        readonly private PlayableChracterController mController;
+        public IsIdleTransitionType5(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mMovement = actor.GetComponentInChildren<Movement>();
+            mController = actor.GetComponent<PlayableChracterController>();
+        }
+        public override bool IsTransition()
+        {
+            return mMovement.ClimbJumpingTimer.IsEnd() && mController.Grounded;
+        }
+    }
+
     public class IsMoveTransition : StateTransitionBase
     {
 
@@ -529,4 +545,22 @@ namespace MyAssets
             return mChecker.CheckPushReleaseCondition() || !mChecker.PushEnabled;
         }
     }
+
+    public class IsClimbJumpingTransition : StateTransitionBase
+    {
+        readonly private Movement mMovement;
+        readonly private PlayableChracterController mController;
+        public IsClimbJumpingTransition
+            (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mMovement = actor.GetComponent<Movement>();
+            mController = actor.GetComponent<PlayableChracterController>();
+        }
+        public override bool IsTransition()
+        {
+            return !mController.Grounded && mMovement.MovementCompensator.StepGoalPosition != Vector3.zero;
+        }
+    }
+
 }
