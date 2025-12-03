@@ -44,7 +44,7 @@ namespace MyAssets
         private void Update()
         {
             mClimbJumpingTimer.Update(Time.deltaTime);
-            if (IsMovementChanged() && !mMovementCompensator.IsClimbJumping)
+            if (IsMovementChanged() && mMovementCompensator.Difference == 0.0f)
             {
                 mMovementCompensator.HandleStepClimbin();
             }
@@ -91,10 +91,7 @@ namespace MyAssets
             // XZ成分だけを更新したcurrentVelocityを準備
             currentVelocity.x += accelerationForce.x;
             currentVelocity.z += accelerationForce.z;
-
             // Y軸の処理
-            // StepUpVelocityは、重力などの影響を打ち消して、目標Y座標に移動させるための速度です。
-            // 重力の影響を打ち消すため、既存のY軸速度から一旦重力加速度分を引くか、
             // 補正速度を直接現在のY軸速度に加算します。
             if (mMovementCompensator.StepGoalPosition != Vector3.zero)
             {
@@ -152,7 +149,7 @@ namespace MyAssets
         // 登りの動きを処理する関数
         public void Climb()
         {
-            if (!mMovementCompensator.IsClimbJumping) { return; }
+            if (!mMovementCompensator.IsClimbJumping&& !mMovementCompensator.IsClimb) { return; }
             //  よじ登りの時間は指定時間で行う
             //仮
             float f = mClimbJumpingTimer.GetNormalize();

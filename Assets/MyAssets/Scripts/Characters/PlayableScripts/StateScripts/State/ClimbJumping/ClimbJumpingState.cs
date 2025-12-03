@@ -16,7 +16,7 @@ namespace MyAssets
         private Animator mAnimator;
 
         [SerializeField]
-        private float mClimbJumpingTime = 0.5f;
+        private float mClimbJumpingTime;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -51,7 +51,7 @@ namespace MyAssets
         {
             base.Exit();
             mAnimator.SetInteger("climbState", -1);
-            mController.Movement.MovementCompensator.SetIsClimbJumping(false);
+            mController.Movement.MovementCompensator.ClearStepFunc(false);
         }
     }
 }
