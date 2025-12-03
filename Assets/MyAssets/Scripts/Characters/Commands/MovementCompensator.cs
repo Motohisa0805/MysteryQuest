@@ -1,15 +1,16 @@
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace MyAssets
 {
     [Serializable]
     public class MovementCompensator
     {
+        [Header("段差検知用変数")]
         [SerializeField]
         private float mStepSmooth;
         public float StepSmooth => mStepSmooth;
-        [Header("Step Settings")]
         [SerializeField,Tooltip("乗り越えられる最大の段差の高さ")]
         private float mMaxStepHeight;
         public float MaxStepHeight => mMaxStepHeight;
@@ -30,15 +31,34 @@ namespace MyAssets
         public Vector3 StepGoalPosition => mStepGoalPosition;
         [SerializeField]
         private Vector3 mStepStartPosition;
-        public Vector3 StepStartPosition => mStepStartPosition;
+        public Vector3 StepStartPosition { get { return mStepStartPosition; } set { mStepStartPosition = value; } }
+
+        [Header("段差乗り越え条件高さ('MaxStepHeight'とhitpointのYの差分の高さ)")]
+        [SerializeField]
+        private float mLowHeightThreshold;
+        [SerializeField]
+        private float mMiddleHeightThreshold;
+        [SerializeField]
+        private float mHighHeightThreshold;
 
         [SerializeField]
         private bool mIsClimbJumping;
         public bool IsClimbJumping => mIsClimbJumping;
+        [SerializeField]
+        private bool mIsClimb;
+        public bool IsClimb => mIsClimb;
 
-        public void SetIsClimbJumping(bool v)
+        [SerializeField]
+        private float mDifference;
+        public float Difference => mDifference;
+
+        public void ClearStepFunc(bool v)
         {
             mIsClimbJumping = v;
+            mIsClimb = v;
+            mStepGoalPosition = Vector3.zero;
+            mStepStartPosition = Vector3.zero;
+            mDifference = 0f;
         }
 
         public void Setup(Transform thisTransform)
@@ -48,17 +68,12 @@ namespace MyAssets
             mIsClimbJumping = false;
         }
 
-        public void ClearStepGoalPosition()
-        {
-            mStepGoalPosition = Vector3.zero;
-            mStepStartPosition = Vector3.zero;
-        }
-
         public void HandleStepClimbin()
         {
             //初期化
             mStepGoalPosition = Vector3.zero;
             mStepStartPosition = Vector3.zero;
+            mDifference = 0f;
 
             Vector3 forward = mThisTransform.forward;
             Vector3 position = mThisTransform.position;
@@ -69,7 +84,7 @@ namespace MyAssets
 
             RaycastHit hitLower;
             //距離判定
-            if (Physics.Raycast(lowerRay, out hitLower, mCheckDistance, mGroundMask))
+            if (Physics.SphereCast(lowerRayOrigin,0.2f, forward, out hitLower, mCheckDistance, mGroundMask))
             {
                 //ヒットオブジェクトがChemistryObjectか確認
                 ChemistryObject obj = hitLower.collider.GetComponent<ChemistryObject>();
@@ -91,7 +106,7 @@ namespace MyAssets
                 {
                     // 下方向レイキャスト（着地点探索）：段差の上に床はあるか？
                     // 「前方に進んだ位置」の「高い場所」から「真下」へレイを撃ちます
-                    Vector3 downRayOrigin = position + (forward * mCheckDistance) + (Vector3.up * mMaxStepHeight);
+                    Vector3 downRayOrigin = position + (forward * (mCheckDistance * 2f)) + (Vector3.up * mMaxStepHeight);
                     Ray downRay = new Ray(downRayOrigin, Vector3.down);
 
                     RaycastHit hitDown;
@@ -101,12 +116,9 @@ namespace MyAssets
                         //ヒットした位置が、現在の足元の高さより高いか確認（低いなら穴かもしれない）
                         if (hitDown.point.y > position.y + mMinStepHeight)
                         {
-                            mStepGoalPosition = hitDown.point;
-                            if(!mController.Grounded && mController.FallTimer.IsEnd())
-                            {
-                                mIsClimbJumping = true;
-                                mStepStartPosition = position;
-                            }
+                            //ヒットのY値とmaxStepHeightの差分で判定
+                            float maxStepRayPos = mThisTransform.position.y + mMaxStepHeight;
+                            mStepGoalPosition = LengthCheck(Mathf.Abs(maxStepRayPos - hitDown.point.y), hitDown);
                         }
                     }
                     // デバッグ用描画（着地点確認）
@@ -117,6 +129,28 @@ namespace MyAssets
             }
             // デバッグ用描画
             Debug.DrawRay(lowerRay.origin, lowerRay.direction * mCheckDistance, Color.blue);
+        }
+
+        private Vector3 LengthCheck(float length ,RaycastHit hitDown)
+        {
+            Vector3 point = hitDown.point;
+            if (length <= mLowHeightThreshold && mController.Grounded)
+            {
+                mDifference = length;
+                mIsClimb = true;
+                mStepStartPosition = mThisTransform.position;
+            }
+            else if(length <= mMiddleHeightThreshold)
+            {
+                mDifference = length;
+                mIsClimbJumping = true;
+                mStepStartPosition = mThisTransform.position;                
+            }
+            else if(length <= mHighHeightThreshold)
+            {
+
+            }
+            return point;
         }
     }
 }

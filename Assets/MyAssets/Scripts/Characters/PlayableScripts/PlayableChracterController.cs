@@ -56,6 +56,10 @@ namespace MyAssets
         private PushEndState mPushEndState;
         [SerializeField]
         private ClimbJumpingState mClimbJumpingState;
+        [SerializeField]
+        private ClimbJumpState mClimbJumpState;
+        [SerializeField]
+        private ClimbState mClimbState;
 
         [SerializeField]
         private float mMaxSpeed; //最高速度
@@ -134,6 +138,8 @@ namespace MyAssets
                 mPushingState,
                 mPushEndState,
                 mClimbJumpingState,
+                mClimbJumpState,
+                mClimbState,
             };
             stateMachine.Setup(states);
             foreach (var state in states)
