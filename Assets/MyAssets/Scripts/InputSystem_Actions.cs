@@ -1099,6 +1099,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CreateWood"",
+                    ""type"": ""Button"",
+                    ""id"": ""dfc57c33-25f7-4c38-b974-0bb977f37a98"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1132,6 +1141,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""CreateWoodBox"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""01db3aab-1864-4026-820f-2d5def2e43c4"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CreateWood"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1228,6 +1248,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_OnOff = m_Debug.FindAction("On/Off", throwIfNotFound: true);
         m_Debug_CreateWoodBox = m_Debug.FindAction("CreateWoodBox", throwIfNotFound: true);
+        m_Debug_CreateWood = m_Debug.FindAction("CreateWood", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1691,6 +1712,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private List<IDebugActions> m_DebugActionsCallbackInterfaces = new List<IDebugActions>();
     private readonly InputAction m_Debug_OnOff;
     private readonly InputAction m_Debug_CreateWoodBox;
+    private readonly InputAction m_Debug_CreateWood;
     /// <summary>
     /// Provides access to input actions defined in input action map "Debug".
     /// </summary>
@@ -1710,6 +1732,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Debug/CreateWoodBox".
         /// </summary>
         public InputAction @CreateWoodBox => m_Wrapper.m_Debug_CreateWoodBox;
+        /// <summary>
+        /// Provides access to the underlying input action "Debug/CreateWood".
+        /// </summary>
+        public InputAction @CreateWood => m_Wrapper.m_Debug_CreateWood;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1742,6 +1768,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @CreateWoodBox.started += instance.OnCreateWoodBox;
             @CreateWoodBox.performed += instance.OnCreateWoodBox;
             @CreateWoodBox.canceled += instance.OnCreateWoodBox;
+            @CreateWood.started += instance.OnCreateWood;
+            @CreateWood.performed += instance.OnCreateWood;
+            @CreateWood.canceled += instance.OnCreateWood;
         }
 
         /// <summary>
@@ -1759,6 +1788,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @CreateWoodBox.started -= instance.OnCreateWoodBox;
             @CreateWoodBox.performed -= instance.OnCreateWoodBox;
             @CreateWoodBox.canceled -= instance.OnCreateWoodBox;
+            @CreateWood.started -= instance.OnCreateWood;
+            @CreateWood.performed -= instance.OnCreateWood;
+            @CreateWood.canceled -= instance.OnCreateWood;
         }
 
         /// <summary>
@@ -2027,5 +2059,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCreateWoodBox(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "CreateWood" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCreateWood(InputAction.CallbackContext context);
     }
 }

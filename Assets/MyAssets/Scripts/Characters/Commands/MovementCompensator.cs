@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace MyAssets
 {
@@ -146,10 +145,12 @@ namespace MyAssets
                 mIsClimbJumping = true;
                 mStepStartPosition = mThisTransform.position;                
             }
+            /*
             else if(length <= mHighHeightThreshold)
             {
 
             }
+             */
             return point;
         }
     }

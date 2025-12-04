@@ -5,7 +5,7 @@ namespace MyAssets
     public class IsIdleTransition : StateTransitionBase
     {
 
-        readonly PlayableInput mInput;
+        readonly private PlayableInput mInput;
         public IsIdleTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -17,9 +17,8 @@ namespace MyAssets
 
     public class IsIdleTransitionType2 : StateTransitionBase
     {
-        //readonly IMoveInputProvider input;
 
-        readonly PlayableInput mInput;
+        readonly private PlayableInput mInput;
         public IsIdleTransitionType2(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -31,8 +30,7 @@ namespace MyAssets
 
     public class IsIdleTransitionType3 : StateTransitionBase
     {
-        //readonly IMoveInputProvider input;
-        readonly Animator mAnimator;
+        readonly private Animator mAnimator;
         public IsIdleTransitionType3(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -46,8 +44,7 @@ namespace MyAssets
 
     public class IsIdleTransitionType4 : StateTransitionBase
     {
-        //readonly IMoveInputProvider input;
-        readonly Animator mAnimator;
+        readonly private Animator mAnimator;
         public IsIdleTransitionType4(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -78,7 +75,7 @@ namespace MyAssets
     public class IsMoveTransition : StateTransitionBase
     {
 
-        readonly PlayableInput mInput;
+        readonly private PlayableInput mInput;
         public IsMoveTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -89,9 +86,9 @@ namespace MyAssets
     }
     public class IsMoveTransitionType2 : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PlayableChracterController mController;
-        readonly Animator mAnimator;
+        readonly private PlayableInput mInput;
+        readonly private PlayableChracterController mController;
+        readonly private Animator mAnimator;
         public IsMoveTransitionType2(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -106,7 +103,7 @@ namespace MyAssets
     public class IsSpritDushTransition : StateTransitionBase
     {
 
-        readonly PlayableInput mInput;
+        readonly private PlayableInput mInput;
         public IsSpritDushTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -119,7 +116,7 @@ namespace MyAssets
     public class IsNotSpritDushTransition : StateTransitionBase
     {
 
-        readonly PlayableInput mInput;
+        readonly private PlayableInput mInput;
         public IsNotSpritDushTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -131,9 +128,9 @@ namespace MyAssets
     public class IsJumpUpTransition : StateTransitionBase
     {
 
-        readonly PlayableInput mInput;
-        readonly PlayableChracterController mController;
-        readonly Animator mAnimator;
+        readonly private PlayableInput mInput;
+        readonly private PlayableChracterController mController;
+        readonly private Animator mAnimator;
         public IsJumpUpTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -149,8 +146,8 @@ namespace MyAssets
 
     public class IsJumpLoopTransition : StateTransitionBase
     {
-        readonly PlayableChracterController mController;
-        readonly Animator mAnimator;
+        readonly private PlayableChracterController mController;
+        readonly private Animator mAnimator;
         public IsJumpLoopTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -172,8 +169,8 @@ namespace MyAssets
 
     public class IsJumpDownTransition : StateTransitionBase
     {
-        readonly PlayableChracterController mController;
-        readonly Animator mAnimator;
+        readonly private PlayableChracterController mController;
+        readonly private Animator mAnimator;
         public IsJumpDownTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -189,8 +186,8 @@ namespace MyAssets
 
     public class IsJumpDownTransitionType2 : StateTransitionBase
     {
-        readonly PlayableChracterController mController;
-        readonly Animator mAnimator;
+        readonly private PlayableChracterController mController;
+        readonly private Animator mAnimator;
         public IsJumpDownTransitionType2(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -211,9 +208,9 @@ namespace MyAssets
 
     public class IsJumpDownTransitionType3 : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PlayableChracterController mController;
-        readonly Animator mAnimator;
+        readonly private PlayableInput mInput;
+        readonly private PlayableChracterController mController;
+        readonly private Animator mAnimator;
         public IsJumpDownTransitionType3(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -232,15 +229,13 @@ namespace MyAssets
 
     public class IsLandingToFallTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PlayableChracterController mController;
-        readonly Animator mAnimator;
+        readonly private PlayableInput mInput;
+        readonly private PlayableChracterController mController;
         public IsLandingToFallTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
             mController = actor.GetComponent<PlayableChracterController>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
         {
@@ -250,15 +245,11 @@ namespace MyAssets
 
     public class IsFallingToLandTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PlayableChracterController mController;
-        readonly Animator mAnimator;
+        readonly private PlayableChracterController mController;
         public IsFallingToLandTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
-            mInput = actor.GetComponent<PlayableInput>();
             mController = actor.GetComponent<PlayableChracterController>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
         {
@@ -272,15 +263,11 @@ namespace MyAssets
 
     public class IsStandingToCrouchTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PlayableChracterController mController;
-        readonly Animator mAnimator;
+        readonly private PlayableInput mInput;
         public IsStandingToCrouchTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mController = actor.GetComponent<PlayableChracterController>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
         {
@@ -290,14 +277,10 @@ namespace MyAssets
 
     public class IsCrouchIdleTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PlayableChracterController mController;
-        readonly Animator mAnimator;
+        readonly private Animator mAnimator;
         public IsCrouchIdleTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
-            mInput = actor.GetComponent<PlayableInput>();
-            mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
@@ -309,15 +292,11 @@ namespace MyAssets
 
     public class IsCrouch_IdleToWalkTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PlayableChracterController mController;
-        readonly Animator mAnimator;
+        readonly private PlayableInput mInput;
         public IsCrouch_IdleToWalkTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mController = actor.GetComponent<PlayableChracterController>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
         {
@@ -327,15 +306,11 @@ namespace MyAssets
 
     public class IsCrouch_WalkToIdleTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PlayableChracterController mController;
-        readonly Animator mAnimator;
+        readonly private PlayableInput mInput;
         public IsCrouch_WalkToIdleTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mController = actor.GetComponent<PlayableChracterController>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
         {
@@ -345,15 +320,11 @@ namespace MyAssets
 
     public class IsCrouchToStandingTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PlayableChracterController mController;
-        readonly Animator mAnimator;
+        readonly private PlayableInput mInput;
         public IsCrouchToStandingTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mController = actor.GetComponent<PlayableChracterController>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
         {
@@ -363,14 +334,10 @@ namespace MyAssets
 
     public class IsCrouchToStandingToIdleTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PlayableChracterController mController;
-        readonly Animator mAnimator;
+        readonly private Animator mAnimator;
         public IsCrouchToStandingToIdleTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
-            mInput = actor.GetComponent<PlayableInput>();
-            mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
@@ -382,8 +349,8 @@ namespace MyAssets
 
     public class IsIdleToToLiftTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PropsObjectChecker mChecker;
+        readonly private PlayableInput mInput;
+        readonly private PropsObjectChecker mChecker;
         public IsIdleToToLiftTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -398,14 +365,10 @@ namespace MyAssets
 
     public class IsToLiftToToLiftIdleTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PropsObjectChecker mChecker;
-        readonly Animator mAnimator;
+        readonly private Animator mAnimator;
         public IsToLiftToToLiftIdleTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
-            mInput = actor.GetComponent<PlayableInput>();
-            mChecker = actor.GetComponent<PropsObjectChecker>();
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
@@ -417,15 +380,11 @@ namespace MyAssets
 
     public class IsToLiftIdleToToLiftRunTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PropsObjectChecker mChecker;
-        readonly Animator mAnimator;
+        readonly private PlayableInput mInput;
         public IsToLiftIdleToToLiftRunTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mChecker = actor.GetComponent<PropsObjectChecker>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
         {
@@ -435,15 +394,11 @@ namespace MyAssets
 
     public class IsToLiftRunToToLiftIdleTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PropsObjectChecker mChecker;
-        readonly Animator mAnimator;
+        readonly private PlayableInput mInput;
         public IsToLiftRunToToLiftIdleTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mChecker = actor.GetComponent<PropsObjectChecker>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
         {
@@ -453,15 +408,13 @@ namespace MyAssets
     //TODO : 持ち上げを解除クラスは後々変更
     public class IsReleaseLiftTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PropsObjectChecker mChecker;
-        readonly Animator mAnimator;
+        readonly private PlayableInput mInput;
+        readonly private PropsObjectChecker mChecker;
         public IsReleaseLiftTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
         {
@@ -471,16 +424,12 @@ namespace MyAssets
 
     public class IsPushStartTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PropsObjectChecker mChecker;
-        readonly Animator mAnimator;
+        readonly private PropsObjectChecker mChecker;
         public IsPushStartTransition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
-            mInput = actor.GetComponent<PlayableInput>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
         {
@@ -490,15 +439,11 @@ namespace MyAssets
 
     public class IsPushingTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PropsObjectChecker mChecker;
-        readonly Animator mAnimator;
+        readonly private Animator mAnimator;
         public IsPushingTransition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
-            mInput = actor.GetComponent<PlayableInput>();
-            mChecker = actor.GetComponent<PropsObjectChecker>();
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
@@ -510,16 +455,14 @@ namespace MyAssets
 
     public class IsPushEndStartTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PropsObjectChecker mChecker;
-        readonly Animator mAnimator;
+        readonly private PlayableInput mInput;
+        readonly private PropsObjectChecker mChecker;
         public IsPushEndStartTransition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
         {
@@ -529,16 +472,12 @@ namespace MyAssets
 
     public class IsPushEndTransition : StateTransitionBase
     {
-        readonly PlayableInput mInput;
-        readonly PropsObjectChecker mChecker;
-        readonly Animator mAnimator;
+        readonly private PropsObjectChecker mChecker;
         public IsPushEndTransition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
-            mInput = actor.GetComponent<PlayableInput>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition()
         {
@@ -549,13 +488,11 @@ namespace MyAssets
     public class IsClimbJumpingTransition : StateTransitionBase
     {
         readonly private Movement mMovement;
-        readonly private PlayableChracterController mController;
         public IsClimbJumpingTransition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mMovement = actor.GetComponent<Movement>();
-            mController = actor.GetComponent<PlayableChracterController>();
         }
         public override bool IsTransition()
         {

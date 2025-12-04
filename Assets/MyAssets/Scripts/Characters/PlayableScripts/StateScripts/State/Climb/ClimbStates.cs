@@ -12,9 +12,9 @@ namespace MyAssets
 
         private PlayableChracterController mController;
 
-        private Rigidbody mRigidbody;
-
         private Animator mAnimator;
+
+        private Movement mMovement;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -27,8 +27,8 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
-            mRigidbody = actor.GetComponent<Rigidbody>();
             mAnimator = actor.GetComponentInChildren<Animator>();
+            mMovement = actor.GetComponent<Movement>();
         }
 
         public override void Enter()
@@ -37,13 +37,7 @@ namespace MyAssets
             mAnimator.SetInteger("jumpState", -1);
             mAnimator.SetInteger("climbState", 0);
 
-            float h = mController.Movement.MovementCompensator.StepGoalPosition.y - mController.Movement.MovementCompensator.StepStartPosition.y;
-
-            float g = Mathf.Abs(Physics.gravity.y) * 2.0f;
-            float requiredVelocityY = Mathf.Sqrt(2 * g * h);
-
-            // 必要な垂直速度を瞬間的に加える
-            mRigidbody.AddForce(Vector3.up * requiredVelocityY, ForceMode.VelocityChange);
+            mMovement.ClimbJump(mController.Movement.MovementCompensator.StepGoalPosition.y - mController.Movement.MovementCompensator.StepStartPosition.y);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -67,8 +61,6 @@ namespace MyAssets
 
         private PlayableChracterController mController;
 
-        private Rigidbody mRigidbody;
-
         private Animator mAnimator;
 
         [SerializeField]
@@ -85,7 +77,6 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
-            mRigidbody = actor.GetComponent<Rigidbody>();
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
 

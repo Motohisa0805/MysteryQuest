@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 namespace MyAssets
 {
@@ -165,6 +164,16 @@ namespace MyAssets
         private float Ease(float x)
         {
             return x * x * x;
+        }
+
+        //段差の高さ分ジャンプする処理
+        public void ClimbJump(float h)
+        {
+            float g = Mathf.Abs(Physics.gravity.y) * 2.0f;
+            float requiredVelocityY = Mathf.Sqrt(2 * g * h);
+
+            // 必要な垂直速度を瞬間的に加える
+            mRigidbody.AddForce(Vector3.up * requiredVelocityY, ForceMode.VelocityChange);
         }
     }
 }

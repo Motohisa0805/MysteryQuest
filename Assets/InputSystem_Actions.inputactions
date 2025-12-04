@@ -1013,6 +1013,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CreateWood",
+                    "type": "Button",
+                    "id": "dfc57c33-25f7-4c38-b974-0bb977f37a98",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1046,6 +1055,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "CreateWoodBox",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "01db3aab-1864-4026-820f-2d5def2e43c4",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CreateWood",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
