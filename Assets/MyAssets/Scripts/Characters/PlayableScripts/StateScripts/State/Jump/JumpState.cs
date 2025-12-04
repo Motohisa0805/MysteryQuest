@@ -13,8 +13,6 @@ namespace MyAssets
         [SerializeField, Tooltip("ジャンプ力")]
         private float mJumpPower;//ジャンプ力
 
-
-        [SerializeField, Tooltip("アニメーション")]
         private Animator mAnimator;//アニメーター
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
@@ -66,10 +64,9 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "Jumping";
         public override string Key => mStateKey;
+
         PlayableChracterController mController;
 
-
-        [SerializeField, Tooltip("アニメーション")]
         private Animator mAnimator;//アニメーター
 
         [SerializeField]
@@ -103,7 +100,6 @@ namespace MyAssets
 
         public override void Execute_FixedUpdate(float time)
         {
-            //mController.Movement.Gravity();
             mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);
@@ -123,8 +119,6 @@ namespace MyAssets
         public override string Key => mStateKey;
         PlayableChracterController mController;
 
-        private Rigidbody mRigidbody;//リジッドボディ
-
         private Animator mAnimator;//アニメーター
 
         [SerializeField]
@@ -143,7 +137,6 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
-            mRigidbody = actor.GetComponent<Rigidbody>();
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
 
@@ -160,7 +153,6 @@ namespace MyAssets
 
         public override void Execute_FixedUpdate(float time)
         {
-            //mController.Movement.Gravity();
             mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);

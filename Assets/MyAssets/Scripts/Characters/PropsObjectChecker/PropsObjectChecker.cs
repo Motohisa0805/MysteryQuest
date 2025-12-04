@@ -100,17 +100,6 @@ namespace MyAssets
             mSmallObject.transform.rotation = transform.rotation;
         }
 
-        private void Update()
-        {
-            /*
-            if(mLargeObject)
-            {
-                CalculateSnapTransform(mHitCollision, mLargeObject.transform,GetComponentInChildren<CapsuleCollider>().radius,out mTargetPos,out mTargetRot);
-                transform.rotation = mTargetRot;
-            }
-             */
-        }
-
         public void CalculateSnapTransform(Collision collision, Transform boxTransform, float playerRadius, out Vector3 targetPos, out Quaternion targetRot)
         {
             //Õ“Ëî•ñ‚Ìæ“¾
