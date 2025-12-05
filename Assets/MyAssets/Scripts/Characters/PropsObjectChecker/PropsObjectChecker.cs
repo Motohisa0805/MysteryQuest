@@ -19,8 +19,6 @@ namespace MyAssets
         private ObjectSizeType mLargeObject;
         public ObjectSizeType LargeObject => mLargeObject;
 
-        private Collision mHitCollision;
-
         private float mLargeObjectMass;
 
         public float LargeObjectMass => mLargeObjectMass;
@@ -100,17 +98,17 @@ namespace MyAssets
             mSmallObject.transform.rotation = transform.rotation;
         }
 
-        public void CalculateSnapTransform(Collision collision, Transform boxTransform, float playerRadius, out Vector3 targetPos, out Quaternion targetRot)
+        public void CalculateSnapTransform(Collision collision, Transform transform, float playerRadius, out Quaternion targetRot)
         {
             //衝突情報の取得
             ContactPoint contact = collision.GetContact(0);
-            Vector3 rawNormal = contact.normal;// 箱からプレイヤーに向かうベクトル
+            Vector3 rawNormal = contact.normal;// オブジェクトからプレイヤーに向かうベクトル
             // ---------------------------------------------------------
-            // A. 向きの計算（ボックスの軸にスナップさせる）
+            // A. 向きの計算（オブジェクトの軸にスナップさせる）
             // ---------------------------------------------------------
 
-            //法線を箱のローカル座標系に変換
-            Vector3 localNormal = boxTransform.InverseTransformDirection(rawNormal);
+            //法線をオブジェクトのローカル座標系に変換
+            Vector3 localNormal = transform.InverseTransformDirection(rawNormal);
 
             // 最大の成分を見つけて、それ以外を0にする（軸合わせ）
             Vector3 snappedLocalNormal = Vector3.zero;
@@ -127,10 +125,10 @@ namespace MyAssets
             //上下（Y軸）で押すことがない前提
 
             // ワールド座標に戻す
-            Vector3 snappedWorldNormal = boxTransform.TransformDirection(snappedLocalNormal);
+            Vector3 snappedWorldNormal = transform.TransformDirection(snappedLocalNormal);
 
             // プレイヤーが向くべき方向は、法線の逆（箱に向かう方向）
-            Vector3 lookDir = snappedWorldNormal;
+            Vector3 lookDir = -snappedWorldNormal;
 
             //Y軸成分を消して水平にする
             lookDir.y = 0;
@@ -138,15 +136,7 @@ namespace MyAssets
 
             //目標の回転
             targetRot = Quaternion.LookRotation(lookDir);
-
-            // ---------------------------------------------------------
-            // B. 位置の計算（表面に吸着させる）
-            // ---------------------------------------------------------
-
-            // 衝突点から、法線方向（手前）に「プレイヤー半径」分だけ戻した位置
-            // これにより、コライダーの表面同士がぴったり接触する位置になる
-            targetPos = contact.point + (snappedWorldNormal * playerRadius);
-            targetPos.y = transform.position.y;
+            base.transform.rotation = targetRot;
         }
 
         public bool CheckPushReleaseCondition(float releaseThreshold = -0.5f)
@@ -167,6 +157,95 @@ namespace MyAssets
             return false;
         }
 
+        //================================
+        //Largeオブジェクトの接触判定3関数
+        //================================
+        private void LargeObjectHitEnter(Collision collision)
+        {
+            if(IsVerticalCollision(collision.GetContact(0)))
+            {
+                return;
+            }
+            ObjectSizeType obj = null;
+            obj = collision.collider.GetComponent<ObjectSizeType>();
+            if (obj != null)
+            {
+                if (obj.Size == ObjectSizeType.SizeType.Large)
+                {
+                    //プレイヤーの向きで押すか押さないか
+                    float dotProduct = Vector3.Dot(transform.forward, mController.Movement.CurrentInputVelocity);
+                    if (dotProduct > 0.8f)
+                    {
+                        mLargeObject = obj;
+                        CalculateSnapTransform(collision, mLargeObject.transform, GetComponentInChildren<CapsuleCollider>().radius, out mTargetRot);
+                        mPushEnabled = true;
+
+                        if (mLargeObject.GetComponent<Rigidbody>() != null)
+                        {
+                            mLargeObjectMass = mLargeObject.GetComponent<Rigidbody>().mass;
+                        }
+                    }
+                    else
+                    {
+                        mPushEnabled = false;
+                    }
+                }
+            }
+        }
+        private void LargeObjectHitStay(Collision collision)
+        {
+            if(mPushEnabled)
+            {
+                ObjectSizeType obj = null;
+                obj = collision.collider.GetComponent<ObjectSizeType>();
+                if (obj != null)
+                {
+                    if (obj == mLargeObject)
+                    {
+                        CalculateSnapTransform(collision, mLargeObject.transform, GetComponentInChildren<CapsuleCollider>().radius, out mTargetRot);
+                    }
+                }
+            }
+        }
+        private void LargeObjectHitExit(Collision collision)
+        {
+            if (mPushEnabled)
+            {
+                ObjectSizeType obj = null;
+                obj = collision.collider.GetComponent<ObjectSizeType>();
+                if (obj != null)
+                {
+                    if (obj == mLargeObject)
+                    {
+                        mLargeObject = null;
+                        mPushEnabled = false;
+                    }
+                }                
+            }
+        }
+
+        private bool IsVerticalCollision(ContactPoint contact)
+        {
+            Vector3 normal = contact.normal;
+            // 法線ベクトルのY成分が大きい場合、垂直衝突とみなす
+            return Mathf.Abs(normal.y) > 0.4f;
+        }
+
+        // Largeオブジェクトに接触したとき
+        private void OnCollisionEnter(Collision collision)
+        {
+            LargeObjectHitEnter(collision);
+        }
+        private void OnCollisionStay(Collision collision)
+        {
+            LargeObjectHitStay(collision);
+        }
+        private void OnCollisionExit(Collision collision)
+        {
+            LargeObjectHitExit(collision);
+        }
+
+
         private void OnTriggerEnter(Collider other)
         {
             ObjectSizeType obj = null;
@@ -184,35 +263,6 @@ namespace MyAssets
 
         }
 
-        private void OnCollisionEnter(Collision collision)
-        {
-            ObjectSizeType obj = null;
-            obj = collision.collider.GetComponent<ObjectSizeType>();
-            if (obj != null)
-            {
-                if (obj.Size == ObjectSizeType.SizeType.Large)
-                {
-                    //プレイヤーの向きで押すか押さないか
-                    float dotProduct = Vector3.Dot(transform.forward, mController.Movement.CurrentInputVelocity);
-                    if (dotProduct > 0.8f)
-                    {
-                        mLargeObject = obj;
-                        mHitCollision = collision;
-                        mPushEnabled = true;
-
-                        if (mLargeObject.GetComponent<Rigidbody>() != null)
-                        {
-                            mLargeObjectMass = mLargeObject.GetComponent<Rigidbody>().mass;
-                        }
-                    }
-                    else
-                    {
-                        mPushEnabled = false;
-                    }
-                }
-            }
-        }
-
         private void OnTriggerExit(Collider other)
         {
             ObjectSizeType obj = null;
@@ -225,20 +275,6 @@ namespace MyAssets
                     {
                         mSmallObject = null;
                     }
-                }
-            }
-        }
-        private void OnCollisionExit(Collision collision)
-        {
-            ObjectSizeType obj = null;
-            obj = collision.collider.GetComponent<ObjectSizeType>();
-            if (obj != null)
-            {
-                if (obj.Size == ObjectSizeType.SizeType.Large)
-                {
-                    mLargeObject = null;
-                    mHitCollision = null;
-                    mPushEnabled = false;
                 }
             }
         }

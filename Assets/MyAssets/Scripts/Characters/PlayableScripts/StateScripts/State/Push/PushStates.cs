@@ -43,13 +43,6 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            // ターゲットへの方向ベクトルを計算する
-            Vector3 dir = mPropsChecker.LargeObject.transform.position - mController.gameObject.transform.position;
-            dir.y = 0; // キャラクターのY軸回転のみを制御したい場合
-            // 1. `Quaternion.LookRotation` を使って、その方向を向くための新しい回転を生成する
-            Quaternion targetRotation = Quaternion.LookRotation(dir);
-            // 2. 生成した回転を transform.rotation に代入して適用する
-            mController.gameObject.transform.rotation = targetRotation;
 
             mAnimator.SetInteger("pushState", 0);
         }
@@ -128,7 +121,6 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            //mPropsChecker.UpdatePushObjectCheck();
         }
 
         public override void Execute_FixedUpdate(float time)

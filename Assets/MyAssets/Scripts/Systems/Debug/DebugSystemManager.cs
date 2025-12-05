@@ -63,15 +63,15 @@ namespace MyAssets
             {
                 Transform obj = Instantiate(mWoodBox,mWoodBoxCreateTransform);
                 obj.localPosition = Vector3.zero;
-                obj.localRotation = Quaternion.identity;
-                obj.localScale = Vector3.one;
+                //obj.localRotation = Quaternion.identity;
+                //obj.localScale = Vector3.one;
             }
             if (InputManager.GetKeyDown(KeyCode.Num2))
             {
                 Transform obj = Instantiate(mWood, mWoodCreateTransform);
                 obj.localPosition = Vector3.zero;
-                obj.localRotation = Quaternion.identity;
-                obj.localScale = Vector3.one;
+                //obj.localRotation = Quaternion.identity;
+                //obj.localScale = Vector3.one;
             }
         }
     }
