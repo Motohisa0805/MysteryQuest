@@ -466,7 +466,7 @@ namespace MyAssets
         }
         public override bool IsTransition()
         {
-            return (mChecker.LargeObject != null && !mChecker.PushEnabled)|| mInput.InputMove.magnitude <= 0.0f && !mChecker.PushEnabled;
+            return (mChecker.LargeObject != null && !mChecker.PushEnabled)|| mInput.InputMove.magnitude <= 0.0f;
         }
     }
 
