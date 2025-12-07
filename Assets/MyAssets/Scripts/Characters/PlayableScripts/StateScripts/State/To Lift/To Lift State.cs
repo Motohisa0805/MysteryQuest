@@ -88,6 +88,7 @@ namespace MyAssets
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(ToLiftRunState.mStateKey)) { re.Add(new IsToLiftIdleToToLiftRunTransition(actor, StateChanger, ToLiftRunState.mStateKey)); }
             if (StateChanger.IsContain(ReleaseLiftState.mStateKey)) { re.Add(new IsReleaseLiftTransition(actor, StateChanger, ReleaseLiftState.mStateKey)); }
+            if (StateChanger.IsContain(ThrowStartState.mStateKey)) { re.Add(new IsThrowStartTransition(actor, StateChanger, ThrowStartState.mStateKey)); }
             return re;
         }
 
@@ -154,6 +155,7 @@ namespace MyAssets
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(ToLiftIdleState.mStateKey)) { re.Add(new IsToLiftRunToToLiftIdleTransition(actor, StateChanger, ToLiftIdleState.mStateKey)); }
             if (StateChanger.IsContain(ReleaseLiftState.mStateKey)) { re.Add(new IsReleaseLiftTransition(actor, StateChanger, ReleaseLiftState.mStateKey)); }
+            if (StateChanger.IsContain(ThrowStartState.mStateKey)) { re.Add(new IsThrowStartTransition(actor, StateChanger, ThrowStartState.mStateKey)); }
             return re;
         }
 
@@ -183,9 +185,6 @@ namespace MyAssets
 
         public override void Execute_FixedUpdate(float time)
         {
-            //mController.Movement.Gravity();
-            // Idle状態の特定の物理処理をここに追加できます
-            // 例: 重力の適用、衝突判定など
             mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);

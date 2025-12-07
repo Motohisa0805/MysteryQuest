@@ -24,6 +24,7 @@ namespace MyAssets
         ePrevious,
         eNext,
         eSprint,
+        eThrow,
         /*
         eUpSelect,
         eDownSelect,
@@ -64,6 +65,7 @@ namespace MyAssets
             mButtonActions.Add(mInputAction.Player.Previous);
             mButtonActions.Add(mInputAction.Player.Next);
             mButtonActions.Add(mInputAction.Player.Sprint);
+            mButtonActions.Add(mInputAction.Player.Throw);
             /*
             mButtonActions.Add(mInputAction.UI.UpSelect);
             mButtonActions.Add(mInputAction.UI.DownSelect);

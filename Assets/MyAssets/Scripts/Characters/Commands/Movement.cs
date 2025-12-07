@@ -2,27 +2,27 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    // 移動処理全般を担当するクラス
     public class Movement : MonoBehaviour
     {
         [SerializeField]
-        private float mGravityMultiply;
-        [SerializeField]
-        private float maxFallSpeed = 20f;
+        private float               mGravityMultiply;
 
-        private Rigidbody mRigidbody;
+        private float               maxFallSpeed = 20f;
+
+        private Rigidbody           mRigidbody;
 
         [SerializeField]
-        private Vector3 mCurrentInputVelocity;
-        public Vector3 CurrentInputVelocity {  get { return mCurrentInputVelocity; } set { mCurrentInputVelocity = value; } }
+        private Vector3             mCurrentInputVelocity;
+        public Vector3              CurrentInputVelocity {  get { return mCurrentInputVelocity; } set { mCurrentInputVelocity = value; } }
+
+        private UpTimer             mClimbJumpingTimer = new UpTimer();
+
+        public UpTimer              ClimbJumpingTimer => mClimbJumpingTimer;
 
         [SerializeField]
         private MovementCompensator mMovementCompensator;
-        public MovementCompensator MovementCompensator => mMovementCompensator;
-
-        private UpTimer mClimbJumpingTimer = new UpTimer();
-
-        public UpTimer ClimbJumpingTimer => mClimbJumpingTimer;
-
+        public MovementCompensator  MovementCompensator => mMovementCompensator;
         private void Awake()
         {
             mRigidbody = GetComponent<Rigidbody>();
@@ -40,10 +40,25 @@ namespace MyAssets
             return current.magnitude > 0;
         }
 
+        //TODO : 応急処置、本来はMovement独立で判断するべきなので
+        //オブジェクトがPropsObjectCheckerを持っていたら判定するようにしている
+        //持っていなかったら常にtrueを返す
+        private bool IsPropCheck()
+        {
+            PropsObjectChecker checker = GetComponent<PropsObjectChecker>();
+            if (!checker)
+            {
+                return true;
+            }
+            return checker.TakedObject == null;
+        }
+
         private void Update()
         {
+            //よじ登りの時間管理
             mClimbJumpingTimer.Update(Time.deltaTime);
-            if (IsMovementChanged() && mMovementCompensator.Difference == 0.0f)
+            // 一定の条件で段差チェック
+            if (IsMovementChanged() && mMovementCompensator.Difference == 0.0f && IsPropCheck())
             {
                 mMovementCompensator.HandleStepClimbin();
             }
@@ -57,7 +72,15 @@ namespace MyAssets
                 mRigidbody.linearVelocity = new Vector3(mRigidbody.linearVelocity.x, -maxFallSpeed, mRigidbody.linearVelocity.z); 
             }
         }
-
+        // 停止処理
+        public void Stop()
+        {
+            Vector3 currentVelocity = mRigidbody.linearVelocity;
+            currentVelocity.x = 0;
+            currentVelocity.z = 0;
+            mRigidbody.linearVelocity = currentVelocity;
+        }
+        // 移動処理
         public void Move(float maxSpeed,float accele)
         {
             // 現在の速度を代入 (velocityに修正)

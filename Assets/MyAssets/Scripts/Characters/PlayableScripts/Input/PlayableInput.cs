@@ -26,6 +26,9 @@ namespace MyAssets
 
         public bool     InputCrouch => mInputCrouch;
 
+        private bool    mInputThrow;
+        public bool     InputThrow => mInputThrow;
+
         private void Start()
         {
             mInputMove = Vector2.zero;
@@ -46,6 +49,8 @@ namespace MyAssets
             mInputJump = InputManager.GetKeyDown(KeyCode.eJump);
 
             mInputCrouch = InputManager.GetKeyDown(KeyCode.eCrouch);
+
+            mInputThrow = InputManager.GetKey(KeyCode.eThrow);
         }
     }
 }

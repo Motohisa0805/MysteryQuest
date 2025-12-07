@@ -1,0 +1,27 @@
+using UnityEngine;
+
+namespace MyAssets
+{
+    // プレイヤーUIマネージャークラス
+    // プレイヤーUI全体の管理を行うシングルトンクラス
+    public class PlayerUIManager : MonoBehaviour
+    {
+        private static PlayerUIManager    instance;
+        public static PlayerUIManager     Instance => instance;
+
+        [SerializeField]
+        private Transform mThrowCircle;
+        public Transform   ThrowCircle => mThrowCircle;
+
+        private void Awake()
+        {
+            if (instance != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+}
