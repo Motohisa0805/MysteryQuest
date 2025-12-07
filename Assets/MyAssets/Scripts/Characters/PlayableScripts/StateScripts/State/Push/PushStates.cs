@@ -190,7 +190,6 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            //mPropsChecker.UpdatePushObjectCheck();
         }
 
         public override void Execute_FixedUpdate(float time)

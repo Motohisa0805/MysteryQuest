@@ -14,6 +14,8 @@ namespace MyAssets
         
         private bool mHasTakedObject;
 
+        Vector3 mThrowDirction;
+
 
         [SerializeField]
         private ObjectSizeType mLargeObject;
@@ -69,7 +71,10 @@ namespace MyAssets
 
             mHandTransforms = transform.GetComponentsInChildren<HandTransform>();
         }
-
+        //================================
+        //オブジェクト取得関連の関数
+        //================================
+        //オブジェクトと手の距離をチェック
         public void CheckTheDistanceHandsAndObject()
         {
             if (mSmallObject == null||mHasTakedObject) return;
@@ -90,14 +95,102 @@ namespace MyAssets
                 }
             }
         }
-
+        //オブジェクトの位置を手の位置に更新
         public void UpdateTakedObjectPosition()
         {
             if(!mHasTakedObject) return;
             mSmallObject.transform.position = Vector3.Lerp(mSmallObject.transform.position, GetObjectsYouHavePoint(), 1.0f);
             mSmallObject.transform.rotation = transform.rotation;
         }
+        //小オブジェクトを投げる方向を更新
+        public void UpdateTakedObjectThrowDirection()
+        {
+            if (!mHasTakedObject) return;
+            mThrowDirction = transform.forward + Vector3.up * 0.2f;
+            /*
+            //UIを落下予測地点に移動
+            Rigidbody rigidbody = mSmallObject.GetComponent<Rigidbody>();
+            if (rigidbody != null)
+            {
+                float force = 20.0f;
+                float impulse = Vector3.Dot(mThrowDirction, (Vector3.one * force));
+                float initVelocity = impulse / rigidbody.mass;
 
+                float h = mSmallObject.transform.position.y;
+                float velocityY = initVelocity * h;
+
+                
+            }
+             */
+        }
+        //オブジェクトを投げる処理
+        public void UpdateTakedObjectThrowDirection(float throwForce)
+        {
+            //オブジェクトがあるかどうか
+            if (!mHasTakedObject) return;
+            Rigidbody rigidbody = mSmallObject.GetComponent<Rigidbody>();
+            if (rigidbody != null)
+            {
+                rigidbody.AddForce(mThrowDirction * throwForce, ForceMode.VelocityChange);
+            }
+            mHasTakedObject = false;
+            /*
+            Collider collider = mSmallObject.GetComponent<Collider>();
+            if (collider != null)
+            {
+                collider.isTrigger = false;
+            }
+            rigidbody.useGravity = true;
+            mSmallObject = null;
+             */
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            ObjectSizeType obj = null;
+            obj = other.GetComponent<ObjectSizeType>();
+            if (obj != null)
+            {
+                if (!mHasTakedObject)
+                {
+                    if (obj.Size == ObjectSizeType.SizeType.Small)
+                    {
+                        mSmallObject = obj;
+                    }
+                }
+            }
+
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            ObjectSizeType obj = null;
+            obj = other.GetComponent<ObjectSizeType>();
+            if (obj != null)
+            {
+                if (!mHasTakedObject)
+                {
+                    if (obj.Size == ObjectSizeType.SizeType.Small)
+                    {
+                        Rigidbody rigidbody = obj.GetComponent<Rigidbody>();
+                        if (rigidbody != null)
+                        {
+                            rigidbody.useGravity = true;
+                        }
+                        Collider collider = obj.GetComponent<Collider>();
+                        if (collider != null)
+                        {
+                            collider.isTrigger = false;
+                        }
+                        mSmallObject = null;
+                    }
+                }
+            }
+        }
+
+        //================================
+        //Largeオブジェクトの接触判定3関数
+        //================================
         public void CalculateSnapTransform(Collision collision, Transform transform, float playerRadius, out Quaternion targetRot)
         {
             //衝突情報の取得
@@ -138,7 +231,6 @@ namespace MyAssets
             targetRot = Quaternion.LookRotation(lookDir);
             base.transform.rotation = targetRot;
         }
-
         public bool CheckPushReleaseCondition(float releaseThreshold = -0.5f)
         {
             Vector3 forward = transform.forward;
@@ -156,10 +248,6 @@ namespace MyAssets
             }
             return false;
         }
-
-        //================================
-        //Largeオブジェクトの接触判定3関数
-        //================================
         private void LargeObjectHitEnter(Collision collision)
         {
             if(IsVerticalCollision(collision.GetContact(0)))
@@ -246,37 +334,5 @@ namespace MyAssets
         }
 
 
-        private void OnTriggerEnter(Collider other)
-        {
-            ObjectSizeType obj = null;
-            obj = other.GetComponent<ObjectSizeType>();
-            if (obj != null)
-            {
-                if (!mHasTakedObject)
-                {
-                    if (obj.Size == ObjectSizeType.SizeType.Small)
-                    {
-                        mSmallObject = obj;
-                    }
-                }
-            }
-
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            ObjectSizeType obj = null;
-            obj = other.GetComponent<ObjectSizeType>();
-            if (obj != null)
-            {
-                if (!mHasTakedObject)
-                {
-                    if (obj.Size == ObjectSizeType.SizeType.Small)
-                    {
-                        mSmallObject = null;
-                    }
-                }
-            }
-        }
     }
 }

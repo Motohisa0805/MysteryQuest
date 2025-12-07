@@ -49,6 +49,12 @@ namespace MyAssets
         [SerializeField]
         private ReleaseLiftState mReleaseLiftState;
         [SerializeField]
+        private ThrowStartState mThrowStartState;
+        [SerializeField]
+        private ThrowIdleState mThrowIdleState;
+        [SerializeField]
+        private ThrowingState mThrowingState;
+        [SerializeField]
         private PushStartState mPushStartState;
         [SerializeField]
         private PushingState mPushingState;
@@ -134,6 +140,9 @@ namespace MyAssets
                 mToLiftIdleState,
                 mToLiftRunState,
                 mReleaseLiftState,
+                mThrowStartState,
+                mThrowIdleState,
+                mThrowingState,
                 mPushStartState,
                 mPushingState,
                 mPushEndState,
