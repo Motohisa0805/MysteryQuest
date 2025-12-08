@@ -19,6 +19,9 @@ namespace MyAssets
 
         private PropsObjectChecker mChecker;
 
+        [SerializeField]
+        private float mThrowPower;
+
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -39,17 +42,22 @@ namespace MyAssets
         {
             base.Enter();
             mAnimator.SetInteger("to Lift", 2);
+
+            TPSCamera.CameraType = TPSCamera.Type.ShoulderView;
+            PlayerUIManager.Instance.ThrowCircle.gameObject.SetActive(true);
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
+            mChecker.UpdateTakedObjectThrowDirection(mThrowPower);
             mChecker.UpdateTakedObjectPosition();
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             base.Execute_FixedUpdate(time);
+            mController.ShoulderViewRotate();
             mMovement.Stop();
         }
 
@@ -71,6 +79,9 @@ namespace MyAssets
         private Animator mAnimator;//アニメーター
 
         private Movement mMovement;
+
+        [SerializeField]
+        private float mThrowPower;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -96,7 +107,7 @@ namespace MyAssets
 
         public override void Execute_Update(float time)
         {
-            mChecker.UpdateTakedObjectThrowDirection();
+            mChecker.UpdateTakedObjectThrowDirection(mThrowPower);
             mChecker.UpdateTakedObjectPosition();
             base.Execute_Update(time);
         }
@@ -104,12 +115,14 @@ namespace MyAssets
         public override void Execute_FixedUpdate(float time)
         {
             base.Execute_FixedUpdate(time);
+            mController.ShoulderViewRotate();
             mMovement.Stop();
         }
 
         public override void Exit()
         {
             base.Exit();
+            PlayerUIManager.Instance.ThrowCircle.gameObject.SetActive(false);
         }
     }
     [Serializable]
@@ -162,7 +175,7 @@ namespace MyAssets
             bool flag = mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1.0f && mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.6f && mAnimator.GetCurrentAnimatorStateInfo(0).IsName("throwing");
             if (!mThrowed && flag)
             {
-                mChecker.UpdateTakedObjectThrowDirection(mThrowPower);
+                mChecker.Throw(mThrowPower);
                 mThrowed = true;
             }
         }
@@ -178,6 +191,7 @@ namespace MyAssets
             base.Exit();
             mAnimator.SetInteger("to Lift", -1);
             mThrowed = false;
+            TPSCamera.CameraType = TPSCamera.Type.Free;
         }
     }
 

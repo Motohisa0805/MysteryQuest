@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb6492be85ec0964f998475e1a41e9d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.PlayerUIManager
-  mThrowCircle: {fileID: 8394548784201626558, guid: d1b15aa023d009646b93bb301d92f325, type: 3}
+  mThrowCircle: {fileID: 8322263718051782933}
 --- !u!4 &141333944
 Transform:
   m_ObjectHideFlags: 0
@@ -677,16 +677,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b933a3baf003fe41a7fc3fe585dd016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.TPSCamera
+  mCurrentType: 0
   mTarget: {fileID: 0}
-  mOffset: {x: 0, y: 0, z: 0}
-  mDistance: 3
-  mSensitivity: 0.5
-  mMinAngle: -60
-  mMaxAngle: 60
-  mSmoothTime: 0
-  mLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
+  mFreeCameraSettings:
+    mOffset: {x: 0, y: 0, z: 0}
+    mDistance: 3
+    mSensitivity: 0.5
+    mMinAngle: -60
+    mMaxAngle: 60
+    mSmoothTime: 0
+    mLayerMask:
+      serializedVersion: 2
+      m_Bits: 0
+  mShoulderViewSettings:
+    mOffset: {x: 0, y: 0.5, z: 0}
+    mDistance: 2
+    mSensitivity: 0.5
+    mMinAngle: -60
+    mMaxAngle: 10
+    mSmoothTime: 0
+    mLayerMask:
+      serializedVersion: 2
+      m_Bits: 0
 --- !u!1 &354567716
 GameObject:
   m_ObjectHideFlags: 0
@@ -1706,7 +1718,6 @@ GameObject:
   - component: {fileID: 1030594536}
   - component: {fileID: 1030594535}
   - component: {fileID: 1030594534}
-  - component: {fileID: 1030594539}
   - component: {fileID: 1030594533}
   - component: {fileID: 1030594540}
   m_Layer: 3
@@ -1739,7 +1750,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030594532}
   serializedVersion: 5
-  m_Mass: 1000
+  m_Mass: 100
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1850,27 +1861,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1030594539
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1030594532}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1030594540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2683,7 +2673,7 @@ Transform:
   m_GameObject: {fileID: 1847297818}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8, z: 0}
+  m_LocalPosition: {x: 0, y: 0.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2709,7 +2699,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.3
-  m_Height: 1.6
+  m_Height: 1.3
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1847297821
@@ -3530,7 +3520,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.Movement
   mGravityMultiply: 2
-  maxFallSpeed: 20
   mCurrentInputVelocity: {x: 0, y: 0, z: 0}
   mMovementCompensator:
     mStepSmooth: 1.5
@@ -3588,6 +3577,8 @@ MonoBehaviour:
     mAcceleration: 100
   mStandingToCrouchState:
     mCrouchHeight: 0.9
+  mCrouchIdleState:
+    mAcceleration: 100
   mCrouchMoveState:
     mAcceleration: 100
   mToLiftIdleState:
@@ -3596,6 +3587,10 @@ MonoBehaviour:
     mAcceleration: 100
   mReleaseLiftState:
     mAcceleration: 100
+  mThrowStartState:
+    mThrowPower: 5
+  mThrowIdleState:
+    mThrowPower: 5
   mThrowingState:
     mThrowPower: 5
   mPushStartState:
@@ -3618,6 +3613,7 @@ MonoBehaviour:
   mDushMaxSpeed: 7.5
   mCrouchMaxSpeed: 3
   mRotationSpeed: 15
+  mShoulderViewRotationSpeed: 1000
   mGrounded: 0
   mCount: 0.2
   mRayLength: 0.25
@@ -3690,6 +3686,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.TakedObjectChecker
   mSmallObject: {fileID: 0}
+  mHasTakedObject: 0
   mLargeObject: {fileID: 0}
   mPushEnabled: 0
   mHandTransforms:

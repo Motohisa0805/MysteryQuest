@@ -66,6 +66,9 @@ namespace MyAssets
 
         private PlayableAnimationFunction mAnimationFunction;
 
+        [SerializeField]
+        private float mAcceleration; //加速度
+
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -98,11 +101,10 @@ namespace MyAssets
 
         public override void Execute_FixedUpdate(float time)
         {
-            //mController.Movement.Gravity();
-            // Idle状態の特定の物理処理をここに追加できます
-            // 例: 重力の適用、衝突判定など
-            mController.Movement.Move(mController.CrouchMaxSpeed,0);
+            mController.InputVelocity();
+            mController.Movement.Move(mController.CrouchMaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);
+            mController.FreeRotate();
         }
     }
 
@@ -161,7 +163,7 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.CrouchMaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);
-            mController.RotateBody();
+            mController.FreeRotate();
         }
 
     }

@@ -57,7 +57,7 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.DushMaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);
-            mController.RotateBody();
+            mController.FreeRotate();
         }
 
         public override void Exit()

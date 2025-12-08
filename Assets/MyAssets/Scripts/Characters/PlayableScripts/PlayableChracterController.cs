@@ -82,6 +82,8 @@ namespace MyAssets
         [SerializeField]
         private float mRotationSpeed; //回転速度
 
+        [SerializeField]
+        private float mShoulderViewRotationSpeed; //ショルダービュー時の回転速度
 
         private Rigidbody mRigidbody; //リジッドボディ
         public Rigidbody Rigidbody => mRigidbody;
@@ -228,7 +230,7 @@ namespace MyAssets
             stateMachine.FixedUpdate(t);
         }
 
-        public void RotateBody()
+        public void FreeRotate()
         {
             Vector3 v = mRigidbody.linearVelocity;
             v.y = 0;
@@ -239,6 +241,28 @@ namespace MyAssets
                 Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mRotationSpeed);
             }
+        }
+
+        public void ShoulderViewRotate()
+        {
+            // カメラのY軸回転を格納するQuaternionを作成する
+            // カメラのオイラー角からY軸回転だけを取り出す
+            float cameraYAngle = Camera.main.transform.eulerAngles.y;
+
+            // キャラクターの現在のX軸とZ軸の回転は維持しつつ、Y軸回転だけをカメラに合わせる
+            // Quaternion.Eulerで角度から回転（Quaternion）を作成する
+            Quaternion targetRotation = Quaternion.Euler(
+                transform.eulerAngles.x,    // X軸回転（ピッチ）は維持
+                cameraYAngle,               // Y軸回転（ヨー）をカメラに合わせる
+                transform.eulerAngles.z     // Z軸回転（ロール）は維持
+            );
+
+            // キャラクターの回転を目標の回転へスムーズに補間する
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                mShoulderViewRotationSpeed * Time.deltaTime
+            );
         }
 
         public void InputVelocity()
