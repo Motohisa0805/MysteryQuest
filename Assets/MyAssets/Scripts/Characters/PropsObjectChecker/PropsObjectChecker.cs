@@ -11,7 +11,7 @@ namespace MyAssets
         private ObjectSizeType mSmallObject;
 
         public ObjectSizeType TakedObject => mSmallObject;
-        
+        [SerializeField]
         private bool mHasTakedObject;
 
         Vector3 mThrowDirction;
@@ -103,89 +103,119 @@ namespace MyAssets
             mSmallObject.transform.rotation = transform.rotation;
         }
         //小オブジェクトを投げる方向を更新
-        public void UpdateTakedObjectThrowDirection()
+        public void UpdateTakedObjectThrowDirection(float throwForce)
         {
             if (!mHasTakedObject) return;
-            mThrowDirction = transform.forward + Vector3.up * 0.2f;
-            /*
+            mThrowDirction = Camera.main.transform.forward;
             //UIを落下予測地点に移動
             Rigidbody rigidbody = mSmallObject.GetComponent<Rigidbody>();
             if (rigidbody != null)
             {
-                float force = 20.0f;
-                float impulse = Vector3.Dot(mThrowDirction, (Vector3.one * force));
-                float initVelocity = impulse / rigidbody.mass;
+                // 投げる力の大きさを定義 (AddForceに与える値)
+                float forceMagnitude = throwForce;
+                float g = -Physics.gravity.y;
 
-                float h = mSmallObject.transform.position.y;
-                float velocityY = initVelocity * h;
+                // ステップ 1: 初速度ベクトルの決定
+                Vector3 initialVelocityVector = mThrowDirction * forceMagnitude;
 
-                
+                // ステップ 2: 必要な成分の抽出
+                float v0y = initialVelocityVector.y;//垂直成分
+                float v0x = new Vector3(initialVelocityVector.x, 0, initialVelocityVector.z).magnitude;//水平成分
+                float h = mSmallObject.transform.position.y;//投げる高さ
+
+                // ステップ 3: 地面到達時間 t_hit の計算
+                float discriminant = (v0y * v0y) + (2 * g * h);
+                float t_hit = (v0y + Mathf.Sqrt(discriminant)) / g;
+
+                // ステップ 4: 水平移動距離 x_dist の計算
+                float x_dist = v0x * t_hit;
+
+                // ステップ 5: 落下予測地点のワールド座標 P_hit の計算
+                Vector3 startPos = mSmallObject.transform.position;
+                //水平方向ベクトル (y成分を0にして正規化)
+                Vector3 directionXZ = new Vector3(mThrowDirction.x, 0, mThrowDirction.z).normalized;
+                Vector3 hitPosition = startPos + (directionXZ * x_dist);
+
+                hitPosition.y = transform.position.y;
+
+                PlayerUIManager.Instance.ThrowCircle.position = hitPosition;
             }
-             */
         }
         //オブジェクトを投げる処理
-        public void UpdateTakedObjectThrowDirection(float throwForce)
+        public void Throw(float throwForce)
         {
             //オブジェクトがあるかどうか
             if (!mHasTakedObject) return;
             Rigidbody rigidbody = mSmallObject.GetComponent<Rigidbody>();
+            rigidbody.linearVelocity = Vector3.zero;
             if (rigidbody != null)
             {
                 rigidbody.AddForce(mThrowDirction * throwForce, ForceMode.VelocityChange);
             }
             mHasTakedObject = false;
-            /*
+        }
+
+        private void Update()
+        {
+            SmallObjectSphereCastChecker();
+        }
+
+        //Smallオブジェクトの接触判定関数
+        public void SmallObjectSphereCastChecker()
+        {
+            Ray ray = new Ray(transform.position, transform.forward);
+            RaycastHit[] hits;
+            float sphereRadius = 0.5f;
+            hits = Physics.SphereCastAll(ray, sphereRadius, 1.0f);
+
+            if(hits.Length != 0)
+            {
+                ObjectSizeType obj = null;
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    obj = hits[i].collider.GetComponent<ObjectSizeType>();
+                    if (obj != null)
+                    {
+                        if (!mHasTakedObject)
+                        {
+                            if (obj.Size == ObjectSizeType.SizeType.Small)
+                            {
+                                mSmallObject = obj;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if(!obj&& mSmallObject && !mHasTakedObject)
+                {
+                    ClearSmallObject();
+                }
+            }
+            else
+            {
+                if (!mHasTakedObject)
+                {
+                    if(mSmallObject)
+                    {
+                        ClearSmallObject();
+                    }
+                }
+            }
+        }
+
+        private void ClearSmallObject()
+        {
+            Rigidbody rigidbody = mSmallObject.GetComponent<Rigidbody>();
+            if (rigidbody != null)
+            {
+                rigidbody.useGravity = true;
+            }
             Collider collider = mSmallObject.GetComponent<Collider>();
             if (collider != null)
             {
                 collider.isTrigger = false;
             }
-            rigidbody.useGravity = true;
             mSmallObject = null;
-             */
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            ObjectSizeType obj = null;
-            obj = other.GetComponent<ObjectSizeType>();
-            if (obj != null)
-            {
-                if (!mHasTakedObject)
-                {
-                    if (obj.Size == ObjectSizeType.SizeType.Small)
-                    {
-                        mSmallObject = obj;
-                    }
-                }
-            }
-
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            ObjectSizeType obj = null;
-            obj = other.GetComponent<ObjectSizeType>();
-            if (obj != null)
-            {
-                if (!mHasTakedObject)
-                {
-                    if (obj.Size == ObjectSizeType.SizeType.Small)
-                    {
-                        Rigidbody rigidbody = obj.GetComponent<Rigidbody>();
-                        if (rigidbody != null)
-                        {
-                            rigidbody.useGravity = true;
-                        }
-                        Collider collider = obj.GetComponent<Collider>();
-                        if (collider != null)
-                        {
-                            collider.isTrigger = false;
-                        }
-                        mSmallObject = null;
-                    }
-                }
-            }
         }
 
         //================================

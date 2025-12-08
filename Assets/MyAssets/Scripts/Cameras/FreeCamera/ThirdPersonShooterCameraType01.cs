@@ -2,29 +2,43 @@ using UnityEngine;
 
 namespace MyAssets
 {
+
+    //TPS専用のカメラクラス
     public class TPSCamera : MonoBehaviour
     {
+        public enum Type
+        {
+            Free,
+            ShoulderView
+        }
+        [SerializeField]
+        private static Type mType;
+        public static Type CameraType
+        {
+            get { return mType; }
+            set { mType = value; }
+        }
+
+        [SerializeField]
+        private Type mCurrentType;
+        //全カメラ共通の設定
         [SerializeField]
         private Transform mTarget; //注視対象
-        [SerializeField]
-        private Vector3 mOffset; //注視対象からのオフセット
-        [SerializeField]
-        private float mDistance; //注視対象からの距離
-        [SerializeField]
-        private float mSensitivity; //感度
-        [SerializeField]
-        private float mMinAngle; //最小仰角
-        [SerializeField]
-        private float mMaxAngle; //最大仰角
-        [SerializeField]
-        private float mSmoothTime; //カメラの追従を滑らかにする時間
-        [SerializeField]
-        private LayerMask mLayerMask; //カメラの当たり判定に使用するレイヤーマスク
         private float mYaw; //カメラの水平回転角
         private float mPitch; //カメラの垂直回転角
         private Vector3 mCurrentVelocity; //カメラの現在の速度
         private Vector3 mDesiredPosition; //カメラの目標位置
         private Vector3 mCurrentPosition; //カメラの現在位置
+        //==============================
+        //フリーカメラ設定
+        //==============================
+        [SerializeField]
+        private CameraSettingsTPS mFreeCameraSettings;
+        //==============================
+        //ショルダービュー設定
+        //==============================
+        [SerializeField]
+        private CameraSettingsTPS mShoulderViewSettings;
         private void Awake()
         {
             FreeCameraTargetPoint targetPoint = FindFirstObjectByType<FreeCameraTargetPoint>();
@@ -42,7 +56,7 @@ namespace MyAssets
             mPitch = angles.x;
         }
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void Start()
         {
             if (mTarget == null)
             {
@@ -54,44 +68,78 @@ namespace MyAssets
             Vector3 angles = transform.eulerAngles;
             mYaw = angles.y;
             mPitch = angles.x;
+
+            mType = mCurrentType;
         }
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (mTarget == null)
             {
                 return;
             }
-
+            if(mType == Type.Free)
+            {
+                // マウス入力を取得
+                Vector2 mouse = InputManager.GetKeyValue(KeyCode.eLook);
+                float mouseX = mouse.x;
+                float mouseY = mouse.y;
+                // カメラの回転角を更新
+                mYaw += mouseX * mFreeCameraSettings.Sensitivity;
+                mPitch -= mouseY * mFreeCameraSettings.Sensitivity;
+                mPitch = Mathf.Clamp(mPitch, mFreeCameraSettings.MinAngle, mFreeCameraSettings.MaxAngle);
+            }
+            else if(mType == Type.ShoulderView)
+            {
+                // マウス入力を取得
+                Vector2 mouse = InputManager.GetKeyValue(KeyCode.eLook);
+                float mouseX = mouse.x;
+                float mouseY = mouse.y;
+                // カメラの回転角を更新
+                mYaw += mouseX * mShoulderViewSettings.Sensitivity;
+                mPitch -= mouseY * mShoulderViewSettings.Sensitivity;
+                mPitch = Mathf.Clamp(mPitch, mShoulderViewSettings.MinAngle, mShoulderViewSettings.MaxAngle);
+            }
         }
 
         private void FixedUpdate()
         {
             if (mTarget == null) { return; }
 
-            // マウス入力を取得
-            Vector2 mouse = InputManager.GetKeyValue(KeyCode.eLook);
-            float mouseX = mouse.x;
-            float mouseY = mouse.y;
-            // カメラの回転角を更新
-            mYaw += mouseX * mSensitivity;
-            mPitch -= mouseY * mSensitivity;
-            mPitch = Mathf.Clamp(mPitch, mMinAngle, mMaxAngle);
-
-            // カメラの目標位置を計算
-            Quaternion rotation = Quaternion.Euler(mPitch, mYaw, 0);
-            Vector3 offset = rotation * new Vector3(0, 0, -mDistance) + mOffset;
-            mDesiredPosition = mTarget.position + offset;
-            // カメラの当たり判定
-            RaycastHit hit;
-            if (Physics.Linecast(mTarget.position + mOffset, mDesiredPosition, out hit, mLayerMask))
+            if (mType == Type.Free)
             {
-                mDesiredPosition = hit.point;
+                // カメラの目標位置を計算
+                Quaternion rotation = Quaternion.Euler(mPitch, mYaw, 0);
+                Vector3 offset = rotation * new Vector3(0, 0, -mFreeCameraSettings.Distance) + mFreeCameraSettings.Offset;
+                mDesiredPosition = mTarget.position + offset;
+                // カメラの当たり判定
+                RaycastHit hit;
+                if (Physics.Linecast(mTarget.position + mFreeCameraSettings.Offset, mDesiredPosition, out hit, mFreeCameraSettings.LayerMask))
+                {
+                    mDesiredPosition = hit.point;
+                }
+                // カメラの位置を滑らかに追従
+                mCurrentPosition = Vector3.SmoothDamp(mCurrentPosition, mDesiredPosition, ref mCurrentVelocity, mFreeCameraSettings.SmoothTime);
+                transform.position = mCurrentPosition;
+                transform.LookAt(mTarget.position + mFreeCameraSettings.Offset);
             }
-            // カメラの位置を滑らかに追従
-            mCurrentPosition = Vector3.SmoothDamp(mCurrentPosition, mDesiredPosition, ref mCurrentVelocity, mSmoothTime);
-            transform.position = mCurrentPosition;
-            transform.LookAt(mTarget.position + mOffset);
+            else if (mType == Type.ShoulderView)
+            {
+                // カメラの目標位置を計算
+                Quaternion rotation = Quaternion.Euler(mPitch, mYaw, 0);
+                Vector3 offset = rotation * new Vector3(0, 0, -mShoulderViewSettings.Distance) + mShoulderViewSettings.Offset;
+                mDesiredPosition = mTarget.position + offset;
+                // カメラの当たり判定
+                RaycastHit hit;
+                if (Physics.Linecast(mTarget.position + mShoulderViewSettings.Offset, mDesiredPosition, out hit, mShoulderViewSettings.LayerMask))
+                {
+                    mDesiredPosition = hit.point;
+                }
+                // カメラの位置を滑らかに追従
+                mCurrentPosition = Vector3.SmoothDamp(mCurrentPosition, mDesiredPosition, ref mCurrentVelocity, mShoulderViewSettings.SmoothTime);
+                transform.position = mCurrentPosition;
+                transform.LookAt(mTarget.position + mShoulderViewSettings.Offset);
+            }
         }
     }
 }

@@ -50,7 +50,7 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, 5);
             base.Execute_FixedUpdate(time);
-            mController.RotateBody();
+            mController.FreeRotate();
         }
 
         public override void Exit()
@@ -103,7 +103,7 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);
-            mController.RotateBody();
+            mController.FreeRotate();
         }
 
         public override void Exit()
@@ -156,7 +156,7 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.MaxSpeed, mAcceleration);
             base.Execute_FixedUpdate(time);
-            mController.RotateBody();
+            mController.FreeRotate();
         }
 
         public override void Exit()
