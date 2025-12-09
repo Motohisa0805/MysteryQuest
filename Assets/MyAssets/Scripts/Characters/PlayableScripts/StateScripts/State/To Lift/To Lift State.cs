@@ -57,7 +57,7 @@ namespace MyAssets
 
         public override void Execute_FixedUpdate(float time)
         {
-            mController.Movement.Move(mController.MaxSpeed, 0);
+            mController.Movement.Move(mController.StatusProperty.MaxSpeed, 0);
             base.Execute_FixedUpdate(time);
         }
 
@@ -79,9 +79,6 @@ namespace MyAssets
         PropsObjectChecker mChecker;
 
         Animator mAnimator;
-
-        [SerializeField]
-        private float mAcceleration; //加速度
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -125,7 +122,7 @@ namespace MyAssets
             // Idle状態の特定の物理処理をここに追加できます
             // 例: 重力の適用、衝突判定など
             mController.InputVelocity();
-            mController.Movement.Move(mController.MaxSpeed, mAcceleration);
+            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }
@@ -146,9 +143,6 @@ namespace MyAssets
         private PlayableAnimationFunction mAnimationFunction;
 
         PropsObjectChecker mChecker;
-
-        [SerializeField]
-        private float mAcceleration; //加速度
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -186,7 +180,7 @@ namespace MyAssets
         public override void Execute_FixedUpdate(float time)
         {
             mController.InputVelocity();
-            mController.Movement.Move(mController.MaxSpeed, mAcceleration);
+            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }
@@ -210,14 +204,12 @@ namespace MyAssets
 
         Animator mAnimator;
 
-        [SerializeField]
-        private float mAcceleration; //加速度
-
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsIdleTransition(actor, StateChanger, IdleState.mStateKey)); }
             if (StateChanger.IsContain(MoveState.mStateKey)) { re.Add(new IsMoveTransition(actor, StateChanger, MoveState.mStateKey)); }
+            if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
             return re;
         }
 
@@ -253,7 +245,7 @@ namespace MyAssets
             // Idle状態の特定の物理処理をここに追加できます
             // 例: 重力の適用、衝突判定など
             mController.InputVelocity();
-            mController.Movement.Move(mController.MaxSpeed, mAcceleration);
+            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }

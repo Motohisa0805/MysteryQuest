@@ -87,6 +87,7 @@ namespace MyAssets
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(ThrowingState.mStateKey)) { re.Add(new IsThrowingTransition(actor, StateChanger, ThrowingState.mStateKey)); }
+            if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
             return re;
         }
 
@@ -148,6 +149,7 @@ namespace MyAssets
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsThrowingToIdleTransition(actor, StateChanger, IdleState.mStateKey)); }
+            if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
             return re;
         }
 

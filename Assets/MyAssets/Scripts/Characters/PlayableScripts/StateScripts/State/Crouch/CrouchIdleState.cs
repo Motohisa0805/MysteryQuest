@@ -66,14 +66,12 @@ namespace MyAssets
 
         private PlayableAnimationFunction mAnimationFunction;
 
-        [SerializeField]
-        private float mAcceleration; //加速度
-
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(CrouchToStandingState.mStateKey)) { re.Add(new IsCrouchToStandingTransition(actor, StateChanger, CrouchToStandingState.mStateKey)); }
             if (StateChanger.IsContain(CrouchWalkState.mStateKey)) { re.Add(new IsCrouch_IdleToWalkTransition(actor, StateChanger, CrouchWalkState.mStateKey)); }
+            if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
             return re;
         }
 
@@ -102,7 +100,7 @@ namespace MyAssets
         public override void Execute_FixedUpdate(float time)
         {
             mController.InputVelocity();
-            mController.Movement.Move(mController.CrouchMaxSpeed, mAcceleration);
+            mController.Movement.Move(mController.StatusProperty.CrouchMaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }
@@ -122,14 +120,12 @@ namespace MyAssets
 
         private PlayableAnimationFunction mAnimationFunction;
 
-        [SerializeField]
-        private float mAcceleration; //加速度
-
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(CrouchIdleState.mStateKey)) { re.Add(new IsCrouch_WalkToIdleTransition(actor, StateChanger, CrouchIdleState.mStateKey)); }
             if (StateChanger.IsContain(CrouchToStandingState.mStateKey)) { re.Add(new IsCrouchToStandingTransition(actor, StateChanger, CrouchToStandingState.mStateKey)); }
+            if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
             return re;
         }
 
@@ -157,11 +153,8 @@ namespace MyAssets
 
         public override void Execute_FixedUpdate(float time)
         {
-            //mController.Movement.Gravity();
-            // Idle状態の特定の物理処理をここに追加できます
-            // 例: 重力の適用、衝突判定など
             mController.InputVelocity();
-            mController.Movement.Move(mController.CrouchMaxSpeed, mAcceleration);
+            mController.Movement.Move(mController.StatusProperty.CrouchMaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }
