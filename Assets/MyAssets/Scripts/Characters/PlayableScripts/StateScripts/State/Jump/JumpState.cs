@@ -10,9 +10,6 @@ namespace MyAssets
         public override string Key => mStateKey;
         PlayableChracterController mController;
 
-        [SerializeField, Tooltip("ジャンプ力")]
-        private float mJumpPower;//ジャンプ力
-
         private Animator mAnimator;//アニメーター
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
@@ -35,7 +32,16 @@ namespace MyAssets
         {
             base.Enter();
             mAnimator.SetInteger("jumpState", 0);
-            mController.Movement.Jump(mJumpPower);
+            Vector3 vel = mController.Rigidbody.linearVelocity;
+            vel.y = 0;
+            if (vel.magnitude > 0.0f)
+            {
+                mController.Movement.Jump(mController.StatusProperty.MoveJumpPower);
+            }
+            else
+            {
+                mController.Movement.Jump(mController.StatusProperty.IdleJumpPower);
+            }
         }
 
         public override void Execute_Update(float time)
@@ -48,7 +54,7 @@ namespace MyAssets
         {
             //mController.Movement.Gravity();
             mController.InputVelocity();
-            mController.Movement.Move(mController.MaxSpeed, 5);
+            mController.Movement.Move(mController.StatusProperty.MaxSpeed, 5);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }
@@ -68,9 +74,6 @@ namespace MyAssets
         PlayableChracterController mController;
 
         private Animator mAnimator;//アニメーター
-
-        [SerializeField]
-        private float mAcceleration; //加速度
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -101,7 +104,7 @@ namespace MyAssets
         public override void Execute_FixedUpdate(float time)
         {
             mController.InputVelocity();
-            mController.Movement.Move(mController.MaxSpeed, mAcceleration);
+            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }
@@ -120,9 +123,6 @@ namespace MyAssets
         PlayableChracterController mController;
 
         private Animator mAnimator;//アニメーター
-
-        [SerializeField]
-        private float mAcceleration; //加速度
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -154,7 +154,7 @@ namespace MyAssets
         public override void Execute_FixedUpdate(float time)
         {
             mController.InputVelocity();
-            mController.Movement.Move(mController.MaxSpeed, mAcceleration);
+            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }

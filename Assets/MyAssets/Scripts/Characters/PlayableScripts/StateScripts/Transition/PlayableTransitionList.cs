@@ -410,15 +410,17 @@ namespace MyAssets
     {
         readonly private PlayableInput mInput;
         readonly private PropsObjectChecker mChecker;
+        readonly private PlayableChracterController mController;
         public IsReleaseLiftTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
+            mController = actor.GetComponent<PlayableChracterController>();
         }
         public override bool IsTransition()
         {
-            return mChecker.TakedObject != null && mInput.Sprit;
+            return mChecker.TakedObject != null && mInput.Sprit || !mInput.InputJump && !mController.Grounded && mController.FallTimer.IsEnd(); ;
         }
     }
 

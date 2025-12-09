@@ -11,6 +11,8 @@ namespace MyAssets
 
         PlayableChracterController mController;
 
+        private CapsuleColliderController mColliderController;
+
         Animator mAnimator;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
@@ -24,6 +26,7 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
+            mColliderController = actor.GetComponentInChildren<CapsuleColliderController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
 
@@ -31,12 +34,17 @@ namespace MyAssets
         {
             base.Enter();
             mAnimator.SetInteger("jumpState", 1);
+            mAnimator.SetInteger("crouchState", -1);
+            mAnimator.SetInteger("to Lift", -1);
+            mAnimator.SetInteger("pushState", -1);
+            TPSCamera.CameraType = TPSCamera.Type.Free;
+            mColliderController.ResetCollider();
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             mController.InputVelocity();
-            mController.Movement.Move(mController.MaxSpeed, 5);
+            mController.Movement.Move(mController.StatusProperty.MaxSpeed, 5);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }

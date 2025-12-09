@@ -690,8 +690,8 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
   mShoulderViewSettings:
-    mOffset: {x: 0, y: 0.5, z: 0}
-    mDistance: 2
+    mOffset: {x: 0, y: 1, z: 0}
+    mDistance: 4
     mSensitivity: 0.5
     mMinAngle: -60
     mMaxAngle: 10
@@ -3563,30 +3563,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.PlayableChracterController
   mCurrentStateKey: Idle
-  mIdleState:
-    mAcceleration: 100
-  mMoveState:
-    mAcceleration: 100
-  mSpritDushState:
-    mAcceleration: 100
-  mJumpUpState:
-    mJumpPower: 8
-  mJumpState:
-    mAcceleration: 10
-  mJumpDownState:
-    mAcceleration: 100
   mStandingToCrouchState:
     mCrouchHeight: 0.9
-  mCrouchIdleState:
-    mAcceleration: 100
-  mCrouchMoveState:
-    mAcceleration: 100
-  mToLiftIdleState:
-    mAcceleration: 100
-  mToLiftRunState:
-    mAcceleration: 100
-  mReleaseLiftState:
-    mAcceleration: 100
   mThrowStartState:
     mThrowPower: 5
   mThrowIdleState:
@@ -3609,11 +3587,19 @@ MonoBehaviour:
     mClimbJumpingTime: 0.4
   mClimbState:
     mClimbJumpingTime: 0.2
-  mMaxSpeed: 5
-  mDushMaxSpeed: 7.5
-  mCrouchMaxSpeed: 3
-  mRotationSpeed: 15
-  mShoulderViewRotationSpeed: 1000
+  mStatusProperty:
+    mHP: 100
+    mMaxHP: 100
+    mStamina: 100
+    mMaxStamina: 100
+    mMaxSpeed: 5
+    mAcceleration: 100
+    mDushMaxSpeed: 7.5
+    mCrouchMaxSpeed: 3
+    mIdleJumpPower: 7
+    mMoveJumpPower: 10
+    mRotationSpeed: 15
+    mShoulderViewRotationSpeed: 1000
   mGrounded: 0
   mCount: 0.2
   mRayLength: 0.25
@@ -4374,7 +4360,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 133721669080466427, guid: 6f0a78361361a2346aa440b65b7b35ed, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 133721669080466427, guid: 6f0a78361361a2346aa440b65b7b35ed, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4386,7 +4372,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 133721669080466427, guid: 6f0a78361361a2346aa440b65b7b35ed, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 133721669080466427, guid: 6f0a78361361a2346aa440b65b7b35ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4398,7 +4384,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 133721669080466427, guid: 6f0a78361361a2346aa440b65b7b35ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 432991507952276837, guid: 6f0a78361361a2346aa440b65b7b35ed, type: 3}
       propertyPath: m_Name

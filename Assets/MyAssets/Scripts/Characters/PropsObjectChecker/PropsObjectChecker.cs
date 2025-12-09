@@ -115,32 +115,95 @@ namespace MyAssets
                 float forceMagnitude = throwForce;
                 float g = -Physics.gravity.y;
 
-                // ステップ 1: 初速度ベクトルの決定
+                //初速度ベクトルの決定
                 Vector3 initialVelocityVector = mThrowDirction * forceMagnitude;
 
-                // ステップ 2: 必要な成分の抽出
+                //必要な成分の抽出
                 float v0y = initialVelocityVector.y;//垂直成分
                 float v0x = new Vector3(initialVelocityVector.x, 0, initialVelocityVector.z).magnitude;//水平成分
                 float h = mSmallObject.transform.position.y;//投げる高さ
 
-                // ステップ 3: 地面到達時間 t_hit の計算
+                //地面到達時間 t_hit の計算
                 float discriminant = (v0y * v0y) + (2 * g * h);
                 float t_hit = (v0y + Mathf.Sqrt(discriminant)) / g;
 
-                // ステップ 4: 水平移動距離 x_dist の計算
+                //水平移動距離 x_dist の計算
                 float x_dist = v0x * t_hit;
 
-                // ステップ 5: 落下予測地点のワールド座標 P_hit の計算
+                //落下予測地点のワールド座標 P_hit の計算
                 Vector3 startPos = mSmallObject.transform.position;
                 //水平方向ベクトル (y成分を0にして正規化)
                 Vector3 directionXZ = new Vector3(mThrowDirction.x, 0, mThrowDirction.z).normalized;
                 Vector3 hitPosition = startPos + (directionXZ * x_dist);
 
-                hitPosition.y = transform.position.y;
+                // レイキャストによる衝突予測
+                //TODO : レイキャストの最適化（計算量削減）
+                //放物線に沿った複数の点を計算し、その間をレイキャストで結ぶ方法を使用
+                //パフォーマンス低下の可能性があるため、必要に応じて調整
 
-                PlayerUIManager.Instance.ThrowCircle.position = hitPosition;
+                // レイキャストのパラメータ設定
+                float timeStep = 0.05f; // 微小な時間刻み（例: 0.05秒）
+                Vector3 currentPos = startPos;
+                Vector3 hitPoint = Vector3.zero;
+                Vector3 hitNormal = Vector3.up;
+                bool didHit = false;
+
+                // T_HITまで計算すると計算量が多すぎるため、上限時間を設ける（例: 5秒）
+                float maxTime = 5.0f;
+                float t = 0.0f;
+
+                while (t < maxTime)
+                {
+                    // 次の時刻 t + dt を計算
+                    t += timeStep;
+
+                    // 時刻 t における放物線上の次の位置を計算 (運動方程式)
+                    // P = P_start + v0*t + 0.5*g*t^2
+                    Vector3 nextPos = startPos
+                                    + initialVelocityVector * t
+                                    + Physics.gravity * (0.5f * t * t);
+
+                    // Raycastの方向と距離を計算
+                    Vector3 direction = nextPos - currentPos;
+                    float distance = direction.magnitude;
+
+                    RaycastHit hit;
+                    // Raycastの実行
+                    if (Physics.Raycast(currentPos, direction.normalized, out hit, distance))
+                    {
+                        // 衝突した場合、その地点を予測地点とする
+                        hitPoint = hit.point;
+                        hitNormal = hit.normal;
+                        didHit = true;
+                        break; // ループを終了
+                    }
+
+                    // 衝突しなかった場合、次のセグメントへ進む準備
+                    currentPos = nextPos;
+
+                    // Y座標がスタート位置より低く、Y=0を下回った場合は強制終了
+                    // ただし、レイキャストが当たらない限り、この判定は不要な場合が多い
+                    if (currentPos.y < startPos.y && currentPos.y < -1f)
+                    {
+                        break;
+                    }
+                }
+
+                // Raycastが地形に当たらなかった場合、UIを非表示にする、または遠くに配置する
+                if (!didHit)
+                {
+                    // 遠すぎる、または空中に飛んでいった場合、UIを非表示にするなど
+                    PlayerUIManager.Instance.ThrowCircle.gameObject.SetActive(false);
+                    return;
+                }
+
+                // UIの座標と回転を設定
+                PlayerUIManager.Instance.ThrowCircle.gameObject.SetActive(true);
+                PlayerUIManager.Instance.ThrowCircle.position = hitPoint;
+                PlayerUIManager.Instance.ThrowCircle.rotation = Quaternion.FromToRotation(Vector3.up, hitNormal);
             }
         }
+        
         //オブジェクトを投げる処理
         public void Throw(float throwForce)
         {
@@ -235,18 +298,25 @@ namespace MyAssets
 
             // 最大の成分を見つけて、それ以外を0にする（軸合わせ）
             Vector3 snappedLocalNormal = Vector3.zero;
-            if(Mathf.Abs(localNormal.x) > Mathf.Abs(localNormal.z))
+
+            float absX = Mathf.Abs(localNormal.x);
+            float absY = Mathf.Abs(localNormal.y);
+            float absZ = Mathf.Abs(localNormal.z);
+            if (absX > absY && absX > absZ)
             {
-                // X軸方向の面（右か左）
+                // X軸方向の面が一番近い
                 snappedLocalNormal.x = Mathf.Sign(localNormal.x);
+            }
+            else if (absY > absX && absY > absZ)
+            {
+                // Y軸方向の面が一番近い（回転している場合、これが横に来ることがある）
+                snappedLocalNormal.y = Mathf.Sign(localNormal.y);
             }
             else
             {
-                // Z軸方向の面（前か後ろ）
+                // Z軸方向の面が一番近い
                 snappedLocalNormal.z = Mathf.Sign(localNormal.z);
             }
-            //上下（Y軸）で押すことがない前提
-
             // ワールド座標に戻す
             Vector3 snappedWorldNormal = transform.TransformDirection(snappedLocalNormal);
 
@@ -255,10 +325,16 @@ namespace MyAssets
 
             //Y軸成分を消して水平にする
             lookDir.y = 0;
-            lookDir.Normalize();
-
-            //目標の回転
-            targetRot = Quaternion.LookRotation(lookDir);
+            if (lookDir.sqrMagnitude > 0.001f)
+            {
+                lookDir.Normalize();
+                targetRot = Quaternion.LookRotation(lookDir);
+            }
+            else
+            {
+                // 例外処理：向きが確定できない場合は今の向きを維持、あるいは法線をそのまま使うなど
+                targetRot = base.transform.rotation;
+            }
             base.transform.rotation = targetRot;
         }
         public bool CheckPushReleaseCondition(float releaseThreshold = -0.5f)

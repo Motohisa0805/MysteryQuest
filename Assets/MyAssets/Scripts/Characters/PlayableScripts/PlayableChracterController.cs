@@ -17,7 +17,7 @@ namespace MyAssets
         public StateMachine<string> StateMachine => stateMachine;
 
         StateBase<string>[] states;
-
+        [Header("状態一覧")]
         [SerializeField]
         private IdleState mIdleState;
         [SerializeField]
@@ -30,6 +30,7 @@ namespace MyAssets
         private JumpingState mJumpState;
         [SerializeField]
         private JumpDownState mJumpDownState;
+        [Header("しゃがみ'4'状態")]
         [SerializeField]
         private StandingToCrouchState mStandingToCrouchState;
         [SerializeField]
@@ -48,50 +49,36 @@ namespace MyAssets
         private ToLiftRunState mToLiftRunState;
         [SerializeField]
         private ReleaseLiftState mReleaseLiftState;
+        [Header("投げ'3'状態")]
         [SerializeField]
         private ThrowStartState mThrowStartState;
         [SerializeField]
         private ThrowIdleState mThrowIdleState;
         [SerializeField]
         private ThrowingState mThrowingState;
+        [Header("押し'3'状態")]
         [SerializeField]
         private PushStartState mPushStartState;
         [SerializeField]
         private PushingState mPushingState;
         [SerializeField]
         private PushEndState mPushEndState;
+        [Header("登り'3'状態")]
         [SerializeField]
         private ClimbJumpingState mClimbJumpingState;
         [SerializeField]
         private ClimbJumpState mClimbJumpState;
         [SerializeField]
         private ClimbState mClimbState;
-
+        [Header("キャラクターのステータス")]
         [SerializeField]
-        private float mMaxSpeed; //最高速度
-        public float MaxSpeed => mMaxSpeed;
-
-        [SerializeField]
-        private float mDushMaxSpeed; //最高速度
-        public float DushMaxSpeed => mDushMaxSpeed;
-
-        [SerializeField]
-        private float mCrouchMaxSpeed; //しゃがみ時の最高速度
-        public float CrouchMaxSpeed => mCrouchMaxSpeed;
-
-        [SerializeField]
-        private float mRotationSpeed; //回転速度
-
-        [SerializeField]
-        private float mShoulderViewRotationSpeed; //ショルダービュー時の回転速度
+        private PlayerStatusPropaty mStatusProperty;
+        public PlayerStatusPropaty StatusProperty => mStatusProperty;
 
         private Rigidbody mRigidbody; //リジッドボディ
         public Rigidbody Rigidbody => mRigidbody;
-
         private PlayableInput mInput; //インプット
-
         public PlayableInput Input => mInput;
-
         private Movement mMovement; //ムーブメント
         public Movement Movement => mMovement;
 
@@ -239,7 +226,7 @@ namespace MyAssets
                 Vector3 velocity = mRigidbody.linearVelocity;
                 velocity.y = 0; // 水平方向の速度のみを考慮
                 Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mRotationSpeed);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusProperty.RotationSpeed);
             }
         }
 
@@ -261,7 +248,7 @@ namespace MyAssets
             transform.rotation = Quaternion.RotateTowards(
                 transform.rotation,
                 targetRotation,
-                mShoulderViewRotationSpeed * Time.deltaTime
+                StatusProperty.ShoulderViewRotationSpeed * Time.deltaTime
             );
         }
 

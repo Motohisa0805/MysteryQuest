@@ -13,9 +13,6 @@ namespace MyAssets
         PropsObjectChecker mPropsChecker;
 
         PlayableAnimationFunction mAnimationFunction;
-
-        [SerializeField]
-        private float mAcceleration; //加速度
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -59,7 +56,7 @@ namespace MyAssets
             // Idle状態の特定の物理処理をここに追加できます
             // 例: 重力の適用、衝突判定など
             mController.InputVelocity();
-            mController.Movement.Move(mController.MaxSpeed, mAcceleration);
+            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }
