@@ -168,7 +168,8 @@ namespace MyAssets
         }
         private void Start()
         {
-            
+            //TODO 仮でマウスをロック
+            InputManager.SetLockedMouseMode();
         }
 
         private void Update()
