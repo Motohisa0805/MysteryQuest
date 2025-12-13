@@ -25,14 +25,12 @@ namespace MyAssets
         eNext,
         eSprint,
         eThrow,
-        /*
         eUpSelect,
         eDownSelect,
         eLeftSelect,
         eRightSelect,
         eDecide,
-        eESC,
-         */
+        //eESC,
         eF1,
         Num1,
         Num2
@@ -66,12 +64,12 @@ namespace MyAssets
             mButtonActions.Add(mInputAction.Player.Next);
             mButtonActions.Add(mInputAction.Player.Sprint);
             mButtonActions.Add(mInputAction.Player.Throw);
-            /*
-            mButtonActions.Add(mInputAction.UI.UpSelect);
-            mButtonActions.Add(mInputAction.UI.DownSelect);
-            mButtonActions.Add(mInputAction.UI.LeftSelect);
-            mButtonActions.Add(mInputAction.UI.RightSelect);
+            mButtonActions.Add(mInputAction.UI.Select_Up);
+            mButtonActions.Add(mInputAction.UI.Select_Down);
+            mButtonActions.Add(mInputAction.UI.Select_Left);
+            mButtonActions.Add(mInputAction.UI.Select_Right);
             mButtonActions.Add(mInputAction.UI.Decide);
+            /*
             mButtonActions.Add(mInputAction.UI.Option);
              */
             mButtonActions.Add(mInputAction.Debug.OnOff);

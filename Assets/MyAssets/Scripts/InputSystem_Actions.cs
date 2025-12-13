@@ -619,7 +619,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""Cancel"",
                     ""type"": ""Button"",
                     ""id"": ""15cef263-9014-4fd5-94d9-4e4a6234a6ef"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -683,6 +683,51 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be"",
                     ""expectedControlType"": ""Quaternion"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select_Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""f50b6ddb-66ff-4d0b-bd82-0b9c409070f1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select_Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""66024339-9db8-4617-a6a2-448f2a68d96d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select_Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""cdb3903d-62cd-4f33-b453-63d2110bf902"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select_Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""aa357fee-83b9-42b6-a354-2d54de9937d6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Decide"",
+                    ""type"": ""Button"",
+                    ""id"": ""58ce16e2-084c-471a-8b1b-32b5a4012b6b"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -1106,6 +1151,61 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""TrackedDeviceOrientation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0b5137e9-20b0-4ba9-9a87-7e0166c3da85"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Select_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a43f3e0d-0947-4c33-8631-7a2a0cd9b2db"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Select_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75d35c7d-1910-4809-adeb-383bb7c08307"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Select_Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""43534e6b-4855-41fb-9ecd-5877ddf713ae"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Select_Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6bb30afc-4793-4a36-bc85-f3546ac911f4"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Decide"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1276,6 +1376,11 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        m_UI_Select_Up = m_UI.FindAction("Select_Up", throwIfNotFound: true);
+        m_UI_Select_Down = m_UI.FindAction("Select_Down", throwIfNotFound: true);
+        m_UI_Select_Left = m_UI.FindAction("Select_Left", throwIfNotFound: true);
+        m_UI_Select_Right = m_UI.FindAction("Select_Right", throwIfNotFound: true);
+        m_UI_Decide = m_UI.FindAction("Decide", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_OnOff = m_Debug.FindAction("On/Off", throwIfNotFound: true);
@@ -1568,6 +1673,11 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_ScrollWheel;
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
+    private readonly InputAction m_UI_Select_Up;
+    private readonly InputAction m_UI_Select_Down;
+    private readonly InputAction m_UI_Select_Left;
+    private readonly InputAction m_UI_Select_Right;
+    private readonly InputAction m_UI_Decide;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1619,6 +1729,26 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/TrackedDeviceOrientation".
         /// </summary>
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/Select_Up".
+        /// </summary>
+        public InputAction @Select_Up => m_Wrapper.m_UI_Select_Up;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/Select_Down".
+        /// </summary>
+        public InputAction @Select_Down => m_Wrapper.m_UI_Select_Down;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/Select_Left".
+        /// </summary>
+        public InputAction @Select_Left => m_Wrapper.m_UI_Select_Left;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/Select_Right".
+        /// </summary>
+        public InputAction @Select_Right => m_Wrapper.m_UI_Select_Right;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/Decide".
+        /// </summary>
+        public InputAction @Decide => m_Wrapper.m_UI_Decide;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1675,6 +1805,21 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @TrackedDeviceOrientation.started += instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.performed += instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.canceled += instance.OnTrackedDeviceOrientation;
+            @Select_Up.started += instance.OnSelect_Up;
+            @Select_Up.performed += instance.OnSelect_Up;
+            @Select_Up.canceled += instance.OnSelect_Up;
+            @Select_Down.started += instance.OnSelect_Down;
+            @Select_Down.performed += instance.OnSelect_Down;
+            @Select_Down.canceled += instance.OnSelect_Down;
+            @Select_Left.started += instance.OnSelect_Left;
+            @Select_Left.performed += instance.OnSelect_Left;
+            @Select_Left.canceled += instance.OnSelect_Left;
+            @Select_Right.started += instance.OnSelect_Right;
+            @Select_Right.performed += instance.OnSelect_Right;
+            @Select_Right.canceled += instance.OnSelect_Right;
+            @Decide.started += instance.OnDecide;
+            @Decide.performed += instance.OnDecide;
+            @Decide.canceled += instance.OnDecide;
         }
 
         /// <summary>
@@ -1716,6 +1861,21 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @TrackedDeviceOrientation.started -= instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.performed -= instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.canceled -= instance.OnTrackedDeviceOrientation;
+            @Select_Up.started -= instance.OnSelect_Up;
+            @Select_Up.performed -= instance.OnSelect_Up;
+            @Select_Up.canceled -= instance.OnSelect_Up;
+            @Select_Down.started -= instance.OnSelect_Down;
+            @Select_Down.performed -= instance.OnSelect_Down;
+            @Select_Down.canceled -= instance.OnSelect_Down;
+            @Select_Left.started -= instance.OnSelect_Left;
+            @Select_Left.performed -= instance.OnSelect_Left;
+            @Select_Left.canceled -= instance.OnSelect_Left;
+            @Select_Right.started -= instance.OnSelect_Right;
+            @Select_Right.performed -= instance.OnSelect_Right;
+            @Select_Right.canceled -= instance.OnSelect_Right;
+            @Decide.started -= instance.OnDecide;
+            @Decide.performed -= instance.OnDecide;
+            @Decide.canceled -= instance.OnDecide;
         }
 
         /// <summary>
@@ -2087,6 +2247,41 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Select_Up" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelect_Up(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Select_Down" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelect_Down(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Select_Left" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelect_Left(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Select_Right" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelect_Right(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Decide" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDecide(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Debug" which allows adding and removing callbacks.

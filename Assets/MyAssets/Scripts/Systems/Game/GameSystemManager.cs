@@ -32,11 +32,6 @@ namespace MyAssets
 
             InputManager.Initialize();
         }
-
-        private void Start()
-        {
-            InputManager.SetLockedMouseMode();
-        }
     }
 
 }
