@@ -35,10 +35,12 @@ namespace MyAssets
             mButtons = b;
             ButtonHover[] h = GetComponentsInChildren<ButtonHover>();
             mHovers = h;
+
         }
 
         private void Start()
         {
+
             mDecideFlag = false;
             mSelectIndex = 0;
             SetSelectImagePosition(mSelectIndex);

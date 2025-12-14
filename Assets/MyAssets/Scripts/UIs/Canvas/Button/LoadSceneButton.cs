@@ -6,9 +6,12 @@ namespace MyAssets
     {
         [SerializeField]
         public SceneList sceneTag;
+
+        private BlackoutController mBlackoutController;
         public void LoadScene()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene((int)sceneTag);
+            mBlackoutController = FindAnyObjectByType<BlackoutController>();
+            mBlackoutController.StartBlackout((int)sceneTag);
         }
 
         public void SetTag(SceneList sceneTag)
