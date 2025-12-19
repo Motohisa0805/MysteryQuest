@@ -15,6 +15,7 @@ namespace MyAssets
 
         Animator mAnimator;
 
+        private ImpactChecker mImpactChecker;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -28,6 +29,7 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mColliderController = actor.GetComponentInChildren<CapsuleColliderController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
@@ -52,6 +54,15 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
+        }
+
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            if (collision.collider.GetComponent<ChemistryObject>() != null)
+            {
+                mImpactChecker.ApplyImpactPower(collision);
+            }
         }
     }
 }

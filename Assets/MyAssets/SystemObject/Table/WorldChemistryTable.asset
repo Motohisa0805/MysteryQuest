@@ -21,3 +21,4 @@ MonoBehaviour:
       gElementToRemove: 0
       mVfxName: 
       mEffectType: 1
+      mDuration: 2

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace MyAssets
@@ -17,11 +18,28 @@ namespace MyAssets
 
         public ElementType CurrentElements => mCurrentElements;
 
+        ReactionResult mReactionResult;
+
+        Timer mReadyElementTimer = new Timer();
+
+        Timer mDestroyTimer = new Timer();
+
         [SerializeField]
         private float mFireDestoryCount = 5f;
 
+        private void Start()
+        {
+            mReadyElementTimer.OnEnd += ApplyReaction;
+            mDestroyTimer.OnEnd += MaterialDebuff;
+        }
+
+        private void Update()
+        {
+            mDestroyTimer.Update(Time.deltaTime);
+        }
+
         //外部から属性を与える
-        public void HitByElement(ElementType incomingElement)
+        private void HitByElement(ElementType incomingElement)
         {
             //同じエレメントなら
             if (mCurrentElements == incomingElement)
@@ -30,7 +48,7 @@ namespace MyAssets
             }
             if (GameSystemManager.Instance.ChemistryTable.TryGetReaction(mMaterial,incomingElement,out ReactionResult result))
             {
-                ApplyReaction(result);
+                ReadyApplyReaction(result);
             }
             else
             {
@@ -38,38 +56,51 @@ namespace MyAssets
             }
         }
 
-        private void ApplyReaction(ReactionResult result)
+        private void ApplyReaction()
         {
             //属性の追加
-            if(result.gElementToAdd != ElementType.None)
+            if (mReactionResult.gElementToAdd != ElementType.None)
             {
-                mCurrentElements |= result.gElementToAdd;
+                mCurrentElements |= mReactionResult.gElementToAdd;
             }
 
             //属性の削除
-            if (result.gElementToRemove != ElementType.None)
+            if (mReactionResult.gElementToRemove != ElementType.None)
             {
-                mCurrentElements &= ~result.gElementToAdd;
+                mCurrentElements &= ~mReactionResult.gElementToAdd;
             }
 
             //エフェクト再生など
-            if(!string.IsNullOrEmpty(result.mVfxName))
+            if (!string.IsNullOrEmpty(mReactionResult.mVfxName))
             {
 
             }
 
-            if (GameSystemManager.Instance.EffectTable.TryGetReaction(result.mEffectType, out ParticleSystem effect))
+            if (GameSystemManager.Instance.EffectTable.TryGetReaction(mReactionResult.mEffectType, out ParticleSystem effect))
             {
                 ParticleSystem obj = Instantiate(effect, transform.position, Quaternion.identity);
                 obj.transform.SetParent(transform, false);
                 obj.transform.localScale = Vector3.one;
                 obj.transform.localPosition = Vector3.zero;
                 obj.transform.localRotation = Quaternion.identity;
+                mDestroyTimer.Start(mFireDestoryCount);
             }
-            //オブジェクトの物理的な処理
-            MaterialDebuff();
+            mReactionResult = new ReactionResult{ };
         }
-
+        //エレメントを反映させるまでの時間
+        //例：火なら燃え上がるまでの時間
+        private void ReadyApplyReaction(ReactionResult result)
+        {
+            //結果を一時保存
+            mReactionResult = result;
+            //反映するまでの時間が始まっていない＆現在のエレメントが与えるエレメントと違うのなら
+            if(mReadyElementTimer.IsEnd()&&mCurrentElements != result.gElementToAdd)
+            {
+                mReadyElementTimer.Start(result.mDuration);
+            }
+            mReadyElementTimer.Update(Time.deltaTime);
+        }
+        //オブジェクトの物理的な処理
         private void MaterialDebuff()
         {
             if(mCurrentElements == ElementType.Fire)
@@ -86,6 +117,28 @@ namespace MyAssets
                 HitByElement(element.Type);
             }
         }
+
+        private void OnTriggerStay(Collider other)
+        {
+            ChemistryElement element = other.GetComponentInChildren<ChemistryElement>();
+            if (element != null)
+            {
+                HitByElement(element.Type);
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            ChemistryElement element = other.GetComponentInChildren<ChemistryElement>();
+            if (element != null)
+            {
+                if(element.Type == mReactionResult.gElementToAdd)
+                {
+                    mReadyElementTimer.Reset();
+                }
+            }
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
             ChemistryObject obejct = collision.gameObject.GetComponent<ChemistryObject>();
@@ -103,7 +156,5 @@ namespace MyAssets
                 HitByElement(obejct.CurrentElements);
             }
         }
-        /*
-         */
     }
 }

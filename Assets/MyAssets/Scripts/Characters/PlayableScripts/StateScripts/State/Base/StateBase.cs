@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace MyAssets
 {
@@ -63,6 +61,12 @@ namespace MyAssets
         public virtual void TriggerStay(GameObject thisObject, Collider collider) { }
 
         public virtual void TriggerExit(GameObject thisObject, Collider collider) { }
+
+        public virtual void CollisionEnter(GameObject thisObject, Collision collision) { }
+
+        public virtual void CollisionStay(GameObject thisObject, Collision collision) { }
+
+        public virtual void CollisionExit(GameObject thisObject, Collision collision) { }
     }
 
     public abstract class StateTransitionBase : IStateTransition<string>

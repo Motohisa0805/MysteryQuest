@@ -5,6 +5,13 @@ namespace MyAssets
     public class PlayableAnimationFunction : MonoBehaviour
     {
         private Animator mAnimator; //アニメーター
+
+        public void SetAnimatorEnabled(bool enabled)
+        {
+            if(mAnimator == null) { return; }
+            mAnimator.enabled = enabled;
+        }
+
         private PlayableChracterController mController;
 
         //アニメーションのブレンドを滑らかにするための変数

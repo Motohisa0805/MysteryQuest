@@ -70,6 +70,14 @@ namespace MyAssets
         private ClimbJumpState mClimbJumpState;
         [SerializeField]
         private ClimbState mClimbState;
+
+        [SerializeField]
+        private SmallImpactPlayerState mSmallImpactPlayerState;
+        [SerializeField]
+        private BigImpactPlayerState mBigImpactPlayerState;
+        [SerializeField]
+        private StandingUpState mStandingUpState;
+
         [Header("キャラクターのステータス")]
         [SerializeField]
         private PlayerStatusPropaty mStatusProperty;
@@ -82,6 +90,8 @@ namespace MyAssets
         private Movement mMovement; //ムーブメント
         public Movement Movement => mMovement;
 
+        private ImpactChecker mImpactChecker;
+        public ImpactChecker ImpactChecker => mImpactChecker;
 
 
         [SerializeField]
@@ -138,6 +148,9 @@ namespace MyAssets
                 mClimbJumpingState,
                 mClimbJumpState,
                 mClimbState,
+                mSmallImpactPlayerState,
+                mBigImpactPlayerState,
+                mStandingUpState,
             };
             stateMachine.Setup(states);
             foreach (var state in states)
@@ -287,6 +300,21 @@ namespace MyAssets
         private void OnTriggerExit(Collider other)
         {
             stateMachine.TriggerExit(gameObject, other);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            stateMachine.CollisionEnter(gameObject, collision);
+        }
+
+        private void OnCollisionStay(Collision collision)
+        {
+            stateMachine.CollisionStay(gameObject, collision);
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            stateMachine.CollisionExit(gameObject, collision);
         }
 
         private void OnDestroy()

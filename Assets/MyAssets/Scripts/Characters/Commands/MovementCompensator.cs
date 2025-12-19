@@ -91,7 +91,7 @@ namespace MyAssets
                 //壁の法線と上方向の角度を計算
                 float angle = Vector3.Angle(hitLower.normal, Vector3.up);
                 //もし角度がスロープ制限以下なら、それは「歩ける坂」
-                if(angle < mMaxSlopeAngle || obj != null)
+                if(angle < mMaxSlopeAngle || (obj != null&& mController.Grounded))
                 {
                     return;
                 }
