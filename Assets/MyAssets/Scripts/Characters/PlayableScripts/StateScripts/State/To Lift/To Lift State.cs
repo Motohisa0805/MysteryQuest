@@ -20,6 +20,7 @@ namespace MyAssets
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(ToLiftIdleState.mStateKey)) { re.Add(new IsToLiftToToLiftIdleTransition(actor, StateChanger, ToLiftIdleState.mStateKey)); }
+            if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsFiledToLiftToIdleTransition(actor, StateChanger, IdleState.mStateKey)); }
             return re;
         }
 
@@ -64,6 +65,7 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
+            mAnimator.SetInteger("to Lift", -1);
         }
     }
 

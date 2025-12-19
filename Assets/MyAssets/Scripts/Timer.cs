@@ -41,6 +41,11 @@ namespace MyAssets
             OnceEnd?.Invoke();
             OnceEnd = null;
         }
+        //強制的に終了
+        public void Reset()
+        {
+            mCurrent = 0;
+        }
         //カウントが終わっているか
         public bool IsEnd() { return mCurrent <= 0; }
         //カウントを分に変換

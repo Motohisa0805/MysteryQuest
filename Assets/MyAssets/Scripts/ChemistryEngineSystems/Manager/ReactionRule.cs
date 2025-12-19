@@ -41,18 +41,21 @@ namespace MyAssets
 
         [Tooltip("発生させるエフェクトID")]
         public EffectType mEffectType;
+
+        [Tooltip("発生させるまでの待機時間")]
+        public float mDuration;
     }
     [Serializable]
     public class ReactionRule
     {
         //デバッグ用
-        public string gRuleName;
+        public string           gRuleName;
 
         [Header("条件")]
-        public MaterialType gTargetMaterial;//ターゲットの素材
-        public ElementType gStimulusElement;//触れたエレメント
+        public MaterialType     gTargetMaterial;//ターゲットの素材
+        public ElementType      gStimulusElement;//触れたエレメント
 
         [Header("結果")]
-        public ReactionResult gResult;
+        public ReactionResult   gResult;
     }
 }

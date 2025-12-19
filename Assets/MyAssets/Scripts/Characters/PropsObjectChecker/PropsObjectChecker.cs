@@ -13,6 +13,7 @@ namespace MyAssets
         public ObjectSizeType TakedObject => mSmallObject;
         [SerializeField]
         private bool mHasTakedObject;
+        public bool HasTakedObject => mHasTakedObject;
 
         Vector3 mThrowDirction;
 
@@ -203,7 +204,6 @@ namespace MyAssets
                 PlayerUIManager.Instance.ThrowCircle.rotation = Quaternion.FromToRotation(Vector3.up, hitNormal);
             }
         }
-        
         //オブジェクトを投げる処理
         public void Throw(float throwForce)
         {
@@ -356,7 +356,7 @@ namespace MyAssets
         }
         private void LargeObjectHitEnter(Collision collision)
         {
-            if(IsVerticalCollision(collision.GetContact(0)))
+            if(IsVerticalCollision(collision.GetContact(0))||!mController.Grounded)
             {
                 return;
             }

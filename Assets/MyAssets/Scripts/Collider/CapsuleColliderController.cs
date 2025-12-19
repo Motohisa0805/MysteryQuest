@@ -46,5 +46,11 @@ namespace MyAssets
         {
             mCapsuleCollider.center = center;
         }
+
+        public void SetRagdollModeCollider()
+        {
+            mCapsuleCollider.radius = 0.1f;
+            mCapsuleCollider.height = 0.1f;
+        }
     }
 }

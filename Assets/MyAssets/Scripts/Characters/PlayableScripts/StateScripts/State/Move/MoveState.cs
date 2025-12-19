@@ -7,12 +7,14 @@ namespace MyAssets
     public class MoveState : StateBase<string>
     {
         public static readonly string mStateKey = "Run";
-        public override string Key => mStateKey;
-        PlayableChracterController mController;
+        public override string      Key => mStateKey;
+        PlayableChracterController  mController;
 
-        PropsObjectChecker mPropsChecker;
+        PropsObjectChecker          mPropsChecker;
 
-        PlayableAnimationFunction mAnimationFunction;
+        PlayableAnimationFunction   mAnimationFunction;
+
+        ImpactChecker               mImpactChecker;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -24,6 +26,8 @@ namespace MyAssets
             if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
             if (StateChanger.IsContain(ClimbJumpingState.mStateKey)) { re.Add(new IsClimbJumpingTransition(actor, StateChanger, ClimbJumpingState.mStateKey)); }
             if (StateChanger.IsContain(ClimbJumpState.mStateKey)) { re.Add(new IsClimbJumpTransition(actor, StateChanger, ClimbJumpState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 
@@ -33,6 +37,7 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mPropsChecker = actor.GetComponent<PropsObjectChecker>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
@@ -64,6 +69,15 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
+        }
+
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            if (collision.collider.GetComponent<ChemistryObject>() != null)
+            {
+                mImpactChecker.ApplyImpactPower(collision);
+            }
         }
     }
 }

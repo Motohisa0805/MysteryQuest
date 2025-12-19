@@ -38,6 +38,13 @@ namespace MyAssets
         public void TriggerStay(GameObject thisObject, Collider collider) => mCurrentState?.TriggerStay(thisObject, collider);
         //当たり判定の当たり終わり時に使う関数
         public void TriggerExit(GameObject thisObject, Collider collider) => mCurrentState?.TriggerExit(thisObject, collider);
+
+        public void CollisionEnter(GameObject thisObject, Collision collision) => mCurrentState?.CollisionEnter(thisObject, collision);
+        //当たり判定の当たり続けている時に使う関数
+        public void CollisionStay(GameObject thisObject, Collision collision) => mCurrentState?.CollisionStay(thisObject, collision);
+        //当たり判定の当たり終わり時に使う関数
+        public void CollisionExit(GameObject thisObject, Collision collision) => mCurrentState?.CollisionExit(thisObject, collision);
+
         //状態を遷移するための条件を追加する関数
         public bool IsContain(string key) => mStateDictionary.ContainsKey(key);
         //TODO : Stateの変更

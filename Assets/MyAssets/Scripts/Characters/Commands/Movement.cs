@@ -50,7 +50,7 @@ namespace MyAssets
             {
                 return true;
             }
-            return checker.TakedObject == null;
+            return !checker.PushEnabled && !checker.HasTakedObject;
         }
 
         private void Update()
