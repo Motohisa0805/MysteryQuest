@@ -36,6 +36,7 @@ namespace MyAssets
         private void Update()
         {
             mDestroyTimer.Update(Time.deltaTime);
+            mReadyElementTimer.Update(Time.deltaTime);
         }
 
         //外部から属性を与える
@@ -58,6 +59,10 @@ namespace MyAssets
 
         private void ApplyReaction()
         {
+            if(mReactionResult.gElementToAdd == ElementType.None)
+            {
+                return;
+            }
             //属性の追加
             if (mReactionResult.gElementToAdd != ElementType.None)
             {
@@ -84,6 +89,7 @@ namespace MyAssets
                 obj.transform.localPosition = Vector3.zero;
                 obj.transform.localRotation = Quaternion.identity;
                 mDestroyTimer.Start(mFireDestoryCount);
+                SoundManager.Instance.PlayOneShot3D(SoundList.SEType.Fire, transform,true, false, mFireDestoryCount);
             }
             mReactionResult = new ReactionResult{ };
         }
@@ -98,7 +104,6 @@ namespace MyAssets
             {
                 mReadyElementTimer.Start(result.mDuration);
             }
-            mReadyElementTimer.Update(Time.deltaTime);
         }
         //オブジェクトの物理的な処理
         private void MaterialDebuff()
@@ -135,6 +140,7 @@ namespace MyAssets
                 if(element.Type == mReactionResult.gElementToAdd)
                 {
                     mReadyElementTimer.Reset();
+                    mReactionResult = new ReactionResult { };
                 }
             }
         }
