@@ -23,8 +23,5 @@ namespace MyAssets
         [SerializeField]
         private float mSmoothTime; //カメラの追従を滑らかにする時間
         public float SmoothTime => mSmoothTime;
-        [SerializeField]
-        private LayerMask mLayerMask; //カメラの当たり判定に使用するレイヤーマスク
-        public LayerMask LayerMask => mLayerMask;
     }
 }
