@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace MyAssets
 {
@@ -14,6 +15,10 @@ namespace MyAssets
         PlayableAnimationFunction       mAnimationFunction;
 
         ImpactChecker                   mImpactChecker;
+
+        private PlayableInput           mPlayableInput;
+
+        private TargetSearch            mTargetSearch;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -33,6 +38,8 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mTargetSearch = actor.GetComponent<TargetSearch>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
         }
 
         public override void Enter()
@@ -43,6 +50,18 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
+
+            //テスト
+            if (mPlayableInput.Focusing)
+            {
+                TPSCamera.CameraType = TPSCamera.Type.Focusing;
+                TPSCamera.FocusingTarget = mTargetSearch.TargetObject;
+            }
+            else
+            {
+                TPSCamera.CameraType = TPSCamera.Type.Free;
+            }
+
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateIdleToRunAnimation();

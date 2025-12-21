@@ -29,6 +29,9 @@ namespace MyAssets
         private bool    mInputThrow;
         public bool     InputThrow => mInputThrow;
 
+        private bool    mFocusing;
+        public bool     Focusing => mFocusing;
+
         private void Start()
         {
             mInputMove = Vector2.zero;
@@ -51,6 +54,8 @@ namespace MyAssets
             mInputCrouch = InputManager.GetKeyDown(KeyCode.eCrouch);
 
             mInputThrow = InputManager.GetKey(KeyCode.eThrow);
+
+            mFocusing = InputManager.GetKey(KeyCode.eFocusing);
         }
     }
 }
