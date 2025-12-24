@@ -10,16 +10,19 @@ namespace MyAssets
         public override string      Key => mStateKey;
         PlayableChracterController  mController;
 
-        PropsObjectChecker          mPropsChecker;
-
         PlayableAnimationFunction   mAnimationFunction;
 
         ImpactChecker               mImpactChecker;
+
+        private PlayableInput mPlayableInput;
+
+        private TargetSearch mTargetSearch;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsIdleTransition(actor, StateChanger, IdleState.mStateKey)); }
             if (StateChanger.IsContain(SpritDushState.mStateKey)) { re.Add(new IsSpritDushTransition(actor, StateChanger, SpritDushState.mStateKey)); }
+            if (StateChanger.IsContain(FocusingMoveState.mStateKey)) { re.Add(new IsFocusingMoveTransition(actor, StateChanger, FocusingMoveState.mStateKey)); }
             if (StateChanger.IsContain(StandingToCrouchState.mStateKey)) { re.Add(new IsStandingToCrouchTransition(actor, StateChanger, StandingToCrouchState.mStateKey)); }
             if (StateChanger.IsContain(PushStartState.mStateKey)) { re.Add(new IsPushStartTransition(actor, StateChanger, PushStartState.mStateKey)); }
             if (StateChanger.IsContain(JumpUpState.mStateKey)) { re.Add(new IsJumpUpTransition(actor, StateChanger, JumpUpState.mStateKey)); }
@@ -35,9 +38,10 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
-            mPropsChecker = actor.GetComponent<PropsObjectChecker>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mTargetSearch = actor.GetComponent<TargetSearch>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
         }
 
         public override void Enter()
@@ -48,10 +52,19 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            //mPropsChecker.UpdatePushObjectCheck();
-            // Idle状態の特定の処理をここに追加できます
-            // 例: アニメーションの更新など
-            mAnimationFunction.UpdateIdleToRunAnimation();
+
+            //テスト
+            if (mPlayableInput.Focusing)
+            {
+                TPSCamera.CameraType = TPSCamera.Type.Focusing;
+                TPSCamera.FocusingTarget = mTargetSearch.TargetObject;
+                mAnimationFunction.UpdateFocusingMoveAnimation();
+            }
+            else
+            {
+                TPSCamera.CameraType = TPSCamera.Type.Free;
+                mAnimationFunction.UpdateIdleToRunAnimation();
+            }
             mAnimationFunction.SpritDushClear();
         }
 
@@ -63,7 +76,14 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
-            mController.FreeRotate();
+            if (mPlayableInput.Focusing)
+            {
+                mController.FocusingRotate();
+            }
+            else
+            {
+                mController.FreeRotate();
+            }
         }
 
         public override void Exit()

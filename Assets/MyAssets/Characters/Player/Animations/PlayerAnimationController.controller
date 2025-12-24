@@ -81,6 +81,93 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!206 &-8762143153604820031
+BlendTree:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Focus Move BlendTree
+  m_Childs:
+  - serializedVersion: 2
+    m_Motion: {fileID: -3772010247147263674, guid: 0cf936e1268fd4f4c8bb670d3b29f6e1, type: 3}
+    m_Threshold: 0
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: idleToRun
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -6656790942933913053, guid: 0cf936e1268fd4f4c8bb670d3b29f6e1, type: 3}
+    m_Threshold: 0.125
+    m_Position: {x: 0, y: 0.7}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: idleToRun
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -6013646079586875810, guid: 0cf936e1268fd4f4c8bb670d3b29f6e1, type: 3}
+    m_Threshold: 0.25
+    m_Position: {x: 0.7, y: 0.7}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: idleToRun
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -2054493445549473003, guid: 0cf936e1268fd4f4c8bb670d3b29f6e1, type: 3}
+    m_Threshold: 0.375
+    m_Position: {x: -0.7, y: 0.7}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: idleToRun
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -3245943977007596448, guid: 0cf936e1268fd4f4c8bb670d3b29f6e1, type: 3}
+    m_Threshold: 0.5
+    m_Position: {x: 0.7, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: idleToRun
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -6533837784012096130, guid: 0cf936e1268fd4f4c8bb670d3b29f6e1, type: 3}
+    m_Threshold: 0.625
+    m_Position: {x: -0.7, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: idleToRun
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -4497632038355991762, guid: 0cf936e1268fd4f4c8bb670d3b29f6e1, type: 3}
+    m_Threshold: 0.75
+    m_Position: {x: 0, y: -0.7}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: idleToRun
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -4137005456525239801, guid: 0cf936e1268fd4f4c8bb670d3b29f6e1, type: 3}
+    m_Threshold: 0.875
+    m_Position: {x: 0.7, y: -0.7}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: idleToRun
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -3642945825872800201, guid: 0cf936e1268fd4f4c8bb670d3b29f6e1, type: 3}
+    m_Threshold: 1
+    m_Position: {x: -0.7, y: -0.7}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: idleToRun
+    m_Mirror: 0
+  m_BlendParameter: focusing MoveX
+  m_BlendParameterY: focusing MoveY
+  m_MinThreshold: 0
+  m_MaxThreshold: 1
+  m_UseAutomaticThresholds: 1
+  m_NormalizedBlendValues: 0
+  m_BlendType: 1
 --- !u!1101 &-8684171457034498731
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -997,10 +1084,18 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: idleToRun
     m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -8762143153604820031}
+    m_Threshold: 2
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: idleToRun
+    m_Mirror: 0
   m_BlendParameter: modeBlend
   m_BlendParameterY: Blend
   m_MinThreshold: 0
-  m_MaxThreshold: 1
+  m_MaxThreshold: 2
   m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
   m_BlendType: 0
@@ -1241,6 +1336,18 @@ AnimatorController:
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: -1
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: focusing MoveX
+    m_Type: 1
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: focusing MoveY
+    m_Type: 1
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
