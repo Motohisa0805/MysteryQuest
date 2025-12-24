@@ -72,6 +72,20 @@ namespace MyAssets
         }
     }
 
+    public class IsIdleTransitionType6 : StateTransitionBase
+    {
+
+        readonly private PlayableInput mInput;
+        readonly private TargetSearch mTargetSearch;
+        public IsIdleTransitionType6(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mTargetSearch = actor.GetComponent<TargetSearch>();
+        }
+        public override bool IsTransition() => mInput.InputMove.magnitude < 0.1f && (!mInput.Focusing || mTargetSearch.TargetObject == null);
+    }
+
     public class IsMoveTransition : StateTransitionBase
     {
 
@@ -100,6 +114,20 @@ namespace MyAssets
                                                mAnimator.GetCurrentAnimatorStateInfo(0).IsName("falling To Landing");
     }
 
+    public class IsMoveTransitionType3 : StateTransitionBase
+    {
+
+        readonly private PlayableInput mInput;
+        readonly private TargetSearch mTargetSearch;
+        public IsMoveTransitionType3(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mTargetSearch = actor.GetComponent<TargetSearch>();
+        }
+        public override bool IsTransition() => mInput.InputMove.magnitude > 0.1f && (!mInput.Focusing || mTargetSearch.TargetObject == null);
+    }
+
     public class IsSpritDushTransition : StateTransitionBase
     {
 
@@ -125,6 +153,20 @@ namespace MyAssets
         }
         public override bool IsTransition() => !mInput.Sprit;
     }
+
+    public class IsFocusingMoveTransition : StateTransitionBase
+    {
+
+        readonly private PlayableInput mInput;
+        public IsFocusingMoveTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+
+        }
+        public override bool IsTransition() => mInput.Focusing;
+    }
+
     public class IsJumpUpTransition : StateTransitionBase
     {
 

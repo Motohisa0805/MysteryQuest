@@ -10,6 +10,9 @@ namespace MyAssets
         public override string Key => mStateKey;
         PlayableChracterController mController;
 
+        private PlayableInput mInput;
+        private TargetSearch mTargetSearch;
+
         private Animator mAnimator;//アニメーター
         private ImpactChecker mImpactChecker;
 
@@ -28,6 +31,8 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
+            mInput = actor.GetComponent<PlayableInput>();
+            mTargetSearch = actor.GetComponent<TargetSearch>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
@@ -60,7 +65,14 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, 5);
             base.Execute_FixedUpdate(time);
-            mController.FreeRotate();
+            if(mTargetSearch.TargetObject == null)
+            {
+                mController.FreeRotate();
+            }
+            else
+            {
+                mController.FocusingRotate();
+            }
         }
 
         public override void Exit()
@@ -91,6 +103,8 @@ namespace MyAssets
 
         private ImpactChecker mImpactChecker;
 
+        private TargetSearch mTargetSearch;
+
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -107,6 +121,7 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mTargetSearch = actor.GetComponent<TargetSearch>();
         }
 
         public override void Enter()
@@ -125,7 +140,14 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
-            mController.FreeRotate();
+            if (mTargetSearch.TargetObject == null)
+            {
+                mController.FreeRotate();
+            }
+            else
+            {
+                mController.FocusingRotate();
+            }
         }
 
         public override void Exit()
@@ -155,6 +177,8 @@ namespace MyAssets
 
         private ImpactChecker mImpactChecker;
 
+        private TargetSearch mTargetSearch;
+
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -172,6 +196,7 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mTargetSearch = actor.GetComponent<TargetSearch>();
         }
 
         public override void Enter()
@@ -190,7 +215,14 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
-            mController.FreeRotate();
+            if (mTargetSearch.TargetObject == null)
+            {
+                mController.FreeRotate();
+            }
+            else
+            {
+                mController.FocusingRotate();
+            }
         }
 
         public override void Exit()

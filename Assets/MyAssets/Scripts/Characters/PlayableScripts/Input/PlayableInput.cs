@@ -56,6 +56,14 @@ namespace MyAssets
             mInputThrow = InputManager.GetKey(KeyCode.eThrow);
 
             mFocusing = InputManager.GetKey(KeyCode.eFocusing);
+            if(mFocusing)
+            {
+                TPSCamera.CameraType = TPSCamera.Type.Focusing;
+            }
+            else
+            {
+                TPSCamera.CameraType = TPSCamera.Type.Free;
+            }
         }
     }
 }

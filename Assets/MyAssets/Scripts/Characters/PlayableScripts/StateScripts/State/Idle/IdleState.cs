@@ -23,6 +23,7 @@ namespace MyAssets
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(MoveState.mStateKey)) { re.Add(new IsMoveTransition(actor, StateChanger, MoveState.mStateKey)); }
+            if (StateChanger.IsContain(FocusingMoveState.mStateKey)) { re.Add(new IsFocusingMoveTransition(actor, StateChanger, FocusingMoveState.mStateKey)); }
             if (StateChanger.IsContain(JumpUpState.mStateKey)) { re.Add(new IsJumpUpTransition(actor, StateChanger, JumpUpState.mStateKey)); }
             if (StateChanger.IsContain(StandingToCrouchState.mStateKey)) { re.Add(new IsStandingToCrouchTransition(actor, StateChanger, StandingToCrouchState.mStateKey)); }
             if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
@@ -50,17 +51,6 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-
-            //テスト
-            if (mPlayableInput.Focusing)
-            {
-                TPSCamera.CameraType = TPSCamera.Type.Focusing;
-                TPSCamera.FocusingTarget = mTargetSearch.TargetObject;
-            }
-            else
-            {
-                TPSCamera.CameraType = TPSCamera.Type.Free;
-            }
 
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など

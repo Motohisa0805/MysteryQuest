@@ -25,6 +25,8 @@ namespace MyAssets
         [SerializeField]
         private SpritDushState mSpritDushState;
         [SerializeField]
+        private FocusingMoveState mFocusingMoveState;
+        [SerializeField]
         private JumpUpState mJumpUpState;
         [SerializeField]
         private JumpingState mJumpState;
@@ -93,6 +95,9 @@ namespace MyAssets
         private ImpactChecker mImpactChecker;
         public ImpactChecker ImpactChecker => mImpactChecker;
 
+        private TargetSearch mTargetSearch;
+        public TargetSearch TargetSearch => mTargetSearch;
+
 
         [SerializeField]
         private bool mGrounded; //地面に接地しているかどうか
@@ -127,6 +132,7 @@ namespace MyAssets
                 mIdleState,
                 mMoveState,
                 mSpritDushState,
+                mFocusingMoveState,
                 mJumpUpState,
                 mJumpState,
                 mJumpDownState,
@@ -176,6 +182,12 @@ namespace MyAssets
             if (mMovement == null)
             {
                 Debug.LogError("Movement component not found on " + gameObject.name);
+            }
+
+            mTargetSearch = GetComponent<TargetSearch>();
+            if(mTargetSearch == null)
+            {
+                Debug.LogError("TargetSearch component not found on " + gameObject.name);
             }
 
         }
@@ -242,6 +254,18 @@ namespace MyAssets
                 Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusProperty.RotationSpeed);
             }
+        }
+
+        public void FocusingRotate()
+        {
+            if(mTargetSearch.TargetObject == null)
+            {
+                return;
+            }
+            Vector3 velocity = mTargetSearch.TargetObject.transform.position - transform.position;
+            velocity.y = 0; // 水平方向の速度のみを考慮
+            Quaternion targetRotation = Quaternion.LookRotation(velocity.normalized, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusProperty.RotationSpeed);
         }
 
         public void ShoulderViewRotate()
