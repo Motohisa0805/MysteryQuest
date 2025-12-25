@@ -9,8 +9,8 @@ namespace MyAssets
 
         public float ImpactPower => mImpactPower;
 
-        private float mMinImpactPower = 1200f;
-        private float mMaxImpactPower = 1500f;
+        private float mMinImpactPower = 1500f;
+        private float mMaxImpactPower = 1600f;
 
         public bool IsEnabledDamage => mImpactPower > 0;
         public bool IsEnabledSmallDamage => mImpactPower > mMinImpactPower && mImpactPower < mMaxImpactPower;
