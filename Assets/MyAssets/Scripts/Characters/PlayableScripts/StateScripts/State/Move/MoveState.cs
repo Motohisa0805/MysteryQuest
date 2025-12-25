@@ -96,8 +96,8 @@ namespace MyAssets
             base.CollisionEnter(thisObject, collision);
             if (collision.collider.GetComponent<ChemistryObject>() != null)
             {
-                mImpactChecker.ApplyImpactPower(collision);
             }
+                mImpactChecker.ApplyImpactPower(collision);
         }
     }
 }

@@ -83,7 +83,7 @@ namespace MyAssets
             mInput = actor.GetComponent<PlayableInput>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
         }
-        public override bool IsTransition() => mInput.InputMove.magnitude < 0.1f && (!mInput.Focusing || mTargetSearch.TargetObject == null);
+        public override bool IsTransition() => mInput.InputMove.magnitude < 0.1f && !mInput.Focusing;
     }
 
     public class IsMoveTransition : StateTransitionBase
@@ -125,7 +125,7 @@ namespace MyAssets
             mInput = actor.GetComponent<PlayableInput>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
         }
-        public override bool IsTransition() => mInput.InputMove.magnitude > 0.1f && (!mInput.Focusing || mTargetSearch.TargetObject == null);
+        public override bool IsTransition() => mInput.InputMove.magnitude > 0.1f && !mInput.Focusing;
     }
 
     public class IsSpritDushTransition : StateTransitionBase

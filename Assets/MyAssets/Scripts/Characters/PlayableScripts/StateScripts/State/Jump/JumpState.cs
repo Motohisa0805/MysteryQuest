@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows;
 
 namespace MyAssets
 {
@@ -65,7 +66,7 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, 5);
             base.Execute_FixedUpdate(time);
-            if(mTargetSearch.TargetObject == null)
+            if(!mInput.Focusing)
             {
                 mController.FreeRotate();
             }
@@ -85,8 +86,8 @@ namespace MyAssets
             base.CollisionEnter(thisObject, collision);
             if (collision.collider.GetComponent<ChemistryObject>() != null)
             {
-                mImpactChecker.ApplyImpactPower(collision);
             }
+                mImpactChecker.ApplyImpactPower(collision);
         }
 
     }
@@ -105,6 +106,8 @@ namespace MyAssets
 
         private TargetSearch mTargetSearch;
 
+        private PlayableInput mInput;
+
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -122,6 +125,7 @@ namespace MyAssets
             mAnimator = actor.GetComponentInChildren<Animator>();
             mImpactChecker = actor.GetComponent<ImpactChecker>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
+            mInput = actor.GetComponent<PlayableInput>();
         }
 
         public override void Enter()
@@ -140,7 +144,7 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
-            if (mTargetSearch.TargetObject == null)
+            if (!mInput.Focusing)
             {
                 mController.FreeRotate();
             }
@@ -161,8 +165,8 @@ namespace MyAssets
             base.CollisionEnter(thisObject, collision);
             if (collision.collider.GetComponent<ChemistryObject>() != null)
             {
-                mImpactChecker.ApplyImpactPower(collision);
             }
+                mImpactChecker.ApplyImpactPower(collision);
         }
     }
 
@@ -178,6 +182,8 @@ namespace MyAssets
         private ImpactChecker mImpactChecker;
 
         private TargetSearch mTargetSearch;
+
+        private PlayableInput mInput;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -197,6 +203,7 @@ namespace MyAssets
             mAnimator = actor.GetComponentInChildren<Animator>();
             mImpactChecker = actor.GetComponent<ImpactChecker>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
+            mInput = actor.GetComponent<PlayableInput>();
         }
 
         public override void Enter()
@@ -215,7 +222,7 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
-            if (mTargetSearch.TargetObject == null)
+            if (!mInput.Focusing)
             {
                 mController.FreeRotate();
             }
@@ -236,8 +243,8 @@ namespace MyAssets
             base.CollisionEnter(thisObject, collision);
             if (collision.collider.GetComponent<ChemistryObject>() != null)
             {
-                mImpactChecker.ApplyImpactPower(collision);
             }
+                mImpactChecker.ApplyImpactPower(collision);
         }
     }
 }

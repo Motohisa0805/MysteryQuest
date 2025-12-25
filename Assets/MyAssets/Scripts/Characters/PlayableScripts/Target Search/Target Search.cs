@@ -141,6 +141,7 @@ namespace MyAssets
                 {
                     //OverlapSphereNonAllocで取得した対象オブジェクトを1つ調べる
                     Transform tra = colliders[i].transform;
+                    TargetFilter filter = colliders[i].GetComponent<TargetFilter>();
 
                     // 視野角の範囲内かを確認
                     //差分を正規化
@@ -148,7 +149,7 @@ namespace MyAssets
                     //
                     float angle = Vector3.Angle(transform.forward, directionToObject);
                     //視野範囲かどうか
-                    if (angle <= mViewAngle)
+                    if (angle <= mViewAngle || filter != null && filter.TypeFilter == TargetFilter.Filter.Enemy)
                     {
                         // Raycastで壁越しを除去
                         if (Physics.Raycast(transform.position, directionToObject, out RaycastHit hit, mRange, mTargetObjectLayer))
