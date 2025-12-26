@@ -80,6 +80,17 @@ namespace MyAssets
         [SerializeField]
         private StandingUpState mStandingUpState;
 
+        [SerializeField]
+        private WeaponTakingOutState mWeaponTakingOutState;
+        [SerializeField]
+        private WeaponStorageState mWeaponStorageState;
+        [SerializeField]
+        private ReadyFirstAttackState mReadyFirstAttackState;
+        [SerializeField]
+        private FirstAttackState mFirstAttackState;
+        [SerializeField]
+        private SecondAttackState mSecondAttackState;
+
         [Header("キャラクターのステータス")]
         [SerializeField]
         private PlayerStatusPropaty mStatusProperty;
@@ -123,9 +134,25 @@ namespace MyAssets
         private float mGroundCheckOffsetY; // 地面判定用の球の半径
 
 
+        [Header("キャラクターの手の位置")]
+        [SerializeField]
+        private SetItemTransform[] mHandTransforms = new SetItemTransform[2];
+        public SetItemTransform[] HandTransforms 
+        {
+            get 
+            { 
+                if (mHandTransforms == null)
+                {
+                    mHandTransforms = transform.GetComponentsInChildren<SetItemTransform>();
+                }
+                return mHandTransforms; 
+            } 
+        }
 
         private void Awake()
         {
+            mHandTransforms = transform.GetComponentsInChildren<SetItemTransform>();
+
             stateMachine = new StateMachine<string>();
             states = new StateBase<string>[]
             {
@@ -157,6 +184,11 @@ namespace MyAssets
                 mSmallImpactPlayerState,
                 mBigImpactPlayerState,
                 mStandingUpState,
+                mWeaponTakingOutState,
+                mWeaponStorageState,
+                mReadyFirstAttackState,
+                mFirstAttackState,
+                mSecondAttackState
             };
             stateMachine.Setup(states);
             foreach (var state in states)
