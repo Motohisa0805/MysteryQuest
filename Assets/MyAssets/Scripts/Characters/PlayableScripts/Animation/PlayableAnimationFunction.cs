@@ -5,7 +5,7 @@ namespace MyAssets
     public class PlayableAnimationFunction : MonoBehaviour
     {
         private Animator mAnimator; //アニメーター
-
+        public Animator Animator => mAnimator;
         public void SetAnimatorEnabled(bool enabled)
         {
             if(mAnimator == null) { return; }
@@ -62,6 +62,11 @@ namespace MyAssets
         [SerializeField]
         private float mCrouchSmoothVelocity = 0f;     // SmoothDampで使用する参照速度（内部で自動更新される）
 
+
+        public float GetModeBlend()
+        {
+            return mAnimator.GetFloat("modeBlend");
+        }
         public void SetModeBlend(int blend)
         {
             mAnimator.SetFloat("modeBlend", blend);

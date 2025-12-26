@@ -15,6 +15,8 @@ namespace MyAssets
         ImpactChecker mImpactChecker;
 
         private TargetSearch mTargetSearch;
+
+        private float mInitModeType;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -46,6 +48,7 @@ namespace MyAssets
             TPSCamera.FocusingTarget = mTargetSearch.TargetObject;
 
             mAnimationFunction.MoveStateClear();
+            mInitModeType = mAnimationFunction.GetModeBlend();
             mAnimationFunction.SetModeBlend(2);
         }
 
@@ -69,7 +72,7 @@ namespace MyAssets
         {
             base.Exit();
             mAnimationFunction.MoveStateClear();
-            mAnimationFunction.SetModeBlend(0);
+            mAnimationFunction.SetModeBlend((int)mInitModeType);
         }
 
         public override void CollisionEnter(GameObject thisObject, Collision collision)

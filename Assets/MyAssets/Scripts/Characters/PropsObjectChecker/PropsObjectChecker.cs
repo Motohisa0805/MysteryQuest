@@ -52,25 +52,20 @@ namespace MyAssets
             }
         }
 
-        [SerializeField]
-        private HandTransform[] mHandTransforms = new HandTransform[2];
-
         public Vector3 GetObjectsYouHavePoint()
         {
-            if (mHandTransforms[0] == null || mHandTransforms[1] == null)
+            if (mController.HandTransforms[0] == null || mController.HandTransforms[1] == null)
             {
                 return transform.position;
             }
-            Vector3 vec1 = mHandTransforms[0].gameObject.transform.position;
-            Vector3 vec2 = mHandTransforms[1].gameObject.transform.position;
+            Vector3 vec1 = mController.HandTransforms[0].gameObject.transform.position;
+            Vector3 vec2 = mController.HandTransforms[1].gameObject.transform.position;
             return new Vector3((vec1.x + vec2.x) / 2, (vec1.y + vec2.y) / 2, (vec1.z + vec2.z) / 2);
         }
 
         private void Awake()
         {
             mController = GetComponent<PlayableChracterController>();
-
-            mHandTransforms = transform.GetComponentsInChildren<HandTransform>();
         }
         //================================
         //オブジェクト取得関連の関数

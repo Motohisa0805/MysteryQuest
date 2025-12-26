@@ -32,6 +32,9 @@ namespace MyAssets
         private bool    mFocusing;
         public bool     Focusing => mFocusing;
 
+        private bool    mAttack;
+        public bool     Attack => mAttack;
+
         private void Start()
         {
             mInputMove = Vector2.zero;
@@ -64,6 +67,8 @@ namespace MyAssets
             {
                 TPSCamera.CameraType = TPSCamera.Type.Free;
             }
+
+            mAttack = InputManager.GetKeyDown(KeyCode.eAttack);
         }
     }
 }
