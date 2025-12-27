@@ -68,9 +68,6 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            if (collision.collider.GetComponent<ChemistryObject>() != null)
-            {
-            }
             mImpactChecker.ApplyImpactPower(collision);
         }
     }

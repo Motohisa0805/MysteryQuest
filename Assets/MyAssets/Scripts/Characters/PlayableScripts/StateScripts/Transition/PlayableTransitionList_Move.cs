@@ -34,12 +34,10 @@ namespace MyAssets
     {
 
         readonly private PlayableInput mInput;
-        readonly private TargetSearch mTargetSearch;
         public IsMoveTransitionType3(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mTargetSearch = actor.GetComponent<TargetSearch>();
         }
         public override bool IsTransition() => mInput.InputMove.magnitude > 0.1f && !mInput.Focusing;
     }
@@ -69,7 +67,6 @@ namespace MyAssets
 
         readonly private PlayableInput mInput;
         readonly private Animator mAnimator;
-        readonly float mDuration = 0.5f;
         public IsMoveTransitionType6(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -123,16 +120,42 @@ namespace MyAssets
         }
         public override bool IsTransition() => mInput.Focusing;
     }
+    public class IsFocusingMoveTransition2 : StateTransitionBase
+    {
+
+        readonly private PlayableInput mInput;
+        readonly private PlayableAnimationFunction mAnimationFunction;
+        public IsFocusingMoveTransition2(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
+        }
+
+        private bool IsAnimationEnd()
+        {
+            return (mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(1).IsName("weaponStorage_RightArm_IK") || mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(1).IsName("weaponTakingOut_RightArm_IK")) &&
+                mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 1.0f;
+        }
+        public override bool IsTransition() => mInput.Focusing && IsAnimationEnd();
+    }
 
     public class IsMoveTransitionType4 : StateTransitionBase
     {
 
         readonly private PlayableInput mInput;
+        readonly private PlayableAnimationFunction mAnimationFunction;
         public IsMoveTransitionType4(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
         }
-        public override bool IsTransition() => mInput.InputMove.magnitude > 0.1f;
+        private bool IsAnimationEnd()
+        {
+            return (mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(1).IsName("weaponStorage_RightArm_IK") || mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(1).IsName("weaponTakingOut_RightArm_IK")) &&
+                mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 1.0f;
+        }
+        public override bool IsTransition() => !mInput.Focusing && mInput.InputMove.magnitude > 0.1f && IsAnimationEnd();
     }
 }

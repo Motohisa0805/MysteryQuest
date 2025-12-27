@@ -5,7 +5,6 @@ namespace MyAssets
     /*
      * ‚µ‚á‚ª‚ÝŠÖŒW‚Ì‘JˆÚƒtƒ‰ƒO
      */
-
     public class IsStandingToCrouchTransition : StateTransitionBase
     {
         readonly private PlayableInput mInput;

@@ -6,27 +6,27 @@ namespace MyAssets
     {
 
         readonly private PlayableInput mInput;
-        readonly private Animator mAnimator;
+        readonly private EquipmentController mEquipmentController;
         public IsTakingOutTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mEquipmentController = actor.GetComponent<EquipmentController>();
         }
-        public override bool IsTransition() => mInput.Attack && mAnimator.GetFloat("modeBlend") <= 0;
+        public override bool IsTransition() => mInput.Attack && !mEquipmentController.IsBattleMode;
     }
 
     public class IsStorageTransition : StateTransitionBase
     {
 
         readonly private PlayableInput mInput;
-        readonly private Animator mAnimator;
+        readonly private EquipmentController mEquipmentController;
         public IsStorageTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mEquipmentController = actor.GetComponent<EquipmentController>();
         }
-        public override bool IsTransition() => mInput.Sprit && mAnimator.GetFloat("modeBlend") >= 1;
+        public override bool IsTransition() => mInput.Sprit && mEquipmentController.IsBattleMode;
     }
 }

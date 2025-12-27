@@ -58,15 +58,12 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            //mAnimationFunction.Animator.SetInteger("attack State", -1);
+            mAnimationFunction.Animator.SetInteger("attack State", -1);
         }
 
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            if (collision.collider.GetComponent<ChemistryObject>() != null)
-            {
-            }
             mImpactChecker.ApplyImpactPower(collision);
         }
     }
