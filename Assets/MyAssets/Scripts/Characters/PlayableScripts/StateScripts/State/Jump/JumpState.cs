@@ -84,10 +84,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            if (collision.collider.GetComponent<ChemistryObject>() != null)
-            {
-            }
-                mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyImpactPower(collision);
         }
 
     }
@@ -163,10 +160,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            if (collision.collider.GetComponent<ChemistryObject>() != null)
-            {
-            }
-                mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyImpactPower(collision);
         }
     }
 
@@ -241,10 +235,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            if (collision.collider.GetComponent<ChemistryObject>() != null)
-            {
-            }
-                mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyImpactPower(collision);
         }
     }
 }

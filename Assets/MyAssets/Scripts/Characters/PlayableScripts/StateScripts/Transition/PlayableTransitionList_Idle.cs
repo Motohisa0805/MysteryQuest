@@ -59,12 +59,10 @@ namespace MyAssets
     public class IsIdleTransitionType5 : StateTransitionBase
     {
         readonly private Movement mMovement;
-        readonly private PlayableChracterController mController;
         public IsIdleTransitionType5(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mMovement = actor.GetComponentInChildren<Movement>();
-            mController = actor.GetComponent<PlayableChracterController>();
         }
         public override bool IsTransition()
         {
@@ -76,12 +74,10 @@ namespace MyAssets
     {
 
         readonly private PlayableInput mInput;
-        readonly private TargetSearch mTargetSearch;
         public IsIdleTransitionType6(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mTargetSearch = actor.GetComponent<TargetSearch>();
         }
         public override bool IsTransition() => mInput.InputMove.magnitude < 0.1f && !mInput.Focusing;
     }
@@ -91,12 +87,20 @@ namespace MyAssets
     {
 
         readonly private PlayableInput mInput;
+        readonly private PlayableAnimationFunction mAnimationFunction;
         public IsIdleTransitionType7(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
         }
-        public override bool IsTransition() => mInput.InputMove.magnitude < 0.1f;
+
+        private bool IsAnimationEnd()
+        {
+            return (mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(1).IsName("weaponStorage_RightArm_IK")|| mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(1).IsName("weaponTakingOut_RightArm_IK")) &&
+                mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 1.0f;
+        }
+        public override bool IsTransition() => !mInput.Focusing && mInput.InputMove.magnitude < 0.1f && IsAnimationEnd();
     }
 
     public class IsIdleTransitionType8 : StateTransitionBase
@@ -110,8 +114,6 @@ namespace MyAssets
             mInput = actor.GetComponent<PlayableInput>();
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
-
-
         private bool IsAnimationEnd()
         {
             return mAnimator.GetCurrentAnimatorStateInfo(0).IsName("first Attack") && mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f;

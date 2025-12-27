@@ -16,12 +16,17 @@ namespace MyAssets
 
         private TargetSearch mTargetSearch;
 
+        private EquipmentController mEquipmentController;
+
         private float mInitModeType;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsIdleTransitionType6(actor, StateChanger, IdleState.mStateKey)); }
             if (StateChanger.IsContain(MoveState.mStateKey)) { re.Add(new IsMoveTransitionType3(actor, StateChanger, MoveState.mStateKey)); }
+            if (StateChanger.IsContain(ReadyFirstAttackState.mStateKey)) { re.Add(new IsReadyFirstAttackTransition(actor, StateChanger, ReadyFirstAttackState.mStateKey)); }
+            if (StateChanger.IsContain(WeaponTakingOutState.mStateKey)) { re.Add(new IsTakingOutTransition(actor, StateChanger, WeaponTakingOutState.mStateKey)); }
+            if (StateChanger.IsContain(WeaponStorageState.mStateKey)) { re.Add(new IsStorageTransition(actor, StateChanger, WeaponStorageState.mStateKey)); }
             if (StateChanger.IsContain(StandingToCrouchState.mStateKey)) { re.Add(new IsStandingToCrouchTransition(actor, StateChanger, StandingToCrouchState.mStateKey)); }
             if (StateChanger.IsContain(PushStartState.mStateKey)) { re.Add(new IsPushStartTransition(actor, StateChanger, PushStartState.mStateKey)); }
             if (StateChanger.IsContain(JumpUpState.mStateKey)) { re.Add(new IsJumpUpTransition(actor, StateChanger, JumpUpState.mStateKey)); }
@@ -40,6 +45,7 @@ namespace MyAssets
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<ImpactChecker>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
+            mEquipmentController = actor.GetComponent<EquipmentController>();
         }
 
         public override void Enter()
@@ -47,8 +53,7 @@ namespace MyAssets
             base.Enter();
             TPSCamera.FocusingTarget = mTargetSearch.TargetObject;
 
-            mAnimationFunction.MoveStateClear();
-            mInitModeType = mAnimationFunction.GetModeBlend();
+            //mAnimationFunction.MoveStateClear();
             mAnimationFunction.SetModeBlend(2);
         }
 
@@ -71,17 +76,13 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            mAnimationFunction.MoveStateClear();
-            mAnimationFunction.SetModeBlend((int)mInitModeType);
+            //mAnimationFunction.MoveStateClear();
         }
 
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            if (collision.collider.GetComponent<ChemistryObject>() != null)
-            {
-            }
-                mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyImpactPower(collision);
         }
     }
 }

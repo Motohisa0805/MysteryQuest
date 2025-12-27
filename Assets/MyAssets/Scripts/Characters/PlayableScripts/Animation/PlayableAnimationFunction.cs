@@ -4,90 +4,142 @@ namespace MyAssets
 {
     public class PlayableAnimationFunction : MonoBehaviour
     {
-        private Animator mAnimator; //アニメーター
-        public Animator Animator => mAnimator;
-        public void SetAnimatorEnabled(bool enabled)
-        {
-            if(mAnimator == null) { return; }
-            mAnimator.enabled = enabled;
-        }
-
         private PlayableChracterController mController;
 
-        //アニメーションのブレンドを滑らかにするための変数
-        [SerializeField]
-        private float mAnimIdleToRunSpeed = 0f;          // 現在アニメーターに渡しているブレンド値
-        [SerializeField]
-        private float mAnimSmoothTime = 0.1f;   // ブレンドにかける時間 (0.1秒程度が滑らか)
-        [SerializeField]
-        private float mSmoothVelocity = 0f;     // SmoothDampで使用する参照速度（内部で自動更新される）
+        private Animator mAnimator; //アニメーター
+        public Animator Animator 
+        {
+            get 
+            {
+                if (mAnimator == null)
+                {
+                    mAnimator = GetComponentInChildren<Animator>();
+                }
+                return mAnimator; 
+            } 
+        }
+        public void SetAnimatorEnabled(bool enabled)
+        {
+            if(Animator == null) { return; }
+            Animator.enabled = enabled;
+        }
+
+        public void SetAnimatorLayerWeight(int layer,float layerWeight)
+        {
+            Animator.SetLayerWeight(layer,layerWeight);
+        }
 
         //アニメーションのブレンドを滑らかにするための変数
+        // 現在アニメーターに渡しているブレンド値
         [SerializeField]
-        private float mSpritDushSpeed = 0f;          // 現在アニメーターに渡しているブレンド値
+        private float mAnimIdleToRunSpeed = 0f;          
+        // ブレンドにかける時間 (0.1秒程度が滑らか)
         [SerializeField]
-        private float mSpritDushSmoothTime = 0.1f;   // ブレンドにかける時間 (0.1秒程度が滑らか)
+        private float mAnimSmoothTime = 0.1f;   
+        // SmoothDampで使用する参照速度（内部で自動更新される）
         [SerializeField]
-        private float mSpritDushSmoothVelocity = 0f;     // SmoothDampで使用する参照速度（内部で自動更新される）
+        private float mSmoothVelocity = 0f;     
 
         //アニメーションのブレンドを滑らかにするための変数
+        // 現在アニメーターに渡しているブレンド値
         [SerializeField]
-        private float mFocusingMoveXSpeed = 0f;          // 現在アニメーターに渡しているブレンド値
+        private float mSpritDushSpeed = 0f;          
+        // ブレンドにかける時間 (0.1秒程度が滑らか)
         [SerializeField]
-        private float mFocusingMoveXSmoothTime = 0.1f;   // ブレンドにかける時間 (0.1秒程度が滑らか)
+        private float mSpritDushSmoothTime = 0.1f;   
+        // SmoothDampで使用する参照速度（内部で自動更新される）
         [SerializeField]
-        private float mFocusingMoveXSmoothVelocity = 0f;     // SmoothDampで使用する参照速度（内部で自動更新される）
+        private float mSpritDushSmoothVelocity = 0f;     
 
         //アニメーションのブレンドを滑らかにするための変数
+        // 現在アニメーターに渡しているブレンド値
         [SerializeField]
-        private float mFocusingMoveYSpeed = 0f;          // 現在アニメーターに渡しているブレンド値
+        private float mFocusingMoveXSpeed = 0f;          
+        // ブレンドにかける時間 (0.1秒程度が滑らか)
         [SerializeField]
-        private float mFocusingMoveYSmoothTime = 0.1f;   // ブレンドにかける時間 (0.1秒程度が滑らか)
+        private float mFocusingMoveXSmoothTime = 0.1f;   
+        // SmoothDampで使用する参照速度（内部で自動更新される）
         [SerializeField]
-        private float mFocusingMoveYSmoothVelocity = 0f;     // SmoothDampで使用する参照速度（内部で自動更新される）
+        private float mFocusingMoveXSmoothVelocity = 0f;     
 
         //アニメーションのブレンドを滑らかにするための変数
+        // 現在アニメーターに渡しているブレンド値
         [SerializeField]
-        private float mToLiftIdleToRunSpeed = 0f;          // 現在アニメーターに渡しているブレンド値
+        private float mFocusingMoveYSpeed = 0f;          
+        // ブレンドにかける時間 (0.1秒程度が滑らか)
         [SerializeField]
-        private float mToLiftSmoothTime = 0.1f;   // ブレンドにかける時間 (0.1秒程度が滑らか)
+        private float mFocusingMoveYSmoothTime = 0.1f;   
+        // SmoothDampで使用する参照速度（内部で自動更新される）
         [SerializeField]
-        private float mToLiftSmoothVelocity = 0f;     // SmoothDampで使用する参照速度（内部で自動更新される）
+        private float mFocusingMoveYSmoothVelocity = 0f;     
 
         //アニメーションのブレンドを滑らかにするための変数
+        // 現在アニメーターに渡しているブレンド値
         [SerializeField]
-        private float mCrouchAnimSpeed = 0f;          // 現在アニメーターに渡しているブレンド値
+        private float mToLiftIdleToRunSpeed = 0f;          
+        // ブレンドにかける時間 (0.1秒程度が滑らか)
         [SerializeField]
-        private float mCrouchAnimSmoothTime = 0.1f;   // ブレンドにかける時間 (0.1秒程度が滑らか)
+        private float mToLiftSmoothTime = 0.1f;   
+        // SmoothDampで使用する参照速度（内部で自動更新される）
         [SerializeField]
-        private float mCrouchSmoothVelocity = 0f;     // SmoothDampで使用する参照速度（内部で自動更新される）
+        private float mToLiftSmoothVelocity = 0f;     
+
+        //アニメーションのブレンドを滑らかにするための変数
+        // 現在アニメーターに渡しているブレンド値
+        [SerializeField]
+        private float mCrouchAnimSpeed = 0f;          
+        // ブレンドにかける時間 (0.1秒程度が滑らか)
+        [SerializeField]
+        private float mCrouchAnimSmoothTime = 0.1f;   
+        // SmoothDampで使用する参照速度（内部で自動更新される）
+        [SerializeField]
+        private float mCrouchSmoothVelocity = 0f;     
 
 
         public float GetModeBlend()
         {
-            return mAnimator.GetFloat("modeBlend");
+            return Animator.GetFloat("modeBlend");
         }
         public void SetModeBlend(int blend)
         {
-            mAnimator.SetFloat("modeBlend", blend);
+            Animator.SetFloat("modeBlend", blend);
+        }
+
+        public bool IsToolState()
+        {
+            return Animator.GetBool("tool State");
+        }
+
+        public void SetToolState(bool state)
+        {
+            Animator.SetBool("tool State", state);
+        }
+        public bool IsBattleMode()
+        {
+            return Animator.GetBool("battle Mode");
+        }
+
+        public void SetBattleMode(bool state)
+        {
+            Animator.SetBool("battle Mode", state);
         }
 
         public void MoveStateClear()
         {
-            if (mAnimator == null)
+            if (Animator == null)
             {
                 return;
             }
-            mAnimator.SetFloat("idleToRun", 0);
-            mAnimator.SetFloat("spritDush", 0);
-            mAnimator.SetFloat("focusing MoveX", 0);
-            mAnimator.SetFloat("focusing MoveY", 0);
-            mAnimator.SetFloat("spritDush", 0);
+            Animator.SetFloat("idleToRun", 0);
+            Animator.SetFloat("spritDush", 0);
+            Animator.SetFloat("focusing MoveX", 0);
+            Animator.SetFloat("focusing MoveY", 0);
+            Animator.SetFloat("spritDush", 0);
         }
 
         public void UpdateIdleToRunAnimation()
         {
-            if (mAnimator == null)
+            if (Animator == null)
             {
                 return;
             }
@@ -106,17 +158,17 @@ namespace MyAssets
                 mAnimSmoothTime         // 目標値に到達するまでにかける時間
             );
 
-            if (mAnimator.GetFloat("idleToRun") != mAnimIdleToRunSpeed)
+            if (Animator.GetFloat("idleToRun") != mAnimIdleToRunSpeed)
             {
                 // 4. アニメーターに滑らかになったブレンド値を渡す
                 // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // 修正前
-                mAnimator.SetFloat("idleToRun", mAnimIdleToRunSpeed);
+                Animator.SetFloat("idleToRun", mAnimIdleToRunSpeed);
             }
         }
 
         public void UpdateFocusingMoveAnimation()
         {
-            if (mAnimator == null)
+            if (Animator == null)
             {
                 return;
             }
@@ -127,10 +179,10 @@ namespace MyAssets
                 ref mFocusingMoveXSmoothVelocity,   // 内部で使用される参照速度（毎回渡す）
                 mFocusingMoveXSmoothTime            // 目標値に到達するまでにかける時間
             );
-            if (mAnimator.GetFloat("focusing MoveX") != mFocusingMoveXSpeed)
+            if (Animator.GetFloat("focusing MoveX") != mFocusingMoveXSpeed)
             {
                 // 4. アニメーターに滑らかになったブレンド値を渡す
-                mAnimator.SetFloat("focusing MoveX", mFocusingMoveXSpeed);
+                Animator.SetFloat("focusing MoveX", mFocusingMoveXSpeed);
             }
             float y = mController.Input.InputMove.y;
             mFocusingMoveYSpeed = Mathf.SmoothDamp(
@@ -139,16 +191,16 @@ namespace MyAssets
                 ref mFocusingMoveYSmoothVelocity,   // 内部で使用される参照速度（毎回渡す）
                 mFocusingMoveYSmoothTime            // 目標値に到達するまでにかける時間
             );
-            if (mAnimator.GetFloat("focusing MoveY") != mFocusingMoveYSpeed)
+            if (Animator.GetFloat("focusing MoveY") != mFocusingMoveYSpeed)
             {
                 // 4. アニメーターに滑らかになったブレンド値を渡す
-                mAnimator.SetFloat("focusing MoveY", mFocusingMoveYSpeed);
+                Animator.SetFloat("focusing MoveY", mFocusingMoveYSpeed);
             }
         }
 
         public void UpdateSpritDushAnimation()
         {
-            if (mAnimator == null)
+            if (Animator == null)
             {
                 return;
             }
@@ -168,17 +220,17 @@ namespace MyAssets
                 mSpritDushSmoothTime         // 目標値に到達するまでにかける時間
             );
 
-            if (mAnimator.GetFloat("spritDush") != mSpritDushSpeed)
+            if (Animator.GetFloat("spritDush") != mSpritDushSpeed)
             {
                 // 4. アニメーターに滑らかになったブレンド値を渡す
                 // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // 修正前
-                mAnimator.SetFloat("spritDush", mSpritDushSpeed);
+                Animator.SetFloat("spritDush", mSpritDushSpeed);
             }
         }
 
         public void UpdateToLiftIdleToToLiftRunAnimation()
         {
-            if (mAnimator == null)
+            if (Animator == null)
             {
                 return;
             }
@@ -197,17 +249,17 @@ namespace MyAssets
                 mToLiftSmoothTime         // 目標値に到達するまでにかける時間
             );
 
-            if (mAnimator.GetFloat("to Lift Blend") != mToLiftIdleToRunSpeed)
+            if (Animator.GetFloat("to Lift Blend") != mToLiftIdleToRunSpeed)
             {
                 // 4. アニメーターに滑らかになったブレンド値を渡す
                 // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // 修正前
-                mAnimator.SetFloat("to Lift Blend", mToLiftIdleToRunSpeed);
+                Animator.SetFloat("to Lift Blend", mToLiftIdleToRunSpeed);
             }
         }
 
         public void SpritDushClear()
         {
-            if (mAnimator == null)
+            if (Animator == null)
             {
                 return;
             }
@@ -224,17 +276,17 @@ namespace MyAssets
                 mSpritDushSmoothTime         // 目標値に到達するまでにかける時間
             );
 
-            if (mAnimator.GetFloat("spritDush") != mSpritDushSpeed)
+            if (Animator.GetFloat("spritDush") != mSpritDushSpeed)
             {
                 // 4. アニメーターに滑らかになったブレンド値を渡す
                 // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // 修正前
-                mAnimator.SetFloat("spritDush", mSpritDushSpeed);
+                Animator.SetFloat("spritDush", mSpritDushSpeed);
             }
         }
 
         public void UpdateCrouchAnimation()
         {
-            if (mAnimator == null)
+            if (Animator == null)
             {
                 return;
             }
@@ -246,9 +298,9 @@ namespace MyAssets
                 ref mCrouchSmoothVelocity,
                 mCrouchAnimSmoothTime
             );
-            if (mAnimator.GetFloat("crouch_IdleToWalk") != mCrouchAnimSpeed)
+            if (Animator.GetFloat("crouch_IdleToWalk") != mCrouchAnimSpeed)
             {
-                mAnimator.SetFloat("crouch_IdleToWalk", mCrouchAnimSpeed);
+                Animator.SetFloat("crouch_IdleToWalk", mCrouchAnimSpeed);
             }
         }
 

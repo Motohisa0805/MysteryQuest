@@ -16,7 +16,7 @@ namespace MyAssets
 
         private PlayableInput mPlayableInput;
 
-        private TargetSearch mTargetSearch;
+        private EquipmentController mEquipmentController;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -43,40 +43,32 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<ImpactChecker>();
-            mTargetSearch = actor.GetComponent<TargetSearch>();
             mPlayableInput = actor.GetComponent<PlayableInput>();
+            mEquipmentController = actor.GetComponent<EquipmentController>();
         }
 
         public override void Enter()
         {
             base.Enter();
-            mAnimationFunction.Animator.SetInteger("attack State", -1);
+            if (mEquipmentController.IsBattleMode)
+            {
+                mAnimationFunction.SetModeBlend(1);
+            }
+            else
+            {
+                mAnimationFunction.SetModeBlend(0);
+            }
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-
-            //テスト
-            if (mPlayableInput.Focusing)
-            {
-                TPSCamera.CameraType = TPSCamera.Type.Focusing;
-                TPSCamera.FocusingTarget = mTargetSearch.TargetObject;
-                mAnimationFunction.UpdateFocusingMoveAnimation();
-            }
-            else
-            {
-                TPSCamera.CameraType = TPSCamera.Type.Free;
-                mAnimationFunction.UpdateIdleToRunAnimation();
-            }
+            mAnimationFunction.UpdateIdleToRunAnimation();
             mAnimationFunction.SpritDushClear();
         }
 
         public override void Execute_FixedUpdate(float time)
         {
-            //mController.Movement.Gravity();
-            // Idle状態の特定の物理処理をここに追加できます
-            // 例: 重力の適用、衝突判定など
             mController.InputVelocity();
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
@@ -98,10 +90,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            if (collision.collider.GetComponent<ChemistryObject>() != null)
-            {
-            }
-                mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyImpactPower(collision);
         }
     }
 }

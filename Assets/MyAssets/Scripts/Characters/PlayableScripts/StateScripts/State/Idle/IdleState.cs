@@ -16,6 +16,8 @@ namespace MyAssets
 
         ImpactChecker                   mImpactChecker;
 
+        private EquipmentController mEquipmentController;
+
         private PlayableInput           mPlayableInput;
 
         private TargetSearch            mTargetSearch;
@@ -44,23 +46,25 @@ namespace MyAssets
             mImpactChecker = actor.GetComponent<ImpactChecker>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
             mPlayableInput = actor.GetComponent<PlayableInput>();
+            mEquipmentController = actor.GetComponent<EquipmentController>();
         }
 
         public override void Enter()
         {
             base.Enter();
-            if(mAnimationFunction.Animator != null)
+            if(mEquipmentController.IsBattleMode)
             {
-                mAnimationFunction.Animator.SetInteger("attack State", -1);
+                mAnimationFunction.SetModeBlend(1);
+            }
+            else
+            {
+                mAnimationFunction.SetModeBlend(0);
             }
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-
-            // Idle状態の特定の処理をここに追加できます
-            // 例: アニメーションの更新など
             mAnimationFunction.UpdateIdleToRunAnimation();
         }
 
@@ -83,10 +87,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            if(collision.collider.GetComponent<ChemistryObject>() != null)
-            {
-            }
-                mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyImpactPower(collision);
         }
     }
 }

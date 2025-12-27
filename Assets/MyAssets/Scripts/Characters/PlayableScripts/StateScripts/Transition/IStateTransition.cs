@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace MyAssets
 {
     public interface IStateTransition<TKey>
