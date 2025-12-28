@@ -15,6 +15,16 @@ MonoBehaviour:
   m_GroupName: Item Group
   m_GUID: d8e70a9169358f04ba293769133d112b
   m_SerializeEntries:
+  - m_GUID: 50af0731123ee2a46900cde5da5e33fb
+    m_Address: Sword_02.1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52d660d0c2173a84380fdb1f7940cfc6
+    m_Address: Sword_02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b769defc15403ac44895a84dd728445d
     m_Address: Sword_01
     m_ReadOnly: 0

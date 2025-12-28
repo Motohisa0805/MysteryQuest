@@ -18,8 +18,14 @@ MonoBehaviour:
     gIcon: {fileID: 0}
     gType: 0
     gObject:
-      m_AssetGUID: b769defc15403ac44895a84dd728445d
+      m_AssetGUID: 52d660d0c2173a84380fdb1f7940cfc6
       m_SubObjectName: 
       m_SubObjectType: 
       m_SubObjectGUID: 
       m_EditorAssetChanged: 0
+    gSetObject:
+      m_AssetGUID: 50af0731123ee2a46900cde5da5e33fb
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 1
