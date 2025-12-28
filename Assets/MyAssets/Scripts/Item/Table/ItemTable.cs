@@ -17,6 +17,7 @@ namespace MyAssets
         public Sprite gIcon;
         public ItemType gType;
         public AssetReferenceGameObject gObject;
+        public AssetReferenceGameObject gSetObject;
     }
 
     [CreateAssetMenu(fileName = "ItemTable", menuName = "Scriptable Objects/ItemTable")]

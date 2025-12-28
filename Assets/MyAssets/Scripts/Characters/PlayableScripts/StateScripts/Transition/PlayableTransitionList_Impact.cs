@@ -63,6 +63,20 @@ namespace MyAssets
             return mImpactChecker.IsEnabledBigDamage;
         }
     }
+    public class IsFallBigImpactTransition : StateTransitionBase
+    {
+        readonly private ImpactChecker mImpactChecker;
+        public IsFallBigImpactTransition
+            (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
+        }
+        public override bool IsTransition()
+        {
+            return mImpactChecker.IsEnabledFallDamage;
+        }
+    }
 
     public class IsImpactToStandingUpTransition : StateTransitionBase
     {

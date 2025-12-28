@@ -50,6 +50,22 @@ namespace MyAssets
                     spawnedWeapon.transform.localRotation = Quaternion.identity;
                 }
             };
+            //もし武器とセットにあるオブジェクトがあるなら
+            // 1. 生成をリクエスト（この時点ではまだ生成されていない）
+            if(itemInfo.gSetObject == null) { return; }
+            handle = itemInfo.gSetObject.InstantiateAsync(rightHand.transform);
+            // 2. 完了した時の処理を登録
+            handle.Completed += (op) =>
+            {
+                if (op.Status == AsyncOperationStatus.Succeeded)
+                {
+                    // 生成されたオブジェクトを取得
+                    GameObject spawnedWeapon = op.Result;
+                    Debug.Log($"{spawnedWeapon.name} の生成に成功");
+                    spawnedWeapon.transform.localPosition = Vector3.zero;
+                    spawnedWeapon.transform.localRotation = Quaternion.identity;
+                }
+            };
         }
 
         public void ChangeParent(SetItemTransform.TransformType from,SetItemTransform.TransformType to)

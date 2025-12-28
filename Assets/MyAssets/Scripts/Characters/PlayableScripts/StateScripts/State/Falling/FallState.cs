@@ -19,6 +19,7 @@ namespace MyAssets
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsFallBigImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             if (StateChanger.IsContain(JumpDownState.mStateKey)) { re.Add(new IsJumpDownTransition(actor, StateChanger, JumpDownState.mStateKey)); }
             return re;
         }
@@ -54,6 +55,7 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
+            mAnimator.SetInteger("jumpState", -1);
         }
 
         public override void CollisionEnter(GameObject thisObject, Collision collision)
