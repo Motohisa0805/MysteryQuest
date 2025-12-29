@@ -46,9 +46,7 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            // Idle状態の特定の処理をここに追加できます
-            // 例: アニメーションの更新など
-            //mController.UpdateIdleToRunAnimation();
+            mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateSpritDushAnimation();
         }
 

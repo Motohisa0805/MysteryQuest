@@ -53,6 +53,7 @@ namespace MyAssets
 
         public override void Execute_Update(float time)
         {
+            mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateFocusingMoveAnimation();
             mAnimationFunction.SpritDushClear();
             base.Execute_Update(time);
@@ -78,6 +79,7 @@ namespace MyAssets
             base.Exit();
             mAnimationFunction.SetToolState(false);
             mAnimationFunction.SetAnimatorLayerWeight(1, 0);
+            mAnimationFunction.SetAnimatorLayerWeight(2, 0);
         }
 
         public override void CollisionEnter(GameObject thisObject, Collision collision)
