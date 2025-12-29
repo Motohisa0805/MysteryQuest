@@ -31,79 +31,90 @@ namespace MyAssets
 
         //アニメーションのブレンドを滑らかにするための変数
         // 現在アニメーターに渡しているブレンド値
-        [SerializeField]
         private float mAnimIdleToRunSpeed = 0f;          
         // ブレンドにかける時間 (0.1秒程度が滑らか)
-        [SerializeField]
         private float mAnimSmoothTime = 0.1f;   
         // SmoothDampで使用する参照速度（内部で自動更新される）
-        [SerializeField]
         private float mSmoothVelocity = 0f;     
 
         //アニメーションのブレンドを滑らかにするための変数
         // 現在アニメーターに渡しているブレンド値
-        [SerializeField]
         private float mSpritDushSpeed = 0f;          
         // ブレンドにかける時間 (0.1秒程度が滑らか)
-        [SerializeField]
         private float mSpritDushSmoothTime = 0.1f;   
         // SmoothDampで使用する参照速度（内部で自動更新される）
-        [SerializeField]
         private float mSpritDushSmoothVelocity = 0f;     
 
         //アニメーションのブレンドを滑らかにするための変数
         // 現在アニメーターに渡しているブレンド値
-        [SerializeField]
         private float mFocusingMoveXSpeed = 0f;          
         // ブレンドにかける時間 (0.1秒程度が滑らか)
-        [SerializeField]
         private float mFocusingMoveXSmoothTime = 0.1f;   
         // SmoothDampで使用する参照速度（内部で自動更新される）
-        [SerializeField]
         private float mFocusingMoveXSmoothVelocity = 0f;     
 
         //アニメーションのブレンドを滑らかにするための変数
         // 現在アニメーターに渡しているブレンド値
-        [SerializeField]
         private float mFocusingMoveYSpeed = 0f;          
         // ブレンドにかける時間 (0.1秒程度が滑らか)
-        [SerializeField]
         private float mFocusingMoveYSmoothTime = 0.1f;   
         // SmoothDampで使用する参照速度（内部で自動更新される）
-        [SerializeField]
         private float mFocusingMoveYSmoothVelocity = 0f;     
 
         //アニメーションのブレンドを滑らかにするための変数
         // 現在アニメーターに渡しているブレンド値
-        [SerializeField]
         private float mToLiftIdleToRunSpeed = 0f;          
         // ブレンドにかける時間 (0.1秒程度が滑らか)
-        [SerializeField]
         private float mToLiftSmoothTime = 0.1f;   
         // SmoothDampで使用する参照速度（内部で自動更新される）
-        [SerializeField]
         private float mToLiftSmoothVelocity = 0f;     
 
         //アニメーションのブレンドを滑らかにするための変数
         // 現在アニメーターに渡しているブレンド値
-        [SerializeField]
         private float mCrouchAnimSpeed = 0f;          
         // ブレンドにかける時間 (0.1秒程度が滑らか)
-        [SerializeField]
         private float mCrouchAnimSmoothTime = 0.1f;   
         // SmoothDampで使用する参照速度（内部で自動更新される）
-        [SerializeField]
-        private float mCrouchSmoothVelocity = 0f;     
+        private float mCrouchSmoothVelocity = 0f;
 
 
+        private float mCurrentModeBlend = 0;
+        private float mTargetModeBlend = 0;
+        // ブレンドにかける時間 (0.1秒程度が滑らか)
+        private float mModeBlendSmoothTime = 0.1f;
+        // SmoothDampで使用する参照速度（内部で自動更新される）
+        private float mModeBlendSmoothVelocity = 0f;
         public float GetModeBlend()
         {
             return Animator.GetFloat("modeBlend");
         }
         public void SetModeBlend(int blend)
         {
-            Animator.SetFloat("modeBlend", blend);
+            mTargetModeBlend = blend;
         }
+        public void UpdateModeBlend()
+        {
+            if (Animator == null)
+            {
+                return;
+            }
+
+            // 2. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
+            mCurrentModeBlend = Mathf.SmoothDamp(
+                mCurrentModeBlend,             // 現在の値
+                mTargetModeBlend,       // 目標の値
+                ref mModeBlendSmoothVelocity,    // 内部で使用される参照速度（毎回渡す）
+                mModeBlendSmoothTime         // 目標値に到達するまでにかける時間
+            );
+
+            if (Animator.GetFloat("modeBlend") != mCurrentModeBlend)
+            {
+                // 4. アニメーターに滑らかになったブレンド値を渡す
+                Animator.SetFloat("modeBlend", mCurrentModeBlend);
+            }
+        }
+
+
 
         public bool IsToolState()
         {

@@ -59,6 +59,7 @@ namespace MyAssets
 
         public override void Execute_Update(float time)
         {
+            mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateFocusingMoveAnimation();
             mAnimationFunction.SpritDushClear();
 

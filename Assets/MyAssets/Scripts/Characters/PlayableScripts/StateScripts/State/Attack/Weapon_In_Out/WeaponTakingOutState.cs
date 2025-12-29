@@ -49,10 +49,12 @@ namespace MyAssets
             mEquipmentController.ChangeParent(SetItemTransform.TransformType.Weapon,SetItemTransform.TransformType.Right);
             mEquipmentController.IsBattleMode = true;
             mAnimationFunction.SetAnimatorLayerWeight(1,1);
+            mAnimationFunction.SetAnimatorLayerWeight(2,1);
         }
 
         public override void Execute_Update(float time)
         {
+            mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateFocusingMoveAnimation();
             mAnimationFunction.SpritDushClear();
             base.Execute_Update(time);
