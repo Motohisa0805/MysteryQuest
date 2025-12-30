@@ -366,6 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36239b2283f143d4e95431d4fc130b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.PlayableAnimationFunction
+  mLayer3WeightSmoothTime: 0.1
 --- !u!114 &2747707673611833966
 MonoBehaviour:
   m_ObjectHideFlags: 0

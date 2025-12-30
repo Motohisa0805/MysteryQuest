@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace MyAssets
 {
@@ -24,9 +25,58 @@ namespace MyAssets
             Animator.enabled = enabled;
         }
 
+        private float mCurrentLayer3Weight;
+        private float mTargetLayer3Weight;
+        // ブレンドにかける時間 (0.1秒程度が滑らか)
+        [Header("Layer3の変数")]
+        [Header("ブレンドにかける時間")]
+        [SerializeField]
+        private float mLayer3WeightSmoothTime = 0.1f;
+        // SmoothDampで使用する参照速度（内部で自動更新される）
+        private float mLayer3WeightSmoothVelocity = 0f;
+
         public void SetAnimatorLayerWeight(int layer,float layerWeight)
         {
-            Animator.SetLayerWeight(layer,layerWeight);
+            Animator.SetLayerWeight(layer, layerWeight);
+        }
+
+        public void StartUpdateAnimatorLayerWeight(int layer, float layerWeight)
+        {
+            if (layer == 0)
+            {
+                Animator.SetLayerWeight(layer, layerWeight);
+            }
+            else if (layer == 1)
+            {
+                Animator.SetLayerWeight(layer, layerWeight);
+            }
+            else if (layer == 2)
+            {
+                mTargetLayer3Weight = layerWeight;
+            }
+        }
+
+        public void UpdateLayer3Weight()
+        {
+            if (Animator == null)
+            {
+                return;
+            }
+
+            // 2. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
+            mCurrentLayer3Weight = Mathf.SmoothDamp(
+                mCurrentLayer3Weight,               // 現在の値
+                mTargetLayer3Weight,                // 目標の値
+                ref mLayer3WeightSmoothVelocity,    // 内部で使用される参照速度（毎回渡す）
+                mLayer3WeightSmoothTime             // 目標値に到達するまでにかける時間
+            );
+
+            if (Animator.GetLayerWeight(2) != mCurrentLayer3Weight)
+            {
+                // 4. アニメーターに滑らかになったブレンド値を渡す
+                Animator.SetLayerWeight(2, mCurrentLayer3Weight);
+            }
+            
         }
 
         //アニメーションのブレンドを滑らかにするための変数
