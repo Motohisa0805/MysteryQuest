@@ -65,14 +65,16 @@ namespace MyAssets
     public class IsCrouchToStandingTransition : StateTransitionBase
     {
         readonly private PlayableInput mInput;
+        readonly private PlayableChracterController mController;
         public IsCrouchToStandingTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
+            mController = actor.GetComponent<PlayableChracterController>();
         }
         public override bool IsTransition()
         {
-            return mInput.InputCrouch;
+            return mInput.InputCrouch && !mController.OverHead;
         }
     }
 
