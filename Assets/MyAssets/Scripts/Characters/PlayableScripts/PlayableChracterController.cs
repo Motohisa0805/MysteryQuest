@@ -115,6 +115,11 @@ namespace MyAssets
         public bool Grounded => mGrounded;
 
         private bool mIsPastGrounded; //前フレームで地面に接地していたかどうか
+
+        [SerializeField]
+        private bool mOverHead; //地面に接地しているかどうか
+        public bool OverHead => mOverHead;
+
         [SerializeField]
         private Timer mFallTimer;
         public Timer FallTimer => mFallTimer;
@@ -236,6 +241,7 @@ namespace MyAssets
             mFallTimer.Update(t);
 
             GroundCheck();
+            OverheadCheck();
             stateMachine.Update(t);
             mCurrentStateKey = stateMachine.CurrentState.Key;
         }
@@ -266,6 +272,25 @@ namespace MyAssets
             }
 
             return true;
+        }
+
+        public void OverheadCheck()
+        {
+            //当たった情報を取得
+            RaycastHit hit;
+            bool overhead = false;
+            overhead = Physics.SphereCast(transform.position + Vector3.up * (mGroundCheckOffsetY + 0.5f),
+                mRayRadius, Vector3.up, out hit, mRayLength, mGroundLayer,
+                QueryTriggerInteraction.Ignore);
+            Debug.DrawRay(transform.position + Vector3.up * (mGroundCheckOffsetY + 0.5f), Vector3.up * (mRayLength + mRayRadius), Color.blue);
+            if(overhead)
+            {
+                mOverHead = true;
+            }
+            else
+            {
+                mOverHead = false;
+            }
         }
 
         private void FixedUpdate()
