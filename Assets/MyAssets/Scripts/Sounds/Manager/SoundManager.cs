@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace MyAssets
 {
@@ -17,7 +16,10 @@ namespace MyAssets
 
         private int                 mMaxAudioIndex = 20;
 
-        private List<AudioSource>     mAudioObjects = new List<AudioSource>();
+        private List<AudioSource>   mAudioObjects = new List<AudioSource>();
+
+        [SerializeField]
+        private GameObject          mAudioSourcePrefab;
         private void Awake()
         {
             if (instance != null)
@@ -31,11 +33,15 @@ namespace MyAssets
 
         private void Start()
         {
-            GameObject gameObject = new GameObject();
-            gameObject.AddComponent<AudioSource>();
             for (int i = 0; i < mInitSoundIndex;i++)
             {
-                GameObject obj = Instantiate(gameObject, transform);
+                if(mAudioSourcePrefab == null)
+                {
+                    Debug.LogError("AudioSourcePrefab is null in SoundManager");
+                    return;
+                }
+                GameObject obj = Instantiate(mAudioSourcePrefab, transform);
+                obj.AddComponent<AudioSource>();
                 obj.name = "SoundSorce" + i.ToString();
                 obj.SetActive(false);
                 mAudioObjects.Add(obj.GetComponent<AudioSource>());

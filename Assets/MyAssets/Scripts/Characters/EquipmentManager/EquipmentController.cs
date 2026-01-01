@@ -43,7 +43,6 @@ namespace MyAssets
                 {
                     // 生成されたオブジェクトを取得
                     GameObject spawnedWeapon = op.Result;
-                    Debug.Log($"{spawnedWeapon.name} の生成に成功");
                     rightHand.SetItemID(itemInfo.gId);
                     rightHand.HaveObject = spawnedWeapon;
                     spawnedWeapon.transform.localPosition = Vector3.zero;
@@ -61,7 +60,6 @@ namespace MyAssets
                 {
                     // 生成されたオブジェクトを取得
                     GameObject spawnedWeapon = op.Result;
-                    Debug.Log($"{spawnedWeapon.name} の生成に成功");
                     spawnedWeapon.transform.localPosition = Vector3.zero;
                     spawnedWeapon.transform.localRotation = Quaternion.identity;
                 }
