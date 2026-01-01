@@ -104,6 +104,9 @@ namespace MyAssets
             mCapsuleColliderController.SetRagdollModeCollider();
 
             mTimer.Start(1.0f);
+
+            //ƒeƒXƒg
+            PlayerStatusManager.Instance.ChangeHP(-360);
         }
 
         public override void Execute_Update(float time)
