@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 namespace MyAssets
 {
@@ -17,6 +18,8 @@ namespace MyAssets
 
         private PlayableAnimationFunction mAnimationFunction;
 
+        private PlayableChracterController mController;
+
 
         [SerializeField]
         private float mCrouchHeight;
@@ -31,6 +34,7 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
+            mController = actor.GetComponent<PlayableChracterController>();
             mColliderController = actor.GetComponentInChildren<CapsuleColliderController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
@@ -48,6 +52,22 @@ namespace MyAssets
             mColliderController.SetHeight(crouchHeight);
             Vector3 c = mColliderController.CapsuleCollider.center;
             mColliderController.SetCenter(new Vector3(c.x, -crouchCenter_Y, c.z));
+        }
+
+        public override void Execute_Update(float time)
+        {
+            base.Execute_Update(time);
+            // Idle状態の特定の処理をここに追加できます
+            // 例: アニメーションの更新など
+            mAnimationFunction.UpdateCrouchAnimation();
+        }
+
+        public override void Execute_FixedUpdate(float time)
+        {
+            mController.InputVelocity();
+            mController.Movement.Move(mController.StatusProperty.CrouchMaxSpeed, mController.StatusProperty.Acceleration);
+            base.Execute_FixedUpdate(time);
+            mController.FreeRotate();
         }
 
     }
@@ -182,6 +202,10 @@ namespace MyAssets
 
         private Animator mAnimator;
 
+        private PlayableChracterController mController;
+
+        private PlayableAnimationFunction mAnimationFunction;
+
         private CapsuleColliderController mColliderController;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
@@ -194,6 +218,8 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
+            mController = actor.GetComponent<PlayableChracterController>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mColliderController = actor.GetComponentInChildren<CapsuleColliderController>();
         }
@@ -204,6 +230,21 @@ namespace MyAssets
             mAnimator.SetInteger("crouchState", 2);
         }
 
+        public override void Execute_Update(float time)
+        {
+            base.Execute_Update(time);
+            // Idle状態の特定の処理をここに追加できます
+            // 例: アニメーションの更新など
+            mAnimationFunction.UpdateCrouchAnimation();
+        }
+
+        public override void Execute_FixedUpdate(float time)
+        {
+            mController.InputVelocity();
+            mController.Movement.Move(mController.StatusProperty.CrouchMaxSpeed, mController.StatusProperty.Acceleration);
+            base.Execute_FixedUpdate(time);
+            mController.FreeRotate();
+        }
 
         public override void Exit()
         {
