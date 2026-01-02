@@ -21,12 +21,6 @@ namespace MyAssets
         Water = 1 << 1,
     }
 
-    public enum ObjectType
-    {
-        Element,
-        Material
-    }
-
     [Serializable]
     public struct ReactionResult
     {
@@ -35,9 +29,6 @@ namespace MyAssets
 
         [Tooltip("相手から削除する属性")]
         public ElementType gElementToRemove;
-
-        [Tooltip("発生させるエフェクト名やID")]
-        public string mVfxName;
 
         [Tooltip("発生させるエフェクトID")]
         public EffectType mEffectType;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.VisualScripting.Member;
 
 namespace MyAssets
 {
@@ -76,7 +77,7 @@ namespace MyAssets
         }
 
 
-        public void PlayOneShot3D(SoundList.SEType SEType,Transform parent,bool loop = false, bool isFollow = false,float endSECount = -1)
+        public void PlayOneShot3D(SoundList.SEType SEType,Transform parent,bool loop = false, bool isFollow = false,bool destroyCollection = false, float endSECount = -1)
         {
             //クリップを取得
             SoundList.SEElement seElement = mSoundList.SEList[(int)SEType];
@@ -106,20 +107,30 @@ namespace MyAssets
             }
 
             audioSource.PlayOneShot(clip);
-            // 再生終了後に回収する仕組みが必要
-            if(endSECount < 0)
+            if(!destroyCollection)
             {
-                StartCoroutine(ReturnToPool(audioSource, clip.length));
-            }
-            else
-            {
-                StartCoroutine(ReturnToPool(audioSource, endSECount));
+                // 再生終了後に回収する仕組みが必要
+                if(endSECount < 0)
+                {
+                    StartCoroutine(ReturnToPool(audioSource, clip.length));
+                }
+                else
+                {
+                    StartCoroutine(ReturnToPool(audioSource, endSECount));
+                }
             }
         }
 
         private IEnumerator ReturnToPool(AudioSource source, float delay)
         {
             yield return new WaitForSecondsRealtime(delay);
+            source.Stop(); // 念のため
+            source.transform.SetParent(transform); // 親を戻す
+            source.gameObject.SetActive(false);
+        }
+
+        public void ReturnAudioSource(AudioSource source)
+        {
             source.Stop(); // 念のため
             source.transform.SetParent(transform); // 親を戻す
             source.gameObject.SetActive(false);
