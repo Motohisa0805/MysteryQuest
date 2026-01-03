@@ -38,6 +38,11 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
+            Collider hand = mController.HandTransforms[(int)SetItemTransform.TransformType.Right].GetCollider();
+            if (hand)
+            {
+                hand.enabled = true;
+            }
             mAnimationFunction.Animator.SetInteger("attack State", 2);
         }
 
@@ -58,6 +63,11 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
+            Collider hand = mController.HandTransforms[(int)SetItemTransform.TransformType.Right].GetCollider();
+            if (hand)
+            {
+                hand.enabled = false;
+            }
             mAnimationFunction.Animator.SetInteger("attack State", -1);
         }
 
