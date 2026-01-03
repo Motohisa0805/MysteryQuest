@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 namespace MyAssets
 {
@@ -38,6 +39,11 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
+            Collider hand = mController.HandTransforms[(int)SetItemTransform.TransformType.Right].GetCollider();
+            if (hand)
+            {
+                hand.enabled = true;
+            }
             mAnimationFunction.Animator.SetInteger("attack State", 1);
         }
 
@@ -58,6 +64,11 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
+            Collider hand = mController.HandTransforms[(int)SetItemTransform.TransformType.Right].GetCollider();
+            if (hand)
+            {
+                hand.enabled = false;
+            }
             mAnimationFunction.Animator.SetInteger("attack State", -1);
         }
 

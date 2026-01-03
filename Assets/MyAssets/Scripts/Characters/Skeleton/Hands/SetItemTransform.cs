@@ -46,6 +46,12 @@ namespace MyAssets
         private GameObject mHaveObject;
         public GameObject HaveObject { get { return mHaveObject; }set { mHaveObject = value; } }
 
+        public Collider GetCollider()
+        {
+            if (mHaveObject == null) return null;
+            return mHaveObject.GetComponent<Collider>();
+        }
+
         public float VectorSize() { return transform.position.magnitude; }
 
         private void Start()
