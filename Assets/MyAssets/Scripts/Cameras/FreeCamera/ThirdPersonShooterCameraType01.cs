@@ -11,6 +11,7 @@ namespace MyAssets
             Free,
             ShoulderView,
             Focusing,
+            Fixed,
         }
         [SerializeField]
         private static Type         mType;
@@ -52,6 +53,9 @@ namespace MyAssets
 
         [SerializeField]
         private CameraSettingsTPS   mFocusingSettings;
+
+        [SerializeField]
+        private CameraSettingsTPS   mFixedSettings;
 
         [SerializeField]
         private LayerMask           mLayerMask; //カメラの当たり判定に使用するレイヤーマスク
@@ -131,6 +135,12 @@ namespace MyAssets
                     mPitch -= mouseY * mFocusingSettings.Sensitivity;
                     mPitch = Mathf.Clamp(mPitch, mFocusingSettings.MinAngle, mFocusingSettings.MaxAngle);
                 }
+            }
+            else if (mCurrentType == Type.Fixed)
+            {
+                // 固定カメラの場合、回転や位置の更新は行わない
+                mPitch = 0;
+                mYaw = 0;
             }
         }
 
@@ -219,6 +229,17 @@ namespace MyAssets
                 linecastStart = playerPos + mFocusingSettings.Offset;
                 smoothTime = mFocusingSettings.SmoothTime;
                 lookAt = (playerPos + targetPos) * 0.5f; // プレイヤーと敵の中間を見る
+            }
+            else if (mCurrentType == Type.Fixed)
+            {
+                mAttentionPoint = mTarget.transform.position;
+                // カメラの目標位置を計算
+                Quaternion rotation = Quaternion.Euler(mPitch, mYaw, 0);
+                offset = rotation * new Vector3(0, 0, -mFixedSettings.Distance) + mFixedSettings.Offset;
+                mDesiredPosition = mAttentionPoint + offset;
+                linecastStart = mAttentionPoint + mFixedSettings.Offset;
+                smoothTime = mFixedSettings.SmoothTime;
+                lookAt = mAttentionPoint + mFixedSettings.Offset;
             }
             // カメラの当たり判定
             RaycastHit hit;

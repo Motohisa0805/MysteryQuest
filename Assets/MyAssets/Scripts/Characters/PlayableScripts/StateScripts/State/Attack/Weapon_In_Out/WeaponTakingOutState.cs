@@ -10,11 +10,11 @@ namespace MyAssets
         public static readonly string mStateKey = "TakinOut";
         public override string Key => mStateKey;
 
-        PlayableChracterController mController;
+        private PlayableChracterController mController;
 
-        PlayableAnimationFunction mAnimationFunction;
+        private PlayableAnimationFunction mAnimationFunction;
 
-        ImpactChecker mImpactChecker;
+        private ImpactChecker mImpactChecker;
 
         private PlayableInput mPlayableInput;
 
@@ -49,12 +49,12 @@ namespace MyAssets
             mEquipmentController.ChangeParent(SetItemTransform.TransformType.Weapon,SetItemTransform.TransformType.Right);
             mEquipmentController.IsBattleMode = true;
             mAnimationFunction.SetAnimatorLayerWeight(1,1);
-            mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 1);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(3, 1);
         }
 
         public override void Execute_Update(float time)
         {
-            mAnimationFunction.UpdateLayer3Weight();
+            mAnimationFunction.UpdateLayer4Weight();
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateFocusingMoveAnimation();
             mAnimationFunction.SpritDushClear();

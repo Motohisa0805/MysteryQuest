@@ -11,6 +11,7 @@ public class SoundList : ScriptableObject
         Damage,
         Fire,
         Footstep,
+        CountDown,
     }
 
     [System.Serializable]
@@ -19,6 +20,9 @@ public class SoundList : ScriptableObject
         [SerializeField]
         private SEType mType;
         public SEType Type => mType;
+        [SerializeField]
+        private string mLabel;
+        public string Label => mLabel;
         [SerializeField]
         private AudioClip[] mClips;
         public AudioClip[] Clips => mClips;

@@ -13,11 +13,15 @@ namespace MyAssets
 
         private PlayableChracterController mController;
 
+        private PlayableAnimationFunction mAnimationFunction;
+
         private Animator mAnimator;//アニメーター
 
         private Movement mMovement;
 
         private PropsObjectChecker mChecker;
+
+        private ImpactChecker mImpactChecker;
 
         [SerializeField]
         private float mThrowPower;
@@ -26,6 +30,8 @@ namespace MyAssets
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(ThrowIdleState.mStateKey)) { re.Add(new IsThrowIdleTransition(actor, StateChanger, ThrowIdleState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 
@@ -33,16 +39,19 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mMovement = actor.GetComponent<Movement>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
         {
             base.Enter();
             mAnimator.SetInteger("to Lift", 2);
-
+            mAnimationFunction.SetAnimatorLayerWeight(1, 0);
+            mAnimationFunction.SetAnimatorLayerWeight(2, 0);
             TPSCamera.CameraType = TPSCamera.Type.ShoulderView;
             PlayerUIManager.Instance.ThrowCircle.gameObject.SetActive(true);
         }
@@ -65,6 +74,12 @@ namespace MyAssets
         {
             base.Exit();
         }
+
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            mImpactChecker.ApplyImpactPower(collision);
+        }
     }
     [Serializable]
     public class ThrowIdleState : StateBase<string>
@@ -80,6 +95,8 @@ namespace MyAssets
 
         private Movement mMovement;
 
+        private ImpactChecker mImpactChecker;
+
         [SerializeField]
         private float mThrowPower;
 
@@ -88,6 +105,8 @@ namespace MyAssets
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(ThrowingState.mStateKey)) { re.Add(new IsThrowingTransition(actor, StateChanger, ThrowingState.mStateKey)); }
             if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 
@@ -98,6 +117,7 @@ namespace MyAssets
             mChecker = actor.GetComponent<PropsObjectChecker>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mMovement = actor.GetComponent<Movement>();
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
@@ -125,6 +145,12 @@ namespace MyAssets
             base.Exit();
             PlayerUIManager.Instance.ThrowCircle.gameObject.SetActive(false);
         }
+
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            mImpactChecker.ApplyImpactPower(collision);
+        }
     }
     [Serializable]
     public class ThrowingState : StateBase<string>
@@ -132,13 +158,13 @@ namespace MyAssets
         public static readonly string mStateKey = "Throwing";
         public override string Key => mStateKey;
 
-        private PlayableChracterController mController;
-
         private PropsObjectChecker mChecker;
 
         private Animator mAnimator;//アニメーター
 
         private Movement mMovement;
+
+        private ImpactChecker mImpactChecker;
 
         [SerializeField]
         private float mThrowPower;
@@ -150,16 +176,18 @@ namespace MyAssets
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsThrowingToIdleTransition(actor, StateChanger, IdleState.mStateKey)); }
             if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
-            mController = actor.GetComponent<PlayableChracterController>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mMovement = actor.GetComponent<Movement>();
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
@@ -194,6 +222,12 @@ namespace MyAssets
             mAnimator.SetInteger("to Lift", -1);
             mThrowed = false;
             TPSCamera.CameraType = TPSCamera.Type.Free;
+        }
+
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            mImpactChecker.ApplyImpactPower(collision);
         }
     }
 

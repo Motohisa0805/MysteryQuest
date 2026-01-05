@@ -23,16 +23,35 @@ namespace MyAssets
             if(Animator == null) { return; }
             Animator.enabled = enabled;
         }
+        private float mCurrentLayer2Weight;
+        private float mTargetLayer2Weight;
+        // ブレンドにかける時間 (0.1秒程度が滑らか)
+        [Header("Layer2の変数")]
+        [Header("ブレンドにかける時間")]
+        [SerializeField]
+        private float mLayer2WeightSmoothTime = 0.1f;
+        // SmoothDampで使用する参照速度（内部で自動更新される）
+        private float mLayer2WeightSmoothVelocity = 0f;
 
         private float mCurrentLayer3Weight;
         private float mTargetLayer3Weight;
         // ブレンドにかける時間 (0.1秒程度が滑らか)
-        [Header("Layer3の変数")]
+        [Header("Layer4の変数")]
         [Header("ブレンドにかける時間")]
         [SerializeField]
         private float mLayer3WeightSmoothTime = 0.1f;
         // SmoothDampで使用する参照速度（内部で自動更新される）
         private float mLayer3WeightSmoothVelocity = 0f;
+
+        private float mCurrentLayer4Weight;
+        private float mTargetLayer4Weight;
+        // ブレンドにかける時間 (0.1秒程度が滑らか)
+        [Header("Layer3の変数")]
+        [Header("ブレンドにかける時間")]
+        [SerializeField]
+        private float mLayer4WeightSmoothTime = 0.1f;
+        // SmoothDampで使用する参照速度（内部で自動更新される）
+        private float mLayer4WeightSmoothVelocity = 0f;
 
         public void SetAnimatorLayerWeight(int layer,float layerWeight)
         {
@@ -51,10 +70,35 @@ namespace MyAssets
             }
             else if (layer == 2)
             {
-                mTargetLayer3Weight = layerWeight;
+                Animator.SetLayerWeight(layer, layerWeight);
+            }
+            else if(layer == 3)
+            {
+                mTargetLayer4Weight = layerWeight;
             }
         }
+        public void UpdateLayer2Weight()
+        {
+            if (Animator == null)
+            {
+                return;
+            }
 
+            // 2. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
+            mCurrentLayer2Weight = Mathf.SmoothDamp(
+                mCurrentLayer2Weight,               // 現在の値
+                mTargetLayer2Weight,                // 目標の値
+                ref mLayer2WeightSmoothVelocity,    // 内部で使用される参照速度（毎回渡す）
+                mLayer2WeightSmoothTime             // 目標値に到達するまでにかける時間
+            );
+
+            if (Animator.GetLayerWeight(2) != mCurrentLayer2Weight)
+            {
+                // 4. アニメーターに滑らかになったブレンド値を渡す
+                Animator.SetLayerWeight(2, mCurrentLayer2Weight);
+            }
+
+        }
         public void UpdateLayer3Weight()
         {
             if (Animator == null)
@@ -74,6 +118,28 @@ namespace MyAssets
             {
                 // 4. アニメーターに滑らかになったブレンド値を渡す
                 Animator.SetLayerWeight(2, mCurrentLayer3Weight);
+            }
+
+        }
+        public void UpdateLayer4Weight()
+        {
+            if (Animator == null)
+            {
+                return;
+            }
+
+            // 2. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
+            mCurrentLayer4Weight = Mathf.SmoothDamp(
+                mCurrentLayer4Weight,               // 現在の値
+                mTargetLayer4Weight,                // 目標の値
+                ref mLayer4WeightSmoothVelocity,    // 内部で使用される参照速度（毎回渡す）
+                mLayer4WeightSmoothTime             // 目標値に到達するまでにかける時間
+            );
+
+            if (Animator.GetLayerWeight(3) != mCurrentLayer4Weight)
+            {
+                // 4. アニメーターに滑らかになったブレンド値を渡す
+                Animator.SetLayerWeight(3, mCurrentLayer4Weight);
             }
             
         }
@@ -109,14 +175,6 @@ namespace MyAssets
         private float mFocusingMoveYSmoothTime = 0.1f;   
         // SmoothDampで使用する参照速度（内部で自動更新される）
         private float mFocusingMoveYSmoothVelocity = 0f;     
-
-        //アニメーションのブレンドを滑らかにするための変数
-        // 現在アニメーターに渡しているブレンド値
-        private float mToLiftIdleToRunSpeed = 0f;          
-        // ブレンドにかける時間 (0.1秒程度が滑らか)
-        private float mToLiftSmoothTime = 0.1f;   
-        // SmoothDampで使用する参照速度（内部で自動更新される）
-        private float mToLiftSmoothVelocity = 0f;     
 
         //アニメーションのブレンドを滑らかにするための変数
         // 現在アニメーターに渡しているブレンド値
@@ -285,35 +343,6 @@ namespace MyAssets
                 // 4. アニメーターに滑らかになったブレンド値を渡す
                 // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // 修正前
                 Animator.SetFloat("spritDush", mSpritDushSpeed);
-            }
-        }
-
-        public void UpdateToLiftIdleToToLiftRunAnimation()
-        {
-            if (Animator == null)
-            {
-                return;
-            }
-            // 1. 物理速度の絶対値を取得
-            float targetSpeed = mController.Rigidbody.linearVelocity.magnitude;
-
-            // 2. 速度を最高速度で正規化し、0～1の値に変換（ブレンドツリーの範囲に合わせる）
-            // ※ブレンドツリーの最大値が1の場合を想定
-            float targetBlendValue = targetSpeed / mController.StatusProperty.MaxSpeed;
-
-            // 3. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
-            mToLiftIdleToRunSpeed = Mathf.SmoothDamp(
-                mToLiftIdleToRunSpeed,             // 現在の値
-                targetBlendValue,       // 目標の値
-                ref mToLiftSmoothVelocity,    // 内部で使用される参照速度（毎回渡す）
-                mToLiftSmoothTime         // 目標値に到達するまでにかける時間
-            );
-
-            if (Animator.GetFloat("to Lift Blend") != mToLiftIdleToRunSpeed)
-            {
-                // 4. アニメーターに滑らかになったブレンド値を渡す
-                // mAnimator.SetFloat("idleToRun", mRigidbody.linearVelocity.magnitude); // 修正前
-                Animator.SetFloat("to Lift Blend", mToLiftIdleToRunSpeed);
             }
         }
 

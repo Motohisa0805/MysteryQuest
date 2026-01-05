@@ -9,11 +9,13 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "PushStart";
         public override string Key => mStateKey;
-        PlayableChracterController mController;
+        private PlayableChracterController mController;
 
         private PropsObjectChecker mPropsChecker;
 
         private Animator mAnimator;//アニメーター
+
+        private ImpactChecker mImpactChecker;
 
         [SerializeField]
         private float mPushPower;
@@ -29,6 +31,8 @@ namespace MyAssets
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(PushingState.mStateKey)) { re.Add(new IsPushingTransition(actor, StateChanger, PushingState.mStateKey)); }
             if (StateChanger.IsContain(MoveState.mStateKey)) { re.Add(new IsPushEndTransition(actor, StateChanger, MoveState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 
@@ -38,6 +42,7 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mPropsChecker = actor.GetComponent<PropsObjectChecker>();
             mAnimator = actor.GetComponentInChildren<Animator>();
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
@@ -73,6 +78,12 @@ namespace MyAssets
             base.Exit();
             mAnimator.SetInteger("pushState", -1);
         }
+
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            mImpactChecker.ApplyImpactPower(collision);
+        }
     }
 
 
@@ -81,11 +92,13 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "Pushing";
         public override string Key => mStateKey;
-        PlayableChracterController mController;
+        private PlayableChracterController mController;
 
         private PropsObjectChecker mPropsChecker;
 
         private Animator mAnimator;//アニメーター
+
+        private ImpactChecker mImpactChecker;
 
         [SerializeField]
         private float mPushPower;
@@ -102,6 +115,8 @@ namespace MyAssets
             if (StateChanger.IsContain(MoveState.mStateKey)) { re.Add(new IsPushEndTransition(actor, StateChanger, MoveState.mStateKey)); }
             if (StateChanger.IsContain(PushEndState.mStateKey)) { re.Add(new IsPushEndStartTransition(actor, StateChanger, PushEndState.mStateKey)); }
             if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 
@@ -111,6 +126,7 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mPropsChecker = actor.GetComponent<PropsObjectChecker>();
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
@@ -145,6 +161,11 @@ namespace MyAssets
             base.Exit();
             mAnimator.SetInteger("pushState", -1);
         }
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            mImpactChecker.ApplyImpactPower(collision);
+        }
     }
 
     [Serializable]
@@ -157,6 +178,8 @@ namespace MyAssets
         private PropsObjectChecker mPropsChecker;
 
         private Animator mAnimator;//アニメーター
+
+        private ImpactChecker mImpactChecker;
 
         [SerializeField]
         private float mPushPower;
@@ -180,6 +203,7 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mPropsChecker = actor.GetComponent<PropsObjectChecker>();
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
@@ -213,6 +237,11 @@ namespace MyAssets
         {
             base.Exit();
             mAnimator.SetInteger("pushState", -1);
+        }
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            mImpactChecker.ApplyImpactPower(collision);
         }
     }
 }

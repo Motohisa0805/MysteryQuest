@@ -13,6 +13,9 @@ namespace MyAssets
         public bool DebugMode => mDebugMode;
 
         [SerializeField]
+        private Transform mDebugPanelPrefab;
+
+        [SerializeField]
         private Transform mDebugInputPanel;
 
         [SerializeField]
@@ -38,7 +41,16 @@ namespace MyAssets
 
         private void Start()
         {
-            mDebugInputPanel.gameObject.SetActive(mDebugMode);
+            Canvas canvas = FindFirstObjectByType<Canvas>();
+            if (canvas)
+            {
+                Transform obj = Instantiate(mDebugPanelPrefab, canvas.transform);
+                mDebugInputPanel = obj.Find("DebugPanel");
+            }
+            if(mDebugInputPanel != null)
+            {
+                mDebugInputPanel.gameObject.SetActive(mDebugMode);
+            }
         }
 
         private void Update()

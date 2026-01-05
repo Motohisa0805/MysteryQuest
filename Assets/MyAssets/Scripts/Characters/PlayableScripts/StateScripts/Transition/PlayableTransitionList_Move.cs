@@ -34,12 +34,14 @@ namespace MyAssets
     {
 
         readonly private PlayableInput mInput;
+        readonly private PropsObjectChecker mChecker;
         public IsMoveTransitionType3(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
         }
-        public override bool IsTransition() => mInput.InputMove.magnitude > 0.1f && !mInput.Focusing;
+        public override bool IsTransition() => !mChecker.HasTakedObject && mInput.InputMove.magnitude > 0.1f && !mInput.Focusing;
     }
 
     public class IsMoveTransitionType5 : StateTransitionBase

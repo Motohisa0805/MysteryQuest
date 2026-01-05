@@ -40,15 +40,18 @@ namespace MyAssets
         public void SetReleaseTakedObject() 
         {
             mHasTakedObject = false;
-            Rigidbody rigidbody = mSmallObject.GetComponent<Rigidbody>();
-            if (rigidbody != null)
+            if(mSmallObject != null)
             {
-                rigidbody.useGravity = true;
-            }
-            Collider collider = mSmallObject.GetComponent<Collider>();
-            if (collider != null)
-            {
-                collider.isTrigger = false;
+                Rigidbody rigidbody = mSmallObject.GetComponent<Rigidbody>();
+                if (rigidbody != null)
+                {
+                    rigidbody.useGravity = true;
+                }
+                Collider collider = mSmallObject.GetComponent<Collider>();
+                if (collider != null)
+                {
+                    collider.isTrigger = false;
+                }
             }
         }
 

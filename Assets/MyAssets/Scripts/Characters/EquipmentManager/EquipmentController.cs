@@ -10,6 +10,10 @@ namespace MyAssets
         private bool mBattleMode = false;
         public bool IsBattleMode { get { return mBattleMode; }set { mBattleMode = value; } }
 
+        //剣のエフェクト管理クラス
+        private SwingEffectHandler mSwingEffectHandler;
+        public SwingEffectHandler SwingEffectHandler => mSwingEffectHandler;
+
         private void Awake()
         {
             mController = GetComponent<PlayableChracterController>();
@@ -47,6 +51,9 @@ namespace MyAssets
                     rightHand.HaveObject = spawnedWeapon;
                     spawnedWeapon.transform.localPosition = Vector3.zero;
                     spawnedWeapon.transform.localRotation = Quaternion.identity;
+                    //剣のエフェクト管理クラスを取得しておく
+                    mSwingEffectHandler = spawnedWeapon.GetComponentInChildren<SwingEffectHandler>();
+                    mSwingEffectHandler?.ActivateSlachEffect(false);
                 }
             };
             //もし武器とセットにあるオブジェクトがあるなら
