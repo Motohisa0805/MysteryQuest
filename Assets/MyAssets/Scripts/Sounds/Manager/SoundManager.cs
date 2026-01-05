@@ -121,6 +121,32 @@ namespace MyAssets
             }
         }
 
+        public void PlayOneShot2D(SoundList.SEType SEType, bool loop = false, float endSECount = -1,float pitch = 1)
+        {
+            //クリップを取得
+            SoundList.SEElement seElement = mSoundList.SEList[(int)SEType];
+            AudioClip clip = seElement.Clips[Random.Range(0, mSoundList.SEList[(int)SEType].MaxClips)];
+            //オーディオソースを探す
+            AudioSource audioSource = SerchAudios();
+            if (audioSource == null || clip == null)
+            {
+                return;
+            }
+            //オーディオソースを有効に
+            audioSource.gameObject.SetActive(true);
+            audioSource.loop = loop;
+            audioSource.pitch = pitch;
+            audioSource.spatialBlend = 0.0f;
+            audioSource.maxDistance = seElement.MaxDistance;
+            audioSource.minDistance = seElement.MinDistance;
+
+
+
+
+            audioSource.PlayOneShot(clip);
+            StartCoroutine(ReturnToPool(audioSource, clip.length));
+        }
+
         private IEnumerator ReturnToPool(AudioSource source, float delay)
         {
             yield return new WaitForSecondsRealtime(delay);
@@ -135,5 +161,8 @@ namespace MyAssets
             source.transform.SetParent(transform); // 親を戻す
             source.gameObject.SetActive(false);
         }
+
+
+
     }
 }

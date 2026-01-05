@@ -10,8 +10,10 @@ namespace MyAssets
         public static readonly string mStateKey = "SmallImpact";
         public override string Key => mStateKey;
         private Animator mAnimator;
+        private PlayableAnimationFunction mAnimationFunction;
         private ImpactChecker mImpactChecker;
         private PlayableChracterController mPlayableChracterController;
+        private PropsObjectChecker mChecker;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -24,13 +26,18 @@ namespace MyAssets
         {
             base.Setup(actor);
             mAnimator = actor.GetComponentInChildren<Animator>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponentInChildren<ImpactChecker>();
             mPlayableChracterController = actor.GetComponent<PlayableChracterController>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
         }
 
         public override void Enter()
         {
             base.Enter();
+            mAnimator.SetInteger("to Lift", -1);
+            mAnimator.SetInteger("crouchState", -1);
+            TPSCamera.CameraType = TPSCamera.Type.Free;
             if (mPlayableChracterController.Grounded)
             {
                 mAnimator.SetInteger("impact State", 0);
@@ -39,6 +46,10 @@ namespace MyAssets
             {
                 mAnimator.SetInteger("impact State", -2);
             }
+            mAnimationFunction.SetAnimatorLayerWeight(1, 0);
+            mAnimationFunction.SetAnimatorLayerWeight(2, 0);
+
+            mChecker.SetReleaseTakedObject();
         }
 
         public override void Execute_Update(float time)
@@ -71,6 +82,8 @@ namespace MyAssets
 
         private ImpactChecker mImpactChecker;
 
+        private PropsObjectChecker mChecker;
+
         private Timer mTimer = new Timer();
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -92,19 +105,25 @@ namespace MyAssets
             mImpactChecker = actor.GetComponent<ImpactChecker>();
             mRagdollController = actor.GetComponentInChildren<RagdollController>();
             mCapsuleColliderController = actor.GetComponentInChildren<CapsuleColliderController>();
-
+            mChecker = actor.GetComponent<PropsObjectChecker>();
             mTimer.OnEnd += ImpactPowerReset;
         }
 
         public override void Enter()
         {
             base.Enter();
+            mAnimator.SetInteger("to Lift", -1);
+            mAnimator.SetInteger("crouchState", -1);
+            mPlayableAnimationFunction.SetAnimatorLayerWeight(1, 0);
+            mPlayableAnimationFunction.SetAnimatorLayerWeight(2, 0);
             mPlayableAnimationFunction.SetAnimatorEnabled(false);
+
+            TPSCamera.CameraType = TPSCamera.Type.Free;
             mRagdollController.SetEnabledRagdoll(true);
             mCapsuleColliderController.SetRagdollModeCollider();
 
             mTimer.Start(1.0f);
-
+            mChecker.SetReleaseTakedObject();
             //ƒeƒXƒg
             PlayerStatusManager.Instance.ChangeHP(-360);
         }

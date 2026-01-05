@@ -8,11 +8,11 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "Run";
         public override string      Key => mStateKey;
-        PlayableChracterController  mController;
+        private PlayableChracterController  mController;
 
-        PlayableAnimationFunction   mAnimationFunction;
+        private PlayableAnimationFunction mAnimationFunction;
 
-        ImpactChecker               mImpactChecker;
+        private ImpactChecker               mImpactChecker;
 
         private PlayableInput mPlayableInput;
 

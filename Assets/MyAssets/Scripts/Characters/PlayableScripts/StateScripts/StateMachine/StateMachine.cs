@@ -9,6 +9,15 @@ namespace MyAssets
     {
         //ó‘Ô‚ğDictionary‚ÅŠÇ—
         private Dictionary<string, StateBase<TKey>> mStateDictionary;
+        public T GetState<T>(string key) where T : StateBase<TKey>
+        {
+            if (mStateDictionary.TryGetValue(key, out var state))
+            {
+                return state as T;
+            }
+            return null;
+        }
+
         //Œ»İ‚Ìó‘Ô
         private StateBase<TKey> mCurrentState;
         public StateBase<TKey> CurrentState => mCurrentState;

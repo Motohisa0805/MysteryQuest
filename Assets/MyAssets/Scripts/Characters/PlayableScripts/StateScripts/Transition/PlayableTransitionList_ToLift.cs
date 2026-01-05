@@ -82,6 +82,33 @@ namespace MyAssets
         }
     }
 
+    public class IsToLiftIdleTransition : StateTransitionBase
+    {
+
+        readonly private PlayableInput mInput;
+        readonly private PropsObjectChecker mChecker;
+        public IsToLiftIdleTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
+        }
+        public override bool IsTransition() => mChecker.HasTakedObject && mInput.InputMove.magnitude < 0.1f && !mInput.Focusing;
+    }
+    public class IsToLiftMoveTransition : StateTransitionBase
+    {
+
+        readonly private PlayableInput mInput;
+        readonly private PropsObjectChecker mChecker;
+        public IsToLiftMoveTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
+        }
+        public override bool IsTransition() => mChecker.HasTakedObject && mInput.InputMove.magnitude > 0.1f && !mInput.Focusing;
+    }
+
     //TODO : 持ち上げを解除クラスは後々変更
     public class IsReleaseLiftTransition : StateTransitionBase
     {
@@ -97,7 +124,7 @@ namespace MyAssets
         }
         public override bool IsTransition()
         {
-            return mChecker.TakedObject != null && mInput.Sprit || !mInput.InputJump && !mController.Grounded && mController.FallTimer.IsEnd(); ;
+            return mChecker.TakedObject != null && mInput.Sprit || !mInput.InputJump && !mController.Grounded && mController.FallTimer.IsEnd();
         }
     }
 }

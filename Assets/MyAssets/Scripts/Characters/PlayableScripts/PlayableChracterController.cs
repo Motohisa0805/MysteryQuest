@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using NUnit.Framework.Internal;
+using UnityEngine;
 
 namespace MyAssets
 {
@@ -13,8 +15,8 @@ namespace MyAssets
         [SerializeField]
         private string mCurrentStateKey; //現在の状態
         [SerializeField]
-        private StateMachine<string> stateMachine;
-        public StateMachine<string> StateMachine => stateMachine;
+        private StateMachine<string> mStateMachine;
+        public StateMachine<string> StateMachine => mStateMachine;
 
         StateBase<string>[] states;
         [Header("状態一覧")]
@@ -90,6 +92,11 @@ namespace MyAssets
         private FirstAttackState mFirstAttackState;
         [SerializeField]
         private SecondAttackState mSecondAttackState;
+        //イベント用の状態
+        [SerializeField]
+        private EventIdleState mEventIdleState;
+        [SerializeField]
+        private EventMoveState mEventMoveState;
 
         [Header("キャラクターのステータス")]
         [SerializeField]
@@ -158,7 +165,7 @@ namespace MyAssets
         {
             mHandTransforms = transform.GetComponentsInChildren<SetItemTransform>();
 
-            stateMachine = new StateMachine<string>();
+            mStateMachine = new StateMachine<string>();
             states = new StateBase<string>[]
             {
                 mIdleState,
@@ -193,14 +200,17 @@ namespace MyAssets
                 mWeaponStorageState,
                 mReadyFirstAttackState,
                 mFirstAttackState,
-                mSecondAttackState
+                mSecondAttackState,
+                //ここから下はイベント用の状態
+                mEventIdleState,
+                mEventMoveState,
             };
-            stateMachine.Setup(states);
+            mStateMachine.Setup(states);
             foreach (var state in states)
             {
                 state.Setup(gameObject);
             }
-            stateMachine.ChangeState(mCurrentStateKey);
+            mStateMachine.ChangeState(mCurrentStateKey);
 
 
             mRigidbody = GetComponent<Rigidbody>();
@@ -242,8 +252,8 @@ namespace MyAssets
 
             GroundCheck();
             OverheadCheck();
-            stateMachine.Update(t);
-            mCurrentStateKey = stateMachine.CurrentState.Key;
+            mStateMachine.Update(t);
+            mCurrentStateKey = mStateMachine.CurrentState.Key;
         }
 
         public bool GroundCheck()
@@ -297,7 +307,7 @@ namespace MyAssets
         {
             float t = Time.fixedDeltaTime;
 
-            stateMachine.FixedUpdate(t);
+            mStateMachine.FixedUpdate(t);
         }
 
         public void FreeRotate()
@@ -347,14 +357,20 @@ namespace MyAssets
             );
         }
 
-        public void InputVelocity()
+        public void InputVelocity(Vector3 eventInput = new Vector3())
         {
             // カメラのY軸回転を取得
             Quaternion cameraRotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
-
-            // 入力ベクトル (前後にmInputMove.y、左右にmInputMove.x)
-            Vector3 inputVector = new Vector3(mInput.InputMove.x, 0, mInput.InputMove.y);
-
+            Vector3 inputVector = Vector3.zero;
+            if (eventInput != Vector3.zero)
+            {
+                inputVector = new Vector3(eventInput.x, 0, eventInput.z);
+            }
+            else
+            {
+                // 入力ベクトル (前後にmInputMove.y、左右にmInputMove.x)
+                inputVector = new Vector3(mInput.InputMove.x, 0, mInput.InputMove.y);
+            }
             // 入力があれば正規化 (斜め移動の速度を一定にするため)
             if (inputVector.sqrMagnitude > 1f)
             {
@@ -367,40 +383,61 @@ namespace MyAssets
         private void LateUpdate()
         {
             float t = Time.deltaTime;
-            stateMachine.LateUpdate(t);
+            mStateMachine.LateUpdate(t);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            stateMachine.TriggerEnter(gameObject, other);
+            mStateMachine.TriggerEnter(gameObject, other);
         }
         private void OnTriggerStay(Collider other)
         {
-            stateMachine.TriggerStay(gameObject, other);
+            mStateMachine.TriggerStay(gameObject, other);
         }
         private void OnTriggerExit(Collider other)
         {
-            stateMachine.TriggerExit(gameObject, other);
+            mStateMachine.TriggerExit(gameObject, other);
         }
 
         private void OnCollisionEnter(Collision collision)
         {
-            stateMachine.CollisionEnter(gameObject, collision);
+            mStateMachine.CollisionEnter(gameObject, collision);
         }
 
         private void OnCollisionStay(Collision collision)
         {
-            stateMachine.CollisionStay(gameObject, collision);
+            mStateMachine.CollisionStay(gameObject, collision);
         }
 
         private void OnCollisionExit(Collision collision)
         {
-            stateMachine.CollisionExit(gameObject, collision);
+            mStateMachine.CollisionExit(gameObject, collision);
         }
 
         private void OnDestroy()
         {
-            stateMachine.Dispose();
+            mStateMachine.Dispose();
+        }
+
+
+        public async UniTask MoveToAsync()
+        {
+            var utcs = new UniTaskCompletionSource();
+
+            if(mStateMachine.IsContain(EventMoveState.mStateKey))
+            {
+                // 本来のStateクラスにキャストしてパラメータを渡す
+                var eventState = mStateMachine.CurrentState as EventMoveState;
+                // ※もし現在がEventMoveでないなら、取得後にセットする必要があります
+                // 安全な手順：
+                var stateInstance = mStateMachine.GetState<EventMoveState>(EventMoveState.mStateKey);
+                stateInstance.SetConfig(() => utcs.TrySetResult());
+
+                // 2. 状態遷移
+                mStateMachine.ChangeState(EventMoveState.mStateKey);
+            }
+            // 3. 到着まで待機
+            await utcs.Task;
         }
     }
 }

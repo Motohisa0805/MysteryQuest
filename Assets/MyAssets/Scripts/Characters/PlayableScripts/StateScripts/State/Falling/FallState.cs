@@ -9,11 +9,11 @@ namespace MyAssets
         public static readonly string mStateKey = "Fall";
         public override string Key => mStateKey;
 
-        PlayableChracterController mController;
+        private PlayableChracterController mController;
 
         private CapsuleColliderController mColliderController;
 
-        Animator mAnimator;
+        private Animator mAnimator;
 
         private ImpactChecker mImpactChecker;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
@@ -21,6 +21,8 @@ namespace MyAssets
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsFallBigImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             if (StateChanger.IsContain(JumpDownState.mStateKey)) { re.Add(new IsJumpDownTransition(actor, StateChanger, JumpDownState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 

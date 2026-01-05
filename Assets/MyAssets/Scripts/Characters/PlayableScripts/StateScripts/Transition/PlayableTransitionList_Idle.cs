@@ -74,12 +74,14 @@ namespace MyAssets
     {
 
         readonly private PlayableInput mInput;
+        readonly private PropsObjectChecker mChecker;
         public IsIdleTransitionType6(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
         }
-        public override bool IsTransition() => mInput.InputMove.magnitude < 0.1f && !mInput.Focusing;
+        public override bool IsTransition() => !mChecker.HasTakedObject && mInput.InputMove.magnitude < 0.1f && !mInput.Focusing;
     }
 
     //変更予定
@@ -138,5 +140,17 @@ namespace MyAssets
             return mAnimator.GetCurrentAnimatorStateInfo(0).IsName("second Attack") && mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1.0f;
         }
         public override bool IsTransition() => mInput.InputMove.magnitude < 0.1f && !mInput.Attack && IsAnimationEnd();
+    }
+
+    //イベント用の遷移クラス
+    public class IsEventMoveToIdleTransition : StateTransitionBase
+    {
+        readonly private PlayableChracterController mController;
+        public IsEventMoveToIdleTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mController = actor.GetComponent<PlayableChracterController>();
+        }
+        public override bool IsTransition() => Mathf.Abs(mController.transform.position.magnitude - EventManager.Instance.EventMoveTargetPosition.transform.position.magnitude) < 0.05f;
     }
 }

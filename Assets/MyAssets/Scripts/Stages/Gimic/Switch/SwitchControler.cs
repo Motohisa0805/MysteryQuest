@@ -62,6 +62,7 @@ namespace MyAssets
                         if(mTimerDisable)
                         {
                             mCloseDoorTimer.Start();
+                            CountdownIntervalPlayer.Instance.StartCountdown(mCloseDoorTimer.CloseTime);
                         }
                         receiver.OnActivate();
                     }
@@ -80,6 +81,16 @@ namespace MyAssets
         private void OnTriggerEnter(Collider other)
         {
             if (other.GetComponent<ChemistryObject>())
+            {
+                if (mTimerDisable && !mCloseDoorTimer.Timer.IsEnd()) { return; }
+                mIsOn = !mIsOn;
+                SendSignal(mIsOn);
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.GetComponent<ChemistryObject>())
             {
                 if (mTimerDisable && !mCloseDoorTimer.Timer.IsEnd()) { return; }
                 mIsOn = !mIsOn;

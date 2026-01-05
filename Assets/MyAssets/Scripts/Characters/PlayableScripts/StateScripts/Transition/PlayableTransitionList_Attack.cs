@@ -6,16 +6,16 @@ namespace MyAssets
     {
 
         readonly private PlayableInput mInput;
-        readonly private Animator mAnimator;
         readonly private EquipmentController mEquipmentController;
+        readonly private PropsObjectChecker mPropsObjectChecker;
         public IsReadyFirstAttackTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
             mEquipmentController = actor.GetComponent<EquipmentController>();
+            mPropsObjectChecker = actor.GetComponent<PropsObjectChecker>();
         }
-        public override bool IsTransition() => mInput.Attack && mEquipmentController.IsBattleMode;
+        public override bool IsTransition() => !mPropsObjectChecker.HasTakedObject && mInput.Attack && mEquipmentController.IsBattleMode;
     }
 
     public class IsFirstAttackTransition : StateTransitionBase

@@ -8,19 +8,23 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "To Lift";
         public override string Key => mStateKey;
-        PlayableChracterController mController;
+        private PlayableChracterController mController;
 
-        private PlayableAnimationFunction mAnimationFunction;
-
-        PropsObjectChecker mChecker;
+        private PropsObjectChecker mChecker;
 
         private Animator mAnimator;//アニメーター
+
+        private ImpactChecker mImpactChecker;//当たり判定用チェッカー
+
+        private PlayableAnimationFunction mAnimationFunction;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(ToLiftIdleState.mStateKey)) { re.Add(new IsToLiftToToLiftIdleTransition(actor, StateChanger, ToLiftIdleState.mStateKey)); }
             if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsFiledToLiftToIdleTransition(actor, StateChanger, IdleState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 
@@ -29,11 +33,13 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
 
-            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
-
             mChecker = actor.GetComponent<PropsObjectChecker>();
 
             mAnimator = actor.GetComponentInChildren<Animator>();
+
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
+
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
         }
 
         public override void Enter()
@@ -65,7 +71,12 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            mAnimator.SetInteger("to Lift", -1);
+        }
+
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            mImpactChecker.ApplyImpactPower(collision);
         }
     }
 
@@ -74,20 +85,25 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "To Lift Idle";
         public override string Key => mStateKey;
-        PlayableChracterController mController;
+        private PlayableChracterController mController;
 
         private PlayableAnimationFunction mAnimationFunction;
 
-        PropsObjectChecker mChecker;
+        private PropsObjectChecker mChecker;
 
-        Animator mAnimator;
+        private Animator mAnimator;
+
+        private ImpactChecker mImpactChecker;//当たり判定用チェッカー
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(ToLiftRunState.mStateKey)) { re.Add(new IsToLiftIdleToToLiftRunTransition(actor, StateChanger, ToLiftRunState.mStateKey)); }
+            if (StateChanger.IsContain(FocusingMoveState.mStateKey)) { re.Add(new IsFocusingMoveTransition(actor, StateChanger, FocusingMoveState.mStateKey)); }
             if (StateChanger.IsContain(ReleaseLiftState.mStateKey)) { re.Add(new IsReleaseLiftTransition(actor, StateChanger, ReleaseLiftState.mStateKey)); }
             if (StateChanger.IsContain(ThrowStartState.mStateKey)) { re.Add(new IsThrowStartTransition(actor, StateChanger, ThrowStartState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 
@@ -101,21 +117,25 @@ namespace MyAssets
             mChecker = actor.GetComponent<PropsObjectChecker>();
 
             mAnimator = actor.GetComponentInChildren<Animator>();
+
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
         {
             base.Enter();
             mAnimator.SetInteger("to Lift", 1);
+            mAnimationFunction.SetAnimatorLayerWeight(1, 1);
+            mAnimationFunction.SetAnimatorLayerWeight(2, 1);
+            mAnimationFunction.SetModeBlend(0);
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
             mChecker.UpdateTakedObjectPosition();
-            // Idle状態の特定の処理をここに追加できます
-            // 例: アニメーションの更新など
-            mAnimationFunction.UpdateToLiftIdleToToLiftRunAnimation();
+            mAnimationFunction.UpdateModeBlend();
+            mAnimationFunction.UpdateIdleToRunAnimation();
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -133,6 +153,12 @@ namespace MyAssets
         {
             base.Exit();
         }
+
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            mImpactChecker.ApplyImpactPower(collision);
+        }
     }
 
     [System.Serializable]
@@ -140,18 +166,23 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "To Lift Run";
         public override string Key => mStateKey;
-        PlayableChracterController mController;
+        private PlayableChracterController mController;
 
         private PlayableAnimationFunction mAnimationFunction;
 
-        PropsObjectChecker mChecker;
+        private PropsObjectChecker mChecker;
+
+        private ImpactChecker mImpactChecker;//当たり判定用チェッカー
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(ToLiftIdleState.mStateKey)) { re.Add(new IsToLiftRunToToLiftIdleTransition(actor, StateChanger, ToLiftIdleState.mStateKey)); }
+            if (StateChanger.IsContain(FocusingMoveState.mStateKey)) { re.Add(new IsFocusingMoveTransition(actor, StateChanger, FocusingMoveState.mStateKey)); }
             if (StateChanger.IsContain(ReleaseLiftState.mStateKey)) { re.Add(new IsReleaseLiftTransition(actor, StateChanger, ReleaseLiftState.mStateKey)); }
             if (StateChanger.IsContain(ThrowStartState.mStateKey)) { re.Add(new IsThrowStartTransition(actor, StateChanger, ThrowStartState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 
@@ -163,20 +194,22 @@ namespace MyAssets
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
 
             mChecker = actor.GetComponent<PropsObjectChecker>();
+
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
         {
             base.Enter();
+            mAnimationFunction.SetModeBlend(0);
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
             mChecker.UpdateTakedObjectPosition();
-            // Idle状態の特定の処理をここに追加できます
-            // 例: アニメーションの更新など
-            mAnimationFunction.UpdateToLiftIdleToToLiftRunAnimation();
+            mAnimationFunction.UpdateModeBlend();
+            mAnimationFunction.UpdateIdleToRunAnimation();
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -191,6 +224,12 @@ namespace MyAssets
         {
             base.Exit();
         }
+
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            mImpactChecker.ApplyImpactPower(collision);
+        }
     }
 
     [System.Serializable]
@@ -198,13 +237,15 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "ReleaseLift";
         public override string Key => mStateKey;
-        PlayableChracterController mController;
+        private PlayableChracterController mController;
 
         private PlayableAnimationFunction mAnimationFunction;
 
-        PropsObjectChecker mChecker;
+        private PropsObjectChecker mChecker;
 
-        Animator mAnimator;
+        private Animator mAnimator;
+
+        private ImpactChecker mImpactChecker;//当たり判定用チェッカー
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -212,6 +253,8 @@ namespace MyAssets
             if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsIdleTransition(actor, StateChanger, IdleState.mStateKey)); }
             if (StateChanger.IsContain(MoveState.mStateKey)) { re.Add(new IsMoveTransition(actor, StateChanger, MoveState.mStateKey)); }
             if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 
@@ -225,12 +268,16 @@ namespace MyAssets
             mChecker = actor.GetComponent<PropsObjectChecker>();
 
             mAnimator = actor.GetComponentInChildren<Animator>();
+
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
         {
             base.Enter();
             mChecker.SetReleaseTakedObject();
+            mAnimationFunction.SetAnimatorLayerWeight(1, 0);
+            mAnimationFunction.SetAnimatorLayerWeight(2, 0);
             mAnimator.SetInteger("to Lift", -1);
         }
 
@@ -255,6 +302,12 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
+        }
+
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            mImpactChecker.ApplyImpactPower(collision);
         }
     }
 }

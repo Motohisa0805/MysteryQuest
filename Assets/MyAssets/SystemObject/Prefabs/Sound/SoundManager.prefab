@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9187696216395391243}
   - component: {fileID: 8322185337705896216}
+  - component: {fileID: 799804561327533751}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -46,3 +47,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.SoundManager
   mSoundList: {fileID: 11400000, guid: 1cbbfa1ff76567747aaa51a7a00f7b6f, type: 2}
   mAudioSourcePrefab: {fileID: 6133555087463700076, guid: 17211ba6da9c0504aab0262844d0a8fe, type: 3}
+--- !u!114 &799804561327533751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2603823777940949366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4042768a9673e1549807e2fdc7970d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.CountdownIntervalPlayer
+  mPlayerTransform: {fileID: 9187696216395391243}
+  mTotalDuration: 10
+  mStartInterval: 0.4
+  mEndInterval: 0.05
+  mMaxRhythmCount: 3
+  mAccelCurve: 2

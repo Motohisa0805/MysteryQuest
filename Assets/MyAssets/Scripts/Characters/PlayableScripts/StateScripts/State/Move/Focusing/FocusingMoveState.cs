@@ -18,16 +18,24 @@ namespace MyAssets
 
         private EquipmentController mEquipmentController;
 
+        private PropsObjectChecker mChecker;
+
         private float mInitModeType;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsIdleTransitionType6(actor, StateChanger, IdleState.mStateKey)); }
             if (StateChanger.IsContain(MoveState.mStateKey)) { re.Add(new IsMoveTransitionType3(actor, StateChanger, MoveState.mStateKey)); }
+            if (StateChanger.IsContain(ToLiftIdleState.mStateKey)) { re.Add(new IsToLiftIdleTransition(actor, StateChanger, ToLiftIdleState.mStateKey)); }
+            if (StateChanger.IsContain(ToLiftRunState.mStateKey)) { re.Add(new IsToLiftMoveTransition(actor, StateChanger, ToLiftRunState.mStateKey)); }
+            if (StateChanger.IsContain(ReleaseLiftState.mStateKey)) { re.Add(new IsReleaseLiftTransition(actor, StateChanger, ReleaseLiftState.mStateKey)); }
+
             if (StateChanger.IsContain(ReadyFirstAttackState.mStateKey)) { re.Add(new IsReadyFirstAttackTransition(actor, StateChanger, ReadyFirstAttackState.mStateKey)); }
             if (StateChanger.IsContain(WeaponTakingOutState.mStateKey)) { re.Add(new IsTakingOutTransition(actor, StateChanger, WeaponTakingOutState.mStateKey)); }
             if (StateChanger.IsContain(WeaponStorageState.mStateKey)) { re.Add(new IsStorageTransition(actor, StateChanger, WeaponStorageState.mStateKey)); }
             if (StateChanger.IsContain(StandingToCrouchState.mStateKey)) { re.Add(new IsStandingToCrouchTransition(actor, StateChanger, StandingToCrouchState.mStateKey)); }
+            if (StateChanger.IsContain(ToLiftState.mStateKey)) { re.Add(new IsIdleToToLiftTransition(actor, StateChanger, ToLiftState.mStateKey)); }
+            if (StateChanger.IsContain(ThrowStartState.mStateKey)) { re.Add(new IsThrowStartTransition(actor, StateChanger, ThrowStartState.mStateKey)); }
             if (StateChanger.IsContain(PushStartState.mStateKey)) { re.Add(new IsPushStartTransition(actor, StateChanger, PushStartState.mStateKey)); }
             if (StateChanger.IsContain(JumpUpState.mStateKey)) { re.Add(new IsJumpUpTransition(actor, StateChanger, JumpUpState.mStateKey)); }
             if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
@@ -46,6 +54,7 @@ namespace MyAssets
             mImpactChecker = actor.GetComponent<ImpactChecker>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
             mEquipmentController = actor.GetComponent<EquipmentController>();
+            mChecker = actor.GetComponent<PropsObjectChecker>();
         }
 
         public override void Enter()
@@ -62,7 +71,7 @@ namespace MyAssets
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateFocusingMoveAnimation();
             mAnimationFunction.SpritDushClear();
-
+            mChecker.UpdateTakedObjectPosition();
             base.Execute_Update(time);
         }
 

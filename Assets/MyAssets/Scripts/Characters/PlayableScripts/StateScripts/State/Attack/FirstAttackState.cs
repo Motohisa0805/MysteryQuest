@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 namespace MyAssets
 {
@@ -16,6 +15,8 @@ namespace MyAssets
         private PlayableAnimationFunction mAnimationFunction;
 
         private ImpactChecker mImpactChecker;
+
+        private EquipmentController mEquipmentController;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -34,6 +35,7 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mEquipmentController = actor.GetComponent<EquipmentController>();
         }
 
         public override void Enter()
@@ -43,6 +45,9 @@ namespace MyAssets
             if (hand)
             {
                 hand.enabled = true;
+                //ïêäÌÇÃëfêUÇËSE
+                SoundManager.Instance.PlayOneShot3D(SoundList.SEType.Attack,mController.transform);
+                mEquipmentController.SwingEffectHandler.ActivateSlachEffect(true);
             }
             mAnimationFunction.Animator.SetInteger("attack State", 1);
         }
@@ -68,6 +73,7 @@ namespace MyAssets
             if (hand)
             {
                 hand.enabled = false;
+                mEquipmentController.SwingEffectHandler.ActivateSlachEffect(false);
             }
             mAnimationFunction.Animator.SetInteger("attack State", -1);
         }

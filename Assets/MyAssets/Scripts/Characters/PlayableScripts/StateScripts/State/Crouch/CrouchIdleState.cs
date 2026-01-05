@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 namespace MyAssets
 {
@@ -20,6 +19,7 @@ namespace MyAssets
 
         private PlayableChracterController mController;
 
+        private  ImpactChecker mImpactChecker;
 
         [SerializeField]
         private float mCrouchHeight;
@@ -28,6 +28,8 @@ namespace MyAssets
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(CrouchIdleState.mStateKey)) { re.Add(new IsCrouchIdleTransition(actor, StateChanger, CrouchIdleState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 
@@ -38,6 +40,7 @@ namespace MyAssets
             mColliderController = actor.GetComponentInChildren<CapsuleColliderController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
@@ -70,6 +73,17 @@ namespace MyAssets
             mController.FreeRotate();
         }
 
+        public override void Exit()
+        {
+            base.Exit();
+            mAnimator.SetInteger("crouchState", -1);
+        }
+
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            mImpactChecker.ApplyImpactPower(collision);
+        }
     }
 
     [System.Serializable]
@@ -130,6 +144,11 @@ namespace MyAssets
             mController.FreeRotate();
         }
 
+        public override void Exit()
+        {
+            base.Exit();
+        }
+
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
@@ -151,12 +170,16 @@ namespace MyAssets
 
         private PlayableAnimationFunction mAnimationFunction;
 
+        private ImpactChecker mImpactChecker;
+
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(CrouchIdleState.mStateKey)) { re.Add(new IsCrouch_WalkToIdleTransition(actor, StateChanger, CrouchIdleState.mStateKey)); }
             if (StateChanger.IsContain(CrouchToStandingState.mStateKey)) { re.Add(new IsCrouchToStandingTransition(actor, StateChanger, CrouchToStandingState.mStateKey)); }
             if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 
@@ -166,6 +189,7 @@ namespace MyAssets
             mAnimator = actor.GetComponentInChildren<Animator>();
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
@@ -189,7 +213,11 @@ namespace MyAssets
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }
-
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            mImpactChecker.ApplyImpactPower(collision);
+        }
     }
 
     [System.Serializable]
@@ -208,10 +236,14 @@ namespace MyAssets
 
         private CapsuleColliderController mColliderController;
 
+        private ImpactChecker mImpactChecker;
+
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsCrouchToStandingToIdleTransition(actor, StateChanger, IdleState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 
@@ -222,6 +254,7 @@ namespace MyAssets
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mColliderController = actor.GetComponentInChildren<CapsuleColliderController>();
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
@@ -252,6 +285,12 @@ namespace MyAssets
             mAnimator.SetInteger("crouchState", -1);
 
             mColliderController.ResetCollider();
+        }
+
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            mImpactChecker.ApplyImpactPower(collision);
         }
     }
 }

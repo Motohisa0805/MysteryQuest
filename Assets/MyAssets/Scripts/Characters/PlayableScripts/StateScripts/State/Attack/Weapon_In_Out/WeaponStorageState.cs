@@ -10,11 +10,11 @@ namespace MyAssets
         public static readonly string mStateKey = "Storage";
         public override string Key => mStateKey;
 
-        PlayableChracterController mController;
+        private PlayableChracterController mController;
 
-        PlayableAnimationFunction mAnimationFunction;
+        private PlayableAnimationFunction mAnimationFunction;
 
-        ImpactChecker mImpactChecker;
+        private ImpactChecker mImpactChecker;
 
         private PlayableInput mPlayableInput;
 
@@ -49,12 +49,12 @@ namespace MyAssets
             mEquipmentController.ChangeParent(SetItemTransform.TransformType.Right, SetItemTransform.TransformType.Weapon);
             mEquipmentController.IsBattleMode = false;
             mAnimationFunction.SetAnimatorLayerWeight(1, 1);
-            mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(3, 0);
         }
 
         public override void Execute_Update(float time)
         {
-            mAnimationFunction.UpdateLayer3Weight();
+            mAnimationFunction.UpdateLayer4Weight();
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateFocusingMoveAnimation();
             mAnimationFunction.SpritDushClear();

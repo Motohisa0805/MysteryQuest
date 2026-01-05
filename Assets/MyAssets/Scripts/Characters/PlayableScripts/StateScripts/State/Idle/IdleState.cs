@@ -52,7 +52,10 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            if(mEquipmentController.IsBattleMode)
+            mAnimationFunction.Animator.SetInteger("to Lift", -1);
+            mAnimationFunction.SetAnimatorLayerWeight(1, 0);
+            mAnimationFunction.SetAnimatorLayerWeight(2, 0);
+            if (mEquipmentController.IsBattleMode)
             {
                 mAnimationFunction.SetModeBlend(1);
             }

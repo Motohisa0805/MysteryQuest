@@ -14,18 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundList
   mSEList:
   - mType: 0
-    mClips: []
+    mLabel: Player_Attack
+    mClips:
+    - {fileID: 8300000, guid: e192799a916a0714888e26b6f36b537b, type: 3}
+    - {fileID: 8300000, guid: 941c7f60e9b227843bdaea3eb36cfcca, type: 3}
+    - {fileID: 8300000, guid: 3dab9ee8571e4fe4493fdfee1b69128c, type: 3}
     volume: 1
     pitchRange: 0
     mMinDistance: 1
     mMaxDistance: 10
   - mType: 1
-    mClips: []
+    mLabel: Player_Damage
+    mClips:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     volume: 1
     pitchRange: 0
     mMinDistance: 1
     mMaxDistance: 10
   - mType: 2
+    mLabel: Object_Fire
     mClips:
     - {fileID: 8300000, guid: 4c679a00389dc8b438d5a680a9335db8, type: 3}
     volume: 1
@@ -33,6 +42,7 @@ MonoBehaviour:
     mMinDistance: 1
     mMaxDistance: 10
   - mType: 3
+    mLabel: Player_Fire
     mClips:
     - {fileID: 8300000, guid: 9961e9b246b2bf04aa9d1767d36dc289, type: 3}
     - {fileID: 8300000, guid: e9f5b6cebfae9354294c6c7af5395c28, type: 3}
@@ -41,6 +51,14 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 540f025cac3631c4e9e7d33e78a3582d, type: 3}
     - {fileID: 8300000, guid: 2bb184bdd7931ec41a91276270a5a28a, type: 3}
     - {fileID: 8300000, guid: c0e9315078658c44285f62bef7ee96af, type: 3}
+    volume: 1
+    pitchRange: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mType: 4
+    mLabel: SE_CountDown
+    mClips:
+    - {fileID: 8300000, guid: b8d675914378d714baedc0e82d7852c9, type: 3}
     volume: 1
     pitchRange: 0
     mMinDistance: 1

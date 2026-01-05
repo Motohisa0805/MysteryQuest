@@ -63,12 +63,23 @@ namespace MyAssets
             {
                 TPSCamera.CameraType = TPSCamera.Type.Focusing;
             }
-            else
+            else if(!mInputThrow)
             {
                 TPSCamera.CameraType = TPSCamera.Type.Free;
             }
 
             mAttack = InputManager.GetKeyDown(KeyCode.eAttack);
+        }
+
+        private void OnDisable()
+        {
+            mInputMove = Vector2.zero;
+            mSprit = false;
+            mInputJump = false;
+            mInputCrouch = false;
+            mInputThrow = false;
+            mFocusing = false;
+            mAttack = false;
         }
     }
 }

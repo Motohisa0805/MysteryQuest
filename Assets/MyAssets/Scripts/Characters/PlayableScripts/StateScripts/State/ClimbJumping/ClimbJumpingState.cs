@@ -15,6 +15,8 @@ namespace MyAssets
 
         private Animator mAnimator;
 
+        private ImpactChecker mImpactChecker;
+
         [SerializeField]
         private float mClimbJumpingTime;
 
@@ -22,6 +24,8 @@ namespace MyAssets
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsIdleTransitionType5(actor, StateChanger, IdleState.mStateKey)); }
+            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
 
@@ -31,6 +35,7 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mRigidbody = actor.GetComponent<Rigidbody>();
             mAnimator = actor.GetComponentInChildren<Animator>();
+            mImpactChecker = actor.GetComponent<ImpactChecker>();
         }
 
         public override void Enter()
@@ -52,6 +57,12 @@ namespace MyAssets
             base.Exit();
             mAnimator.SetInteger("climbState", -1);
             mController.Movement.MovementCompensator.ClearStepFunc(false);
+        }
+
+        public override void CollisionEnter(GameObject thisObject, Collision collision)
+        {
+            base.CollisionEnter(thisObject, collision);
+            mImpactChecker.ApplyImpactPower(collision);
         }
     }
 }
