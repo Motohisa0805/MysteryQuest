@@ -22,6 +22,7 @@ namespace MyAssets
         [Header("Œ»Ý‘Ñ‚Ñ‚Ä‚¢‚é‘®«i•Ï‰»‚·‚éj")]
         [SerializeField]
         private ElementType mCurrentElements;
+        public ElementType CurrentElements => mCurrentElements;
 
         private ChemistryTable mReactionTable;
 
@@ -161,6 +162,11 @@ namespace MyAssets
             {
                 AddContact(elementComp.Type);
             }
+            var material = other.GetComponentInChildren<ChemistryObject>();
+            if(material != null)
+            {
+                AddContact(material.CurrentElements);
+            }
         }
 
         private void OnTriggerExit(Collider other)
@@ -169,6 +175,25 @@ namespace MyAssets
             if (elementComp != null)
             {
                 RemoveContact(elementComp.Type);
+            }
+            var material = other.GetComponentInChildren<ChemistryObject>();
+            if (material != null)
+            {
+                RemoveContact(material.CurrentElements);
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            var elementComp = collision.collider.GetComponentInChildren<ChemistryElement>();
+            if (elementComp != null)
+            {
+                AddContact(elementComp.Type);
+            }
+            var material = collision.collider.GetComponentInChildren<ChemistryObject>();
+            if (material != null)
+            {
+                AddContact(material.CurrentElements);
             }
         }
 

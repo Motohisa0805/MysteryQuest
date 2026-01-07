@@ -53,8 +53,8 @@ namespace MyAssets
         {
             base.Enter();
             mAnimationFunction.Animator.SetInteger("to Lift", -1);
-            mAnimationFunction.SetAnimatorLayerWeight(1, 0);
-            mAnimationFunction.SetAnimatorLayerWeight(2, 0);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
             if (mEquipmentController.IsBattleMode)
             {
                 mAnimationFunction.SetModeBlend(1);
@@ -62,6 +62,18 @@ namespace MyAssets
             else
             {
                 mAnimationFunction.SetModeBlend(0);
+            }
+            if(mEquipmentController.SwordStick)
+            {
+                mAnimationFunction.Animator.SetBool("up Right Arm", mEquipmentController.SwordStick.IsHasStuckObject);
+                if (mEquipmentController.SwordStick.IsHasStuckObject)
+                {
+                    mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 1);
+                }
+                else
+                {
+                    mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
+                }
             }
         }
 

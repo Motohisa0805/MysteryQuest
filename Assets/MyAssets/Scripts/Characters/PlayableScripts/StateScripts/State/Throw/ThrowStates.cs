@@ -50,8 +50,8 @@ namespace MyAssets
         {
             base.Enter();
             mAnimator.SetInteger("to Lift", 2);
-            mAnimationFunction.SetAnimatorLayerWeight(1, 0);
-            mAnimationFunction.SetAnimatorLayerWeight(2, 0);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
             TPSCamera.CameraType = TPSCamera.Type.ShoulderView;
             PlayerUIManager.Instance.ThrowCircle.gameObject.SetActive(true);
         }

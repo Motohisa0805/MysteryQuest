@@ -125,8 +125,8 @@ namespace MyAssets
         {
             base.Enter();
             mAnimator.SetInteger("to Lift", 1);
-            mAnimationFunction.SetAnimatorLayerWeight(1, 1);
-            mAnimationFunction.SetAnimatorLayerWeight(2, 1);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 1);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 1);
             mAnimationFunction.SetModeBlend(0);
         }
 
@@ -276,8 +276,8 @@ namespace MyAssets
         {
             base.Enter();
             mChecker.SetReleaseTakedObject();
-            mAnimationFunction.SetAnimatorLayerWeight(1, 0);
-            mAnimationFunction.SetAnimatorLayerWeight(2, 0);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
             mAnimator.SetInteger("to Lift", -1);
         }
 

@@ -50,6 +50,7 @@ namespace MyAssets
         {
             mController.Movement.Climb();
             base.Execute_FixedUpdate(time);
+            mController.BodyRotate();
         }
 
         public override void Exit()

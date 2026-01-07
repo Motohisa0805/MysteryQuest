@@ -22,6 +22,7 @@ namespace MyAssets
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
+            if (StateChanger.IsContain(IgnitionMoveState.mStateKey)) { re.Add(new IsReadyAttackToIgnitionTransition(actor, StateChanger, IgnitionMoveState.mStateKey)); }
             if (StateChanger.IsContain(FirstAttackState.mStateKey)) { re.Add(new IsFirstAttackTransition(actor, StateChanger, FirstAttackState.mStateKey)); }
             if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
             if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
@@ -41,8 +42,11 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
             mAnimationFunction.Animator.SetInteger("attack State", 0);
             mController.Movement.Stop();
+
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
         }
 
         public override void Execute_Update(float time)

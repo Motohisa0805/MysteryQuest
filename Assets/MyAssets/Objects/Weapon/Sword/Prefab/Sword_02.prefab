@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 9180721643385888508}
   - component: {fileID: 2334096511442180694}
   - component: {fileID: 7619509398827718993}
+  - component: {fileID: 2826390713659380209}
   m_Layer: 0
   m_Name: Sword_02
   m_TagString: Untagged
@@ -173,6 +174,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2826390713659380209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321923774099194615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18b195f6035ce3747916f110f2bd9f5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.SwordStick
+  mStickPoint: {fileID: 0}
 --- !u!1001 &4832961535605606184
 PrefabInstance:
   m_ObjectHideFlags: 0

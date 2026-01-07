@@ -45,6 +45,10 @@ namespace MyAssets
             {
                 mPlayerStatus.CurrentHP = 0;
             }
+            if(amount < 0)
+            {
+                ResultManager.DamageTaken += (int)amount;
+            }
         }
     }
 

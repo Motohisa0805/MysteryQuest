@@ -48,13 +48,13 @@ namespace MyAssets
             mAnimationFunction.SetToolState(true);
             mEquipmentController.ChangeParent(SetItemTransform.TransformType.Weapon,SetItemTransform.TransformType.Right);
             mEquipmentController.IsBattleMode = true;
-            mAnimationFunction.SetAnimatorLayerWeight(1,1);
-            mAnimationFunction.StartUpdateAnimatorLayerWeight(3, 1);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(1,1);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(3, 1,true);
         }
 
         public override void Execute_Update(float time)
         {
-            mAnimationFunction.UpdateLayer4Weight();
+            mAnimationFunction.UpdateLayerWeight();
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateFocusingMoveAnimation();
             mAnimationFunction.SpritDushClear();
@@ -69,21 +69,14 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
-            if (mPlayableInput.Focusing)
-            {
-                mController.FocusingRotate();
-            }
-            else
-            {
-                mController.FreeRotate();
-            }
+            mController.BodyRotate();
         }
 
         public override void Exit()
         {
             base.Exit();
             mAnimationFunction.SetToolState(false);
-            mAnimationFunction.SetAnimatorLayerWeight(1, 0);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
         }
 
         public override void CollisionEnter(GameObject thisObject, Collision collision)

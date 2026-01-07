@@ -92,6 +92,8 @@ namespace MyAssets
         private FirstAttackState mFirstAttackState;
         [SerializeField]
         private SecondAttackState mSecondAttackState;
+        [SerializeField]
+        private IgnitionMoveState mIgnitionMoveState;
         //イベント用の状態
         [SerializeField]
         private EventIdleState mEventIdleState;
@@ -201,6 +203,7 @@ namespace MyAssets
                 mReadyFirstAttackState,
                 mFirstAttackState,
                 mSecondAttackState,
+                mIgnitionMoveState,
                 //ここから下はイベント用の状態
                 mEventIdleState,
                 mEventMoveState,
@@ -240,8 +243,6 @@ namespace MyAssets
         }
         private void Start()
         {
-            //TODO 仮でマウスをロック
-            InputManager.SetLockedMouseMode();
         }
 
         private void Update()
@@ -310,6 +311,33 @@ namespace MyAssets
             mStateMachine.FixedUpdate(t);
         }
 
+        public void BodyRotate()
+        {
+            if(!mInput.Focusing)
+            {
+                Vector3 v = mRigidbody.linearVelocity;
+                v.y = 0;
+                if (v.magnitude > 0.5f)
+                {
+                    Vector3 velocity = mRigidbody.linearVelocity;
+                    velocity.y = 0; // 水平方向の速度のみを考慮
+                    Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusProperty.RotationSpeed);
+                }
+            }
+            else
+            {
+                if (mTargetSearch.TargetObject == null)
+                {
+                    return;
+                }
+                Vector3 velocity = mTargetSearch.TargetObject.transform.position - transform.position;
+                velocity.y = 0; // 水平方向の速度のみを考慮
+                Quaternion targetRotation = Quaternion.LookRotation(velocity.normalized, Vector3.up);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusProperty.RotationSpeed);
+            }
+        }
+
         public void FreeRotate()
         {
             Vector3 v = mRigidbody.linearVelocity;
@@ -321,18 +349,6 @@ namespace MyAssets
                 Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusProperty.RotationSpeed);
             }
-        }
-
-        public void FocusingRotate()
-        {
-            if(mTargetSearch.TargetObject == null)
-            {
-                return;
-            }
-            Vector3 velocity = mTargetSearch.TargetObject.transform.position - transform.position;
-            velocity.y = 0; // 水平方向の速度のみを考慮
-            Quaternion targetRotation = Quaternion.LookRotation(velocity.normalized, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusProperty.RotationSpeed);
         }
 
         public void ShoulderViewRotate()

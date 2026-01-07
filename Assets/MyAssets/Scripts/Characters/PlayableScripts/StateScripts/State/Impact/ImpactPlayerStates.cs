@@ -46,10 +46,12 @@ namespace MyAssets
             {
                 mAnimator.SetInteger("impact State", -2);
             }
-            mAnimationFunction.SetAnimatorLayerWeight(1, 0);
-            mAnimationFunction.SetAnimatorLayerWeight(2, 0);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
 
             mChecker.SetReleaseTakedObject();
+            PlayerStatusManager.Instance.ChangeHP(-mImpactChecker.GetCalculatedDamage());
+            SoundManager.Instance.PlayOneShot3D(SoundList.SEType.Damage, mImpactChecker.transform);
         }
 
         public override void Execute_Update(float time)
@@ -114,8 +116,8 @@ namespace MyAssets
             base.Enter();
             mAnimator.SetInteger("to Lift", -1);
             mAnimator.SetInteger("crouchState", -1);
-            mPlayableAnimationFunction.SetAnimatorLayerWeight(1, 0);
-            mPlayableAnimationFunction.SetAnimatorLayerWeight(2, 0);
+            mPlayableAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
+            mPlayableAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
             mPlayableAnimationFunction.SetAnimatorEnabled(false);
 
             TPSCamera.CameraType = TPSCamera.Type.Free;
@@ -124,8 +126,10 @@ namespace MyAssets
 
             mTimer.Start(1.0f);
             mChecker.SetReleaseTakedObject();
+
             //ƒeƒXƒg
-            PlayerStatusManager.Instance.ChangeHP(-360);
+            PlayerStatusManager.Instance.ChangeHP(-mImpactChecker.GetCalculatedDamage());
+            SoundManager.Instance.PlayOneShot3D(SoundList.SEType.Damage, mImpactChecker.transform);
         }
 
         public override void Execute_Update(float time)

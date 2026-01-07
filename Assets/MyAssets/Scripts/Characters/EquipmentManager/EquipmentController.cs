@@ -14,6 +14,9 @@ namespace MyAssets
         private SwingEffectHandler mSwingEffectHandler;
         public SwingEffectHandler SwingEffectHandler => mSwingEffectHandler;
 
+        private SwordStick mSwordStick;
+        public SwordStick SwordStick => mSwordStick;
+
         private void Awake()
         {
             mController = GetComponent<PlayableChracterController>();
@@ -54,6 +57,7 @@ namespace MyAssets
                     //剣のエフェクト管理クラスを取得しておく
                     mSwingEffectHandler = spawnedWeapon.GetComponentInChildren<SwingEffectHandler>();
                     mSwingEffectHandler?.ActivateSlachEffect(false);
+                    mSwordStick = spawnedWeapon.GetComponent<SwordStick>();
                 }
             };
             //もし武器とセットにあるオブジェクトがあるなら
