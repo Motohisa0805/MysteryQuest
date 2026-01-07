@@ -47,6 +47,7 @@ namespace MyAssets
         {
             base.Execute_Update(time);
             mAnimationFunction.UpdateModeBlend();
+            mAnimationFunction.UpdateIdleToRunAnimation();
             mAnimationFunction.UpdateSpritDushAnimation();
         }
 

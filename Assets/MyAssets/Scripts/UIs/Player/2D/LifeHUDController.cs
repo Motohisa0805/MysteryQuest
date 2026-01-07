@@ -86,6 +86,7 @@ namespace MyAssets
         //ライフHUD更新処理
         public void UpdateLifeHUD()
         {
+            if(mUpdateCoroutine == null) { return; }
             // 既に動いていたら止めて、最新の目標値へ向けて再スタート
             if (mUpdateCoroutine != null) StopCoroutine(mUpdateCoroutine);
             mUpdateCoroutine = StartCoroutine(AnimateLifeUpdate());

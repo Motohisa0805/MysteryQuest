@@ -41,6 +41,7 @@ namespace MyAssets
     {
         private static InputSystem_Actions mInputAction;
 
+        public static InputSystem_Actions InputActions => mInputAction;
 
         private static List<InputAction> mButtonActions = new List<InputAction>();
 

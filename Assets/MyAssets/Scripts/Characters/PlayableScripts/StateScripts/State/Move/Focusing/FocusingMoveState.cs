@@ -62,8 +62,18 @@ namespace MyAssets
             base.Enter();
             TPSCamera.FocusingTarget = mTargetSearch.TargetObject;
 
-            //mAnimationFunction.MoveStateClear();
+            TPSCamera.CameraType = TPSCamera.Type.Focusing;
             mAnimationFunction.SetModeBlend(2);
+
+            mAnimationFunction.Animator.SetBool("up Right Arm", mEquipmentController.SwordStick.IsHasStuckObject);
+            if (mEquipmentController.SwordStick.IsHasStuckObject)
+            {
+                mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 1);
+            }
+            else
+            {
+                mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
+            }
         }
 
         public override void Execute_Update(float time)
@@ -80,13 +90,14 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
-            mController.FocusingRotate();
+            mController.BodyRotate();
         }
 
         public override void Exit()
         {
             base.Exit();
             //mAnimationFunction.MoveStateClear();
+            TPSCamera.CameraType = TPSCamera.Type.Free;
         }
 
         public override void CollisionEnter(GameObject thisObject, Collision collision)

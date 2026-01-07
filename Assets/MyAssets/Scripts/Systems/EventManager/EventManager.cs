@@ -19,19 +19,12 @@ namespace MyAssets
         private EventPoint mEventMoveTargetPosition;
         public EventPoint EventMoveTargetPosition => mEventMoveTargetPosition;
 
-        [SerializeField]
         private List<EventPoint> mEventMovePointList = new List<EventPoint>();
         public List<EventPoint> EventMovePointList => mEventMovePointList;
 
         private void Awake()
         {
-            if(mInstance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
             mInstance = this;
-            DontDestroyOnLoad(gameObject);
         }
 
         public void InitializeEvent()
@@ -122,6 +115,8 @@ namespace MyAssets
         //1回のイベントの流れ
         public async UniTaskVoid PlayOpeningCutscene()
         {
+            //カーソルを固定
+            InputManager.SetLockedMouseMode();
             mPlayableChracterController.transform.position = new Vector3(mEventMovePointList[0].transform.position.x, mEventMovePointList[0].transform.position.y + 0.75f, mEventMovePointList[0].transform.position.z);
             mPlayableChracterController.StateMachine.ChangeState(EventIdleState.mStateKey);
             await UniTask.Delay(TimeSpan.FromSeconds(1));
@@ -163,7 +158,17 @@ namespace MyAssets
             //エレベーターを動かす
             SetEventMoveTargetPoint(3);
             await mEventMovePointList[3].SetConfig();
+
+            await UniTask.Delay(TimeSpan.FromSeconds(3));
+            //カーソル固定を解除
+            InputManager.SetNoneMouseMode();
+            GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.HUD);
+            GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Result);
         }
 
+        private void OnDestroy()
+        {
+            mInstance = null;
+        }
     }
 }

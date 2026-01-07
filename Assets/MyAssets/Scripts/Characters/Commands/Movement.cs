@@ -8,8 +8,6 @@ namespace MyAssets
         [SerializeField]
         private float               mGravityMultiply;
 
-        private float               maxFallSpeed = 20f;
-
         private Rigidbody           mRigidbody;
 
         [SerializeField]
@@ -23,6 +21,10 @@ namespace MyAssets
         [SerializeField]
         private MovementCompensator mMovementCompensator;
         public MovementCompensator  MovementCompensator => mMovementCompensator;
+
+
+        [SerializeField]
+        private GravityCorrection   mGravityCorrection;
         private void Awake()
         {
             mRigidbody = GetComponent<Rigidbody>();
@@ -66,11 +68,7 @@ namespace MyAssets
 
         public void FixedUpdate()
         {
-            Gravity();
-            if (mRigidbody.linearVelocity.y < -maxFallSpeed) 
-            {
-                mRigidbody.linearVelocity = new Vector3(mRigidbody.linearVelocity.x, -maxFallSpeed, mRigidbody.linearVelocity.z); 
-            }
+            mGravityCorrection.Correction(mRigidbody);
         }
         // 停止処理
         public void Stop()
@@ -136,10 +134,6 @@ namespace MyAssets
             currentVelocity.z = targetVelocityXZ.z;
 
             mRigidbody.linearVelocity = currentVelocity;
-        }
-        public void Gravity()
-        {
-            mRigidbody.linearVelocity += Physics.gravity * mGravityMultiply * Time.deltaTime;
         }
 
         public void Jump(float power)

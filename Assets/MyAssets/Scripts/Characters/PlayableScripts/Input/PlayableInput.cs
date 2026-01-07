@@ -35,6 +35,9 @@ namespace MyAssets
         private bool    mAttack;
         public bool     Attack => mAttack;
 
+        private bool    mAttacking;
+        public bool     Attacking => mAttacking;
+
         private void Start()
         {
             mInputMove = Vector2.zero;
@@ -59,16 +62,9 @@ namespace MyAssets
             mInputThrow = InputManager.GetKey(KeyCode.eThrow);
 
             mFocusing = InputManager.GetKey(KeyCode.eFocusing);
-            if(mFocusing)
-            {
-                TPSCamera.CameraType = TPSCamera.Type.Focusing;
-            }
-            else if(!mInputThrow)
-            {
-                TPSCamera.CameraType = TPSCamera.Type.Free;
-            }
 
             mAttack = InputManager.GetKeyDown(KeyCode.eAttack);
+            mAttacking = InputManager.GetKey(KeyCode.eAttack);
         }
 
         private void OnDisable()

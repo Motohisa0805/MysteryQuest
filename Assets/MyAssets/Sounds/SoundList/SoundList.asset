@@ -16,24 +16,37 @@ MonoBehaviour:
   - mType: 0
     mLabel: Player_Attack
     mClips:
-    - {fileID: 8300000, guid: e192799a916a0714888e26b6f36b537b, type: 3}
-    - {fileID: 8300000, guid: 941c7f60e9b227843bdaea3eb36cfcca, type: 3}
-    - {fileID: 8300000, guid: 3dab9ee8571e4fe4493fdfee1b69128c, type: 3}
+    - {fileID: 8300000, guid: 9f7ae4ba8ed5b7644a22d229819fcf19, type: 3}
+    - {fileID: 8300000, guid: 500ebbbc1b0e42443861b9244a73885b, type: 3}
+    - {fileID: 8300000, guid: ac0873a4933f9954691a258fe5acd07d, type: 3}
+    - {fileID: 8300000, guid: 79092e58c495daa40a6f6cc16d3dbf36, type: 3}
+    - {fileID: 8300000, guid: 6017d51da6f6f0844bdb890aa8f4a89d, type: 3}
+    - {fileID: 8300000, guid: 69912fef85b353948a269d91f63e94e9, type: 3}
+    - {fileID: 8300000, guid: dd84ec571d161144aa477a7da22126df, type: 3}
+    - {fileID: 8300000, guid: 66bc4577a56ad1046b844ffe4c110e1c, type: 3}
     volume: 1
     pitchRange: 0
     mMinDistance: 1
     mMaxDistance: 10
   - mType: 1
-    mLabel: Player_Damage
+    mLabel: SE_CountDown
     mClips:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
+    - {fileID: 8300000, guid: b8d675914378d714baedc0e82d7852c9, type: 3}
     volume: 1
     pitchRange: 0
     mMinDistance: 1
     mMaxDistance: 10
   - mType: 2
+    mLabel: Player_Damage
+    mClips:
+    - {fileID: 8300000, guid: 452f874c13db67b4682cb1dfcd7b4556, type: 3}
+    - {fileID: 8300000, guid: 6451bb20bd4770b49bebfe203ec7f8e0, type: 3}
+    - {fileID: 8300000, guid: 2031905bf39081d4cbd5dbf4573445bf, type: 3}
+    volume: 1
+    pitchRange: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mType: 3
     mLabel: Object_Fire
     mClips:
     - {fileID: 8300000, guid: 4c679a00389dc8b438d5a680a9335db8, type: 3}
@@ -41,8 +54,8 @@ MonoBehaviour:
     pitchRange: 0
     mMinDistance: 1
     mMaxDistance: 10
-  - mType: 3
-    mLabel: Player_Fire
+  - mType: 4
+    mLabel: Foot_Step
     mClips:
     - {fileID: 8300000, guid: 9961e9b246b2bf04aa9d1767d36dc289, type: 3}
     - {fileID: 8300000, guid: e9f5b6cebfae9354294c6c7af5395c28, type: 3}
@@ -55,10 +68,10 @@ MonoBehaviour:
     pitchRange: 0
     mMinDistance: 1
     mMaxDistance: 10
-  - mType: 4
-    mLabel: SE_CountDown
+  - mType: 5
+    mLabel: Stone_Hit
     mClips:
-    - {fileID: 8300000, guid: b8d675914378d714baedc0e82d7852c9, type: 3}
+    - {fileID: 8300000, guid: 48f90e8730dae234686972297401fcd8, type: 3}
     volume: 1
     pitchRange: 0
     mMinDistance: 1

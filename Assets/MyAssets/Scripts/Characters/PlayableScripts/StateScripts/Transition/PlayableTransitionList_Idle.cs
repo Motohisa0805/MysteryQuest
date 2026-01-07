@@ -142,6 +142,38 @@ namespace MyAssets
         public override bool IsTransition() => mInput.InputMove.magnitude < 0.1f && !mInput.Attack && IsAnimationEnd();
     }
 
+    public class IsIdleTransitionType10 : StateTransitionBase
+    {
+
+        readonly private PlayableInput mInput;
+        readonly private Animator mAnimator;
+        public IsIdleTransitionType10(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mAnimator = actor.GetComponentInChildren<Animator>();
+        }
+        public override bool IsTransition() => !mInput.Attacking;
+    }
+
+    public class IsReadyAttackToIgnitionTransition : StateTransitionBase
+    {
+
+        readonly private PlayableInput mInput;
+        readonly private Animator mAnimator;
+        public IsReadyAttackToIgnitionTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mAnimator = actor.GetComponentInChildren<Animator>();
+        }
+        private bool IsAnimationEnd()
+        {
+            return mAnimator.GetCurrentAnimatorStateInfo(0).IsName("ready First Attack") && mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f;
+        }
+        public override bool IsTransition() => mInput.Attacking && IsAnimationEnd();
+    }
+
     //イベント用の遷移クラス
     public class IsEventMoveToIdleTransition : StateTransitionBase
     {

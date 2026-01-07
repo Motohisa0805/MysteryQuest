@@ -23,125 +23,93 @@ namespace MyAssets
             if(Animator == null) { return; }
             Animator.enabled = enabled;
         }
-        private float mCurrentLayer2Weight;
-        private float mTargetLayer2Weight;
-        // ブレンドにかける時間 (0.1秒程度が滑らか)
-        [Header("Layer2の変数")]
-        [Header("ブレンドにかける時間")]
+
+        private float[] mCurrentLayerWeights = new float[0];
+        private float[] mTargetLayerWeights = new float[0];
         [SerializeField]
-        private float mLayer2WeightSmoothTime = 0.1f;
+        private float[] mLayersWeightSmoothTime = new float[0];
         // SmoothDampで使用する参照速度（内部で自動更新される）
-        private float mLayer2WeightSmoothVelocity = 0f;
+        private float[] mLayersWeightSmoothVelocity = new float[0];
 
-        private float mCurrentLayer3Weight;
-        private float mTargetLayer3Weight;
-        // ブレンドにかける時間 (0.1秒程度が滑らか)
-        [Header("Layer4の変数")]
-        [Header("ブレンドにかける時間")]
-        [SerializeField]
-        private float mLayer3WeightSmoothTime = 0.1f;
-        // SmoothDampで使用する参照速度（内部で自動更新される）
-        private float mLayer3WeightSmoothVelocity = 0f;
-
-        private float mCurrentLayer4Weight;
-        private float mTargetLayer4Weight;
-        // ブレンドにかける時間 (0.1秒程度が滑らか)
-        [Header("Layer3の変数")]
-        [Header("ブレンドにかける時間")]
-        [SerializeField]
-        private float mLayer4WeightSmoothTime = 0.1f;
-        // SmoothDampで使用する参照速度（内部で自動更新される）
-        private float mLayer4WeightSmoothVelocity = 0f;
-
-        public void SetAnimatorLayerWeight(int layer,float layerWeight)
+        private void Awake()
         {
-            Animator.SetLayerWeight(layer, layerWeight);
+            mController = GetComponent<PlayableChracterController>();
+            if (mController == null)
+            {
+                Debug.LogError("PlayableChracterController component not found on " + gameObject.name);
+            }
+
+            mAnimator = GetComponentInChildren<Animator>();
+            if (mAnimator == null)
+            {
+                Debug.LogError("Animator component not found on " + gameObject.name);
+            }
+            else
+            {
+                mCurrentLayerWeights = new float[mAnimator.layerCount];
+                mTargetLayerWeights = new float[mAnimator.layerCount];
+                mLayersWeightSmoothTime = new float[mAnimator.layerCount];
+                mLayersWeightSmoothVelocity = new float[mAnimator.layerCount];
+            }
         }
 
-        public void StartUpdateAnimatorLayerWeight(int layer, float layerWeight)
+        private void Start()
         {
-            if (layer == 0)
-            {
-                Animator.SetLayerWeight(layer, layerWeight);
-            }
-            else if (layer == 1)
-            {
-                Animator.SetLayerWeight(layer, layerWeight);
-            }
-            else if (layer == 2)
-            {
-                Animator.SetLayerWeight(layer, layerWeight);
-            }
-            else if(layer == 3)
-            {
-                mTargetLayer4Weight = layerWeight;
-            }
-        }
-        public void UpdateLayer2Weight()
-        {
-            if (Animator == null)
-            {
-                return;
-            }
-
-            // 2. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
-            mCurrentLayer2Weight = Mathf.SmoothDamp(
-                mCurrentLayer2Weight,               // 現在の値
-                mTargetLayer2Weight,                // 目標の値
-                ref mLayer2WeightSmoothVelocity,    // 内部で使用される参照速度（毎回渡す）
-                mLayer2WeightSmoothTime             // 目標値に到達するまでにかける時間
-            );
-
-            if (Animator.GetLayerWeight(2) != mCurrentLayer2Weight)
-            {
-                // 4. アニメーターに滑らかになったブレンド値を渡す
-                Animator.SetLayerWeight(2, mCurrentLayer2Weight);
-            }
-
-        }
-        public void UpdateLayer3Weight()
-        {
-            if (Animator == null)
-            {
-                return;
-            }
-
-            // 2. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
-            mCurrentLayer3Weight = Mathf.SmoothDamp(
-                mCurrentLayer3Weight,               // 現在の値
-                mTargetLayer3Weight,                // 目標の値
-                ref mLayer3WeightSmoothVelocity,    // 内部で使用される参照速度（毎回渡す）
-                mLayer3WeightSmoothTime             // 目標値に到達するまでにかける時間
-            );
-
-            if (Animator.GetLayerWeight(2) != mCurrentLayer3Weight)
-            {
-                // 4. アニメーターに滑らかになったブレンド値を渡す
-                Animator.SetLayerWeight(2, mCurrentLayer3Weight);
-            }
-
-        }
-        public void UpdateLayer4Weight()
-        {
-            if (Animator == null)
-            {
-                return;
-            }
-
-            // 2. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
-            mCurrentLayer4Weight = Mathf.SmoothDamp(
-                mCurrentLayer4Weight,               // 現在の値
-                mTargetLayer4Weight,                // 目標の値
-                ref mLayer4WeightSmoothVelocity,    // 内部で使用される参照速度（毎回渡す）
-                mLayer4WeightSmoothTime             // 目標値に到達するまでにかける時間
-            );
-
-            if (Animator.GetLayerWeight(3) != mCurrentLayer4Weight)
-            {
-                // 4. アニメーターに滑らかになったブレンド値を渡す
-                Animator.SetLayerWeight(3, mCurrentLayer4Weight);
-            }
             
+        }
+
+        public void StartUpdateAnimatorLayerWeight(int layer, float layerWeight,bool update = false)
+        {
+            if(update)
+            {
+                mTargetLayerWeights[layer] = layerWeight;
+            }
+            else
+            {
+                Animator.SetLayerWeight(layer, layerWeight);
+                mCurrentLayerWeights[layer] = layerWeight;
+                mTargetLayerWeights[layer] = layerWeight;
+            }
+        }
+
+        public void UpdateLayerWeight()
+        {
+            if (Animator == null)
+            {
+                return;
+            }
+
+            for(int i = 0; i < Animator.layerCount; i++)
+            {
+                // 2. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
+                mCurrentLayerWeights[i] = Mathf.SmoothDamp(
+                    mCurrentLayerWeights[i],               // 現在の値
+                    mTargetLayerWeights[i],                // 目標の値
+                    ref mLayersWeightSmoothVelocity[i],    // 内部で使用される参照速度（毎回渡す）
+                    mLayersWeightSmoothTime[i]             // 目標値に到達するまでにかける時間
+                );
+
+                if (Animator.GetLayerWeight(i) != mCurrentLayerWeights[i])
+                {
+                    // 4. アニメーターに滑らかになったブレンド値を渡す
+                    Animator.SetLayerWeight(i, mCurrentLayerWeights[i]);
+                }
+            }
+            /*
+            // 2. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
+            mCurrentLayerWeights[index] = Mathf.SmoothDamp(
+                mCurrentLayerWeights[index],               // 現在の値
+                mTargetLayerWeights[index],                // 目標の値
+                ref mLayersWeightSmoothVelocity[index],    // 内部で使用される参照速度（毎回渡す）
+                mLayersWeightSmoothTime[index]             // 目標値に到達するまでにかける時間
+            );
+
+            if (Animator.GetLayerWeight(index) != mCurrentLayerWeights[index])
+            {
+                // 4. アニメーターに滑らかになったブレンド値を渡す
+                Animator.SetLayerWeight(index, mCurrentLayerWeights[index]);
+            }
+             */
         }
 
         //アニメーションのブレンドを滑らかにするための変数
@@ -390,21 +358,6 @@ namespace MyAssets
             if (Animator.GetFloat("crouch_IdleToWalk") != mCrouchAnimSpeed)
             {
                 Animator.SetFloat("crouch_IdleToWalk", mCrouchAnimSpeed);
-            }
-        }
-
-        private void Awake()
-        {
-            mController = GetComponent<PlayableChracterController>();
-            if(mController == null)
-            {
-                Debug.LogError("PlayableChracterController component not found on " + gameObject.name);
-            }
-
-            mAnimator = GetComponentInChildren<Animator>();
-            if (mAnimator == null)
-            {
-                Debug.LogError("Animator component not found on " + gameObject.name);
             }
         }
     }

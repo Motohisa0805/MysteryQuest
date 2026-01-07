@@ -58,6 +58,16 @@ namespace MyAssets
             {
                 mAnimationFunction.SetModeBlend(0);
             }
+
+            mAnimationFunction.Animator.SetBool("up Right Arm", mEquipmentController.SwordStick.IsHasStuckObject);
+            if (mEquipmentController.SwordStick.IsHasStuckObject)
+            {
+                mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 1);
+            }
+            else
+            {
+                mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
+            }
         }
 
         public override void Execute_Update(float time)
@@ -73,14 +83,7 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
-            if (mPlayableInput.Focusing)
-            {
-                mController.FocusingRotate();
-            }
-            else
-            {
-                mController.FreeRotate();
-            }
+            mController.BodyRotate();
         }
 
         public override void Exit()

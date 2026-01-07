@@ -4,14 +4,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SoundList", menuName = "Sound Objects/SoundList")]
 public class SoundList : ScriptableObject
 {
-    //ABSèá
+    //ABCèá
     public enum SEType
     {
         Attack,
+        CountDown,
         Damage,
         Fire,
         Footstep,
-        CountDown,
+        Stone_Hit
     }
 
     [System.Serializable]

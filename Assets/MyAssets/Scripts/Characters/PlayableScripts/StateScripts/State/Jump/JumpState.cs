@@ -66,14 +66,7 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, 5);
             base.Execute_FixedUpdate(time);
-            if(!mInput.Focusing)
-            {
-                mController.FreeRotate();
-            }
-            else
-            {
-                mController.FocusingRotate();
-            }
+            mController.BodyRotate();
         }
 
         public override void Exit()
@@ -141,14 +134,7 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
-            if (!mInput.Focusing)
-            {
-                mController.FreeRotate();
-            }
-            else
-            {
-                mController.FocusingRotate();
-            }
+            mController.BodyRotate();
         }
 
         public override void Exit()
@@ -216,14 +202,7 @@ namespace MyAssets
             mController.InputVelocity();
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
-            if (!mInput.Focusing)
-            {
-                mController.FreeRotate();
-            }
-            else
-            {
-                mController.FocusingRotate();
-            }
+            mController.BodyRotate();
         }
 
         public override void Exit()

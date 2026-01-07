@@ -52,7 +52,7 @@ namespace MyAssets
         private AudioSource CreateAudioSource()
         {
             if (mAudioObjects.Count > mMaxAudioIndex) { return null; }
-            GameObject obj = Instantiate(gameObject, transform);
+            GameObject obj = Instantiate(mAudioSourcePrefab, transform);
             obj.AddComponent<AudioSource>();
             mAudioObjects.Add(obj.GetComponent<AudioSource>());
             obj.name = "SoundSorce" + mAudioObjects.Count.ToString();
@@ -88,6 +88,7 @@ namespace MyAssets
             {
                 return;
             }
+            audioSource.enabled = true;
             //オーディオソースを有効に
             audioSource.gameObject.SetActive(true);
             audioSource.loop = loop;
