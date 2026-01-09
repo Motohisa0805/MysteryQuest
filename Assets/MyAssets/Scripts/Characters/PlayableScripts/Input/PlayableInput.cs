@@ -49,22 +49,25 @@ namespace MyAssets
         // Update is called once per frame
         private void Update()
         {
-            mInputMove = InputManager.GetKeyValue(KeyCode.eMove);
+            if(Time.timeScale > 0.0f)
+            {
+                mInputMove = InputManager.GetKeyValue(KeyCode.eMove);
 
-            mInteract = InputManager.GetKeyDown(KeyCode.eInteract);
+                mInteract = InputManager.GetKeyDown(KeyCode.eInteract);
 
-            mSprit = InputManager.GetKey(KeyCode.eSprint);
+                mSprit = InputManager.GetKey(KeyCode.eSprint);
 
-            mInputJump = InputManager.GetKeyDown(KeyCode.eJump);
+                mInputJump = InputManager.GetKeyDown(KeyCode.eJump);
 
-            mInputCrouch = InputManager.GetKeyDown(KeyCode.eCrouch);
+                mInputCrouch = InputManager.GetKeyDown(KeyCode.eCrouch);
 
-            mInputThrow = InputManager.GetKey(KeyCode.eThrow);
+                mInputThrow = InputManager.GetKey(KeyCode.eThrow);
 
-            mFocusing = InputManager.GetKey(KeyCode.eFocusing);
+                mFocusing = InputManager.GetKey(KeyCode.eFocusing);
 
-            mAttack = InputManager.GetKeyDown(KeyCode.eAttack);
-            mAttacking = InputManager.GetKey(KeyCode.eAttack);
+                mAttack = InputManager.GetKeyDown(KeyCode.eAttack);
+                mAttacking = InputManager.GetKey(KeyCode.eAttack);
+            }
         }
 
         private void OnDisable()

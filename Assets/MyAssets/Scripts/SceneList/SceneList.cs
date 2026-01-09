@@ -2,7 +2,7 @@ namespace MyAssets
 {
     public enum SceneList
     {
-        Title,
+        Title = 1,
         Select,
         Stage01,
         Stage02,

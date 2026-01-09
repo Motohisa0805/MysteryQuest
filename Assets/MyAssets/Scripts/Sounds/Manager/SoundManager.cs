@@ -77,11 +77,11 @@ namespace MyAssets
         }
 
 
-        public void PlayOneShot3D(SoundList.SEType SEType,Transform parent,bool loop = false, bool isFollow = false,bool destroyCollection = false, float endSECount = -1)
+        public void PlayOneShot3D(int id,Transform parent,bool loop = false, bool isFollow = false,bool destroyCollection = false, float endSECount = -1)
         {
             //クリップを取得
-            SoundList.SEElement seElement = mSoundList.SEList[(int)SEType];
-            AudioClip clip = seElement.Clips[Random.Range(0, mSoundList.SEList[(int)SEType].MaxClips)];
+            SoundList.SEElement seElement = mSoundList.GetElement(id); ;
+            AudioClip clip = seElement.Clips[Random.Range(0, seElement.MaxClips)];
             //オーディオソースを探す
             AudioSource audioSource = SerchAudios();
             if(audioSource == null || clip == null)
@@ -122,11 +122,11 @@ namespace MyAssets
             }
         }
 
-        public void PlayOneShot2D(SoundList.SEType SEType, bool loop = false, float endSECount = -1,float pitch = 1)
+        public void PlayOneShot2D(int id, bool loop = false, float endSECount = -1,float pitch = 1)
         {
             //クリップを取得
-            SoundList.SEElement seElement = mSoundList.SEList[(int)SEType];
-            AudioClip clip = seElement.Clips[Random.Range(0, mSoundList.SEList[(int)SEType].MaxClips)];
+            SoundList.SEElement seElement = mSoundList.GetElement(id);
+            AudioClip clip = seElement.Clips[Random.Range(0, seElement.MaxClips)];
             //オーディオソースを探す
             AudioSource audioSource = SerchAudios();
             if (audioSource == null || clip == null)

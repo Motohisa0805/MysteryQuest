@@ -7,6 +7,7 @@ namespace MyAssets
     public enum MaterialType
     {
         None,
+        Organism,
         Wood,
         Iron,
         Stone,
@@ -32,9 +33,6 @@ namespace MyAssets
 
         [Tooltip("発生させるエフェクトID")]
         public EffectType mEffectType;
-
-        [Tooltip("発生させるまでの待機時間")]
-        public float mDuration;
     }
     [Serializable]
     public class ReactionRule

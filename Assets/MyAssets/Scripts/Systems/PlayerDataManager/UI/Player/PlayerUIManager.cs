@@ -29,12 +29,7 @@ namespace MyAssets
 
         private void Update()
         {
-            if(InputManager.GetKeyDown(KeyCode.Num1))
-            {
-                PlayerStatusManager.Instance.ChangeHP(120);
-            }
-
-            if (mLifeHUDController)
+            if (mLifeHUDController && mLifeHUDController.transform.parent.gameObject.activeSelf)
             {
                 mLifeHUDController.UpdateLifeHUD();
             }

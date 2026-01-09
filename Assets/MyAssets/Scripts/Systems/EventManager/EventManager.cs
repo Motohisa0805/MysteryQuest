@@ -115,6 +115,7 @@ namespace MyAssets
         //1回のイベントの流れ
         public async UniTaskVoid PlayOpeningCutscene()
         {
+            if(mEventMovePointList.Count <= 0) { return; }
             //カーソルを固定
             InputManager.SetLockedMouseMode();
             mPlayableChracterController.transform.position = new Vector3(mEventMovePointList[0].transform.position.x, mEventMovePointList[0].transform.position.y + 0.75f, mEventMovePointList[0].transform.position.z);
@@ -141,6 +142,8 @@ namespace MyAssets
 
         public async UniTaskVoid PlayEndingCutscene()
         {
+            if (mEventMovePointList.Count <= 0) { return; }
+            ResultManager.IsResulting = true;
             //3番目のポイントに移動
             SetEventMoveTargetPoint(2);
             await mPlayableChracterController.MoveToAsync();
@@ -163,6 +166,16 @@ namespace MyAssets
             //カーソル固定を解除
             InputManager.SetNoneMouseMode();
             GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.HUD);
+            GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Result);
+        }
+
+        public async UniTaskVoid DeathEvent()
+        {
+            ResultManager.IsResulting = true;
+            GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.HUD);
+            await UniTask.Delay(TimeSpan.FromSeconds(3));
+            //カーソル固定を解除
+            InputManager.SetNoneMouseMode();
             GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Result);
         }
 

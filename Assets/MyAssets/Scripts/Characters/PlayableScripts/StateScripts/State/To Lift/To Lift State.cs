@@ -14,7 +14,7 @@ namespace MyAssets
 
         private Animator mAnimator;//アニメーター
 
-        private ImpactChecker mImpactChecker;//当たり判定用チェッカー
+        private DamageChecker mImpactChecker;//当たり判定用チェッカー
 
         private PlayableAnimationFunction mAnimationFunction;
 
@@ -37,7 +37,7 @@ namespace MyAssets
 
             mAnimator = actor.GetComponentInChildren<Animator>();
 
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
 
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
         }
@@ -76,7 +76,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 
@@ -93,7 +93,7 @@ namespace MyAssets
 
         private Animator mAnimator;
 
-        private ImpactChecker mImpactChecker;//当たり判定用チェッカー
+        private DamageChecker mImpactChecker;//当たり判定用チェッカー
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -118,7 +118,7 @@ namespace MyAssets
 
             mAnimator = actor.GetComponentInChildren<Animator>();
 
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
         public override void Enter()
@@ -157,7 +157,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 
@@ -172,7 +172,7 @@ namespace MyAssets
 
         private PropsObjectChecker mChecker;
 
-        private ImpactChecker mImpactChecker;//当たり判定用チェッカー
+        private DamageChecker mImpactChecker;//当たり判定用チェッカー
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -195,7 +195,7 @@ namespace MyAssets
 
             mChecker = actor.GetComponent<PropsObjectChecker>();
 
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
         public override void Enter()
@@ -228,7 +228,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 
@@ -245,7 +245,7 @@ namespace MyAssets
 
         private Animator mAnimator;
 
-        private ImpactChecker mImpactChecker;//当たり判定用チェッカー
+        private DamageChecker mImpactChecker;//当たり判定用チェッカー
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -269,7 +269,7 @@ namespace MyAssets
 
             mAnimator = actor.GetComponentInChildren<Animator>();
 
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
         public override void Enter()
@@ -307,7 +307,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 }

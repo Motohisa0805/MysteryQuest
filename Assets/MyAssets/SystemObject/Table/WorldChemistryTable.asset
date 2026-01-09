@@ -14,11 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ChemistryTable
   gRules:
   - gRuleName: "\u7740\u706B"
+    gTargetMaterial: 2
+    gStimulusElement: 1
+    gResult:
+      gElementToAdd: 1
+      gElementToRemove: 0
+      mEffectType: 1
+  - gRuleName: "\u7740\u706B"
     gTargetMaterial: 1
     gStimulusElement: 1
     gResult:
       gElementToAdd: 1
       gElementToRemove: 0
-      mVfxName: 
       mEffectType: 1
-      mDuration: 2

@@ -12,7 +12,7 @@ namespace MyAssets
 
         PlayableAnimationFunction mAnimationFunction;
 
-        ImpactChecker mImpactChecker;
+        DamageChecker mImpactChecker;
 
         private TargetSearch mTargetSearch;
 
@@ -51,7 +51,7 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
             mEquipmentController = actor.GetComponent<EquipmentController>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
@@ -103,7 +103,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 }

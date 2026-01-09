@@ -16,7 +16,7 @@ namespace MyAssets
 
         private Movement mMovement;
 
-        private ImpactChecker mImpactChecker;
+        private DamageChecker mImpactChecker;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -33,7 +33,7 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mMovement = actor.GetComponent<Movement>();
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
         public override void Enter()
@@ -59,7 +59,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 
@@ -74,7 +74,7 @@ namespace MyAssets
 
         private Animator mAnimator;
 
-        private ImpactChecker mImpactChecker;
+        private DamageChecker mImpactChecker;
 
         [SerializeField]
         private float mClimbJumpingTime;
@@ -93,7 +93,7 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
         public override void Enter()
@@ -118,7 +118,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 }

@@ -47,7 +47,7 @@ namespace MyAssets
             }
             if(amount < 0)
             {
-                ResultManager.DamageTaken += (int)amount;
+                ResultManager.DamageTaken += Mathf.Abs((int)amount);
             }
         }
     }

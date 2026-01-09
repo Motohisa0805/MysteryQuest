@@ -28,7 +28,7 @@ namespace MyAssets
 
             if (isGrounded && !mPastGrounded)
             {
-                SoundManager.Instance.PlayOneShot3D(SoundList.SEType.Footstep, transform);
+                SoundManager.Instance.PlayOneShot3D(4, transform);
             }
 
             mPastGrounded = isGrounded;

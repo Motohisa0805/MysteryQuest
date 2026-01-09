@@ -153,11 +153,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1435df7cf42b24aaefae8eade6686a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ChemistryObject
-  mMaterial: 3
+  mMaterial: 4
   mCurrentElements: 0
   mMaterialObjectInfo:
     mIsDestructible: 0
     mDestroyDelay: 0
+    mIgnitionResistance: 0
 --- !u!114 &8902099021555260739
 MonoBehaviour:
   m_ObjectHideFlags: 0

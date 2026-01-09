@@ -31,6 +31,7 @@ namespace MyAssets
         eLeftSelect,
         eRightSelect,
         eDecide,
+        eMenu,
         //eESC,
         eF1,
         Num1,
@@ -45,6 +46,12 @@ namespace MyAssets
 
         private static List<InputAction> mButtonActions = new List<InputAction>();
 
+        private static string mCurrentControlScheme = "Keyboard&Mouse"; // デフォルト
+        public static string CurrentControlScheme => mCurrentControlScheme;
+
+        public static bool IsCurrentControlSchemeKeyBoard => mCurrentControlScheme == "Keyboard&Mouse";
+
+        public static System.Action<string> OnControlSchemeChanged;
         public static void Initialize()
         {
             if (mInputAction != null)
@@ -55,6 +62,19 @@ namespace MyAssets
             // Initialize the Input System
             mInputAction = new InputSystem_Actions();
             mInputAction.Enable();
+
+            InputSystem.onActionChange += (obj, change) =>
+            {
+                if(change == InputActionChange.ActionStarted || change == InputActionChange.ActionPerformed)
+                {
+                    var action = (InputAction)obj;
+                    if(action.activeControl != null)
+                    {
+                        //操作されたデバイスから、対応するスキーム名を特定
+                        DetermineControlScheme(action.activeControl.device);
+                    }
+                }
+            };
 
             mButtonActions.Add(mInputAction.Player.Move);
             mButtonActions.Add(mInputAction.Player.Look);
@@ -73,12 +93,28 @@ namespace MyAssets
             mButtonActions.Add(mInputAction.UI.Select_Left);
             mButtonActions.Add(mInputAction.UI.Select_Right);
             mButtonActions.Add(mInputAction.UI.Decide);
-            /*
-            mButtonActions.Add(mInputAction.UI.Option);
-             */
+            mButtonActions.Add(mInputAction.UI.Menu);
             mButtonActions.Add(mInputAction.Debug.OnOff);
             mButtonActions.Add(mInputAction.Debug.CreateWoodBox);
             mButtonActions.Add(mInputAction.Debug.CreateWood);
+        }
+
+        // デバイスからコントロールスキーム名を特定するメソッド
+        private static void DetermineControlScheme(InputDevice device)
+        {
+            foreach(var scheme in mInputAction.controlSchemes)
+            {
+                // デバイスがそのスキームの要件（Binding）に合致するかチェック
+                if (scheme.SupportsDevice(device))
+                {
+                    if(mCurrentControlScheme != scheme.name)
+                    {
+                        mCurrentControlScheme = scheme.name;
+                        OnControlSchemeChanged?.Invoke(mCurrentControlScheme);
+                    }
+                    break;
+                }
+            }
         }
 
         public static void Shutdown()

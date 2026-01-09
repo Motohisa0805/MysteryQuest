@@ -12,6 +12,7 @@ namespace MyAssets
 
         private static int mDamageTaken = 0;
         private static int mMaxDamageTaken = 999;
+
         public static int DamageTaken 
         {
             get 
@@ -31,9 +32,24 @@ namespace MyAssets
             } 
         }
 
+        private static bool mIsResulting = false;
+
+        public static bool IsResulting
+        {
+            get
+            {
+                return mIsResulting;
+            }
+            set
+            {
+                mIsResulting = value;
+            }
+        }
+
         public void Initilaize()
         {
             mDamageTaken = 0;
+            mIsResulting = false;
             if (SceneManager.GetActiveScene().buildIndex > 1 && mGameTimer != null)
             {
                 mGameTimer.Start(mGameTime);

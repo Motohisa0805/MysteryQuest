@@ -14,7 +14,7 @@ namespace MyAssets
 
         PlayableAnimationFunction       mAnimationFunction;
 
-        ImpactChecker                   mImpactChecker;
+        DamageChecker                   mImpactChecker;
 
         private EquipmentController mEquipmentController;
 
@@ -43,7 +43,7 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
             mPlayableInput = actor.GetComponent<PlayableInput>();
             mEquipmentController = actor.GetComponent<EquipmentController>();
@@ -53,8 +53,8 @@ namespace MyAssets
         {
             base.Enter();
             mAnimationFunction.Animator.SetInteger("to Lift", -1);
-            mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
-            mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0,true);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0,true);
             if (mEquipmentController.IsBattleMode)
             {
                 mAnimationFunction.SetModeBlend(1);
@@ -80,6 +80,7 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
+            mAnimationFunction.UpdateLayerWeight();
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();
         }
@@ -103,7 +104,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 }
