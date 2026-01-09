@@ -1,5 +1,4 @@
 ﻿using Cysharp.Threading.Tasks;
-using NUnit.Framework.Internal;
 using UnityEngine;
 
 namespace MyAssets
@@ -81,6 +80,8 @@ namespace MyAssets
         private BigImpactPlayerState mBigImpactPlayerState;
         [SerializeField]
         private StandingUpState mStandingUpState;
+        [SerializeField]
+        private DeathPlayerState mDeathPlayerState;
 
         [SerializeField]
         private WeaponTakingOutState mWeaponTakingOutState;
@@ -112,8 +113,8 @@ namespace MyAssets
         private Movement mMovement; //ムーブメント
         public Movement Movement => mMovement;
 
-        private ImpactChecker mImpactChecker;
-        public ImpactChecker ImpactChecker => mImpactChecker;
+        private DamageChecker mImpactChecker;
+        public DamageChecker ImpactChecker => mImpactChecker;
 
         private TargetSearch mTargetSearch;
         public TargetSearch TargetSearch => mTargetSearch;
@@ -198,6 +199,7 @@ namespace MyAssets
                 mSmallImpactPlayerState,
                 mBigImpactPlayerState,
                 mStandingUpState,
+                mDeathPlayerState,
                 mWeaponTakingOutState,
                 mWeaponStorageState,
                 mReadyFirstAttackState,

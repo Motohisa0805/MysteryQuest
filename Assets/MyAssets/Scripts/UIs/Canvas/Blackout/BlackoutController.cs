@@ -71,7 +71,7 @@ namespace MyAssets
             while (timeElapsed < duration)
             {
                 // 経過時間を加算（Time.deltaTimeは前フレームからの経過時間）
-                timeElapsed += Time.deltaTime;
+                timeElapsed += Time.unscaledDeltaTime;
 
                 // 経過時間に基づき、現在のアルファ値を計算（Lerp関数を使用）
                 // timeElapsed / duration で 0.0 から 1.0 までの割合を求める
@@ -92,6 +92,10 @@ namespace MyAssets
             if(sceneIndex != -1)
             {
                 SceneManager.LoadScene(sceneIndex);
+                if(Time.timeScale < 1.0f)
+                {
+                    Time.timeScale = 1.0f;
+                }
             }
         }
     }

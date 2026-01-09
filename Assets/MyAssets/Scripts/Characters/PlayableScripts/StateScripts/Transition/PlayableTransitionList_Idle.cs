@@ -161,17 +161,19 @@ namespace MyAssets
 
         readonly private PlayableInput mInput;
         readonly private Animator mAnimator;
+        readonly private EquipmentController mEquipmentController;
         public IsReadyAttackToIgnitionTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
             mAnimator = actor.GetComponentInChildren<Animator>();
+            mEquipmentController = actor.GetComponent<EquipmentController>();
         }
         private bool IsAnimationEnd()
         {
             return mAnimator.GetCurrentAnimatorStateInfo(0).IsName("ready First Attack") && mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f;
         }
-        public override bool IsTransition() => mInput.Attacking && IsAnimationEnd();
+        public override bool IsTransition() => mInput.Attacking && IsAnimationEnd() && mEquipmentController.SwordStick.IsHasStuckObject;
     }
 
     //イベント用の遷移クラス

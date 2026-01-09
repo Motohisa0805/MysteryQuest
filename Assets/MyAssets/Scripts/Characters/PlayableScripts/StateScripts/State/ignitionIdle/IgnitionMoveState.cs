@@ -14,7 +14,7 @@ namespace MyAssets
 
         PlayableAnimationFunction mAnimationFunction;
 
-        ImpactChecker mImpactChecker;
+        DamageChecker mImpactChecker;
 
         private EquipmentController mEquipmentController;
 
@@ -36,7 +36,7 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
             mPlayableInput = actor.GetComponent<PlayableInput>();
             mEquipmentController = actor.GetComponent<EquipmentController>();
@@ -48,7 +48,7 @@ namespace MyAssets
             mAnimationFunction.Animator.SetBool("up Right Arm", false);
             mAnimationFunction.Animator.SetInteger("attack State", -1);
             mAnimationFunction.Animator.SetInteger("ignitionI", 0);
-            mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 1);
+            mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 1,true);
             mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
         }
 
@@ -62,11 +62,11 @@ namespace MyAssets
             {
                 mAnimationFunction.SetModeBlend(1);
             }
+            mAnimationFunction.UpdateLayerWeight();
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateFocusingMoveAnimation();
             mAnimationFunction.SpritDushClear();
             base.Execute_Update(time);
-            mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();
         }
 
@@ -90,7 +90,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 }

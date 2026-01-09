@@ -95,7 +95,7 @@ namespace MyAssets
         // Update is called once per frame
         private void Update()
         {
-            if (mTarget == null)
+            if (mTarget == null || Time.timeScale <= 0.0f)
             {
                 return;
             }

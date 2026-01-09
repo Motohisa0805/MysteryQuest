@@ -15,7 +15,7 @@ namespace MyAssets
         private TargetSearch mTargetSearch;
 
         private Animator mAnimator;//アニメーター
-        private ImpactChecker mImpactChecker;
+        private DamageChecker mImpactChecker;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -35,7 +35,7 @@ namespace MyAssets
             mInput = actor.GetComponent<PlayableInput>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
             mAnimator = actor.GetComponentInChildren<Animator>();
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
         public override void Enter()
@@ -51,6 +51,10 @@ namespace MyAssets
             else
             {
                 mController.Movement.Jump(mController.StatusProperty.IdleJumpPower);
+            }
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlayOneShot3D(7, mController.transform);
             }
         }
 
@@ -77,7 +81,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
 
     }
@@ -92,7 +96,7 @@ namespace MyAssets
 
         private Animator mAnimator;//アニメーター
 
-        private ImpactChecker mImpactChecker;
+        private DamageChecker mImpactChecker;
 
         private TargetSearch mTargetSearch;
 
@@ -113,7 +117,7 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
             mInput = actor.GetComponent<PlayableInput>();
         }
@@ -146,7 +150,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 
@@ -159,7 +163,7 @@ namespace MyAssets
 
         private Animator mAnimator;//アニメーター
 
-        private ImpactChecker mImpactChecker;
+        private DamageChecker mImpactChecker;
 
         private TargetSearch mTargetSearch;
 
@@ -181,7 +185,7 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
             mInput = actor.GetComponent<PlayableInput>();
         }
@@ -214,7 +218,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 }

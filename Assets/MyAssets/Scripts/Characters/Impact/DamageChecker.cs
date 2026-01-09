@@ -1,9 +1,8 @@
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace MyAssets
 {
-    public class ImpactChecker : MonoBehaviour
+    public class DamageChecker : MonoBehaviour
     {
         [SerializeField]
         private float mImpactPower;
@@ -24,8 +23,17 @@ namespace MyAssets
         // 落下ダメージのしきい値
         private const float FallDamageThreshold = 10f;
 
-        public void ApplyImpactPower(Collision collision)
+        //エレメントの継続的ダメージで使用
+        private Timer mElementDamageTimer = new Timer();
+
+        private void Update()
         {
+            mElementDamageTimer.Update(Time.deltaTime);
+        }
+
+        public void ApplyDamagePower(Collision collision)
+        {
+            
             //キャラクター自身
             Rigidbody ri = GetComponent<Rigidbody>();
             //衝突者
@@ -51,6 +59,11 @@ namespace MyAssets
             {
                 CheckFallImpact(collision, ri);
             }
+        }
+
+        public void ApplyElementDamagePower(Collider collider)
+        {
+
         }
 
         private void CheckFallImpact(Collision collision, Rigidbody ri)

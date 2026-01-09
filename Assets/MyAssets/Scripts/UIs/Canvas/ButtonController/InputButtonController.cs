@@ -82,8 +82,15 @@ namespace MyAssets
         }
         private void Update()
         {
-            MouseInput();
-            GamePadInput();
+            if(InputManager.IsCurrentControlSchemeKeyBoard)
+            {
+                MouseInput();
+            }
+            else
+            {
+                GamePadInput();
+            }
+
         }
 
         private void MouseInput()

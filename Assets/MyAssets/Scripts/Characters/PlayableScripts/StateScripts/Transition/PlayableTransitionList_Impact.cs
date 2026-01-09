@@ -5,12 +5,12 @@ namespace MyAssets
 
     public class IsSmallImpactTransition : StateTransitionBase
     {
-        readonly private ImpactChecker mImpactChecker;
+        readonly private DamageChecker mImpactChecker;
         public IsSmallImpactTransition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
         }
         public override bool IsTransition()
         {
@@ -51,12 +51,12 @@ namespace MyAssets
 
     public class IsImpactTransition : StateTransitionBase
     {
-        readonly private ImpactChecker mImpactChecker;
+        readonly private DamageChecker mImpactChecker;
         public IsImpactTransition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
         }
         public override bool IsTransition()
         {
@@ -65,12 +65,12 @@ namespace MyAssets
     }
     public class IsFallBigImpactTransition : StateTransitionBase
     {
-        readonly private ImpactChecker mImpactChecker;
+        readonly private DamageChecker mImpactChecker;
         public IsFallBigImpactTransition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
         }
         public override bool IsTransition()
         {
@@ -80,12 +80,12 @@ namespace MyAssets
 
     public class IsImpactToStandingUpTransition : StateTransitionBase
     {
-        readonly private ImpactChecker mImpactChecker;
+        readonly private DamageChecker mImpactChecker;
         public IsImpactToStandingUpTransition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
         }
         public override bool IsTransition()
         {
@@ -106,6 +106,21 @@ namespace MyAssets
         {
             return mAnimator.GetCurrentAnimatorStateInfo(0).IsName("standing Up") &&
                    mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f;
+        }
+    }
+
+    public class IsDeathStateTransition : StateTransitionBase
+    {
+        readonly private DamageChecker mImpactChecker;
+        public IsDeathStateTransition
+            (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mImpactChecker = actor.GetComponent<DamageChecker>();
+        }
+        public override bool IsTransition()
+        {
+            return PlayerStatusManager.Instance.PlayerStatusData.CurrentHP <= 0.0f;
         }
     }
 

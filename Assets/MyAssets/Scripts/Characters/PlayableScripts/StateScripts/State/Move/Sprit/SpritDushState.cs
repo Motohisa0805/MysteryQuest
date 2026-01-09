@@ -13,7 +13,7 @@ namespace MyAssets
 
         private PlayableAnimationFunction mAnimationFunction;
 
-        private ImpactChecker mImpactChecker;
+        private DamageChecker mImpactChecker;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -35,7 +35,7 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
         public override void Enter()
@@ -70,7 +70,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace MyAssets
 
         private PlayableAnimationFunction mAnimationFunction;
 
-        private ImpactChecker mImpactChecker;
+        private DamageChecker mImpactChecker;
 
         private EquipmentController mEquipmentController;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
@@ -34,7 +34,7 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
             mEquipmentController = actor.GetComponent<EquipmentController>();
         }
 
@@ -46,7 +46,7 @@ namespace MyAssets
             {
                 hand.enabled = true;
                 //ïêäÌÇÃëfêUÇËSE
-                SoundManager.Instance.PlayOneShot3D(SoundList.SEType.Attack,mController.transform);
+                SoundManager.Instance.PlayOneShot3D(0,mController.transform);
                 mEquipmentController.SwingEffectHandler.ActivateSlachEffect(true);
             }
             mAnimationFunction.Animator.SetInteger("attack State", 1);
@@ -81,7 +81,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 }

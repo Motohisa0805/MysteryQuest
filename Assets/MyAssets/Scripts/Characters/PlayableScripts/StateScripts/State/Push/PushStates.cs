@@ -15,7 +15,7 @@ namespace MyAssets
 
         private Animator mAnimator;//アニメーター
 
-        private ImpactChecker mImpactChecker;
+        private DamageChecker mImpactChecker;
 
         [SerializeField]
         private float mPushPower;
@@ -42,7 +42,7 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mPropsChecker = actor.GetComponent<PropsObjectChecker>();
             mAnimator = actor.GetComponentInChildren<Animator>();
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
         public override void Enter()
@@ -82,7 +82,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 
@@ -98,7 +98,7 @@ namespace MyAssets
 
         private Animator mAnimator;//アニメーター
 
-        private ImpactChecker mImpactChecker;
+        private DamageChecker mImpactChecker;
 
         [SerializeField]
         private float mPushPower;
@@ -126,7 +126,7 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mPropsChecker = actor.GetComponent<PropsObjectChecker>();
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
         public override void Enter()
@@ -164,7 +164,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 
@@ -179,7 +179,7 @@ namespace MyAssets
 
         private Animator mAnimator;//アニメーター
 
-        private ImpactChecker mImpactChecker;
+        private DamageChecker mImpactChecker;
 
         [SerializeField]
         private float mPushPower;
@@ -203,7 +203,7 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mPropsChecker = actor.GetComponent<PropsObjectChecker>();
-            mImpactChecker = actor.GetComponent<ImpactChecker>();
+            mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
         public override void Enter()
@@ -241,7 +241,7 @@ namespace MyAssets
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
             base.CollisionEnter(thisObject, collision);
-            mImpactChecker.ApplyImpactPower(collision);
+            mImpactChecker.ApplyDamagePower(collision);
         }
     }
 }

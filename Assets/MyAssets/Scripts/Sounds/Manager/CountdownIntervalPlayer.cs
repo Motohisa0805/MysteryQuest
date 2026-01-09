@@ -65,7 +65,7 @@ namespace MyAssets
         {
             while(mElapsedTime < mTotalDuration)
             {
-                SoundManager.Instance.PlayOneShot2D(SoundList.SEType.CountDown,false,-1, mCurrentPitch);
+                SoundManager.Instance.PlayOneShot2D(1,false,-1, mCurrentPitch);
                 mCurrentPitch -= mPitchStep;
 
                 // Å’áƒsƒbƒ`‚ð‰º‰ñ‚ç‚È‚¢‚æ‚¤‚É§ŒÀ
