@@ -250,11 +250,10 @@ namespace MyAssets
         private void Update()
         {
             float t = Time.deltaTime;
-
             mFallTimer.Update(t);
-
             GroundCheck();
             OverheadCheck();
+
             mStateMachine.Update(t);
             mCurrentStateKey = mStateMachine.CurrentState.Key;
         }

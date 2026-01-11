@@ -62,8 +62,10 @@ MonoBehaviour:
   mPlayerStatus:
     MaxHP: 360
     CurrentHP: 360
-    MaxSP: 1000
-    CurrentSP: 1000
+    MaxSP: 70
+    CurrentSP: 70
+    UseSP: 10
+    RecoverySP: 30
     Attack: 30
     Defense: 30
 --- !u!1001 &6175729152243925876

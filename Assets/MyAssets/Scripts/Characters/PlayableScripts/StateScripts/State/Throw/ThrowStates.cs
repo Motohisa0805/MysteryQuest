@@ -13,9 +13,9 @@ namespace MyAssets
 
         private PlayableChracterController mController;
 
-        private PlayableAnimationFunction mAnimationFunction;
+        private PlayableInput mPlayableInput;
 
-        private Animator mAnimator;//アニメーター
+        private PlayableAnimationFunction mAnimationFunction;
 
         private Movement mMovement;
 
@@ -40,7 +40,6 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
             mMovement = actor.GetComponent<Movement>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
@@ -49,7 +48,7 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("to Lift", 2);
+            mAnimationFunction.Animator.SetInteger("to Lift", 2);
             mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
             mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
             TPSCamera.CameraType = TPSCamera.Type.ShoulderView;
@@ -61,6 +60,7 @@ namespace MyAssets
             base.Execute_Update(time);
             mChecker.UpdateTakedObjectThrowDirection(mThrowPower);
             mChecker.UpdateTakedObjectPosition();
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -89,9 +89,11 @@ namespace MyAssets
 
         private PlayableChracterController mController;
 
-        private PropsObjectChecker mChecker;
+        private PlayableAnimationFunction mAnimationFunction;
 
-        private Animator mAnimator;//アニメーター
+        private PlayableInput mPlayableInput;
+
+        private PropsObjectChecker mChecker;
 
         private Movement mMovement;
 
@@ -114,8 +116,9 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponentInChildren<PlayableInput>();
             mMovement = actor.GetComponent<Movement>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
@@ -123,7 +126,7 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("to Lift", 3);
+            mAnimationFunction.Animator.SetInteger("to Lift", 3);
         }
 
         public override void Execute_Update(float time)
@@ -131,6 +134,7 @@ namespace MyAssets
             mChecker.UpdateTakedObjectThrowDirection(mThrowPower);
             mChecker.UpdateTakedObjectPosition();
             base.Execute_Update(time);
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -158,9 +162,11 @@ namespace MyAssets
         public static readonly string mStateKey = "Throwing";
         public override string Key => mStateKey;
 
-        private PropsObjectChecker mChecker;
+        private PlayableInput mPlayableInput;
 
-        private Animator mAnimator;//アニメーター
+        private PlayableAnimationFunction mAnimationFunction;
+
+        private PropsObjectChecker mChecker;
 
         private Movement mMovement;
 
@@ -184,8 +190,9 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
+            mPlayableInput = actor.GetComponent<PlayableInput>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
             mMovement = actor.GetComponent<Movement>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
@@ -193,7 +200,7 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("to Lift", 4);
+            mAnimationFunction.Animator.SetInteger("to Lift", 4);
 
             mThrowed = false;
         }
@@ -202,12 +209,13 @@ namespace MyAssets
         {
             base.Execute_Update(time);
             mChecker.UpdateTakedObjectPosition();
-            bool flag = mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1.0f && mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.6f && mAnimator.GetCurrentAnimatorStateInfo(0).IsName("throwing");
+            bool flag = mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1.0f && mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.6f && mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(0).IsName("throwing");
             if (!mThrowed && flag)
             {
                 mChecker.Throw(mThrowPower);
                 mThrowed = true;
             }
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -219,7 +227,7 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            mAnimator.SetInteger("to Lift", -1);
+            mAnimationFunction.Animator.SetInteger("to Lift", -1);
             mThrowed = false;
             TPSCamera.CameraType = TPSCamera.Type.Free;
         }

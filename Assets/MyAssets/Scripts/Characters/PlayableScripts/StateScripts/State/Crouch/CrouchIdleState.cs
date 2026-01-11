@@ -13,7 +13,7 @@ namespace MyAssets
 
         private CapsuleColliderController mColliderController;
 
-        private Animator mAnimator;
+        private PlayableInput mPlayableInput;
 
         private PlayableAnimationFunction mAnimationFunction;
 
@@ -38,7 +38,7 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
             mColliderController = actor.GetComponentInChildren<CapsuleColliderController>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponentInChildren<PlayableInput>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
@@ -47,7 +47,7 @@ namespace MyAssets
         {
             base.Enter();
 
-            mAnimator.SetInteger("crouchState", 0);
+            mAnimationFunction.Animator.SetInteger("crouchState", 0);
 
             float standingHeight = mColliderController.CapsuleCollider.height;
             float crouchHeight = mCrouchHeight;
@@ -63,6 +63,7 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateCrouchAnimation();
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -76,7 +77,7 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            mAnimator.SetInteger("crouchState", -1);
+            mAnimationFunction.Animator.SetInteger("crouchState", -1);
         }
 
         public override void CollisionEnter(GameObject thisObject, Collision collision)
@@ -93,10 +94,9 @@ namespace MyAssets
 
         public override string Key => mStateKey;
 
-
-        private Animator mAnimator;
-
         private PlayableChracterController mController;
+
+        private PlayableInput mPlayableInput;
 
         private PlayableAnimationFunction mAnimationFunction;
 
@@ -116,7 +116,7 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
@@ -125,7 +125,7 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("crouchState", 1);
+            mAnimationFunction.Animator.SetInteger("crouchState", 1);
         }
 
         public override void Execute_Update(float time)
@@ -134,6 +134,7 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateCrouchAnimation();
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -163,10 +164,9 @@ namespace MyAssets
 
         public override string Key => mStateKey;
 
-
-        private Animator mAnimator;
-
         private PlayableChracterController mController;
+
+        private PlayableInput mPlayableInput;
 
         private PlayableAnimationFunction mAnimationFunction;
 
@@ -186,7 +186,7 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponentInChildren<PlayableInput>();
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
@@ -204,6 +204,7 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateCrouchAnimation();
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -227,10 +228,9 @@ namespace MyAssets
 
         public override string Key => mStateKey;
 
-
-        private Animator mAnimator;
-
         private PlayableChracterController mController;
+
+        private PlayableInput mPlayableInput;
 
         private PlayableAnimationFunction mAnimationFunction;
 
@@ -252,7 +252,7 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponentInChildren<PlayableInput>();
             mColliderController = actor.GetComponentInChildren<CapsuleColliderController>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
@@ -260,7 +260,7 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("crouchState", 2);
+            mAnimationFunction.Animator.SetInteger("crouchState", 2);
         }
 
         public override void Execute_Update(float time)
@@ -269,6 +269,7 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateCrouchAnimation();
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -282,7 +283,7 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            mAnimator.SetInteger("crouchState", -1);
+            mAnimationFunction.Animator.SetInteger("crouchState", -1);
 
             mColliderController.ResetCollider();
         }

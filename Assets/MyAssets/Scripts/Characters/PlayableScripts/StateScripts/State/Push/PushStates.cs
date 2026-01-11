@@ -11,9 +11,11 @@ namespace MyAssets
         public override string Key => mStateKey;
         private PlayableChracterController mController;
 
-        private PropsObjectChecker mPropsChecker;
+        private PlayableInput mPlayableInput;
 
-        private Animator mAnimator;//アニメーター
+        private PlayableAnimationFunction mAnimationFunction;
+
+        private PropsObjectChecker mPropsChecker;
 
         private DamageChecker mImpactChecker;
 
@@ -40,8 +42,9 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mPropsChecker = actor.GetComponent<PropsObjectChecker>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
@@ -49,12 +52,13 @@ namespace MyAssets
         {
             base.Enter();
 
-            mAnimator.SetInteger("pushState", 0);
+            mAnimationFunction.Animator.SetInteger("pushState", 0);
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
+            PlayerStatusManager.Instance.ChangeSP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -76,7 +80,7 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            mAnimator.SetInteger("pushState", -1);
+            mAnimationFunction.Animator.SetInteger("pushState", -1);
         }
 
         public override void CollisionEnter(GameObject thisObject, Collision collision)
@@ -94,9 +98,11 @@ namespace MyAssets
         public override string Key => mStateKey;
         private PlayableChracterController mController;
 
-        private PropsObjectChecker mPropsChecker;
+        private PlayableInput mPlayableInput;
 
-        private Animator mAnimator;//アニメーター
+        private PlayableAnimationFunction mAnimationFunction;
+
+        private PropsObjectChecker mPropsChecker;
 
         private DamageChecker mImpactChecker;
 
@@ -124,7 +130,8 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mPropsChecker = actor.GetComponent<PropsObjectChecker>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
@@ -132,12 +139,13 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("pushState", 1);
+            mAnimationFunction.Animator.SetInteger("pushState", 1);
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
+            PlayerStatusManager.Instance.ChangeSP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -159,7 +167,7 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            mAnimator.SetInteger("pushState", -1);
+            mAnimationFunction.Animator.SetInteger("pushState", -1);
         }
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {
@@ -175,9 +183,11 @@ namespace MyAssets
         public override string Key => mStateKey;
         private PlayableChracterController mController;
 
-        private PropsObjectChecker mPropsChecker;
+        private PlayableInput mPlayableInput;
 
-        private Animator mAnimator;//アニメーター
+        private PlayableAnimationFunction mAnimationFunction;
+
+        private PropsObjectChecker mPropsChecker;
 
         private DamageChecker mImpactChecker;
 
@@ -201,7 +211,8 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mPropsChecker = actor.GetComponent<PropsObjectChecker>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
@@ -209,12 +220,13 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("pushState", 2);
+            mAnimationFunction.Animator.SetInteger("pushState", 2);
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
+            PlayerStatusManager.Instance.ChangeSP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -236,7 +248,7 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            mAnimator.SetInteger("pushState", -1);
+            mAnimationFunction.Animator.SetInteger("pushState", -1);
         }
         public override void CollisionEnter(GameObject thisObject, Collision collision)
         {

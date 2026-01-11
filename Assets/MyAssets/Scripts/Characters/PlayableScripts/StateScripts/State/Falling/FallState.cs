@@ -11,9 +11,11 @@ namespace MyAssets
 
         private PlayableChracterController mController;
 
-        private CapsuleColliderController mColliderController;
+        private PlayableInput mPlayableInput;
 
-        private Animator mAnimator;
+        private PlayableAnimationFunction mAnimationFunction;
+
+        private CapsuleColliderController mColliderController;
 
         private DamageChecker mImpactChecker;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
@@ -30,20 +32,27 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
             mColliderController = actor.GetComponentInChildren<CapsuleColliderController>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("jumpState", 1);
-            mAnimator.SetInteger("crouchState", -1);
-            mAnimator.SetInteger("to Lift", -1);
-            mAnimator.SetInteger("pushState", -1);
+            mAnimationFunction.Animator.SetInteger("jumpState", 1);
+            mAnimationFunction.Animator.SetInteger("crouchState", -1);
+            mAnimationFunction.Animator.SetInteger("to Lift", -1);
+            mAnimationFunction.Animator.SetInteger("pushState", -1);
             TPSCamera.CameraType = TPSCamera.Type.Free;
             mColliderController.ResetCollider();
+        }
+
+        public override void Execute_Update(float time)
+        {
+            base.Execute_Update(time);
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -57,7 +66,7 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            mAnimator.SetInteger("jumpState", -1);
+            mAnimationFunction.Animator.SetInteger("jumpState", -1);
         }
 
         public override void CollisionEnter(GameObject thisObject, Collision collision)

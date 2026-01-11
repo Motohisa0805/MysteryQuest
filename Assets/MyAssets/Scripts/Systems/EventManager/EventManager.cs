@@ -172,6 +172,7 @@ namespace MyAssets
         public async UniTaskVoid DeathEvent()
         {
             ResultManager.IsResulting = true;
+            ResultManager.IsPlayerDeath = true;
             GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.HUD);
             await UniTask.Delay(TimeSpan.FromSeconds(3));
             //ƒJ[ƒ\ƒ‹ŒÅ’è‚ğ‰ğœ

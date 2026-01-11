@@ -18,7 +18,7 @@ MonoBehaviour:
     gStageName: "\u30EB\u30A2\u30EA\u30C8\u30FC\u30C1\u30E5\u306E\u30C0\u30F3\u30B8\u30E7\u30F3"
     gStageExplanation: "\u7279\u306B\u7279\u5FB4\u306E\u306A\u3044\u30C0\u30F3\u30B8\u30E7\u30F3\n\u8A13\u7DF4\u306B\u306F\u3061\u3087\u3046\u3069\u3044\u3044\u96E3\u6613\u5EA6\u306E\u3088\u3046\u3060"
     gDifficultyLevel: 0
-    gStageSprite: {fileID: 0}
+    gStageSprite: {fileID: 21300000, guid: 1d3e06d8d54164e4b8b67f9a2cff9b58, type: 3}
   - gIndex: 2
     gSceneList: 4
     gStageName: "\u30EB\u30AB\u30B8\u30A3\u30D5\u306E\u30C0\u30F3\u30B8\u30E7\u30F3"

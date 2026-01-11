@@ -10,9 +10,9 @@ namespace MyAssets
         public override string Key => mStateKey;
         private PlayableChracterController mController;
 
-        private PropsObjectChecker mChecker;
+        private PlayableInput mPlayableInput;
 
-        private Animator mAnimator;//アニメーター
+        private PropsObjectChecker mChecker;
 
         private DamageChecker mImpactChecker;//当たり判定用チェッカー
 
@@ -35,7 +35,7 @@ namespace MyAssets
 
             mChecker = actor.GetComponent<PropsObjectChecker>();
 
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
 
             mImpactChecker = actor.GetComponent<DamageChecker>();
 
@@ -45,7 +45,7 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("to Lift", 0);
+            mAnimationFunction.Animator.SetInteger("to Lift", 0);
             // ターゲットへの方向ベクトルを計算する
             Vector3 dir = mChecker.TakedObject.transform.position - mController.gameObject.transform.position;
             dir.y = 0; // キャラクターのY軸回転のみを制御したい場合
@@ -60,6 +60,7 @@ namespace MyAssets
             base.Execute_Update(time);
             mChecker.CheckTheDistanceHandsAndObject();
             mChecker.UpdateTakedObjectPosition();
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -87,11 +88,11 @@ namespace MyAssets
         public override string Key => mStateKey;
         private PlayableChracterController mController;
 
+        private PlayableInput mPlayableInput;
+
         private PlayableAnimationFunction mAnimationFunction;
 
         private PropsObjectChecker mChecker;
-
-        private Animator mAnimator;
 
         private DamageChecker mImpactChecker;//当たり判定用チェッカー
 
@@ -112,11 +113,11 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
 
+            mPlayableInput = actor.GetComponent<PlayableInput>();
+
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
 
             mChecker = actor.GetComponent<PropsObjectChecker>();
-
-            mAnimator = actor.GetComponentInChildren<Animator>();
 
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
@@ -124,7 +125,7 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("to Lift", 1);
+            mAnimationFunction.Animator.SetInteger("to Lift", 1);
             mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 1);
             mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 1);
             mAnimationFunction.SetModeBlend(0);
@@ -136,6 +137,7 @@ namespace MyAssets
             mChecker.UpdateTakedObjectPosition();
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -168,6 +170,8 @@ namespace MyAssets
         public override string Key => mStateKey;
         private PlayableChracterController mController;
 
+        private PlayableInput mPlayableInput;
+
         private PlayableAnimationFunction mAnimationFunction;
 
         private PropsObjectChecker mChecker;
@@ -191,6 +195,8 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
 
+            mPlayableInput = actor.GetComponent<PlayableInput>();
+
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
 
             mChecker = actor.GetComponent<PropsObjectChecker>();
@@ -210,6 +216,7 @@ namespace MyAssets
             mChecker.UpdateTakedObjectPosition();
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -239,6 +246,8 @@ namespace MyAssets
         public override string Key => mStateKey;
         private PlayableChracterController mController;
 
+        private PlayableInput mPlayableInput;
+
         private PlayableAnimationFunction mAnimationFunction;
 
         private PropsObjectChecker mChecker;
@@ -262,6 +271,8 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
+
+            mPlayableInput = actor.GetComponent<PlayableInput>();
 
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
 
@@ -287,6 +298,7 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateIdleToRunAnimation();
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
