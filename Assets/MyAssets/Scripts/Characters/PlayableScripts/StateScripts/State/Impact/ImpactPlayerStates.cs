@@ -9,8 +9,8 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "SmallImpact";
         public override string Key => mStateKey;
-        private Animator mAnimator;
         private PlayableAnimationFunction mAnimationFunction;
+        private PlayableInput mPlayableInput;
         private DamageChecker mImpactChecker;
         private PlayableChracterController mPlayableChracterController;
         private PropsObjectChecker mChecker;
@@ -26,7 +26,7 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponentInChildren<DamageChecker>();
             mPlayableChracterController = actor.GetComponent<PlayableChracterController>();
@@ -36,16 +36,16 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("to Lift", -1);
-            mAnimator.SetInteger("crouchState", -1);
+            mAnimationFunction.Animator.SetInteger("to Lift", -1);
+            mAnimationFunction.Animator.SetInteger("crouchState", -1);
             TPSCamera.CameraType = TPSCamera.Type.Free;
             if (mPlayableChracterController.Grounded)
             {
-                mAnimator.SetInteger("impact State", 0);
+                mAnimationFunction.Animator.SetInteger("impact State", 0);
             }
             else
             {
-                mAnimator.SetInteger("impact State", -2);
+                mAnimationFunction.Animator.SetInteger("impact State", -2);
             }
             mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
             mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
@@ -58,6 +58,7 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -68,7 +69,7 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            mAnimator.SetInteger("impact State", -1);
+            mAnimationFunction.Animator.SetInteger("impact State", -1);
             mImpactChecker.ClearImpactPower();
         }
     }
@@ -78,7 +79,7 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "BigImpact";
         public override string Key => mStateKey;
-        private Animator mAnimator;
+        private PlayableInput mPlayableInput;
         private PlayableAnimationFunction mPlayableAnimationFunction;
         private RagdollController mRagdollController;
         private CapsuleColliderController mCapsuleColliderController;
@@ -104,7 +105,7 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
             mPlayableAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
             mRagdollController = actor.GetComponentInChildren<RagdollController>();
@@ -116,8 +117,8 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("to Lift", -1);
-            mAnimator.SetInteger("crouchState", -1);
+            mPlayableAnimationFunction.Animator.SetInteger("to Lift", -1);
+            mPlayableAnimationFunction.Animator.SetInteger("crouchState", -1);
             mPlayableAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
             mPlayableAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
             mPlayableAnimationFunction.SetAnimatorEnabled(false);
@@ -138,6 +139,7 @@ namespace MyAssets
         {
             base.Execute_Update(time);
             mTimer.Update(time);
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -158,7 +160,11 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "StandingUp";
         public override string Key => mStateKey;
-        private Animator mAnimator;
+        
+        private PlayableInput mPlayableInput;
+
+        private PlayableAnimationFunction mAnimationFunction;
+
         private Movement mMovement;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -170,19 +176,21 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponentInChildren<PlayableInput>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mMovement = actor.GetComponent<Movement>();
         }
 
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("standing Up State", 0);
+            mAnimationFunction.Animator.SetInteger("standing Up State", 0);
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -194,7 +202,7 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            mAnimator.SetInteger("standing Up State", -1);
+            mAnimationFunction.Animator.SetInteger("standing Up State", -1);
         }
     }
     [Serializable]
@@ -202,7 +210,7 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "Death";
         public override string Key => mStateKey;
-        private Animator mAnimator;
+        private PlayableInput mPlayableInput;
         private PlayableAnimationFunction mPlayableAnimationFunction;
         private RagdollController mRagdollController;
         private CapsuleColliderController mCapsuleColliderController;
@@ -227,7 +235,7 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponentInChildren<PlayableInput>();
             mPlayableAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
             mRagdollController = actor.GetComponentInChildren<RagdollController>();
@@ -239,8 +247,8 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("to Lift", -1);
-            mAnimator.SetInteger("crouchState", -1);
+            mPlayableAnimationFunction.Animator.SetInteger("to Lift", -1);
+            mPlayableAnimationFunction.Animator.SetInteger("crouchState", -1);
             mPlayableAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
             mPlayableAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
             mPlayableAnimationFunction.SetAnimatorEnabled(false);
@@ -268,6 +276,7 @@ namespace MyAssets
         {
             base.Execute_Update(time);
             mTimer.Update(time);
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

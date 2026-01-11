@@ -12,7 +12,9 @@ namespace MyAssets
 
         private PlayableChracterController mController;
 
-        private Animator mAnimator;
+        private PlayableInput mPlayableInput;
+
+        private PlayableAnimationFunction mAnimationFunction;
 
         private Movement mMovement;
 
@@ -31,7 +33,8 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mMovement = actor.GetComponent<Movement>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
@@ -39,8 +42,8 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("jumpState", -1);
-            mAnimator.SetInteger("climbState", 0);
+            mAnimationFunction.Animator.SetInteger("jumpState", -1);
+            mAnimationFunction.Animator.SetInteger("climbState", 0);
 
             mMovement.ClimbJump(mController.Movement.MovementCompensator.StepGoalPosition.y - mController.Movement.MovementCompensator.StepStartPosition.y);
         }
@@ -49,6 +52,7 @@ namespace MyAssets
         {
             base.Execute_FixedUpdate(time);
             mController.BodyRotate();
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Exit()
@@ -72,7 +76,9 @@ namespace MyAssets
 
         private PlayableChracterController mController;
 
-        private Animator mAnimator;
+        private PlayableInput mPlayableInput;
+
+        private PlayableAnimationFunction mAnimationFunction;
 
         private DamageChecker mImpactChecker;
 
@@ -92,7 +98,8 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
@@ -107,12 +114,13 @@ namespace MyAssets
             mController.Movement.Climb();
             base.Execute_FixedUpdate(time);
             mController.BodyRotate();
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Exit()
         {
             base.Exit();
-            mAnimator.SetInteger("climbState", -1);
+            mAnimationFunction.Animator.SetInteger("climbState", -1);
             mController.Movement.MovementCompensator.ClearStepFunc(false);
         }
         public override void CollisionEnter(GameObject thisObject, Collision collision)

@@ -11,6 +11,8 @@ namespace MyAssets
 
         private PlayableChracterController mController;
 
+        private PlayableInput mPlayableInput;
+
         private PlayableAnimationFunction mAnimationFunction;
 
         private DamageChecker mImpactChecker;
@@ -34,6 +36,7 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
@@ -49,6 +52,7 @@ namespace MyAssets
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();
             mAnimationFunction.UpdateSpritDushAnimation();
+            PlayerStatusManager.Instance.ChangeSP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

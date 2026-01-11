@@ -11,9 +11,9 @@ namespace MyAssets
 
         private PlayableChracterController mController;
 
-        private Rigidbody mRigidbody;
+        private PlayableInput mPlayableInput;
 
-        private Animator mAnimator;
+        private PlayableAnimationFunction mAnimationFunction;
 
         private DamageChecker mImpactChecker;
 
@@ -33,17 +33,23 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
-            mRigidbody = actor.GetComponent<Rigidbody>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
+            mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("jumpState", -1);
-            mAnimator.SetInteger("climbState", 0);
+            mAnimationFunction.Animator.SetInteger("jumpState", -1);
+            mAnimationFunction.Animator.SetInteger("climbState", 0);
             mController.Movement.ClimbJumpingTimer.Start(mClimbJumpingTime);
+        }
+
+        public override void Execute_Update(float time)
+        {
+            base.Execute_Update(time);
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -56,7 +62,7 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            mAnimator.SetInteger("climbState", -1);
+            mAnimationFunction.Animator.SetInteger("climbState", -1);
             mController.Movement.MovementCompensator.ClearStepFunc(false);
         }
 

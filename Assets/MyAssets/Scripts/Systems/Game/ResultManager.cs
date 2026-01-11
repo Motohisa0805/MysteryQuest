@@ -46,6 +46,20 @@ namespace MyAssets
             }
         }
 
+        private static bool mIsPlayerDeath = false;
+
+        public static bool IsPlayerDeath
+        {
+            get
+            {
+                return mIsPlayerDeath;
+            }
+            set
+            {
+                mIsPlayerDeath = value;
+            }
+        }
+
         public void Initilaize()
         {
             mDamageTaken = 0;

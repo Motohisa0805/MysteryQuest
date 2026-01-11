@@ -39,7 +39,8 @@ namespace MyAssets
 
         private ChemistryTable mReactionTable;
 
-        private Dictionary<ElementType,int> _contactCounters = new Dictionary<ElementType, int>();
+        private HashSet<ChemistryObject> _touchingObjects = new HashSet<ChemistryObject>();
+        private HashSet<ChemistryElement> _touchingElements = new HashSet<ChemistryElement>();
 
         [SerializeField]
         private MaterialObjectInfo mMaterialObjectInfo;
@@ -72,22 +73,7 @@ namespace MyAssets
             }
         }
 
-        private bool ExtinguishingCheck()
-        {
-            // 何らかの属性に触れているかチェック
-            if (_contactCounters.Count == 0) return true;
 
-            // 新しい反応を探す
-            foreach (var kvp in _contactCounters)
-            {
-                ElementType element = kvp.Key;
-                if(element == ElementType.Fire)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
 
         private void Update()
         {
@@ -96,40 +82,90 @@ namespace MyAssets
             {
                 mDestroyTimer.Update(Time.deltaTime);
             }
-            if(mMaterialObjectInfo.mIsExtinguishing && ExtinguishingCheck())
+            if(mMaterialObjectInfo.mIsExtinguishing)
             {
                 mExtinguishingTimer.Update(Time.deltaTime);
+                if (mCurrentElements != ElementType.None)
+                {
+                    if (mExtinguishingTimer.IsEnd())
+                    {
+                        ProcessDestructionEffect();
+                    }
+                }
             }
         }
 
         // 毎フレーム「接触中のエレメント」に対して反応を進める
         private void MonitorContactDuration()
         {
-            // 進行中の反応があれば、タイマーを進める処理のみを行う（重要：ループ外で1回だけ実行）
+            // 進行中の反応があれば早期リターン
             if (mPendingReaction.gElementToAdd != ElementType.None)
             {
                 UpdatePendingReaction();
-                return; // 反応中は他の新しい反応を探さない（ロック）
+                return;
             }
 
-            // 何らかの属性に触れているかチェック
-            if (_contactCounters.Count == 0) return;
+            //今触れているもの全ての属性を合成する
+            ElementType totalContactElement = ElementType.None;
 
-            // 新しい反応を探す
-            foreach (var kvp in _contactCounters)
+            // 化学オブジェクト（相手も変化するもの）
+            // 死んだオブジェクトはRemove
+            _touchingObjects.RemoveWhere(obj => obj == null); 
+
+            foreach (var obj in _touchingObjects)
             {
-                ElementType element = kvp.Key;
+                // 自分自身の属性は拾わないようにガード（念の為）
+                if (obj == this) continue;
+                totalContactElement |= obj.CurrentElements;
+            }
 
-                // 属性を持っていないか
-                if ((mCurrentElements & element) == 0)
+            // 化学エレメント（固定のトリガー）
+            _touchingObjects.RemoveWhere(obj =>
+            {
+                // オブジェクトが破棄されていたら消す
+                if (obj == null) return true;
+
+                // 追加：ルートが同じ（身内）になっていたらリストから消す
+                // これを入れることで、親子関係になった瞬間に接触リストから外れます
+                if (obj.transform.root == transform.root) return true;
+
+                // 自分自身なら消す
+                if (obj == this) return true;
+
+                // それ以外ならリストに残す
+                return false;
+            });
+
+            foreach (var elm in _touchingElements)
+            {
+                totalContactElement |= elm.Type;
+            }
+
+            // 2. 合計した属性に対して反応判定を行う
+            // （何も触れていなければ totalContactElement は None になり、反応しない）
+            if (totalContactElement == ElementType.None) return;
+
+            // 自分が持っていない属性が含まれているかチェック
+            // （ビット演算： (相手の属性 & ~自分の属性) が 0 でなければ、未知の属性がある）
+            ElementType newElements = totalContactElement & ~mCurrentElements;
+
+            if (newElements != ElementType.None)
+            {
+                // 優先順位などがあればここでビットを解析するが、
+                // とりあえず見つかった順、あるいはテーブルにあるか順で判定
+
+                // ここでは単純にビットが立っているものを1つずつ調べる例
+                foreach (ElementType checkType in Enum.GetValues(typeof(ElementType)))
                 {
-                    // 持っていない場合のみ
-                    // 反応テーブル検索
-                    if (mReactionTable.TryGetReaction(mMaterial, element, out ReactionResult result))
+                    if (checkType == ElementType.None) continue;
+
+                    if ((newElements & checkType) == checkType)
                     {
-                        // 新しい反応を開始
-                        StartReactionProcess(result);
-                        break; // 1フレームに1つの反応だけを受け付ける
+                        if (mReactionTable.TryGetReaction(mMaterial, checkType, out ReactionResult result))
+                        {
+                            StartReactionProcess(result);
+                            break; // 1フレーム1反応
+                        }
                     }
                 }
             }
@@ -240,7 +276,6 @@ namespace MyAssets
             if(mMaterialObjectInfo.mIsExtinguishing)
             {
                 Destroy(mElementEffect.gameObject);
-                RemoveContact(CurrentElements);
                 mCurrentElements = 0;
                 mCurrentHeatAccumulated = 0;
                 AudioSource source = GetComponentInChildren<AudioSource>();
@@ -263,46 +298,88 @@ namespace MyAssets
         //物理イベント：カウンターの増減のみを行う
         private void OnTriggerEnter(Collider other)
         {
+            // 自分自身や子供を拾わないためのガード
+            if (other.transform.root == transform.root) return;
+
             var elementComp = other.GetComponentInChildren<ChemistryElement>();
             if (elementComp != null)
             {
-                AddContact(elementComp.Type);
+                _touchingElements.Add(elementComp);
             }
-            var material = other.GetComponentInChildren<ChemistryObject>();
-            if(material != null)
+
+            // GetComponentsInChildren に変えて、複数取得＆自分除外を徹底する
+            var materials = other.GetComponentsInChildren<ChemistryObject>();
+            foreach (var mat in materials)
             {
-                AddContact(material.CurrentElements);
+                if (mat == this) continue;
+                _touchingObjects.Add(mat);
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
+            // 退出時もルートチェック（入る時弾いたものは出る時も無視）
+            if (other.transform.root == transform.root) return;
+
             var elementComp = other.GetComponentInChildren<ChemistryElement>();
             if (elementComp != null)
             {
-                RemoveContact(elementComp.Type);
+                _touchingElements.Remove(elementComp);
+                ResetReactionIfEmpty(); // 接触がゼロになったか確認
             }
-            var material = other.GetComponentInChildren<ChemistryObject>();
-            if (material != null)
+
+            var materials = other.GetComponentsInChildren<ChemistryObject>();
+            foreach (var mat in materials)
             {
-                RemoveContact(material.CurrentElements);
+                if (mat == this) continue;
+                _touchingObjects.Remove(mat);
+                ResetReactionIfEmpty();
             }
         }
 
+
         private void OnCollisionEnter(Collision collision)
         {
+            
+            // 自分自身や子供を拾わないためのガード
+            if (collision.transform.root == transform.root) return;
+
             var elementComp = collision.collider.GetComponentInChildren<ChemistryElement>();
             if (elementComp != null)
             {
-                AddContact(elementComp.Type);
+                _touchingElements.Add(elementComp);
             }
-            var material = collision.collider.GetComponentInChildren<ChemistryObject>();
-            if (material != null)
+
+            // GetComponentsInChildren に変えて、複数取得＆自分除外を徹底する
+            var materials = collision.collider.GetComponentsInChildren<ChemistryObject>();
+            foreach (var mat in materials)
             {
-                AddContact(material.CurrentElements);
+                if (mat == this) continue;
+                _touchingObjects.Add(mat);
             }
             //音の再生
             CheckPlaySound(collision);
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            // 退出時もルートチェック（入る時弾いたものは出る時も無視）
+            if (collision.transform.root == transform.root) return;
+
+            var elementComp = collision.collider.GetComponentInChildren<ChemistryElement>();
+            if (elementComp != null)
+            {
+                _touchingElements.Remove(elementComp);
+                ResetReactionIfEmpty(); // 接触がゼロになったか確認
+            }
+
+            var materials = collision.collider.GetComponentsInChildren<ChemistryObject>();
+            foreach (var mat in materials)
+            {
+                if (mat == this) continue;
+                _touchingObjects.Remove(mat);
+                ResetReactionIfEmpty();
+            }
         }
         //音を特定の条件下で再生するか調べる
         private void CheckPlaySound(Collision collision)
@@ -323,36 +400,16 @@ namespace MyAssets
             }
         }
 
-        // カウンター管理用メソッド
-        private void AddContact(ElementType type)
+        // 全て離れた時にタイマーをリセットする処理
+        private void ResetReactionIfEmpty()
         {
-            if (!_contactCounters.ContainsKey(type))
+            if (_touchingElements.Count == 0 && _touchingObjects.Count == 0)
             {
-                _contactCounters[type] = 0;
-            }
-            _contactCounters[type]++;
-        }
-
-        private void RemoveContact(ElementType type)
-        {
-            if (_contactCounters.ContainsKey(type))
-            {
-                _contactCounters[type]--;
-
-                // 0になったら接触終了
-                if (_contactCounters[type] <= 0)
+                // 何にも触れていないなら反応進行をリセット
+                if (mPendingReaction.gElementToAdd != ElementType.None)
                 {
-                    _contactCounters.Remove(type);
-
-                    // もし「着火待ち」だった属性から離れたなら、タイマーリセット
-                    // （ここを工夫すると「火から離れても少し熱が残る」なども表現可能）
-                    if (mPendingReaction.gElementToAdd != ElementType.None)
-                    {
-                        // 本当は「今の反応のトリガーになった属性か」を厳密に見るべきですが
-                        // 簡易的にリセットします
-                        mPendingReaction = default;
-                        mCurrentHeatAccumulated = 0;
-                    }
+                    mPendingReaction = default;
+                    mCurrentHeatAccumulated = 0;
                 }
             }
         }

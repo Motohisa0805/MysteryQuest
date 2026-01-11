@@ -11,7 +11,7 @@ namespace MyAssets
         public override string Key => mStateKey;
         PlayableChracterController mController;
 
-        private PlayableInput mInput;
+        private PlayableInput mPlayableInput;
         private TargetSearch mTargetSearch;
 
         private Animator mAnimator;//アニメーター
@@ -32,7 +32,7 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
-            mInput = actor.GetComponent<PlayableInput>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
@@ -61,7 +61,7 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -92,15 +92,15 @@ namespace MyAssets
         public static readonly string mStateKey = "Jumping";
         public override string Key => mStateKey;
 
-        PlayableChracterController mController;
+        private PlayableChracterController mController;
 
-        private Animator mAnimator;//アニメーター
+        private PlayableAnimationFunction mPlayableAnimationFunction;
 
         private DamageChecker mImpactChecker;
 
         private TargetSearch mTargetSearch;
 
-        private PlayableInput mInput;
+        private PlayableInput mPlayableInput;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -116,21 +116,22 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mPlayableAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
-            mInput = actor.GetComponent<PlayableInput>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
         }
 
         public override void Enter()
         {
             base.Enter();
-            mAnimator.SetInteger("jumpState", 1);
+            mPlayableAnimationFunction.Animator.SetInteger("jumpState", 1);
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -144,7 +145,7 @@ namespace MyAssets
         public override void Exit()
         {
             base.Exit();
-            mAnimator.SetInteger("jumpState", -1);
+            mPlayableAnimationFunction.Animator.SetInteger("jumpState", -1);
         }
 
         public override void CollisionEnter(GameObject thisObject, Collision collision)
@@ -167,7 +168,7 @@ namespace MyAssets
 
         private TargetSearch mTargetSearch;
 
-        private PlayableInput mInput;
+        private PlayableInput mPlayableInput;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -187,7 +188,7 @@ namespace MyAssets
             mAnimator = actor.GetComponentInChildren<Animator>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
-            mInput = actor.GetComponent<PlayableInput>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
         }
 
         public override void Enter()
@@ -199,6 +200,7 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

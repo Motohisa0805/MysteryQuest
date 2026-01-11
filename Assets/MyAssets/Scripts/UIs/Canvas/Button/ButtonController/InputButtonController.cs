@@ -7,14 +7,6 @@ namespace MyAssets
 {
     public class InputButtonController : MonoBehaviour
     {
-        //選択してる場所が分かる画像を有効にするかしないかのフラグ
-        [SerializeField]
-        private bool mActivateSelect = true;
-        //画像の大きさに設定するかボタンのサイズに合わせるかのフラグ
-        [SerializeField]
-        private bool mNativeSize = true;
-        [SerializeField]
-        private bool mSelectsImage;
         //選択中の画像
         [SerializeField]
         private Image mSelectImage;
@@ -47,32 +39,26 @@ namespace MyAssets
             mSelectIndex = 0;
             SetSelectImagePosition(mSelectIndex);
         }
+
+        private void SetSelectImageSize()
+        {
+            if (mSelectImage == null) { return; }
+            Vector2 size = mSelectImage.rectTransform.sizeDelta;
+            size.x += 50;
+            size.y += 50;
+            mSelectImage.rectTransform.sizeDelta = size;
+        }
+
         private void SetSelectImagePosition(int index)
         {
-            if (!mActivateSelect || mSelectImage == null) { return; }
+            if (mSelectImage == null) { return; }
             if (index < 0) { return; }
-            if (!mSelectsImage)
-            {
-                Vector2 pos = mHovers[index].RectTransform.anchoredPosition;
-                pos.x -= mSelectImageOffsetX;
-                pos.y -= mSelectImageOffsetY;
-                mSelectImage.rectTransform.anchoredPosition = pos;
-            }
-            else
-            {
-                Vector2 pos = mHovers[index].RectTransform.anchoredPosition;
-                pos.x -= mSelectImageOffsetX;
-                pos.y -= mSelectImageOffsetY;
-                mSelectImage.rectTransform.anchoredPosition = pos;
-            }
-            if (mNativeSize)
-            {
-                mSelectImage.SetNativeSize();
-            }
-            else
-            {
-                mSelectImage.rectTransform.sizeDelta = mHovers[index].RectTransform.sizeDelta;
-            }
+            Vector2 pos = mHovers[index].RectTransform.anchoredPosition;
+            pos.x -= mSelectImageOffsetX;
+            pos.y -= mSelectImageOffsetY;
+            mSelectImage.rectTransform.anchoredPosition = pos;
+            mSelectImage.rectTransform.sizeDelta = mHovers[index].RectTransform.sizeDelta;
+            SetSelectImageSize();
             mSelectImage.rectTransform.localScale = mHovers[index].RectTransform.localScale;
         }
 

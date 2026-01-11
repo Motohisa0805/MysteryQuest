@@ -16,6 +16,9 @@ namespace MyAssets
         private LifeHUDController         mLifeHUDController;
         public LifeHUDController          LifeHUDController { get { return mLifeHUDController; }set {  mLifeHUDController = value; } }
 
+        private StaminaHUDController mStaminaHUDController;
+        public StaminaHUDController StaminaHUDController { get { return mStaminaHUDController; } set { mStaminaHUDController = value; } }
+
         private void Awake()
         {
             if (instance != null)
@@ -32,6 +35,14 @@ namespace MyAssets
             if (mLifeHUDController && mLifeHUDController.transform.parent.gameObject.activeSelf)
             {
                 mLifeHUDController.UpdateLifeHUD();
+            }
+            if(mStaminaHUDController)
+            {
+                mStaminaHUDController.CheckStamina();
+                if (mStaminaHUDController.transform.parent.gameObject.activeSelf)
+                {
+                    mStaminaHUDController.UpdateStaminaHUD();
+                }
             }
         }
     }

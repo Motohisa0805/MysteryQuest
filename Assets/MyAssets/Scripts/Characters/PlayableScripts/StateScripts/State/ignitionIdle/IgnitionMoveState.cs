@@ -10,11 +10,11 @@ namespace MyAssets
         public static readonly string mStateKey = "IgnitionIdle";
         public override string Key => mStateKey;
 
-        PlayableChracterController mController;
+        private PlayableChracterController mController;
 
-        PlayableAnimationFunction mAnimationFunction;
+        private PlayableAnimationFunction mAnimationFunction;
 
-        DamageChecker mImpactChecker;
+        private DamageChecker mImpactChecker;
 
         private EquipmentController mEquipmentController;
 
@@ -68,6 +68,7 @@ namespace MyAssets
             mAnimationFunction.SpritDushClear();
             base.Execute_Update(time);
             mAnimationFunction.UpdateIdleToRunAnimation();
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

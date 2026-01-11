@@ -10,6 +10,8 @@ namespace MyAssets
         public float CurrentHP;
         public float MaxSP;
         public float CurrentSP;
+        public float UseSP;
+        public float RecoverySP;
         public float Attack;
         public float Defense;
     }
@@ -23,6 +25,9 @@ namespace MyAssets
         private PlayerStatus mPlayerStatus;
         public PlayerStatus   PlayerStatusData => mPlayerStatus;
 
+        private bool mIsStaminaCoolDown;
+        public bool IsStaminaCoolDown => mIsStaminaCoolDown;
+        public bool IsNoSprit => mPlayerStatus.CurrentSP <= 0 && mIsStaminaCoolDown;
         private void Awake()
         {
             if (instance != null)
@@ -48,6 +53,76 @@ namespace MyAssets
             if(amount < 0)
             {
                 ResultManager.DamageTaken += Mathf.Abs((int)amount);
+            }
+        }
+
+        public void ChangeSP(bool input)
+        {
+            if(!mIsStaminaCoolDown)
+            {
+                if (input)
+                {
+                    if (mPlayerStatus.CurrentSP > 0)
+                    {
+                        mPlayerStatus.CurrentSP -= mPlayerStatus.UseSP * Time.deltaTime;
+                    }
+                }
+                else
+                {
+                    if (mPlayerStatus.CurrentSP < mPlayerStatus.MaxSP)
+                    {
+                        mPlayerStatus.CurrentSP += mPlayerStatus.RecoverySP * Time.deltaTime;
+                    }
+                }
+                if(mPlayerStatus.CurrentSP <= 0)
+                {
+                    mPlayerStatus.CurrentSP = 0;
+                    mIsStaminaCoolDown = true;
+                }
+            }
+            else
+            {
+                if (mPlayerStatus.CurrentSP < mPlayerStatus.MaxSP)
+                {
+                    mPlayerStatus.CurrentSP += mPlayerStatus.RecoverySP * Time.deltaTime;
+                }
+                if(mPlayerStatus.CurrentSP >= mPlayerStatus.MaxSP)
+                {
+                    mPlayerStatus.CurrentSP = mPlayerStatus.MaxSP;
+                    mIsStaminaCoolDown = false;
+                }
+            }
+
+        }
+
+        public void RecoverySP(bool input)
+        {
+            if (!mIsStaminaCoolDown)
+            {
+                if (!input)
+                {
+                    if (mPlayerStatus.CurrentSP < mPlayerStatus.MaxSP)
+                    {
+                        mPlayerStatus.CurrentSP += mPlayerStatus.RecoverySP * Time.deltaTime;
+                    }
+                }
+                if (mPlayerStatus.CurrentSP <= 0)
+                {
+                    mPlayerStatus.CurrentSP = 0;
+                    mIsStaminaCoolDown = true;
+                }
+            }
+            else
+            {
+                if (mPlayerStatus.CurrentSP < mPlayerStatus.MaxSP)
+                {
+                    mPlayerStatus.CurrentSP += mPlayerStatus.RecoverySP * Time.deltaTime;
+                }
+                if (mPlayerStatus.CurrentSP >= mPlayerStatus.MaxSP)
+                {
+                    mPlayerStatus.CurrentSP = mPlayerStatus.MaxSP;
+                    mIsStaminaCoolDown = false;
+                }
             }
         }
     }

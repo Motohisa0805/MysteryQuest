@@ -94,7 +94,7 @@ namespace MyAssets
             mInput = actor.GetComponent<PlayableInput>();
 
         }
-        public override bool IsTransition() => mInput.Sprit;
+        public override bool IsTransition() => mInput.Sprit && !PlayerStatusManager.Instance.IsStaminaCoolDown;
     }
 
     public class IsNotSpritDushTransition : StateTransitionBase
@@ -107,7 +107,7 @@ namespace MyAssets
             mInput = actor.GetComponent<PlayableInput>();
 
         }
-        public override bool IsTransition() => !mInput.Sprit;
+        public override bool IsTransition() => !mInput.Sprit || PlayerStatusManager.Instance.IsStaminaCoolDown;
     }
 
     public class IsFocusingMoveTransition : StateTransitionBase

@@ -8,24 +8,26 @@ namespace MyAssets
         [SerializeField]
         private Transform mStickPoint; 
         // 現在刺さっているオブジェクト
-        private GameObject mStuckObject;
+        private StickObject mStuckObject;
         public bool IsHasStuckObject => mStuckObject != null;
 
-        private Vector3 mStickPointOffset  = new Vector3(0, 0.7f, 0);
+        private Vector3 mStickPointOffset  = new Vector3(0, 1.0f, 0);
 
         private void Awake()
         {
             mStickPoint = transform;
         }
 
-        private void StickObject(GameObject obj)
+        private void StickObject(StickObject obj)
         {
-            obj.transform.SetParent(mStickPoint);
+            obj.gameObject.transform.SetParent(mStickPoint);
             // 刺す位置にオブジェクトを移動させ、親子関係を設定
-            obj.transform.position = mStickPoint.position;
-            obj.transform.localPosition = mStickPointOffset;
-            obj.transform.rotation = mStickPoint.rotation;
+            obj.gameObject.transform.position = mStickPoint.position;
+            obj.gameObject.transform.localPosition = mStickPointOffset;
+            obj.gameObject.transform.rotation = mStickPoint.rotation;
             mStuckObject = obj;
+            mStuckObject.SetReductionSize();
+
 
             Collider collider = obj.GetComponent<Collider>();
             if (collider != null)
@@ -59,6 +61,7 @@ namespace MyAssets
                     rigidbody.isKinematic = false;
                     rigidbody.useGravity = true;
                 }
+                mStuckObject.BaseSizeRaito();
                 // 刺さっているオブジェクトを剣から外す
                 mStuckObject.transform.SetParent(null);
                 mStuckObject = null;
@@ -67,15 +70,11 @@ namespace MyAssets
 
         private void OnTriggerEnter(Collider other)
         {
-            ChemistryObject chemistryObject = other.GetComponent<ChemistryObject>();
-            ObjectSizeType objectSizeType = other.GetComponent<ObjectSizeType>();
-            if (chemistryObject != null && objectSizeType != null && mStuckObject == null)
+            StickObject stickObject = other.GetComponent<StickObject>();
+            if (stickObject != null && mStuckObject == null)
             {
-                if(objectSizeType.Size == ObjectSizeType.SizeType.Medium)
-                {
-                    // 刺す処理
-                    StickObject(chemistryObject.gameObject);
-                }
+                // 刺す処理
+                StickObject(stickObject);
             }
         }
     }

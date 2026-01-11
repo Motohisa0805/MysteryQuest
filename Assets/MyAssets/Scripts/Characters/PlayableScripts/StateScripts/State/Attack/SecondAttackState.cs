@@ -12,6 +12,8 @@ namespace MyAssets
 
         private PlayableChracterController mController;
 
+        private PlayableInput mPlayableInput;
+
         private PlayableAnimationFunction mAnimationFunction;
 
         private DamageChecker mImpactChecker;
@@ -33,6 +35,7 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
             mEquipmentController = actor.GetComponent<EquipmentController>();
@@ -55,6 +58,7 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
+            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
