@@ -28,7 +28,7 @@ namespace MyAssets
 
         private Rigidbody           mRigidbody;
 
-        private void Start()
+        private void Awake()
         {
             mRigidbody = GetComponent<Rigidbody>();
             if (mRigidbody == null)
@@ -44,9 +44,8 @@ namespace MyAssets
             {
                 mStartPos = transform.position;
                 mTimer = 0.0f;
-                
-            }
 
+            }
         }
 
         public override async Task SetConfig()

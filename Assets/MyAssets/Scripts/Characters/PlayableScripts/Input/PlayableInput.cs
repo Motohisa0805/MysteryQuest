@@ -44,6 +44,7 @@ namespace MyAssets
             mSprit = false;
             mInputJump = false;
             mInputCrouch = false;
+            enabled = true;
         }
 
         // Update is called once per frame

@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.SoundManager
   mSoundList: {fileID: 11400000, guid: 1cbbfa1ff76567747aaa51a7a00f7b6f, type: 2}
+  mBGMSoundList: {fileID: 11400000, guid: e9a96fe5073434f408552c12ceb78ea8, type: 2}
   mAudioSourcePrefab: {fileID: 6133555087463700076, guid: 17211ba6da9c0504aab0262844d0a8fe, type: 3}
 --- !u!114 &799804561327533751
 MonoBehaviour:

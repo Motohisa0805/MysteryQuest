@@ -189,17 +189,17 @@ GameObject:
   m_Component:
   - component: {fileID: 3839969758864955489}
   - component: {fileID: 1158314509349928831}
-  - component: {fileID: 2618575203923192061}
   - component: {fileID: 2747707673611833966}
   - component: {fileID: 2600437444245824364}
+  - component: {fileID: 2618575203923192061}
   - component: {fileID: 4927028302621180963}
   - component: {fileID: 1184154460903037335}
   - component: {fileID: 1686150373847289607}
   - component: {fileID: 3474479343612538493}
-  - component: {fileID: 5472396433320301185}
   - component: {fileID: 5219779534488963033}
-  - component: {fileID: 5171289616328644661}
   - component: {fileID: 3280886677235020846}
+  - component: {fileID: 5472396433320301185}
+  - component: {fileID: 5171289616328644661}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -286,19 +286,6 @@ MonoBehaviour:
   mHandTransforms:
   - {fileID: 0}
   - {fileID: 0}
---- !u!114 &2618575203923192061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7236338703903123115}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36239b2283f143d4e95431d4fc130b2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.PlayableAnimationFunction
-  mLayersWeightSmoothTime: []
 --- !u!114 &2747707673611833966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,6 +329,19 @@ MonoBehaviour:
     mIsClimbJumping: 0
     mIsClimb: 0
     mDifference: 0
+--- !u!114 &2618575203923192061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7236338703903123115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36239b2283f143d4e95431d4fc130b2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.PlayableAnimationFunction
+  mLayersWeightSmoothTime: []
 --- !u!114 &4927028302621180963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,6 +405,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0da2177f85550b74eadc2bf0e53dc167, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.EquipmentController
+--- !u!114 &5219779534488963033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7236338703903123115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f1435df7cf42b24aaefae8eade6686a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ChemistryObject
+  mMaterial: 1
+  mCurrentElements: 0
+  mMaterialObjectInfo:
+    mIsDestructible: 0
+    mDestroyDelay: 0
+    mIsExtinguishing: 1
+    mIgnitionResistance: 2.5
+    mFireResistance: 5
+--- !u!114 &3280886677235020846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7236338703903123115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dc0eb76d4c0be24d84260b9b5971ef7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.CapsuleColliderController
+  mBaseCenter: {x: 0, y: 0, z: 0}
+  mBaseHeight: 0
+  mBaseRadius: 0
 --- !u!54 &5472396433320301185
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -432,26 +467,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!114 &5219779534488963033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7236338703903123115}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f1435df7cf42b24aaefae8eade6686a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ChemistryObject
-  mMaterial: 1
-  mCurrentElements: 0
-  mMaterialObjectInfo:
-    mIsDestructible: 0
-    mDestroyDelay: 0
-    mIsExtinguishing: 1
-    mIgnitionResistance: 2.5
-    mFireResistance: 5
 --- !u!136 &5171289616328644661
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -475,21 +490,6 @@ CapsuleCollider:
   m_Height: 1.3
   m_Direction: 1
   m_Center: {x: 0, y: 0.65, z: 0}
---- !u!114 &3280886677235020846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7236338703903123115}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dc0eb76d4c0be24d84260b9b5971ef7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.CapsuleColliderController
-  mBaseCenter: {x: 0, y: 0, z: 0}
-  mBaseHeight: 0
-  mBaseRadius: 0
 --- !u!1001 &4281887646732845960
 PrefabInstance:
   m_ObjectHideFlags: 0

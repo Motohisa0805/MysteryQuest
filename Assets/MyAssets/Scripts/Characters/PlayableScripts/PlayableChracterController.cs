@@ -108,8 +108,10 @@ namespace MyAssets
 
         private Rigidbody mRigidbody; //リジッドボディ
         public Rigidbody Rigidbody => mRigidbody;
-        private PlayableInput mInput; //インプット
-        public PlayableInput Input => mInput;
+        private PlayableInput mPlayableInput; //インプット
+        public PlayableInput Input => mPlayableInput;
+        private PlayableAnimationFunction mPlayableAnimationFunction;
+        public PlayableAnimationFunction PlayableAnimationFunction => mPlayableAnimationFunction;
         private Movement mMovement; //ムーブメント
         public Movement Movement => mMovement;
 
@@ -224,10 +226,16 @@ namespace MyAssets
                 Debug.LogError("Rigidbody component not found on " + gameObject.name);
             }
 
-            mInput = GetComponent<PlayableInput>();
-            if (mInput == null)
+            mPlayableInput = GetComponent<PlayableInput>();
+            if (mPlayableInput == null)
             {
                 Debug.LogError("PlayableInput component not found on " + gameObject.name);
+            }
+
+            mPlayableAnimationFunction = GetComponent<PlayableAnimationFunction>();
+            if (mPlayableAnimationFunction == null)
+            {
+                Debug.LogError("PlayableAnimationFunction component not found on" + gameObject.name);
             }
 
             mMovement = GetComponent<Movement>();
@@ -245,6 +253,7 @@ namespace MyAssets
         }
         private void Start()
         {
+            mPlayableAnimationFunction.SetUp();
         }
 
         private void Update()
@@ -314,7 +323,7 @@ namespace MyAssets
 
         public void BodyRotate()
         {
-            if(!mInput.Focusing)
+            if(!mPlayableInput.Focusing)
             {
                 Vector3 v = mRigidbody.linearVelocity;
                 v.y = 0;
@@ -386,7 +395,7 @@ namespace MyAssets
             else
             {
                 // 入力ベクトル (前後にmInputMove.y、左右にmInputMove.x)
-                inputVector = new Vector3(mInput.InputMove.x, 0, mInput.InputMove.y);
+                inputVector = new Vector3(mPlayableInput.InputMove.x, 0, mPlayableInput.InputMove.y);
             }
             // 入力があれば正規化 (斜め移動の速度を一定にするため)
             if (inputVector.sqrMagnitude > 1f)
@@ -436,6 +445,45 @@ namespace MyAssets
             mStateMachine.Dispose();
         }
 
+        public async UniTask PlayIdleToAsync()
+        {
+            var utcs = new UniTaskCompletionSource();
+
+            if (mStateMachine.IsContain(IdleState.mStateKey))
+            {
+                // 本来のStateクラスにキャストしてパラメータを渡す
+                //var eventState = mStateMachine.CurrentState as IdleState;
+                // ※もし現在がEventMoveでないなら、取得後にセットする必要があります
+                // 安全な手順：
+                //var stateInstance = mStateMachine.GetState<IdleState>(IdleState.mStateKey);
+                //stateInstance.SetConfig(() => utcs.TrySetResult());
+                utcs.TrySetResult();
+                // 2. 状態遷移
+                mStateMachine.ChangeState(IdleState.mStateKey);
+            }
+            // 3. 到着まで待機
+            await utcs.Task;
+        }
+
+        public async UniTask EventIdleToAsync()
+        {
+            var utcs = new UniTaskCompletionSource();
+
+            if (mStateMachine.IsContain(EventIdleState.mStateKey))
+            {
+                // 本来のStateクラスにキャストしてパラメータを渡す
+                //var eventState = mStateMachine.CurrentState as IdleState;
+                // ※もし現在がEventMoveでないなら、取得後にセットする必要があります
+                // 安全な手順：
+                //var stateInstance = mStateMachine.GetState<IdleState>(IdleState.mStateKey);
+                //stateInstance.SetConfig(() => utcs.TrySetResult());
+                utcs.TrySetResult();
+                // 2. 状態遷移
+                mStateMachine.ChangeState(EventIdleState.mStateKey);
+            }
+            // 3. 到着まで待機
+            await utcs.Task;
+        }
 
         public async UniTask MoveToAsync()
         {

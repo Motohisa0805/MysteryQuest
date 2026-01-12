@@ -17,8 +17,6 @@ namespace MyAssets
 
         private PlayableInput mPlayableInput;
 
-        private Action mOnComplete;
-
         private EquipmentController mEquipmentController;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -35,11 +33,6 @@ namespace MyAssets
             mImpactChecker = actor.GetComponent<DamageChecker>();
             mPlayableInput = actor.GetComponent<PlayableInput>();
             mEquipmentController = actor.GetComponent<EquipmentController>();
-        }
-
-        public void SetConfig(Action onComplete)
-        {
-            mOnComplete = onComplete;
         }
 
         public override void Enter()
@@ -84,7 +77,7 @@ namespace MyAssets
             base.Exit();
             TPSCamera.CameraType = TPSCamera.Type.Free;
             mPlayableInput.enabled = true;
-            mOnComplete?.Invoke();
+            OnComplete();
         }
 
         public override void CollisionEnter(GameObject thisObject, Collision collision)

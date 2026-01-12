@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,11 +14,23 @@ namespace MyAssets
 
         private List<IStateTransition<string>> mTransitionList = new List<IStateTransition<string>>();
 
+        protected Action mOnComplete;
+
         public abstract List<IStateTransition<string>> CreateTransitionList(GameObject actor);
 
         public virtual void Setup(GameObject actor)
         {
             mTransitionList = CreateTransitionList(actor);
+        }
+
+        public virtual void SetConfig(Action onComplete)
+        {
+            mOnComplete = onComplete;
+        }
+
+        public virtual void OnComplete()
+        {
+            mOnComplete?.Invoke();
         }
 
         public virtual void TransitionCheck()

@@ -32,7 +32,7 @@ namespace MyAssets
         eRightSelect,
         eDecide,
         eMenu,
-        //eESC,
+        eTutorialMenu,
         eF1,
         Num1,
         Num2
@@ -52,6 +52,8 @@ namespace MyAssets
         public static bool IsCurrentControlSchemeKeyBoard => mCurrentControlScheme == "Keyboard&Mouse";
 
         public static System.Action<string> OnControlSchemeChanged;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Initialize()
         {
             if (mInputAction != null)
@@ -94,6 +96,7 @@ namespace MyAssets
             mButtonActions.Add(mInputAction.UI.Select_Right);
             mButtonActions.Add(mInputAction.UI.Decide);
             mButtonActions.Add(mInputAction.UI.Menu);
+            mButtonActions.Add(mInputAction.UI.TutorialMenu);
             mButtonActions.Add(mInputAction.Debug.OnOff);
             mButtonActions.Add(mInputAction.Debug.CreateWoodBox);
             mButtonActions.Add(mInputAction.Debug.CreateWood);

@@ -39,6 +39,7 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
+            mPlayableInput = actor.GetComponent<PlayableInput>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mMovement = actor.GetComponent<Movement>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
