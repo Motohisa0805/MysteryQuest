@@ -6,6 +6,16 @@ namespace MyAssets
     {
         private bool mMenuFlag = false;
 
+        private void Start()
+        {
+            mMenuFlag = false;
+            Time.timeScale = 1.0f;
+            InputManager.SetLockedMouseMode();
+            GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Option);
+            GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.HUD);
+            GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Tutorial);
+        }
+
         private void Update()
         {
             if (ResultManager.IsResulting) { return; }
@@ -25,6 +35,7 @@ namespace MyAssets
                 InputManager.SetNoneMouseMode();
                 GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Option);
                 GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.HUD);
+                GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Tutorial);
             }
             else
             {
@@ -32,6 +43,7 @@ namespace MyAssets
                 InputManager.SetLockedMouseMode();
                 GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Option);
                 GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.HUD);
+                GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Tutorial);
             }
         }
     }

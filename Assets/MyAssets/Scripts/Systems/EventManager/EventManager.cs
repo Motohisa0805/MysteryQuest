@@ -119,20 +119,21 @@ namespace MyAssets
             //カーソルを固定
             InputManager.SetLockedMouseMode();
             mPlayableChracterController.transform.position = new Vector3(mEventMovePointList[0].transform.position.x, mEventMovePointList[0].transform.position.y + 0.75f, mEventMovePointList[0].transform.position.z);
-            mPlayableChracterController.StateMachine.ChangeState(EventIdleState.mStateKey);
-            await UniTask.Delay(TimeSpan.FromSeconds(1));
-
+            await mPlayableChracterController.EventIdleToAsync();
+            //await mPlayableChracterController.PlayIdleToAsync();
             SetEventMoveTargetPoint(0);
             await mEventMovePointList[0].SetConfig();
 
-            await UniTask.Delay(TimeSpan.FromSeconds(1));
+            await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
 
             SetEventMoveTargetPoint(1);
             await mPlayableChracterController.MoveToAsync();
 
             await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
 
-            mPlayableChracterController.StateMachine.ChangeState(IdleState.mStateKey);
+            await mPlayableChracterController.PlayIdleToAsync();
+
+            SoundManager.Instance.PlayBGM(0);
         }
 
         public void OnPlayEndingCutscene()
@@ -143,6 +144,7 @@ namespace MyAssets
         public async UniTaskVoid PlayEndingCutscene()
         {
             if (mEventMovePointList.Count <= 0) { return; }
+            GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Tutorial);
             ResultManager.IsResulting = true;
             //3番目のポイントに移動
             SetEventMoveTargetPoint(2);
@@ -173,6 +175,7 @@ namespace MyAssets
         {
             ResultManager.IsResulting = true;
             ResultManager.IsPlayerDeath = true;
+            GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Tutorial);
             GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.HUD);
             await UniTask.Delay(TimeSpan.FromSeconds(3));
             //カーソル固定を解除

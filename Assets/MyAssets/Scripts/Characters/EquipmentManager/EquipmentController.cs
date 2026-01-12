@@ -25,7 +25,7 @@ namespace MyAssets
                 Debug.LogError("Not Find PlayableChracterController : " + gameObject.name);
             }
         }
-
+        
         public void SetEquipment(SetItemTransform.TransformType handType,int id)
         {
             //初期化で剣を生成
@@ -39,7 +39,6 @@ namespace MyAssets
                     break;
                 }
             }
-
             ItemInfo itemInfo = ItemManager.Instance.ItemTable.Items[id];
             // 1. 生成をリクエスト（この時点ではまだ生成されていない）
             var handle = itemInfo.gObject.InstantiateAsync(rightHand.transform);

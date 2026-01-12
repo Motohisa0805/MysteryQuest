@@ -13,10 +13,15 @@ MonoBehaviour:
   m_Name: Default Local Group
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
   m_GroupName: Default Local Group
-  m_GUID: 0525f4dabc9de43439f04692821ddaf4
+  m_GUID: 2007fc37c458372429dd370f7784617b
   m_SerializeEntries:
-  - m_GUID: 0dde8545c2d7fc442b32868bbc50e018
-    m_Address: Player
+  - m_GUID: 50af0731123ee2a46900cde5da5e33fb
+    m_Address: Sword_02.1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52d660d0c2173a84380fdb1f7940cfc6
+    m_Address: Sword_02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

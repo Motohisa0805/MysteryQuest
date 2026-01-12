@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Unity.VisualScripting.Member;
 
 namespace MyAssets
 {
@@ -12,15 +11,19 @@ namespace MyAssets
 
         [SerializeField]
         private SoundList           mSoundList;
+        [SerializeField]
+        private SoundList           mBGMSoundList;
         //初期化時のオーディオソース数
         private int                 mInitSoundIndex = 10;
 
-        private int                 mMaxAudioIndex = 20;
+        private int                 mMaxAudioIndex = 50;
 
         private List<AudioSource>   mAudioObjects = new List<AudioSource>();
 
         [SerializeField]
         private GameObject          mAudioSourcePrefab;
+
+        private AudioSource         mPlayingBGMAudioSource;
         private void Awake()
         {
             if (instance != null)
@@ -74,6 +77,57 @@ namespace MyAssets
             //全て有効中なら新しくオーディオソースを追加する
             AudioSource audioSource = CreateAudioSource();
             return audioSource;
+        }
+
+        public void PlayBGM(int id, bool loop = true)
+        {
+            //クリップを取得
+            SoundList.SEElement bgmElement = mBGMSoundList.GetElement(id);
+            AudioClip clip = bgmElement.Clips[Random.Range(0, bgmElement.MaxClips)];
+            AudioSource audioSource = null;
+            if (mPlayingBGMAudioSource != null)
+            {
+                audioSource = mPlayingBGMAudioSource;
+            }
+            else
+            {
+                //オーディオソースを探す
+                audioSource = SerchAudios();
+            }
+            if (audioSource == null || clip == null)
+            {
+                return;
+            }
+            audioSource.clip = clip;
+            //オーディオソースを有効に
+            audioSource.gameObject.SetActive(true);
+            audioSource.loop = loop;
+            audioSource.volume = bgmElement.volume;
+            audioSource.spatialBlend = 0.0f;
+            audioSource.maxDistance = bgmElement.MaxDistance;
+            audioSource.minDistance = bgmElement.MinDistance;
+            audioSource.Play();
+            mPlayingBGMAudioSource = audioSource;
+        }
+
+        public void UnPauseStart()
+        {
+            if(mPlayingBGMAudioSource == null) 
+            {
+                Debug.LogWarning("Not Find PlayingBGMAudioSource");
+                return; 
+            }
+            mPlayingBGMAudioSource.UnPause();
+        }
+
+        public void PauseBGM()
+        {
+            if (mPlayingBGMAudioSource == null)
+            {
+                Debug.LogWarning("Not Find PlayingBGMAudioSource");
+                return;
+            }
+            mPlayingBGMAudioSource.Pause();
         }
 
 

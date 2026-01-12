@@ -771,6 +771,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TutorialMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""e259a34c-4ad7-4473-8765-97db96ab9da2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1323,6 +1332,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""Menu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8f4d8799-3ecb-40a5-b1a4-832bbc821dfb"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""TutorialMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9e6fe805-5faf-4b34-8c61-cf60c1c6b3f0"",
+                    ""path"": ""<Keyboard>/rightShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""TutorialMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1500,6 +1531,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_Select_Right = m_UI.FindAction("Select_Right", throwIfNotFound: true);
         m_UI_Decide = m_UI.FindAction("Decide", throwIfNotFound: true);
         m_UI_Menu = m_UI.FindAction("Menu", throwIfNotFound: true);
+        m_UI_TutorialMenu = m_UI.FindAction("TutorialMenu", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_OnOff = m_Debug.FindAction("On/Off", throwIfNotFound: true);
@@ -1809,6 +1841,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Select_Right;
     private readonly InputAction m_UI_Decide;
     private readonly InputAction m_UI_Menu;
+    private readonly InputAction m_UI_TutorialMenu;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1885,6 +1918,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Menu => m_Wrapper.m_UI_Menu;
         /// <summary>
+        /// Provides access to the underlying input action "UI/TutorialMenu".
+        /// </summary>
+        public InputAction @TutorialMenu => m_Wrapper.m_UI_TutorialMenu;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_UI; }
@@ -1958,6 +1995,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Menu.started += instance.OnMenu;
             @Menu.performed += instance.OnMenu;
             @Menu.canceled += instance.OnMenu;
+            @TutorialMenu.started += instance.OnTutorialMenu;
+            @TutorialMenu.performed += instance.OnTutorialMenu;
+            @TutorialMenu.canceled += instance.OnTutorialMenu;
         }
 
         /// <summary>
@@ -2017,6 +2057,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Menu.started -= instance.OnMenu;
             @Menu.performed -= instance.OnMenu;
             @Menu.canceled -= instance.OnMenu;
+            @TutorialMenu.started -= instance.OnTutorialMenu;
+            @TutorialMenu.performed -= instance.OnTutorialMenu;
+            @TutorialMenu.canceled -= instance.OnTutorialMenu;
         }
 
         /// <summary>
@@ -2437,6 +2480,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMenu(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "TutorialMenu" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTutorialMenu(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Debug" which allows adding and removing callbacks.

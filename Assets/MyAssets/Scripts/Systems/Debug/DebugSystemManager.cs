@@ -51,7 +51,6 @@ namespace MyAssets
             {
                 mDebugInputPanel.gameObject.SetActive(mDebugMode);
             }
-            InputManager.SetLockedMouseMode();
         }
 
         private void Update()
@@ -62,6 +61,14 @@ namespace MyAssets
                 if(mDebugInputPanel != null)
                 {
                     mDebugInputPanel.gameObject.SetActive(mDebugMode);
+                }
+                if(mDebugMode)
+                {
+                    InputManager.SetNoneMouseMode();
+                }
+                else
+                {
+                    InputManager.SetLockedMouseMode();
                 }
             }
             if(mDebugMode)

@@ -55,12 +55,54 @@ namespace MyAssets
 
         private void Start()
         {
-            
+            if (mAnimator != null)
+            {
+                mCurrentLayerWeights = new float[mAnimator.layerCount];
+                mTargetLayerWeights = new float[mAnimator.layerCount];
+                mLayersWeightSmoothTime = new float[mAnimator.layerCount];
+                mLayersWeightSmoothVelocity = new float[mAnimator.layerCount];
+            }
         }
 
+        public void SetUp()
+        {
+            if(mAnimator != null)
+            {
+                mCurrentLayerWeights = new float[mAnimator.layerCount];
+                mTargetLayerWeights = new float[mAnimator.layerCount];
+                mLayersWeightSmoothTime = new float[mAnimator.layerCount];
+                mLayersWeightSmoothVelocity = new float[mAnimator.layerCount];
+            }
+        }
+        // 配列を確実に初期化するメソッド
+        private void InitializeArraysIfNeeded()
+        {
+            if (mAnimator == null) mAnimator = GetComponentInChildren<Animator>();
+            if (mAnimator == null) return;
+
+            // 配列がまだ作成されていない、またはサイズがAnimatorと一致しない場合に作成
+            if (mTargetLayerWeights == null || mTargetLayerWeights.Length != mAnimator.layerCount)
+            {
+                int count = mAnimator.layerCount;
+                mCurrentLayerWeights = new float[count];
+                mTargetLayerWeights = new float[count];
+                mLayersWeightSmoothTime = new float[count];
+                mLayersWeightSmoothVelocity = new float[count];
+            }
+        }
         public void StartUpdateAnimatorLayerWeight(int layer, float layerWeight,bool update = false)
         {
-            if(update)
+            // 実行前に必ず初期化を確認
+            InitializeArraysIfNeeded();
+
+            // 安全のためのガード
+            if (layer < 0 || layer >= mTargetLayerWeights.Length)
+            {
+                Debug.LogError($"Layer index {layer} is out of bounds.");
+                return;
+            }
+
+            if (update)
             {
                 mTargetLayerWeights[layer] = layerWeight;
             }

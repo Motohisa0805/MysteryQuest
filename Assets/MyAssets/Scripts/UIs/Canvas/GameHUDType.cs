@@ -6,6 +6,7 @@ namespace MyAssets
     {
         public enum GameUIPanelType
         {
+            Tutorial = 0,
             HUD,
             Option,
             Result,

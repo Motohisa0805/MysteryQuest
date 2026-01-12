@@ -1,6 +1,4 @@
-using UnityEditor.SearchService;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace MyAssets
 {
@@ -31,8 +29,6 @@ namespace MyAssets
             }
             instance = this;
             DontDestroyOnLoad(gameObject);
-
-            InputManager.Initialize();
         }
     }
 
