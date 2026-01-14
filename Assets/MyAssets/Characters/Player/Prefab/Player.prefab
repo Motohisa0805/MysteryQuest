@@ -239,12 +239,6 @@ MonoBehaviour:
   mCurrentStateKey: Idle
   mStandingToCrouchState:
     mCrouchHeight: 0.9
-  mThrowStartState:
-    mThrowPower: 5
-  mThrowIdleState:
-    mThrowPower: 5
-  mThrowingState:
-    mThrowPower: 5
   mPushStartState:
     mPushPower: 100
     mBasePushSpeed: 3
@@ -281,7 +275,7 @@ MonoBehaviour:
   mRayRadius: 0.2
   mGroundLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 72
   mGroundCheckOffsetY: 0.3
   mHandTransforms:
   - {fileID: 0}

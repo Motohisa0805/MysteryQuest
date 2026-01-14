@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MyAssets
 {
@@ -29,6 +30,37 @@ namespace MyAssets
             }
             instance = this;
             DontDestroyOnLoad(gameObject);
+        }
+
+        void OnEnable()
+        {
+            // ƒV[ƒ“‚ª“Ç‚İ‚Ü‚ê‚½‚Æ‚«‚ÉÀs‚·‚éŠÖ”‚ğ“o˜^
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        void OnDisable()
+        {
+            // ƒƒ‚ƒŠƒŠ[ƒN–h~‚Ì‚½‚ßA“o˜^‚ğ‰ğœ
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        // ƒV[ƒ““Ç‚İ‚İ‚ÉŒÄ‚Î‚ê‚éŠÖ”
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            SceneList sceneIndex = (SceneList)scene.buildIndex;
+            
+            switch(sceneIndex)
+            {
+                case SceneList.Title:
+                    SoundManager.Instance.PlayBGM(1);
+                    break;
+                case SceneList.Select:
+                    SoundManager.Instance.PlayBGM(2);
+                    break;
+                default:
+                    SoundManager.Instance.StopBGM();
+                    break;
+            }
         }
     }
 

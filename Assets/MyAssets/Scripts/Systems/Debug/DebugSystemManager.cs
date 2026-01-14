@@ -28,6 +28,11 @@ namespace MyAssets
         [SerializeField]
         private Transform mWood;
 
+        [SerializeField]
+        private Transform mCombustibleCreateTransform;
+        [SerializeField]
+        private Transform mCombustible;
+
         private void Awake()
         {
             if (instance != null)
@@ -89,6 +94,13 @@ namespace MyAssets
             if (InputManager.GetKeyDown(KeyCode.Num2))
             {
                 Transform obj = Instantiate(mWood, mWoodCreateTransform);
+                obj.localPosition = Vector3.zero;
+                //obj.localRotation = Quaternion.identity;
+                //obj.localScale = Vector3.one;
+            }
+            if (InputManager.GetKeyDown(KeyCode.Num3))
+            {
+                Transform obj = Instantiate(mCombustible, mCombustibleCreateTransform);
                 obj.localPosition = Vector3.zero;
                 //obj.localRotation = Quaternion.identity;
                 //obj.localScale = Vector3.one;

@@ -36,6 +36,7 @@ namespace MyAssets
                 GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Option);
                 GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.HUD);
                 GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Tutorial);
+                SoundManager.Instance.PlayOneShot2D(10003, false);
             }
             else
             {
@@ -44,6 +45,7 @@ namespace MyAssets
                 GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Option);
                 GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.HUD);
                 GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Tutorial);
+                SoundManager.Instance.PlayOneShot2D(10004, false);
             }
         }
     }

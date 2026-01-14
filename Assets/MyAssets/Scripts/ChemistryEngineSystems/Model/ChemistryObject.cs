@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace MyAssets
@@ -24,42 +23,69 @@ namespace MyAssets
 
         }
 
-        // クラス内変数
-        private float mCurrentHeatAccumulated = 0f; // 現在溜まっている熱
-        private Timer mExtinguishingTimer = new Timer();
-
         [Header("この物体の素材(変わらない)")]
         [SerializeField]
         private MaterialType mMaterial;
+        public MaterialType Material => mMaterial;
 
         [Header("現在帯びている属性（変化する）")]
         [SerializeField]
         private ElementType mCurrentElements;
         public ElementType CurrentElements => mCurrentElements;
-
-        private ChemistryTable mReactionTable;
-
-        private HashSet<ChemistryObject> _touchingObjects = new HashSet<ChemistryObject>();
-        private HashSet<ChemistryElement> _touchingElements = new HashSet<ChemistryElement>();
-
+        //マテリアルの詳細設定
         [SerializeField]
         private MaterialObjectInfo mMaterialObjectInfo;
+        [SerializeField]
+        private LayerMask mTargetObjectLayer = (1 << 3) | (1 << 6);
 
-        private ReactionResult mPendingReaction;
+        //反応判定用のテーブル
+        private ChemistryTable mReactionTable;
 
+        // 現在溜まっているエレメント
+        private float mCurrentHeatAccumulated = 0f; 
+        //エレメント自然消滅までのタイマー
+        private Timer mExtinguishingTimer = new Timer();
         //オブジェクト破壊までのタイマー
         private Timer mDestroyTimer = new Timer();
 
 
-        private Rigidbody mRigidbody;
+        private ElementType mTotalContactElement;
+
+        // 周囲20個まで検出
+        private Collider[] mScanResults = new Collider[20]; 
+        // 0.2秒ごとに判定（負荷対策）
+        private float mScanInterval = 0.2f; 
+        
+        private float mScanTimer = 0f;
+
+
+
+
+        private ReactionResult mPendingReaction;
+
 
         private ParticleSystem mElementEffect;
 
+        private Rigidbody mRigidbody;
+
+        private Vector3 mLastPosition;
+
+        private Vector3 mCurrentVelocity;
+
+        [SerializeField]
+        private bool mIsBreakObject = false;
+        public bool IsBreakObject => mIsBreakObject;
+
+        private float mHitPoint = 300.0f;
+
+        private void Awake()
+        {
+            mRigidbody = GetComponent<Rigidbody>();
+        }
         //スタート時にイベント登録
         private void Start()
         {
-            mRigidbody = GetComponent<Rigidbody>();
-
+            mTargetObjectLayer = 1 << 3 | 1 << 6;
             //化学反応テーブル取得(シングルトンからのアクセス頻度を減らすため)
             mReactionTable = GameSystemManager.Instance.ChemistryTable;
             //オブジェクト破壊タイマーにイベント登録
@@ -71,126 +97,246 @@ namespace MyAssets
             {
                 mExtinguishingTimer.OnEnd += ProcessDestructionEffect;
             }
+
+            // 最初の位置を初期化
+            mLastPosition = transform.position;
         }
-
-
 
         private void Update()
         {
-            MonitorContactDuration();
-            if (mMaterialObjectInfo.mIsDestructible)
+            // スキャンタイマーを進める
+            mScanTimer += Time.deltaTime;
+
+            // 一定時間ごとに周囲をスキャンして反応を更新
+            if (mScanTimer >= mScanInterval)
             {
-                mDestroyTimer.Update(Time.deltaTime);
+                mScanTimer = 0f;
+                PerformSurroundScan(); // ここで判定！
             }
-            if(mMaterialObjectInfo.mIsExtinguishing)
+
+            // 反応待ちがある場合、接触状況に応じて蓄熱・冷却を行う
+            if (mPendingReaction.gElementToAdd != ElementType.None)
+            {
+                // 接触している属性の中に、反応を引き起こす属性が含まれているかチェック
+                bool isTouchingTrigger = (mTotalContactElement & mPendingReaction.gElementToAdd) != 0;
+                UpdatePendingReaction(isTouchingTrigger);
+            }
+
+            // タイマー更新処理
+            if (mMaterialObjectInfo.mIsDestructible) mDestroyTimer.Update(Time.deltaTime);
+
+            if (mMaterialObjectInfo.mIsExtinguishing && mTotalContactElement == ElementType.None)
             {
                 mExtinguishingTimer.Update(Time.deltaTime);
-                if (mCurrentElements != ElementType.None)
+                if (mCurrentElements != ElementType.None && mExtinguishingTimer.IsEnd())
                 {
-                    if (mExtinguishingTimer.IsEnd())
-                    {
-                        ProcessDestructionEffect();
-                    }
+                    ProcessDestructionEffect();
                 }
             }
         }
 
-        // 毎フレーム「接触中のエレメント」に対して反応を進める
-        private void MonitorContactDuration()
+        private void FixedUpdate()
         {
-            // 進行中の反応があれば早期リターン
-            if (mPendingReaction.gElementToAdd != ElementType.None)
+            //現在の座標と前フレームの座標から移動ベクトルを算出
+            Vector3 displacement = transform.position - mLastPosition;
+            //移動ベクトルを経過時間（0.02秒など）で割り、1秒あたりの速度に変換
+            mCurrentVelocity = displacement / Time.deltaTime;
+            //次のフレームのために現在の座標を保存
+            mLastPosition = transform.position;
+        }
+
+        private void PerformSurroundScan()
+        {
+            // 進行中の反応がある場合は、周囲を見ない
+            //if (mPendingReaction.gElementToAdd != ElementType.None) return;
+
+            int hitCount = 0;
+
+            // 自分についているコライダーを取得
+            Collider myCollider = GetComponent<Collider>();
+
+            // コライダーの種類によって判定方法を変える
+            if (myCollider is BoxCollider box)
             {
-                UpdatePendingReaction();
-                return;
+                // BoxColliderの場合：回転も考慮した箱型判定
+                // Centerはローカル座標なので、ワールド座標に変換が必要
+                Vector3 worldCenter = transform.TransformPoint(box.center);
+                // Sizeの半分 * スケール = 半分の大きさ(HalfExtents)
+                Vector3 halfExtents = Vector3.Scale(box.size * 0.5f, transform.lossyScale) * 1.25f; // 1.1倍して少し大きめに
+
+                hitCount = Physics.OverlapBoxNonAlloc(
+                    worldCenter,
+                    halfExtents,
+                    mScanResults,
+                    transform.rotation, // 回転を考慮
+                    mTargetObjectLayer,
+                    QueryTriggerInteraction.Collide
+                );
+            }
+            else if (myCollider is SphereCollider sphere)
+            {
+                // SphereColliderの場合：球形判定
+                // 半径にスケールの最大値を掛けてワールドサイズにする
+                float maxScale = Mathf.Max(transform.lossyScale.x, transform.lossyScale.y, transform.lossyScale.z);
+                Vector3 worldCenter = transform.TransformPoint(sphere.center);
+                float radius = sphere.radius * maxScale * 1.1f; // 1.1倍
+
+                hitCount = Physics.OverlapSphereNonAlloc(
+                    worldCenter,
+                    radius,
+                    mScanResults,
+                    mTargetObjectLayer,
+                    QueryTriggerInteraction.Collide
+                );
+            }
+            else if (myCollider is CapsuleCollider capsule)
+            {
+                // CapsuleColliderの場合：カプセル型判定
+                // カプセルの「始点」と「終点」を計算する必要がある（少し計算が複雑）
+                GetCapsulePoints(capsule, out Vector3 point0, out Vector3 point1, out float radius);
+
+                hitCount = Physics.OverlapCapsuleNonAlloc(
+                    point0,
+                    point1,
+                    radius,
+                    mScanResults,
+                    mTargetObjectLayer,
+                    QueryTriggerInteraction.Collide
+                );
+            }
+            else
+            {
+                // MeshColliderなどの場合：
+                float range = mRigidbody != null ?
+                    Mathf.Max(transform.localScale.x, transform.localScale.y, transform.localScale.z) * 1.5f : 1.0f;
+
+                hitCount = Physics.OverlapSphereNonAlloc(transform.position, range, mScanResults, mTargetObjectLayer);
             }
 
-            //今触れているもの全ての属性を合成する
-            ElementType totalContactElement = ElementType.None;
+            mTotalContactElement = ElementType.None;
 
-            // 化学オブジェクト（相手も変化するもの）
-            // 死んだオブジェクトはRemove
-            _touchingObjects.RemoveWhere(obj => obj == null); 
-
-            foreach (var obj in _touchingObjects)
+            for(int i = 0; i < hitCount; i++)
             {
-                // 自分自身の属性は拾わないようにガード（念の為）
-                if (obj == this) continue;
-                totalContactElement |= obj.CurrentElements;
+                Collider col = mScanResults[i];
+
+                //自分自身は無視
+                if (col.transform == transform) continue;
+
+                //相手が ChemistryElementか
+                var elemComp = col.GetComponent<ChemistryElement>();
+                if (elemComp != null)
+                {
+                    mTotalContactElement |= elemComp.Type;
+                    continue;
+                }
+
+                // 3. 相手が ChemistryObjectか
+                var chemObj = col.GetComponent<ChemistryObject>();
+                if (chemObj != null)
+                {
+                    mTotalContactElement |= chemObj.CurrentElements;
+                }
             }
 
-            // 化学エレメント（固定のトリガー）
-            _touchingObjects.RemoveWhere(obj =>
-            {
-                // オブジェクトが破棄されていたら消す
-                if (obj == null) return true;
+            if (mTotalContactElement == ElementType.None) return;
 
-                // 追加：ルートが同じ（身内）になっていたらリストから消す
-                // これを入れることで、親子関係になった瞬間に接触リストから外れます
-                if (obj.transform.root == transform.root) return true;
-
-                // 自分自身なら消す
-                if (obj == this) return true;
-
-                // それ以外ならリストに残す
-                return false;
-            });
-
-            foreach (var elm in _touchingElements)
-            {
-                totalContactElement |= elm.Type;
-            }
-
-            // 2. 合計した属性に対して反応判定を行う
-            // （何も触れていなければ totalContactElement は None になり、反応しない）
-            if (totalContactElement == ElementType.None) return;
-
-            // 自分が持っていない属性が含まれているかチェック
-            // （ビット演算： (相手の属性 & ~自分の属性) が 0 でなければ、未知の属性がある）
-            ElementType newElements = totalContactElement & ~mCurrentElements;
+            // 新しい属性があるかチェック
+            ElementType newElements = mTotalContactElement & ~mCurrentElements;
 
             if (newElements != ElementType.None)
             {
-                // 優先順位などがあればここでビットを解析するが、
-                // とりあえず見つかった順、あるいはテーブルにあるか順で判定
-
-                // ここでは単純にビットが立っているものを1つずつ調べる例
                 foreach (ElementType checkType in Enum.GetValues(typeof(ElementType)))
                 {
                     if (checkType == ElementType.None) continue;
-
                     if ((newElements & checkType) == checkType)
                     {
                         if (mReactionTable.TryGetReaction(mMaterial, checkType, out ReactionResult result))
                         {
                             StartReactionProcess(result);
-                            break; // 1フレーム1反応
+                            break;
                         }
                     }
                 }
             }
+        }
+        // カプセルの始点・終点・半径を計算するヘルパー関数
+        private void GetCapsulePoints(CapsuleCollider capsule, out Vector3 p0, out Vector3 p1, out float radius)
+        {
+            // カプセルの向き (0:X, 1:Y, 2:Z)
+            Vector3 dir = Vector3.up;
+            float height = capsule.height;
+            float r = capsule.radius;
+
+            // スケール適用
+            Vector3 scale = transform.lossyScale;
+            float scaleHeight = 1f;
+            float scaleRadius = 1f;
+
+            switch (capsule.direction)
+            {
+                case 0: // X-Axis
+                    dir = Vector3.right;
+                    scaleHeight = scale.x;
+                    scaleRadius = Mathf.Max(scale.y, scale.z);
+                    break;
+                case 1: // Y-Axis
+                    dir = Vector3.up;
+                    scaleHeight = scale.y;
+                    scaleRadius = Mathf.Max(scale.x, scale.z);
+                    break;
+                case 2: // Z-Axis
+                    dir = Vector3.forward;
+                    scaleHeight = scale.z;
+                    scaleRadius = Mathf.Max(scale.x, scale.y);
+                    break;
+            }
+
+            float worldHeight = height * scaleHeight;
+            radius = r * scaleRadius;
+
+            // 中心から上下（または左右前後）にオフセット
+            float halfHeight = Mathf.Max(0, (worldHeight * 0.5f) - radius);
+            Vector3 center = transform.TransformPoint(capsule.center);
+
+            // 回転を考慮した方向ベクトル
+            Vector3 axis = transform.rotation * dir;
+
+            p0 = center - (axis * halfHeight);
+            p1 = center + (axis * halfHeight);
         }
         private void StartReactionProcess(ReactionResult result)
         {
             mPendingReaction = result;
         }
 
-        private void UpdatePendingReaction()
+        private void UpdatePendingReaction(bool isTouching)
         {
-            //テストで1秒で1溜まる
-            float heatPower = 1.0f;
+            if (isTouching)
+            {
+                // 火に触れている：蓄熱（秒間1.0溜まる）
+                float heatPower = 1.0f;
+                mCurrentHeatAccumulated += heatPower * Time.deltaTime;
+            }
+            else
+            {
+                // 火から離れた：冷却（秒間2.0で急速に冷める、あるいは 0f 代入で即リセット）
+                float coolingPower = 2.0f;
+                mCurrentHeatAccumulated -= coolingPower * Time.deltaTime;
+                mCurrentHeatAccumulated = Mathf.Max(0, mCurrentHeatAccumulated); // 0以下にはならない
+            }
 
-            mCurrentHeatAccumulated += heatPower * Time.deltaTime;
-            
-            // 3. 発火判定
-            // オブジェクトごとの「燃えにくさ」を超えたら発火
+            // 発火判定
             if (mCurrentHeatAccumulated >= mMaterialObjectInfo.mIgnitionResistance)
             {
                 ApplyReaction(mPendingReaction);
-
-                // リセット
                 mPendingReaction = default;
                 mCurrentHeatAccumulated = 0f;
+            }
+
+            // もし完全に冷めきったら、反応予約自体を消去しても良い
+            if (!isTouching && mCurrentHeatAccumulated <= 0)
+            {
+                mPendingReaction = default;
             }
         }
 
@@ -206,7 +352,7 @@ namespace MyAssets
                 {
                     case BoxCollider box:
                         shapeModule.shapeType = ParticleSystemShapeType.Box;
-                        shapeModule.scale = box.size; // サイズも合わせるとより正確です
+                        shapeModule.scale = transform.localScale * 1.5f; // サイズも合わせるとより正確です
                         shapeModule.rotation = new Vector3(90.0f, 0, 0);
                         break;
                     case SphereCollider sphere:
@@ -242,7 +388,8 @@ namespace MyAssets
                 mElementEffect.transform.localPosition = Vector3.zero;
                 mElementEffect.transform.localRotation = Quaternion.identity;
                 SetParticleShapeToCollider(mElementEffect);
-                SoundManager.Instance.PlayOneShot3D(3, transform,true, true,true, mMaterialObjectInfo.mDestroyDelay);
+                SoundManager.Instance.PlayOneShot3D(1003, transform);
+                SoundManager.Instance.PlayOneShot3D(1004, transform,true, true,true, mMaterialObjectInfo.mDestroyDelay);
                 // 燃え尽きる処理の開始（もし木で、火がついたなら）
                 if ((mMaterial == MaterialType.Wood || mMaterial == MaterialType.Organism) &&
                     (result.gElementToAdd & ElementType.Fire) != 0)
@@ -286,101 +433,6 @@ namespace MyAssets
             }
         }
 
-        private void OnDestroy()
-        {
-            AudioSource source = GetComponentInChildren<AudioSource>();
-            if (source != null && SoundManager.Instance != null)
-            {
-                SoundManager.Instance.ReturnAudioSource(source);
-            }
-        }
-
-        //物理イベント：カウンターの増減のみを行う
-        private void OnTriggerEnter(Collider other)
-        {
-            // 自分自身や子供を拾わないためのガード
-            if (other.transform.root == transform.root) return;
-
-            var elementComp = other.GetComponentInChildren<ChemistryElement>();
-            if (elementComp != null)
-            {
-                _touchingElements.Add(elementComp);
-            }
-
-            // GetComponentsInChildren に変えて、複数取得＆自分除外を徹底する
-            var materials = other.GetComponentsInChildren<ChemistryObject>();
-            foreach (var mat in materials)
-            {
-                if (mat == this) continue;
-                _touchingObjects.Add(mat);
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            // 退出時もルートチェック（入る時弾いたものは出る時も無視）
-            if (other.transform.root == transform.root) return;
-
-            var elementComp = other.GetComponentInChildren<ChemistryElement>();
-            if (elementComp != null)
-            {
-                _touchingElements.Remove(elementComp);
-                ResetReactionIfEmpty(); // 接触がゼロになったか確認
-            }
-
-            var materials = other.GetComponentsInChildren<ChemistryObject>();
-            foreach (var mat in materials)
-            {
-                if (mat == this) continue;
-                _touchingObjects.Remove(mat);
-                ResetReactionIfEmpty();
-            }
-        }
-
-
-        private void OnCollisionEnter(Collision collision)
-        {
-            
-            // 自分自身や子供を拾わないためのガード
-            if (collision.transform.root == transform.root) return;
-
-            var elementComp = collision.collider.GetComponentInChildren<ChemistryElement>();
-            if (elementComp != null)
-            {
-                _touchingElements.Add(elementComp);
-            }
-
-            // GetComponentsInChildren に変えて、複数取得＆自分除外を徹底する
-            var materials = collision.collider.GetComponentsInChildren<ChemistryObject>();
-            foreach (var mat in materials)
-            {
-                if (mat == this) continue;
-                _touchingObjects.Add(mat);
-            }
-            //音の再生
-            CheckPlaySound(collision);
-        }
-
-        private void OnCollisionExit(Collision collision)
-        {
-            // 退出時もルートチェック（入る時弾いたものは出る時も無視）
-            if (collision.transform.root == transform.root) return;
-
-            var elementComp = collision.collider.GetComponentInChildren<ChemistryElement>();
-            if (elementComp != null)
-            {
-                _touchingElements.Remove(elementComp);
-                ResetReactionIfEmpty(); // 接触がゼロになったか確認
-            }
-
-            var materials = collision.collider.GetComponentsInChildren<ChemistryObject>();
-            foreach (var mat in materials)
-            {
-                if (mat == this) continue;
-                _touchingObjects.Remove(mat);
-                ResetReactionIfEmpty();
-            }
-        }
         //音を特定の条件下で再生するか調べる
         private void CheckPlaySound(Collision collision)
         {
@@ -396,22 +448,92 @@ namespace MyAssets
             }
             else if (mMaterial == MaterialType.Iron)
             {
+                SoundManager.Instance.PlayOneShot3D(1007, transform);
+            }
+        }
+        private void OnCollisionEnter(Collision collision)
+        {
 
+            //音の再生
+            CheckPlaySound(collision);
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            ChemistryObject chemistryObject = other.GetComponent<ChemistryObject>();
+            if (chemistryObject != null)
+            {
+                Vector3 force = mCurrentVelocity;
+                chemistryObject.AddBreakPower(force);
             }
         }
 
-        // 全て離れた時にタイマーをリセットする処理
-        private void ResetReactionIfEmpty()
+        //破壊出来るか調べる
+        public void AddBreakPower(Vector3 power)
         {
-            if (_touchingElements.Count == 0 && _touchingObjects.Count == 0)
+            mRigidbody.AddForce(power, ForceMode.Impulse);
+            if(IsBreakObject)
             {
-                // 何にも触れていないなら反応進行をリセット
-                if (mPendingReaction.gElementToAdd != ElementType.None)
+                mHitPoint -= power.magnitude;
+                if(mHitPoint <= 0)
                 {
-                    mPendingReaction = default;
-                    mCurrentHeatAccumulated = 0;
+                    mHitPoint = 0;
+                    Destroy(gameObject);
                 }
             }
         }
+
+        private void OnDestroy()
+        {
+            AudioSource[] source = GetComponentsInChildren<AudioSource>();
+            for(int i = 0; i < source.Length; i++)
+            {
+                SoundManager.Instance.ReturnAudioSource(source[i]);
+            }
+        }
+#if UNITY_EDITOR
+        // Unityエディタ上でのみ実行される表示処理
+        private void OnDrawGizmosSelected()
+        {
+            // 判定範囲を可視化するために色を設定（半透明の赤など）
+            Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
+
+            Collider myCollider = GetComponent<Collider>();
+            if (myCollider == null) return;
+
+            // PerformSurroundScan と同じ計算ロジックで形を描画
+            if (myCollider is BoxCollider box)
+            {
+                // Boxの描画（回転を考慮）
+                Matrix4x4 oldMatrix = Gizmos.matrix;
+                Gizmos.matrix = transform.localToWorldMatrix;
+                // box.sizeを1.1倍にしたものを表示
+                Gizmos.DrawCube(box.center, box.size * 1.25f);
+                Gizmos.matrix = oldMatrix;
+            }
+            else if (myCollider is SphereCollider sphere)
+            {
+                // Sphereの描画
+                Vector3 worldCenter = transform.TransformPoint(sphere.center);
+                float maxScale = Mathf.Max(transform.lossyScale.x, transform.lossyScale.y, transform.lossyScale.z);
+                Gizmos.DrawSphere(worldCenter, sphere.radius * maxScale * 1.1f);
+            }
+            else if (myCollider is CapsuleCollider capsule)
+            {
+                // Capsuleの描画（簡易的に両端の球体と線で表示）
+                GetCapsulePoints(capsule, out Vector3 p0, out Vector3 p1, out float radius);
+
+                Gizmos.DrawWireSphere(p0, radius);
+                Gizmos.DrawWireSphere(p1, radius);
+                Gizmos.DrawLine(p0, p1);
+                // 表面を覆うように表示したい場合はさらに工夫が必要ですが、これで十分位置はわかります
+            }
+        }
+#endif
     }
 }

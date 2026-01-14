@@ -87,7 +87,7 @@ namespace MyAssets
                 {
                     if (mSelectIndex != i)
                     {
-                        //seHandler.Play((int)ButtonSETag.Select);
+                        SoundManager.Instance.PlayOneShot2D(10002, false);
                         mSelectIndex = i;
                         SetSelectImagePosition(mSelectIndex);
                         SetActivateSelectImage(true);
@@ -163,6 +163,7 @@ namespace MyAssets
                 }
             }
             if (decideIndex < 0) { return; }
+            SoundManager.Instance.PlayOneShot2D(10002, false);
             mSelectIndex = decideIndex;
             SetSelectImagePosition(mSelectIndex);
         }
@@ -183,6 +184,7 @@ namespace MyAssets
         private void OnDecide()
         {
             if (mDecideFlag) { return; }
+            SoundManager.Instance.PlayOneShot2D(10001, false);
             DecideUpdate();
         }
 
@@ -190,7 +192,6 @@ namespace MyAssets
         {
             mDecideFlag = true;
             mButtons[mSelectIndex].onClick?.Invoke();
-            mDecideFlag = false;
         }
 
         public void ActivateStart()

@@ -2243,7 +2243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 666c5ff13d9117545b2add0c66e26d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.StageSelectController
-  mStageInformationList: {fileID: 11400000, guid: 1008bfad42ce95347b693ffa95a9e4ca, type: 2}
+  mStageInformationList: {fileID: 11400000, guid: 8f49486a8f944a340bbb369c6456765b, type: 2}
   mStageDataObject:
     mStageTitle: {fileID: 0}
     mStageExplanation: {fileID: 0}
