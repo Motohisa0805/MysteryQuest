@@ -40,6 +40,8 @@ namespace MyAssets
         private Vector3             mCurrentVelocity; //カメラの現在の速度
         private Vector3             mDesiredPosition; //カメラの目標位置
         private Vector3             mCurrentPosition; //カメラの現在位置
+
+        private float               mSensitivityCorrection = 6.0f;
         //==============================
         //フリーカメラ設定
         //==============================
@@ -92,6 +94,15 @@ namespace MyAssets
 
             mCurrentType = Type.Free;
         }
+
+        private float GetCameraSensitivity(float sensitivity)
+        {
+            if(InputManager.IsCurrentControlSchemeKeyBoard)
+            {
+                return sensitivity;
+            }
+            return sensitivity * mSensitivityCorrection;
+        }
         // Update is called once per frame
         private void Update()
         {
@@ -106,9 +117,10 @@ namespace MyAssets
                 Vector2 mouse = InputManager.GetKeyValue(KeyCode.eLook);
                 float mouseX = mouse.x;
                 float mouseY = mouse.y;
+                float sensitivity = GetCameraSensitivity(mFreeCameraSettings.Sensitivity);
                 // カメラの回転角を更新
-                mYaw += mouseX * mFreeCameraSettings.Sensitivity;
-                mPitch -= mouseY * mFreeCameraSettings.Sensitivity;
+                mYaw += mouseX * sensitivity;
+                mPitch -= mouseY * sensitivity;
                 mPitch = Mathf.Clamp(mPitch, mFreeCameraSettings.MinAngle, mFreeCameraSettings.MaxAngle);
             }
             else if(mCurrentType == Type.ShoulderView)
@@ -117,9 +129,10 @@ namespace MyAssets
                 Vector2 mouse = InputManager.GetKeyValue(KeyCode.eLook);
                 float mouseX = mouse.x;
                 float mouseY = mouse.y;
+                float sensitivity = GetCameraSensitivity(mShoulderViewSettings.Sensitivity);
                 // カメラの回転角を更新
-                mYaw += mouseX * mShoulderViewSettings.Sensitivity;
-                mPitch -= mouseY * mShoulderViewSettings.Sensitivity;
+                mYaw += mouseX * sensitivity;
+                mPitch -= mouseY * sensitivity;
                 mPitch = Mathf.Clamp(mPitch, mShoulderViewSettings.MinAngle, mShoulderViewSettings.MaxAngle);
             }
             else if(mCurrentType == Type.Focusing)
@@ -130,9 +143,10 @@ namespace MyAssets
                     Vector2 mouse = InputManager.GetKeyValue(KeyCode.eLook);
                     float mouseX = mouse.x;
                     float mouseY = mouse.y;
+                    float sensitivity = GetCameraSensitivity(mFocusingSettings.Sensitivity);
                     // カメラの回転角を更新
-                    mYaw += mouseX * mFocusingSettings.Sensitivity;
-                    mPitch -= mouseY * mFocusingSettings.Sensitivity;
+                    mYaw += mouseX * sensitivity;
+                    mPitch -= mouseY * sensitivity;
                     mPitch = Mathf.Clamp(mPitch, mFocusingSettings.MinAngle, mFocusingSettings.MaxAngle);
                 }
             }

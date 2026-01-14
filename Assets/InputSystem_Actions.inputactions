@@ -1301,6 +1301,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CreateCombustible",
+                    "type": "Button",
+                    "id": "d4296f19-770a-4534-b7e8-f9ff0b585343",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1345,6 +1354,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "CreateWood",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0ec22848-2708-4b97-bb6c-1cde30942e78",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "CreateCombustible",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

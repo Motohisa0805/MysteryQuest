@@ -109,12 +109,19 @@ namespace MyAssets
             audioSource.Play();
             mPlayingBGMAudioSource = audioSource;
         }
+        public void StopBGM()
+        {
+            if(mPlayingBGMAudioSource == null)
+            {
+                return;
+            }
+            mPlayingBGMAudioSource.Stop();
+        }
 
         public void UnPauseStart()
         {
             if(mPlayingBGMAudioSource == null) 
             {
-                Debug.LogWarning("Not Find PlayingBGMAudioSource");
                 return; 
             }
             mPlayingBGMAudioSource.UnPause();
@@ -124,7 +131,6 @@ namespace MyAssets
         {
             if (mPlayingBGMAudioSource == null)
             {
-                Debug.LogWarning("Not Find PlayingBGMAudioSource");
                 return;
             }
             mPlayingBGMAudioSource.Pause();

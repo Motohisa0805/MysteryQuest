@@ -5,37 +5,37 @@ namespace MyAssets
     [RequireComponent(typeof(PlayableChracterController))]
     public class PropsObjectChecker : MonoBehaviour
     {
-        private PlayableChracterController mController;
+        private PlayableChracterController  mController;
 
         [SerializeField]
-        private ObjectSizeType mSmallObject;
+        private ObjectSizeType              mSmallObject;
 
-        public ObjectSizeType TakedObject => mSmallObject;
+        public ObjectSizeType               TakedObject => mSmallObject;
         [SerializeField]
-        private bool mHasTakedObject;
-        public bool HasTakedObject => mHasTakedObject;
+        private bool                        mHasTakedObject;
+        public bool                         HasTakedObject => mHasTakedObject;
 
-        Vector3 mThrowDirction;
+        private Vector3                     mThrowDirction;
 
-
-        [SerializeField]
-        private ObjectSizeType mLargeObject;
-        public ObjectSizeType LargeObject => mLargeObject;
-
-        private float mLargeObjectMass;
-
-        public float LargeObjectMass => mLargeObjectMass;
 
         [SerializeField]
-        private bool mPushEnabled; //地面に接地しているかどうか
+        private ObjectSizeType              mLargeObject;
+        public ObjectSizeType               LargeObject => mLargeObject;
 
-        public bool PushEnabled => mPushEnabled;
+        private float                       mLargeObjectMass;
 
-        private Vector3 mTargetPos;
-        public Vector3 TargetPos => mTargetPos;
+        public float                        LargeObjectMass => mLargeObjectMass;
 
-        private Quaternion mTargetRot;
-        public Quaternion TargetRot => mTargetRot;
+        [SerializeField]
+        private bool                        mPushEnabled; //地面に接地しているかどうか
+
+        public bool                         PushEnabled => mPushEnabled;
+
+        private Vector3                     mTargetPos;
+        public Vector3                      TargetPos => mTargetPos;
+
+        private Quaternion                  mTargetRot;
+        public Quaternion                   TargetRot => mTargetRot;
 
         public void SetReleaseTakedObject() 
         {
@@ -167,8 +167,9 @@ namespace MyAssets
                     float distance = direction.magnitude;
 
                     RaycastHit hit;
+                    LayerMask layer = 1 << 3;
                     // Raycastの実行
-                    if (Physics.Raycast(currentPos, direction.normalized, out hit, distance))
+                    if (Physics.Raycast(currentPos, direction.normalized, out hit, distance, layer))
                     {
                         // 衝突した場合、その地点を予測地点とする
                         hitPoint = hit.point;

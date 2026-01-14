@@ -1,5 +1,4 @@
 ﻿using Cysharp.Threading.Tasks;
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -28,6 +27,10 @@ namespace MyAssets
 
         private Rigidbody           mRigidbody;
 
+        //True:ステージより下に降下、fale：ステージに降下
+        [SerializeField]
+        private bool mIsFallOrDown = false;
+
         private void Awake()
         {
             mRigidbody = GetComponent<Rigidbody>();
@@ -43,6 +46,16 @@ namespace MyAssets
             else
             {
                 mStartPos = transform.position;
+                if(mIsFallOrDown)
+                {
+                    mGoalPos = mStartPos;
+                    mGoalPos.y = mStartPos.y - 3f;
+                }
+                else
+                {
+                    mGoalPos = transform.parent.position;
+                    mGoalPos.y = mGoalPos.y + 0.75f;
+                }
                 mTimer = 0.0f;
 
             }

@@ -73,7 +73,7 @@ namespace MyAssets
             {
                 mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 1);
             }
-            else
+            else if(!mChecker.HasTakedObject)
             {
                 mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
             }

@@ -35,7 +35,8 @@ namespace MyAssets
         eTutorialMenu,
         eF1,
         Num1,
-        Num2
+        Num2,
+        Num3
     };
     // InputManagerクラス
     public class InputManager
@@ -100,6 +101,7 @@ namespace MyAssets
             mButtonActions.Add(mInputAction.Debug.OnOff);
             mButtonActions.Add(mInputAction.Debug.CreateWoodBox);
             mButtonActions.Add(mInputAction.Debug.CreateWood);
+            mButtonActions.Add(mInputAction.Debug.CreateCombustible);
         }
 
         // デバイスからコントロールスキーム名を特定するメソッド

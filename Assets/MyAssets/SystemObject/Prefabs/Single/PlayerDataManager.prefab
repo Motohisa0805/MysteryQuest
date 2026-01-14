@@ -66,8 +66,7 @@ MonoBehaviour:
     CurrentSP: 70
     UseSP: 10
     RecoverySP: 30
-    Attack: 30
-    Defense: 30
+    ThrowPower: 10
 --- !u!1001 &6175729152243925876
 PrefabInstance:
   m_ObjectHideFlags: 0

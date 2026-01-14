@@ -82,9 +82,10 @@ namespace MyAssets
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.GetComponent<ChemistryObject>())
+            var material = other.gameObject.GetComponent<ChemistryObject>();
+            if (material != null)
             {
-                if (mTimerDisable && !mCloseDoorTimer.Timer.IsEnd()) { return; }
+                if (mTimerDisable && !mCloseDoorTimer.Timer.IsEnd() || material.Material == MaterialType.Organism) { return; }
                 mIsOn = !mIsOn;
                 SendSignal(mIsOn);
             }
@@ -92,9 +93,10 @@ namespace MyAssets
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.GetComponent<ChemistryObject>())
+            var material = collision.gameObject.GetComponent<ChemistryObject>();
+            if (material != null)
             {
-                if (mTimerDisable && !mCloseDoorTimer.Timer.IsEnd()) { return; }
+                if (mTimerDisable && !mCloseDoorTimer.Timer.IsEnd() || material.Material == MaterialType.Organism) { return; }
                 mIsOn = !mIsOn;
                 SendSignal(mIsOn);
             }

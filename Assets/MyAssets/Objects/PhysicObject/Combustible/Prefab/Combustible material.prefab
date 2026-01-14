@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4583174753176604970}
   - component: {fileID: 1020752795077568851}
   - component: {fileID: 2327339268599215001}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Combustible material
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,6 +135,10 @@ MonoBehaviour:
     mIsExtinguishing: 0
     mIgnitionResistance: 0.1
     mFireResistance: 0
+  mTargetObjectLayer:
+    serializedVersion: 2
+    m_Bits: 72
+  mIsBreakObject: 0
 --- !u!114 &4583174753176604970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,7 +172,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6060989768217175386}
   serializedVersion: 5
-  m_Mass: 100
+  m_Mass: 150
   m_LinearDamping: 0
   m_AngularDamping: 20
   m_CenterOfMass: {x: 0, y: 0, z: 0}

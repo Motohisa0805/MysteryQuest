@@ -9,5 +9,15 @@ namespace MyAssets
         [SerializeField]
         private ElementType mType;
         public ElementType Type => mType;
+
+        private void Start()
+        {
+            switch(mType)
+            {
+                case ElementType.Fire:
+                    SoundManager.Instance.PlayOneShot3D(1004, transform, true);
+                    break;
+            }
+        }
     }
 }

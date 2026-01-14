@@ -12,8 +12,7 @@ namespace MyAssets
         public float CurrentSP;
         public float UseSP;
         public float RecoverySP;
-        public float Attack;
-        public float Defense;
+        public float ThrowPower;
     }
 
     public class PlayerStatusManager : MonoBehaviour

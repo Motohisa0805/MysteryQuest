@@ -23,9 +23,6 @@ namespace MyAssets
 
         private DamageChecker mImpactChecker;
 
-        [SerializeField]
-        private float mThrowPower;
-
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -59,7 +56,7 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            mChecker.UpdateTakedObjectThrowDirection(mThrowPower);
+            mChecker.UpdateTakedObjectThrowDirection(PlayerStatusManager.Instance.PlayerStatusData.ThrowPower);
             mChecker.UpdateTakedObjectPosition();
             PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
@@ -100,9 +97,6 @@ namespace MyAssets
 
         private DamageChecker mImpactChecker;
 
-        [SerializeField]
-        private float mThrowPower;
-
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -132,7 +126,7 @@ namespace MyAssets
 
         public override void Execute_Update(float time)
         {
-            mChecker.UpdateTakedObjectThrowDirection(mThrowPower);
+            mChecker.UpdateTakedObjectThrowDirection(PlayerStatusManager.Instance.PlayerStatusData.ThrowPower);
             mChecker.UpdateTakedObjectPosition();
             base.Execute_Update(time);
             PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
@@ -173,9 +167,6 @@ namespace MyAssets
 
         private DamageChecker mImpactChecker;
 
-        [SerializeField]
-        private float mThrowPower;
-
         private bool mThrowed;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
@@ -213,7 +204,7 @@ namespace MyAssets
             bool flag = mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1.0f && mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.6f && mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(0).IsName("throwing");
             if (!mThrowed && flag)
             {
-                mChecker.Throw(mThrowPower);
+                mChecker.Throw(PlayerStatusManager.Instance.PlayerStatusData.ThrowPower);
                 mThrowed = true;
             }
             PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);

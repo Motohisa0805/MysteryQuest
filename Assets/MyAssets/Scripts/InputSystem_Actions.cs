@@ -1387,6 +1387,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CreateCombustible"",
+                    ""type"": ""Button"",
+                    ""id"": ""d4296f19-770a-4534-b7e8-f9ff0b585343"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1431,6 +1440,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""CreateWood"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0ec22848-2708-4b97-bb6c-1cde30942e78"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""CreateCombustible"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1537,6 +1557,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Debug_OnOff = m_Debug.FindAction("On/Off", throwIfNotFound: true);
         m_Debug_CreateWoodBox = m_Debug.FindAction("CreateWoodBox", throwIfNotFound: true);
         m_Debug_CreateWood = m_Debug.FindAction("CreateWood", throwIfNotFound: true);
+        m_Debug_CreateCombustible = m_Debug.FindAction("CreateCombustible", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -2100,6 +2121,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Debug_OnOff;
     private readonly InputAction m_Debug_CreateWoodBox;
     private readonly InputAction m_Debug_CreateWood;
+    private readonly InputAction m_Debug_CreateCombustible;
     /// <summary>
     /// Provides access to input actions defined in input action map "Debug".
     /// </summary>
@@ -2123,6 +2145,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Debug/CreateWood".
         /// </summary>
         public InputAction @CreateWood => m_Wrapper.m_Debug_CreateWood;
+        /// <summary>
+        /// Provides access to the underlying input action "Debug/CreateCombustible".
+        /// </summary>
+        public InputAction @CreateCombustible => m_Wrapper.m_Debug_CreateCombustible;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2158,6 +2184,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @CreateWood.started += instance.OnCreateWood;
             @CreateWood.performed += instance.OnCreateWood;
             @CreateWood.canceled += instance.OnCreateWood;
+            @CreateCombustible.started += instance.OnCreateCombustible;
+            @CreateCombustible.performed += instance.OnCreateCombustible;
+            @CreateCombustible.canceled += instance.OnCreateCombustible;
         }
 
         /// <summary>
@@ -2178,6 +2207,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @CreateWood.started -= instance.OnCreateWood;
             @CreateWood.performed -= instance.OnCreateWood;
             @CreateWood.canceled -= instance.OnCreateWood;
+            @CreateCombustible.started -= instance.OnCreateCombustible;
+            @CreateCombustible.performed -= instance.OnCreateCombustible;
+            @CreateCombustible.canceled -= instance.OnCreateCombustible;
         }
 
         /// <summary>
@@ -2516,5 +2548,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCreateWood(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "CreateCombustible" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCreateCombustible(InputAction.CallbackContext context);
     }
 }
