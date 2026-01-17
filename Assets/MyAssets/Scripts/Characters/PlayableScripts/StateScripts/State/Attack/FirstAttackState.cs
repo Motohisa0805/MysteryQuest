@@ -26,7 +26,7 @@ namespace MyAssets
             if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsIdleTransitionType8(actor, StateChanger, IdleState.mStateKey)); }
             if (StateChanger.IsContain(MoveState.mStateKey)) { re.Add(new IsMoveTransitionType5(actor, StateChanger, MoveState.mStateKey)); }
             if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
-            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(MediumImpactPlayerState.mStateKey)) { re.Add(new IsMediumImpactTransition(actor, StateChanger, MediumImpactPlayerState.mStateKey)); }
             if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
@@ -49,7 +49,7 @@ namespace MyAssets
             {
                 hand.enabled = true;
                 //ïêäÌÇÃëfêUÇËSE
-                SoundManager.Instance.PlayOneShot3D(0,mController.transform);
+                SoundManager.Instance.PlayOneShot3D(1000, hand.transform.position, mController.transform);
                 mEquipmentController.SwingEffectHandler.ActivateSlachEffect(true);
             }
             mAnimationFunction.Animator.SetInteger("attack State", 1);
@@ -57,8 +57,12 @@ namespace MyAssets
 
         public override void Execute_Update(float time)
         {
-            base.Execute_Update(time);
             PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            if(mAnimationFunction.IsAnimationClipEnd("first Attack",0.5f))
+            {
+                mController.HandTransforms[(int)SetItemTransform.TransformType.Right].GetCollider().enabled = false;
+            }
+            base.Execute_Update(time);
         }
 
         public override void Execute_FixedUpdate(float time)

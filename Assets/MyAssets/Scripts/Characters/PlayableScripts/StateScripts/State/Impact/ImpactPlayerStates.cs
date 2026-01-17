@@ -5,9 +5,9 @@ using UnityEngine;
 namespace MyAssets
 {
     [Serializable]
-    public class SmallImpactPlayerState : StateBase<string>
+    public class MediumImpactPlayerState : StateBase<string>
     {
-        public static readonly string mStateKey = "SmallImpact";
+        public static readonly string mStateKey = "MediumImpact";
         public override string Key => mStateKey;
         private PlayableAnimationFunction mAnimationFunction;
         private PlayableInput mPlayableInput;
@@ -17,8 +17,8 @@ namespace MyAssets
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
-            if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsSmallImpactToIdleTransition(actor, StateChanger, IdleState.mStateKey)); }
-            if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsSmallImpactToIdle2Transition(actor, StateChanger, IdleState.mStateKey)); }
+            if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsMediumImpactToIdleTransition(actor, StateChanger, IdleState.mStateKey)); }
+            if (StateChanger.IsContain(IdleState.mStateKey)) { re.Add(new IsMediumImpactToIdle2Transition(actor, StateChanger, IdleState.mStateKey)); }
             if (StateChanger.IsContain(DeathPlayerState.mStateKey)) { re.Add(new IsDeathStateTransition(actor, StateChanger, DeathPlayerState.mStateKey)); }
             return re;
         }
@@ -52,7 +52,7 @@ namespace MyAssets
 
             mChecker.SetReleaseTakedObject();
             PlayerStatusManager.Instance.ChangeHP(-mImpactChecker.GetCalculatedDamage());
-            SoundManager.Instance.PlayOneShot3D(2, mImpactChecker.transform);
+            SoundManager.Instance.PlayOneShot3D(1003, mImpactChecker.transform.position);
         }
 
         public override void Execute_Update(float time)
@@ -132,7 +132,7 @@ namespace MyAssets
 
             //ƒeƒXƒg
             PlayerStatusManager.Instance.ChangeHP(-mImpactChecker.GetCalculatedDamage());
-            SoundManager.Instance.PlayOneShot3D(2, mImpactChecker.transform);
+            SoundManager.Instance.PlayOneShot3D(1003, mImpactChecker.transform.position);
         }
 
         public override void Execute_Update(float time)
@@ -261,7 +261,7 @@ namespace MyAssets
             mChecker.SetReleaseTakedObject();
 
             PlayerStatusManager.Instance.ChangeHP(-mImpactChecker.GetCalculatedDamage());
-            SoundManager.Instance.PlayOneShot3D(2, mImpactChecker.transform);
+            SoundManager.Instance.PlayOneShot3D(1003, mImpactChecker.transform.position);
             if(EventManager.Instance)
             {
                 EventManager.Instance.DeathEvent().Forget();

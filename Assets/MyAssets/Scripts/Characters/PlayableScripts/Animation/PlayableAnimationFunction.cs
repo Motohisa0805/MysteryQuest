@@ -137,21 +137,6 @@ namespace MyAssets
                     Animator.SetLayerWeight(i, mCurrentLayerWeights[i]);
                 }
             }
-            /*
-            // 2. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
-            mCurrentLayerWeights[index] = Mathf.SmoothDamp(
-                mCurrentLayerWeights[index],               // 現在の値
-                mTargetLayerWeights[index],                // 目標の値
-                ref mLayersWeightSmoothVelocity[index],    // 内部で使用される参照速度（毎回渡す）
-                mLayersWeightSmoothTime[index]             // 目標値に到達するまでにかける時間
-            );
-
-            if (Animator.GetLayerWeight(index) != mCurrentLayerWeights[index])
-            {
-                // 4. アニメーターに滑らかになったブレンド値を渡す
-                Animator.SetLayerWeight(index, mCurrentLayerWeights[index]);
-            }
-             */
         }
 
         //アニメーションのブレンドを滑らかにするための変数
@@ -401,6 +386,12 @@ namespace MyAssets
             {
                 Animator.SetFloat("crouch_IdleToWalk", mCrouchAnimSpeed);
             }
+        }
+
+        public bool IsAnimationClipEnd(string name, float time = 1.0f)
+        {
+            AnimatorStateInfo animatorState = mAnimator.GetCurrentAnimatorStateInfo(0);
+            return animatorState.IsName(name) && animatorState.normalizedTime >= time;
         }
     }
 }

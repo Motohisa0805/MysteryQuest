@@ -3,10 +3,10 @@ using UnityEngine;
 namespace MyAssets
 {
 
-    public class IsSmallImpactTransition : StateTransitionBase
+    public class IsMediumImpactTransition : StateTransitionBase
     {
         readonly private DamageChecker mImpactChecker;
-        public IsSmallImpactTransition
+        public IsMediumImpactTransition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -18,10 +18,10 @@ namespace MyAssets
         }
     }
 
-    public class IsSmallImpactToIdleTransition : StateTransitionBase
+    public class IsMediumImpactToIdleTransition : StateTransitionBase
     {
         readonly private Animator mAnimator;
-        public IsSmallImpactToIdleTransition
+        public IsMediumImpactToIdleTransition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
@@ -34,10 +34,10 @@ namespace MyAssets
         }
     }
 
-    public class IsSmallImpactToIdle2Transition : StateTransitionBase
+    public class IsMediumImpactToIdle2Transition : StateTransitionBase
     {
         readonly private Animator mAnimator;
-        public IsSmallImpactToIdle2Transition
+        public IsMediumImpactToIdle2Transition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {

@@ -2,33 +2,68 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //キャラクターのダメージ計算を物理・疑似化学エンジン機能を元に管理するクラス
+    [RequireComponent(typeof(ChemistryObject))]
     public class DamageChecker : MonoBehaviour
     {
         [SerializeField]
-        private float mImpactPower;
+        private float           mImpactPower;
 
-        public float ImpactPower => mImpactPower;
+        public float            ImpactPower => mImpactPower;
 
-        private float mMinImpactPower = 1000f;
-        private float mMaxImpactPower = 1600f;
+        private float           mMinImpactPower = 1000f;
+        private float           mMaxImpactPower = 1600f;
 
-        public bool IsEnabledDamage => mImpactPower > 0;
-        public bool IsEnabledSmallDamage => mImpactPower > mMinImpactPower && mImpactPower < mMaxImpactPower;
-        public bool IsEnabledBigDamage => mImpactPower > mMaxImpactPower && mImpactPower > mMinImpactPower;
+        public bool             IsEnabledDamage => mImpactPower > 0;
+        public bool             IsEnabledSmallDamage => mImpactPower > mMinImpactPower && mImpactPower < mMaxImpactPower;
+        public bool             IsEnabledBigDamage => mImpactPower > mMaxImpactPower && mImpactPower > mMinImpactPower;
 
-        public bool IsEnabledFallDamage => mImpactPower > 1000;
+        public bool             IsEnabledFallDamage => mImpactPower > 1000;
 
-        private float mMinObjectSpeed = 5.0f;
+        private float           mMinObjectSpeed = 5.0f;
 
         // 落下ダメージのしきい値
-        private const float FallDamageThreshold = 10f;
+        private const float     FallDamageThreshold = 10f;
 
         //エレメントの継続的ダメージで使用
-        private Timer mElementDamageTimer = new Timer();
+        private Timer           mElementDamageTimer = new Timer();
+
+        private ChemistryObject mChemistryObject;
+
+        private CharacterColorController mCharacterColorController;
+        private void Awake()
+        {
+            mChemistryObject = GetComponent<ChemistryObject>();
+            if(mChemistryObject == null)
+            {
+                Debug.LogError("Not Found ChemistryObject" + gameObject.name);
+            }
+            mCharacterColorController = GetComponentInChildren<CharacterColorController>();
+            if(mCharacterColorController == null)
+            {
+                Debug.LogError("Not Found CharacterColorController" + gameObject.name);
+            }
+        }
 
         private void Update()
         {
             mElementDamageTimer.Update(Time.deltaTime);
+            if(mChemistryObject.CurrentElements != ElementType.None)
+            {
+                ApplyElementDamage();
+            }
+        }
+
+        private void ApplyElementDamage()
+        {
+            if (!mElementDamageTimer.IsEnd()) { return; }
+            if(mChemistryObject.CurrentElements == ElementType.Fire)
+            {
+                mImpactPower = mMinImpactPower;
+                mElementDamageTimer.Start(1.0f);
+                mCharacterColorController.FlashRed(0.5f);
+                PlayerStatusManager.Instance.ChangeHP(-GetCalculatedDamage());
+            }
         }
 
         public void ApplyDamagePower(Collision collision)
@@ -61,11 +96,6 @@ namespace MyAssets
             }
         }
 
-        public void ApplyElementDamagePower(Collider collider)
-        {
-
-        }
-
         private void CheckFallImpact(Collision collision, Rigidbody ri)
         {
             // 衝突した面の法線を確認 (真下からの衝撃か)
@@ -94,9 +124,10 @@ namespace MyAssets
             float mass = targetRb.mass;
             float impactPower = impactVelocity * mass;
 
-            if (impactPower > mMinImpactPower)
+            if (impactPower >= mMinImpactPower)
             {
                 mImpactPower = impactPower;
+                mCharacterColorController.FlashRed(0.5f);
             }
         }
 

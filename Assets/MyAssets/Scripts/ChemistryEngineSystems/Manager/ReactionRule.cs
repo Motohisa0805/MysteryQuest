@@ -32,7 +32,7 @@ namespace MyAssets
         public ElementType gElementToRemove;
 
         [Tooltip("発生させるエフェクトID")]
-        public EffectType mEffectType;
+        public int mEffectID;
     }
     [Serializable]
     public class ReactionRule

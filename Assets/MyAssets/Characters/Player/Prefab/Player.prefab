@@ -419,6 +419,14 @@ MonoBehaviour:
     mIsExtinguishing: 1
     mIgnitionResistance: 2.5
     mFireResistance: 5
+  mPhysicsMaterialInfo:
+    mIsShock: 0
+    mIsDestructible: 0
+    mCollisionForce: 0
+  mTargetObjectLayer:
+    serializedVersion: 2
+    m_Bits: 72
+  mIsBreakObject: 0
 --- !u!114 &3280886677235020846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -836,6 +844,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b754cfe755553e646bdf9a484a673dfa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 958596867073061281}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b754cfe755553e646bdf9a484a673dfa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1244767946193413170}
     - targetCorrespondingSourceObject: {fileID: 1082271958561512970, guid: b754cfe755553e646bdf9a484a673dfa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5966183921067624602}
@@ -1509,6 +1520,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed0a151bd67c02a46a257371f26dbe65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.RagdollController
+--- !u!114 &1244767946193413170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4011928750196801241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11a176e79918dd849a8605343805af4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.CharacterColorController
 --- !u!1 &4139776020628390350 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -9070493210130169274, guid: b754cfe755553e646bdf9a484a673dfa, type: 3}

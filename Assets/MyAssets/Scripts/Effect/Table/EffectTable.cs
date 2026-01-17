@@ -1,40 +1,66 @@
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Data;
 using UnityEngine;
 
 namespace MyAssets
 {
 
     [CreateAssetMenu(menuName = "Effect/EffectTable")]
-    public class EffectTable : ScriptableObject
+    public class EffectTable : ScriptableObject, ISerializationCallbackReceiver
     {
         [Header("エフェクトリスト")]
-        public List<EffectList> gEffects = new List<EffectList>();
+        [SerializeField]
+        private List<EffectElement> mEffects = new List<EffectElement>();
+
+        public List<EffectElement> Effects => mEffects;
 
         //検索を高速化するための辞書(実行時に構築)
-        private Dictionary<EffectType, ParticleSystem> g_lookupCache;
+        private Dictionary<int, EffectElement> mEffectDic = new Dictionary<int, EffectElement>();
 
         public void Initialize()
         {
-            g_lookupCache = new Dictionary<EffectType, ParticleSystem>();
-            foreach (var effect in gEffects)
+            mEffectDic = new Dictionary<int, EffectElement>();
+            foreach (var effect in mEffects)
             {
-                var key = effect.gEffectType;
-                if (!g_lookupCache.ContainsKey(key))
+                var key = effect.ID;
+                if (!mEffectDic.ContainsKey(key))
                 {
-                    g_lookupCache.Add(key, effect.gParticleSystem);
+                    mEffectDic.Add(key, effect);
                 }
             }
         }
 
         //検索機能
-        public bool TryGetReaction(EffectType effect, out ParticleSystem result)
+        public bool TryGetReaction(int id, out EffectElement result)
         {
-            if (g_lookupCache == null) Initialize();
+            if (mEffectDic == null) Initialize();
 
-            return g_lookupCache.TryGetValue(effect, out result);
+            return mEffectDic.TryGetValue(id, out result);
         }
+
+        public EffectElement GetEffect(int id)
+        {
+            if(mEffectDic.TryGetValue(id, out var element))
+            {
+                return element;
+            }
+            Debug.LogWarning($"Effect ID {id} が見つかりません。");
+            return null;   
+        }
+
+        // --- ISerializationCallbackReceiver の実装 ---
+        // ScriptableObjectが読み込まれた際にDictionaryを構築する
+        public void OnAfterDeserialize()
+        {
+            mEffectDic.Clear();
+            foreach (var element in mEffects)
+            {
+                if (!mEffectDic.ContainsKey(element.ID))
+                {
+                    mEffectDic.Add(element.ID, element);
+                }
+            }
+        }
+
+        public void OnBeforeSerialize() { /* 何もしない */ }
     }
 }

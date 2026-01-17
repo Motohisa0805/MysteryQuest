@@ -33,7 +33,7 @@ namespace MyAssets
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
             if (StateChanger.IsContain(PushingState.mStateKey)) { re.Add(new IsPushingTransition(actor, StateChanger, PushingState.mStateKey)); }
             if (StateChanger.IsContain(MoveState.mStateKey)) { re.Add(new IsPushEndTransition(actor, StateChanger, MoveState.mStateKey)); }
-            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(MediumImpactPlayerState.mStateKey)) { re.Add(new IsMediumImpactTransition(actor, StateChanger, MediumImpactPlayerState.mStateKey)); }
             if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }
@@ -121,7 +121,7 @@ namespace MyAssets
             if (StateChanger.IsContain(MoveState.mStateKey)) { re.Add(new IsPushEndTransition(actor, StateChanger, MoveState.mStateKey)); }
             if (StateChanger.IsContain(PushEndState.mStateKey)) { re.Add(new IsPushEndStartTransition(actor, StateChanger, PushEndState.mStateKey)); }
             if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
-            if (StateChanger.IsContain(SmallImpactPlayerState.mStateKey)) { re.Add(new IsSmallImpactTransition(actor, StateChanger, SmallImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(MediumImpactPlayerState.mStateKey)) { re.Add(new IsMediumImpactTransition(actor, StateChanger, MediumImpactPlayerState.mStateKey)); }
             if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             return re;
         }

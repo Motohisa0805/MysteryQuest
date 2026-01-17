@@ -8,8 +8,6 @@ namespace MyAssets
         private static CountdownIntervalPlayer instance;
         public static CountdownIntervalPlayer Instance => instance;
 
-        [Header("SEê›íË")]
-        private SoundList.SEType countDonwSE;
         [SerializeField]
         private Transform mPlayerTransform;
 
@@ -65,7 +63,7 @@ namespace MyAssets
         {
             while(mElapsedTime < mTotalDuration)
             {
-                SoundManager.Instance.PlayOneShot2D(1,false,-1, mCurrentPitch);
+                SoundManager.Instance.PlayOneShot2D(1001,false,-1, mCurrentPitch);
                 mCurrentPitch -= mPitchStep;
 
                 // ç≈í·ÉsÉbÉ`Çâ∫âÒÇÁÇ»Ç¢ÇÊÇ§Ç…êßå¿

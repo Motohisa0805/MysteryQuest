@@ -4,16 +4,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SoundList", menuName = "Sound Objects/SoundList")]
 public class SoundList : ScriptableObject, ISerializationCallbackReceiver
 {
-    //ABCèá
-    public enum SEType
-    {
-        Attack,
-        CountDown,
-        Damage,
-        Fire,
-        Footstep,
-        Stone_Hit
-    }
 
     [System.Serializable]
     public class SEElement

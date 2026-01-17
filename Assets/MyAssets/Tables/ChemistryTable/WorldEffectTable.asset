@@ -12,6 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfce902204b75a940a4ece9b0aff9670, type: 3}
   m_Name: WorldEffectTable
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.EffectTable
-  gEffects:
-  - gEffectType: 1
-    gParticleSystem: {fileID: 7530979594092798924, guid: 5612ebe0c2256814e8114c059cb97a44, type: 3}
+  mEffects:
+  - mID: 0
+    mParticleSystem: {fileID: 7530979594092798924, guid: 5612ebe0c2256814e8114c059cb97a44, type: 3}
+    mSizeScale: 1
+    mInitObjectCount: 0
+    mMaxSize: 10
+    mDefaultCapacity: 2
+  - mID: 1
+    mParticleSystem: {fileID: 5247861218473606451, guid: 977e414f38280694895ba2b75d2f733b, type: 3}
+    mSizeScale: 1
+    mInitObjectCount: 0
+    mMaxSize: 10
+    mDefaultCapacity: 2

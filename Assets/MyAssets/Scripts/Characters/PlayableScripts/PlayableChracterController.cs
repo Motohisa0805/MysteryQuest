@@ -75,7 +75,7 @@ namespace MyAssets
         private ClimbState mClimbState;
 
         [SerializeField]
-        private SmallImpactPlayerState mSmallImpactPlayerState;
+        private MediumImpactPlayerState mSmallImpactPlayerState;
         [SerializeField]
         private BigImpactPlayerState mBigImpactPlayerState;
         [SerializeField]

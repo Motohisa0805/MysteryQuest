@@ -88,6 +88,8 @@ namespace MyAssets
                 if (mTimerDisable && !mCloseDoorTimer.Timer.IsEnd() || material.Material == MaterialType.Organism) { return; }
                 mIsOn = !mIsOn;
                 SendSignal(mIsOn);
+                Vector3 hitPoint = other.ClosestPoint(transform.position);
+                EffectManager.Instance.PlayEffect<Transform>(1, hitPoint, Quaternion.identity, Vector3.one);
             }
         }
 

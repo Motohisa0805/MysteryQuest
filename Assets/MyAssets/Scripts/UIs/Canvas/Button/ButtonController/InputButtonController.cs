@@ -87,7 +87,7 @@ namespace MyAssets
                 {
                     if (mSelectIndex != i)
                     {
-                        SoundManager.Instance.PlayOneShot2D(10002, false);
+                        SoundManager.Instance.PlayOneShot2D(1013, false);
                         mSelectIndex = i;
                         SetSelectImagePosition(mSelectIndex);
                         SetActivateSelectImage(true);
@@ -163,7 +163,7 @@ namespace MyAssets
                 }
             }
             if (decideIndex < 0) { return; }
-            SoundManager.Instance.PlayOneShot2D(10002, false);
+            SoundManager.Instance.PlayOneShot2D(1013, false);
             mSelectIndex = decideIndex;
             SetSelectImagePosition(mSelectIndex);
         }
@@ -184,7 +184,7 @@ namespace MyAssets
         private void OnDecide()
         {
             if (mDecideFlag) { return; }
-            SoundManager.Instance.PlayOneShot2D(10001, false);
+            SoundManager.Instance.PlayOneShot2D(1004, false);
             DecideUpdate();
         }
 

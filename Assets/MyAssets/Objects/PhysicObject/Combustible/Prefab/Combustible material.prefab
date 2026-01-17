@@ -135,6 +135,10 @@ MonoBehaviour:
     mIsExtinguishing: 0
     mIgnitionResistance: 0.1
     mFireResistance: 0
+  mPhysicsMaterialInfo:
+    mIsShock: 1
+    mIsDestructible: 0
+    mCollisionForce: 75
   mTargetObjectLayer:
     serializedVersion: 2
     m_Bits: 72

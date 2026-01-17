@@ -23,6 +23,21 @@ namespace MyAssets
 
         }
 
+        [Serializable]
+        public struct PhysicsMaterialInfo
+        {
+            [SerializeField]
+            private bool mIsShock;
+            public bool IsShock { get { return mIsShock; }set { mIsShock = value; } }
+            public void SetIsShock(bool shock) {  mIsShock = shock; }
+            [SerializeField]
+            private bool mIsDestructible;
+            public bool IsDestructible { get { return mIsDestructible; }set { mIsDestructible = value; } }
+            [SerializeField]
+            private float mCollisionForce;
+            public float CollisionForce { get { return mCollisionForce; } set { mCollisionForce = value; } }
+        }
+
         [Header("この物体の素材(変わらない)")]
         [SerializeField]
         private MaterialType mMaterial;
@@ -35,6 +50,11 @@ namespace MyAssets
         //マテリアルの詳細設定
         [SerializeField]
         private MaterialObjectInfo mMaterialObjectInfo;
+
+        [SerializeField]
+        private PhysicsMaterialInfo mPhysicsMaterialInfo;
+        public PhysicsMaterialInfo PhysicsMaterial => mPhysicsMaterialInfo;
+
         [SerializeField]
         private LayerMask mTargetObjectLayer = (1 << 3) | (1 << 6);
 
@@ -64,13 +84,14 @@ namespace MyAssets
         private ReactionResult mPendingReaction;
 
 
-        private ParticleSystem mElementEffect;
+        private EffectReturner mElementEffect;
 
         private Rigidbody mRigidbody;
 
         private Vector3 mLastPosition;
 
         private Vector3 mCurrentVelocity;
+        public Vector3 CurrentVelocity => mCurrentVelocity;
 
         [SerializeField]
         private bool mIsBreakObject = false;
@@ -86,6 +107,12 @@ namespace MyAssets
         private void Start()
         {
             mTargetObjectLayer = 1 << 3 | 1 << 6;
+
+            if(mPhysicsMaterialInfo.CollisionForce <= 0)
+            {
+                mPhysicsMaterialInfo.CollisionForce = 1.0f;
+            }
+
             //化学反応テーブル取得(シングルトンからのアクセス頻度を減らすため)
             mReactionTable = GameSystemManager.Instance.ChemistryTable;
             //オブジェクト破壊タイマーにイベント登録
@@ -374,34 +401,26 @@ namespace MyAssets
         {
             mCurrentElements |= result.gElementToAdd;
             mCurrentElements &= ~result.gElementToRemove;
-
-            if (GameSystemManager.Instance.EffectTable.TryGetReaction(mPendingReaction.mEffectType, out ParticleSystem effect))
+            Transform transform = this.transform;
+            if (mMaterial == MaterialType.Organism)
             {
-                Transform transform = this.transform;
-                if(mMaterial == MaterialType.Organism)
+                transform = GetComponentInChildren<FreeCameraTargetPoint>().transform;
+            }
+            mElementEffect = EffectManager.Instance.PlayEffect<ParticleSystem>(result.mEffectID, transform.position, Quaternion.identity,Vector3.one,transform).GetComponent<EffectReturner>();
+            SetParticleShapeToCollider(mElementEffect.ParticleSystem);
+            SoundManager.Instance.PlayOneShot3D(1008, transform.position, transform);
+            SoundManager.Instance.PlayOneShot3D(1009, transform.position, transform,true,true, mMaterialObjectInfo.mDestroyDelay);
+            // 燃え尽きる処理の開始（もし木で、火がついたなら）
+            if ((mMaterial == MaterialType.Wood || mMaterial == MaterialType.Organism) &&
+                (result.gElementToAdd & ElementType.Fire) != 0)
+            {
+                if (mMaterialObjectInfo.mIsDestructible)
                 {
-                    transform = GetComponentInChildren<FreeCameraTargetPoint>().transform;
+                    mDestroyTimer.Start(mMaterialObjectInfo.mDestroyDelay);
                 }
-                mElementEffect = Instantiate(effect, transform.position, Quaternion.identity);
-                mElementEffect.transform.SetParent(transform, false);
-                mElementEffect.transform.localScale = Vector3.one;
-                mElementEffect.transform.localPosition = Vector3.zero;
-                mElementEffect.transform.localRotation = Quaternion.identity;
-                SetParticleShapeToCollider(mElementEffect);
-                SoundManager.Instance.PlayOneShot3D(1003, transform);
-                SoundManager.Instance.PlayOneShot3D(1004, transform,true, true,true, mMaterialObjectInfo.mDestroyDelay);
-                // 燃え尽きる処理の開始（もし木で、火がついたなら）
-                if ((mMaterial == MaterialType.Wood || mMaterial == MaterialType.Organism) &&
-                    (result.gElementToAdd & ElementType.Fire) != 0)
+                else if(mMaterialObjectInfo.mIsExtinguishing)
                 {
-                    if (mMaterialObjectInfo.mIsDestructible)
-                    {
-                        mDestroyTimer.Start(mMaterialObjectInfo.mDestroyDelay);
-                    }
-                    else if(mMaterialObjectInfo.mIsExtinguishing)
-                    {
-                        mExtinguishingTimer.Start(mMaterialObjectInfo.mFireResistance);
-                    }
+                    mExtinguishingTimer.Start(mMaterialObjectInfo.mFireResistance);
                 }
             }
         }
@@ -413,8 +432,9 @@ namespace MyAssets
             // （途中で水か何かで消火されていたら破壊しないため）
             if (mMaterial == MaterialType.Wood && (mCurrentElements & ElementType.Fire) != 0)
             {
+                mElementEffect.StopAndReturn();
+                SoundManager.Instance.PlayOneShot3D(1010, transform.position);
                 Destroy(gameObject);
-                // 必要なら燃え尽きエフェクトなどを生成
             }
         }
 
@@ -422,9 +442,10 @@ namespace MyAssets
         {
             if(mMaterialObjectInfo.mIsExtinguishing)
             {
-                Destroy(mElementEffect.gameObject);
+                mElementEffect.StopAndReturn();
                 mCurrentElements = 0;
                 mCurrentHeatAccumulated = 0;
+                SoundManager.Instance.PlayOneShot3D(1010, transform.position);
                 AudioSource source = GetComponentInChildren<AudioSource>();
                 if (source != null && SoundManager.Instance != null)
                 {
@@ -440,15 +461,32 @@ namespace MyAssets
             //音の再生
             if (mMaterial == MaterialType.Wood)
             {
-                SoundManager.Instance.PlayOneShot3D(6, transform);
+                SoundManager.Instance.PlayOneShot3D(1014, transform.position);
             }
             else if (mMaterial == MaterialType.Stone)
             {
-                SoundManager.Instance.PlayOneShot3D(5, transform);
+                SoundManager.Instance.PlayOneShot3D(1012, transform.position);
             }
             else if (mMaterial == MaterialType.Iron)
             {
-                SoundManager.Instance.PlayOneShot3D(1007, transform);
+                SoundManager.Instance.PlayOneShot3D(1006, transform.position);
+            }
+        }
+        //音を特定の条件下で再生するか調べる
+        private void CheckPlaySound_Sword(Vector3 hitPoint)
+        {
+            //音の再生
+            if (mMaterial == MaterialType.Wood)
+            {
+                SoundManager.Instance.PlayOneShot3D(1015, transform.position);
+            }
+            else if (mMaterial == MaterialType.Stone)
+            {
+                SoundManager.Instance.PlayOneShot3D(1012, transform.position);
+            }
+            else if (mMaterial == MaterialType.Iron)
+            {
+                SoundManager.Instance.PlayOneShot3D(1006, transform.position);
             }
         }
         private void OnCollisionEnter(Collision collision)
@@ -465,19 +503,29 @@ namespace MyAssets
 
         private void OnTriggerEnter(Collider other)
         {
-            ChemistryObject chemistryObject = other.GetComponent<ChemistryObject>();
-            if (chemistryObject != null)
+            SwordStick swordStick = other.GetComponent<SwordStick>();
+            if (swordStick != null)
             {
-                Vector3 force = mCurrentVelocity;
-                chemistryObject.AddBreakPower(force);
+                if (transform.parent != swordStick.transform)
+                {
+                    Vector3 hitPoint = other.ClosestPoint(transform.position);
+                    ChemistryObject sword = swordStick.GetComponent<ChemistryObject>();
+                    if (sword != null)
+                    {
+                        Vector3 force = sword.CurrentVelocity * mPhysicsMaterialInfo.CollisionForce;
+                        AddBreakPower(force, hitPoint);
+                        CheckPlaySound_Sword(hitPoint);
+                    }
+                }
             }
         }
 
         //破壊出来るか調べる
-        public void AddBreakPower(Vector3 power)
+        public void AddBreakPower(Vector3 power, Vector3 hitPoint)
         {
             mRigidbody.AddForce(power, ForceMode.Impulse);
-            if(IsBreakObject)
+            EffectManager.Instance.PlayEffect<Transform>(1, hitPoint, Quaternion.identity, Vector3.one);
+            if (IsBreakObject)
             {
                 mHitPoint -= power.magnitude;
                 if(mHitPoint <= 0)
@@ -490,10 +538,17 @@ namespace MyAssets
 
         private void OnDestroy()
         {
+            if(mElementEffect != null)
+            {
+                mElementEffect.StopAndReturn();
+            }
             AudioSource[] source = GetComponentsInChildren<AudioSource>();
             for(int i = 0; i < source.Length; i++)
             {
-                SoundManager.Instance.ReturnAudioSource(source[i]);
+                if (SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.ReturnAudioSource(source[i]);
+                }
             }
         }
 #if UNITY_EDITOR

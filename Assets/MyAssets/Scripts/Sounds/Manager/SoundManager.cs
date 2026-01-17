@@ -6,8 +6,8 @@ namespace MyAssets
 {
     public class SoundManager : MonoBehaviour
     {
-        private static SoundManager instance;
-        public static SoundManager  Instance => instance;
+        private static SoundManager mInstance;
+        public static SoundManager  Instance => mInstance;
 
         [SerializeField]
         private SoundList           mSoundList;
@@ -26,12 +26,12 @@ namespace MyAssets
         private AudioSource         mPlayingBGMAudioSource;
         private void Awake()
         {
-            if (instance != null)
+            if (mInstance != null)
             {
                 Destroy(gameObject);
                 return;
             }
-            instance = this;
+            mInstance = this;
             DontDestroyOnLoad(gameObject);
         }
 
@@ -137,7 +137,7 @@ namespace MyAssets
         }
 
 
-        public void PlayOneShot3D(int id,Transform parent,bool loop = false, bool isFollow = false,bool destroyCollection = false, float endSECount = -1)
+        public void PlayOneShot3D(int id,Vector3 postion,Transform parent = null,bool loop = false,bool destroyCollection = false, float endSECount = -1)
         {
             //クリップを取得
             SoundList.SEElement seElement = mSoundList.GetElement(id); ;
@@ -156,7 +156,7 @@ namespace MyAssets
             audioSource.maxDistance = seElement.MaxDistance;
             audioSource.minDistance = seElement.MinDistance;
 
-            if (isFollow)
+            if (parent)
             {
                 audioSource.transform.SetParent(parent);
                 audioSource.transform.localPosition = Vector3.zero;
@@ -164,7 +164,7 @@ namespace MyAssets
             else
             {
                 audioSource.transform.SetParent(transform); // SoundManagerの子に戻す
-                audioSource.transform.position = parent.position;
+                audioSource.transform.position = postion;
             }
 
             audioSource.PlayOneShot(clip);
