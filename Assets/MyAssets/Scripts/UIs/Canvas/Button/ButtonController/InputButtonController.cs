@@ -184,7 +184,6 @@ namespace MyAssets
         private void OnDecide()
         {
             if (mDecideFlag) { return; }
-            SoundManager.Instance.PlayOneShot2D(1004, false);
             DecideUpdate();
         }
 

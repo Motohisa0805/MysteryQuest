@@ -97,6 +97,12 @@ namespace MyAssets
             mController.BodyRotate();
         }
 
+        public override void Execute_IKAnimatorUpdate(float time)
+        {
+            base.Execute_IKAnimatorUpdate(time);
+            mAnimationFunction.FootIK.Update();
+        }
+
         public override void Exit()
         {
             base.Exit();

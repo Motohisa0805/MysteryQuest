@@ -336,6 +336,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.PlayableAnimationFunction
   mLayersWeightSmoothTime: []
+  mFootIK:
+    ikEnabled: 1
+    isDrawDebug: 0
+    heelOffsetZ: -0.08
+    toeOffsetZ: 0.05
+    rayLength: 0.1
 --- !u!114 &4927028302621180963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -798,6 +804,10 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 8fa836ba16588934f9efcce302cac72a, type: 2}
     - target: {fileID: 5866666021909216657, guid: b754cfe755553e646bdf9a484a673dfa, type: 3}
       propertyPath: m_UpdateMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: b754cfe755553e646bdf9a484a673dfa, type: 3}
+      propertyPath: m_CullingMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: b754cfe755553e646bdf9a484a673dfa, type: 3}

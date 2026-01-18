@@ -9,6 +9,7 @@ namespace MyAssets
         private float               mGravityMultiply;
 
         private Rigidbody           mRigidbody;
+        public Rigidbody            Rigidbody => mRigidbody;
 
         [SerializeField]
         private Vector3             mCurrentInputVelocity;

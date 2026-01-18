@@ -21,6 +21,7 @@ namespace MyAssets
             {
                 mController.ChangeStageInformationPage(-1);
             }
+            SoundManager.Instance.PlayOneShot2D(1004, false);
         }
 
         private void Awake()

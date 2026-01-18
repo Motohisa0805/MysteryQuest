@@ -30,6 +30,8 @@ namespace MyAssets
         [SerializeField]
         private JumpUpState mJumpUpState;
         [SerializeField]
+        private SecondJumpUpState mSecondJumpUpState;
+        [SerializeField]
         private JumpingState mJumpState;
         [SerializeField]
         private JumpDownState mJumpDownState;
@@ -178,6 +180,7 @@ namespace MyAssets
                 mSpritDushState,
                 mFocusingMoveState,
                 mJumpUpState,
+                mSecondJumpUpState,
                 mJumpState,
                 mJumpDownState,
                 mStandingToCrouchState,
@@ -410,6 +413,12 @@ namespace MyAssets
         {
             float t = Time.deltaTime;
             mStateMachine.LateUpdate(t);
+        }
+
+        private void OnAnimatorIK()
+        {
+            float t = Time.deltaTime;
+            mStateMachine.IKAnimatorUpdate(t);
         }
 
         private void OnTriggerEnter(Collider other)

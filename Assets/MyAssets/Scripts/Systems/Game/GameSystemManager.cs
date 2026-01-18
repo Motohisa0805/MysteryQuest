@@ -17,10 +17,6 @@ namespace MyAssets
 
         public ChemistryTable               ChemistryTable => mChemistryTable;
 
-        [SerializeField]
-        private EffectTable                 mEffectTable;
-        public EffectTable                  EffectTable => mEffectTable;
-
         private void Awake()
         {
             if (instance != null)

@@ -85,6 +85,7 @@ namespace MyAssets
 
 
         private EffectReturner mElementEffect;
+        private EffectReturner mPreparationElementEffect;
 
         private Rigidbody mRigidbody;
 
@@ -343,6 +344,10 @@ namespace MyAssets
                 // 火に触れている：蓄熱（秒間1.0溜まる）
                 float heatPower = 1.0f;
                 mCurrentHeatAccumulated += heatPower * Time.deltaTime;
+                if(mPreparationElementEffect == null)
+                {
+                    mPreparationElementEffect = EffectManager.Instance.PlayEffect<ParticleSystem>(2, transform.position, Quaternion.identity, Vector3.one, transform).GetComponent<EffectReturner>();
+                }
             }
             else
             {
@@ -358,19 +363,29 @@ namespace MyAssets
                 ApplyReaction(mPendingReaction);
                 mPendingReaction = default;
                 mCurrentHeatAccumulated = 0f;
+                if (mPreparationElementEffect != null)
+                {
+                    mPreparationElementEffect.StopAndReturn();
+                    mPreparationElementEffect = null;
+                }
             }
 
-            // もし完全に冷めきったら、反応予約自体を消去しても良い
+            // もし完全に冷めきったら、反応予約自体を消去
             if (!isTouching && mCurrentHeatAccumulated <= 0)
             {
                 mPendingReaction = default;
+                if(mPreparationElementEffect != null)
+                {
+                    mPreparationElementEffect.StopAndReturn();
+                    mPreparationElementEffect = null;
+                }
             }
         }
 
 
         private void SetParticleShapeToCollider(ParticleSystem particle)
         {
-            // 1. Shapeモジュールを変数として取得
+            //Shapeモジュールを変数として取得
             var shapeModule = particle.shape;
 
             if (TryGetComponent<Collider>(out var col))
@@ -379,7 +394,7 @@ namespace MyAssets
                 {
                     case BoxCollider box:
                         shapeModule.shapeType = ParticleSystemShapeType.Box;
-                        shapeModule.scale = transform.localScale * 1.5f; // サイズも合わせるとより正確です
+                        shapeModule.scale = Vector3.one; 
                         shapeModule.rotation = new Vector3(90.0f, 0, 0);
                         break;
                     case SphereCollider sphere:
@@ -401,15 +416,18 @@ namespace MyAssets
         {
             mCurrentElements |= result.gElementToAdd;
             mCurrentElements &= ~result.gElementToRemove;
-            Transform transform = this.transform;
-            if (mMaterial == MaterialType.Organism)
+            if(mElementEffect == null)
             {
-                transform = GetComponentInChildren<FreeCameraTargetPoint>().transform;
+                Transform transform = this.transform;
+                if (mMaterial == MaterialType.Organism)
+                {
+                    transform = GetComponentInChildren<FreeCameraTargetPoint>().transform;
+                }
+                mElementEffect = EffectManager.Instance.PlayEffect<ParticleSystem>(result.mEffectID, transform.position, Quaternion.identity,Vector3.one,transform).GetComponent<EffectReturner>();
+                SetParticleShapeToCollider(mElementEffect.ParticleSystem);
+                SoundManager.Instance.PlayOneShot3D(1008, transform.position, transform);
+                SoundManager.Instance.PlayOneShot3D(1009, transform.position, transform,true,true, mMaterialObjectInfo.mDestroyDelay);
             }
-            mElementEffect = EffectManager.Instance.PlayEffect<ParticleSystem>(result.mEffectID, transform.position, Quaternion.identity,Vector3.one,transform).GetComponent<EffectReturner>();
-            SetParticleShapeToCollider(mElementEffect.ParticleSystem);
-            SoundManager.Instance.PlayOneShot3D(1008, transform.position, transform);
-            SoundManager.Instance.PlayOneShot3D(1009, transform.position, transform,true,true, mMaterialObjectInfo.mDestroyDelay);
             // 燃え尽きる処理の開始（もし木で、火がついたなら）
             if ((mMaterial == MaterialType.Wood || mMaterial == MaterialType.Organism) &&
                 (result.gElementToAdd & ElementType.Fire) != 0)

@@ -14,13 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.EffectTable
   mEffects:
   - mID: 0
-    mParticleSystem: {fileID: 7530979594092798924, guid: 5612ebe0c2256814e8114c059cb97a44, type: 3}
+    mParticleSystem: {fileID: 4330705023626989620, guid: 559b2ba1d38220b44a90f415f300b7f4, type: 3}
     mSizeScale: 1
     mInitObjectCount: 0
     mMaxSize: 10
     mDefaultCapacity: 2
   - mID: 1
     mParticleSystem: {fileID: 5247861218473606451, guid: 977e414f38280694895ba2b75d2f733b, type: 3}
+    mSizeScale: 1
+    mInitObjectCount: 0
+    mMaxSize: 10
+    mDefaultCapacity: 2
+  - mID: 2
+    mParticleSystem: {fileID: 4791726428221895327, guid: 423a4bbeb2b39564abe25184426a58b8, type: 3}
     mSizeScale: 1
     mInitObjectCount: 0
     mMaxSize: 10

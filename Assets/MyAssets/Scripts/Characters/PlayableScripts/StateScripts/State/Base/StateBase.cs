@@ -64,6 +64,11 @@ namespace MyAssets
             //ó‘Ô’†‚Ìˆ—
         }
 
+        public virtual void Execute_IKAnimatorUpdate(float time)
+        {
+            //ó‘Ô’†‚Ìˆ—
+        }
+
         public virtual void Exit()
         {
             //ó‘Ô‚©‚ço‚½‚Æ‚«‚Ìˆ—
