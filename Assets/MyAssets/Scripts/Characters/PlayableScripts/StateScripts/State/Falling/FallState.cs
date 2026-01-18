@@ -41,7 +41,7 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            mAnimationFunction.Animator.SetInteger("jumpState", 1);
+            mAnimationFunction.Animator.SetInteger("jumpState", 2);
             mAnimationFunction.Animator.SetInteger("crouchState", -1);
             mAnimationFunction.Animator.SetInteger("to Lift", -1);
             mAnimationFunction.Animator.SetInteger("pushState", -1);

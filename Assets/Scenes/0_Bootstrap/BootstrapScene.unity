@@ -305,6 +305,7 @@ MonoBehaviour:
   mItemManager: {fileID: 7167131856614984231, guid: 16e5fa23b65d5ef408ac0a9324508b80, type: 3}
   mPlayerUIManager: {fileID: 6505113297399011906, guid: 7befc571709472741a51bd399cc9fadb, type: 3}
   mSoundManager: {fileID: 8322185337705896216, guid: 1b15dba2566515244afecee104ef02f7, type: 3}
+  mEffectManager: {fileID: 5214313304755843899, guid: d8e0b6be4e4fd7e459a1a139e31082bf, type: 3}
 --- !u!1 &1039919781
 GameObject:
   m_ObjectHideFlags: 0

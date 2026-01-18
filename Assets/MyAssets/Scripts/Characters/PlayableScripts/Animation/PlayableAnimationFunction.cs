@@ -31,6 +31,10 @@ namespace MyAssets
         // SmoothDampで使用する参照速度（内部で自動更新される）
         private float[] mLayersWeightSmoothVelocity = new float[0];
 
+        [SerializeField]
+        private FootIK  mFootIK;
+        public FootIK   FootIK => mFootIK;
+
         private void Awake()
         {
             mController = GetComponent<PlayableChracterController>();
@@ -55,13 +59,8 @@ namespace MyAssets
 
         private void Start()
         {
-            if (mAnimator != null)
-            {
-                mCurrentLayerWeights = new float[mAnimator.layerCount];
-                mTargetLayerWeights = new float[mAnimator.layerCount];
-                mLayersWeightSmoothTime = new float[mAnimator.layerCount];
-                mLayersWeightSmoothVelocity = new float[mAnimator.layerCount];
-            }
+            SetUp();
+            mFootIK.DoSetup(mController);
         }
 
         public void SetUp()

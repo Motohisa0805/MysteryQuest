@@ -21,26 +21,55 @@ namespace MyAssets
         }
     }
 
+    public class IsSecondJumpUpTransition : StateTransitionBase
+    {
+
+        readonly private PlayableInput mInput;
+        readonly private PlayableChracterController mController;
+        readonly private Animator mAnimator;
+        readonly private Movement mMovement;
+        public IsSecondJumpUpTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mController = actor.GetComponent<PlayableChracterController>();
+            mAnimator = actor.GetComponentInChildren<Animator>();
+            mMovement = actor.GetComponent<Movement>();
+        }
+        private bool IsAnimationName()
+        {
+            return (mAnimator.GetCurrentAnimatorStateInfo(0).IsName("jumping Up") || mAnimator.GetCurrentAnimatorStateInfo(0).IsName("runJump") ||
+                mAnimator.GetCurrentAnimatorStateInfo(0).IsName("falling Idle"));
+        }
+        public override bool IsTransition()
+        {
+            return mInput.InputJump && !mController.Grounded && IsAnimationName() && mMovement.Rigidbody.linearVelocity.y <= 0;
+        }
+    }
+
     public class IsJumpLoopTransition : StateTransitionBase
     {
         readonly private PlayableChracterController mController;
         readonly private Animator mAnimator;
+        readonly private Movement mMovement;
         public IsJumpLoopTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimator = actor.GetComponentInChildren<Animator>();
+            mMovement= actor.GetComponent<Movement>();
         }
 
         private bool IsAnimationName()
         {
-            return (mAnimator.GetCurrentAnimatorStateInfo(0).IsName("jumping Up") || mAnimator.GetCurrentAnimatorStateInfo(0).IsName("runJump"));
+            return (mAnimator.GetCurrentAnimatorStateInfo(0).IsName("jumping Up") || mAnimator.GetCurrentAnimatorStateInfo(0).IsName("runJump") 
+                    || mAnimator.GetCurrentAnimatorStateInfo(0).IsName("jump Flip"));
         }
 
         public override bool IsTransition()
         {
             return IsAnimationName() && mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f &&
-                !mController.Grounded;
+                !mController.Grounded && mMovement.Rigidbody.linearVelocity.y < 0;
         }
     }
 
@@ -74,7 +103,7 @@ namespace MyAssets
 
         private bool IsAnimationName()
         {
-            return (mAnimator.GetCurrentAnimatorStateInfo(0).IsName("jumping Up") || mAnimator.GetCurrentAnimatorStateInfo(0).IsName("runJump"));
+            return (mAnimator.GetCurrentAnimatorStateInfo(0).IsName("jumping Up") || mAnimator.GetCurrentAnimatorStateInfo(0).IsName("runJump") || mAnimator.GetCurrentAnimatorStateInfo(0).IsName("jump Flip"));
         }
         public override bool IsTransition()
         {

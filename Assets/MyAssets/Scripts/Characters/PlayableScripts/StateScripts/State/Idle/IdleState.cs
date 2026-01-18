@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace MyAssets
 {
@@ -95,6 +94,12 @@ namespace MyAssets
             mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
+        }
+
+        public override void Execute_IKAnimatorUpdate(float time)
+        {
+            base.Execute_IKAnimatorUpdate(time);
+            mAnimationFunction.FootIK.Update();
         }
 
         public override void Exit()

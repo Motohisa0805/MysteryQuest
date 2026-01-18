@@ -15,6 +15,8 @@ namespace MyAssets
         private PlayerUIManager mPlayerUIManager;
         [SerializeField]
         private SoundManager mSoundManager;
+        [SerializeField]
+        private EffectManager mEffectManager;
 
         private void Start()
         {
@@ -37,6 +39,10 @@ namespace MyAssets
             if(mSoundManager != null)
             {
                 Instantiate(mSoundManager);
+            }
+            if(mEffectManager != null)
+            {
+                Instantiate(mEffectManager);
             }
         }
 

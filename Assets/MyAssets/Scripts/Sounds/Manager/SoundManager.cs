@@ -24,6 +24,18 @@ namespace MyAssets
         private GameObject          mAudioSourcePrefab;
 
         private AudioSource         mPlayingBGMAudioSource;
+
+        //CullingGroup関連の変数
+        private CullingGroup        mCullingGroup;
+        private BoundingSphere[]    mSpheres;
+        // プレイヤーやカメラなど、距離判定の中心
+        [Header("Culling Settings")]
+        [SerializeField]
+        private Transform           mListenerTarget;
+        // これ以上離れたら音を止める距離
+        [SerializeField]
+        private float               mCullDistance = 10.0f; 
+
         private void Awake()
         {
             if (mInstance != null)
@@ -37,6 +49,25 @@ namespace MyAssets
 
         private void Start()
         {
+            // リスナーが未設定ならメインカメラを使う
+            if (mListenerTarget == null && Camera.main != null)
+            {
+                mListenerTarget = Camera.main.transform;
+            }
+
+            mCullingGroup = new CullingGroup();
+            // カメラのカリング(視錐台)も考慮する場合は指定
+            mCullingGroup.targetCamera = Camera.main;
+            // 距離バンドの設定
+            mCullingGroup.SetBoundingDistances(new float[] { mCullDistance });
+            // 距離計算の中心点 (プレイヤーなど)
+            mCullingGroup.SetDistanceReferencePoint(mListenerTarget);
+            // 状態変化時のコールバック登録
+            mCullingGroup.onStateChanged = OnCullingStateChanged;
+            // スフィア配列の確保 (最大数分確保しておくとリサイズ不要で高速)
+            mSpheres = new BoundingSphere[mMaxAudioIndex];
+
+
             for (int i = 0; i < mInitSoundIndex;i++)
             {
                 if(mAudioSourcePrefab == null)
@@ -50,6 +81,55 @@ namespace MyAssets
                 obj.SetActive(false);
                 mAudioObjects.Add(obj.GetComponent<AudioSource>());
             }
+        }
+
+        private void OnCullingStateChanged(CullingGroupEvent evt)
+        {
+            if (evt.index >= mAudioObjects.Count) return;
+            AudioSource targetSource = mAudioObjects[evt.index];
+            // 非アクティブなオブジェクトへの処理はスキップ
+            if (!targetSource.gameObject.activeSelf) return;
+            // BGMなどはカリング対象外にする場合、ここで弾く (例: spatialBlend == 0 は対象外など)
+            if (targetSource.spatialBlend < 0.1f) return;
+            // evt.currentDistance: 0 = 範囲内, 1 = 範囲外
+            if (evt.currentDistance == 0)
+            {
+                // 範囲内に入った -> 再生再開 (UnPause)
+                // ※Pauseされていた場合のみ再開
+                targetSource.UnPause();
+            }
+            else
+            {
+                // 範囲外に出た -> 一時停止 (Pause)
+                // Stopだと再開時に頭出しになるためPause推奨
+                targetSource.Pause();
+            }
+        }
+
+        private void Update()
+        {
+            if (mCullingGroup == null || mAudioObjects == null) return;
+
+            // AudioSourceの位置をBoundingSphereに反映
+            int count = mAudioObjects.Count;
+            for (int i = 0; i < count; i++)
+            {
+                if (mAudioObjects[i].gameObject.activeSelf)
+                {
+                    mSpheres[i].position = mAudioObjects[i].transform.position;
+                    mSpheres[i].radius = 1.0f;
+                }
+                else
+                {
+                    // 非アクティブなものは判定外の遠くへ飛ばしておく
+                    mSpheres[i].position = new Vector3(0, -99999, 0);
+                    mSpheres[i].radius = 0.1f;
+                }
+            }
+
+            // CullingGroupに最新の座標を適用
+            mCullingGroup.SetBoundingSpheres(mSpheres);
+            mCullingGroup.SetBoundingSphereCount(count);
         }
 
         private AudioSource CreateAudioSource()
@@ -166,12 +246,19 @@ namespace MyAssets
                 audioSource.transform.SetParent(transform); // SoundManagerの子に戻す
                 audioSource.transform.position = postion;
             }
-
-            audioSource.PlayOneShot(clip);
-            if(!destroyCollection)
+            audioSource.clip = clip;
+            if(!audioSource.loop)
+            {
+                audioSource.PlayOneShot(clip);
+            }
+            else
+            {
+                audioSource.Play();
+            }
+            if (!destroyCollection)
             {
                 // 再生終了後に回収する仕組みが必要
-                if(endSECount < 0)
+                if (endSECount < 0)
                 {
                     StartCoroutine(ReturnToPool(audioSource, clip.length));
                 }
@@ -224,6 +311,13 @@ namespace MyAssets
         }
 
 
-
+        private void OnDestroy()
+        {
+            if (mCullingGroup != null)
+            {
+                mCullingGroup.Dispose();
+                mCullingGroup = null;
+            }
+        }
     }
 }

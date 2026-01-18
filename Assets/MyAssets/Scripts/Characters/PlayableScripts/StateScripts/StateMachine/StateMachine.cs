@@ -39,6 +39,8 @@ namespace MyAssets
         public void FixedUpdate(float time) => mCurrentState?.Execute_FixedUpdate(time);
         //LateUpdateで使う関数
         public void LateUpdate(float time) => mCurrentState?.Execute_LateUpdate(time);
+        
+        public void IKAnimatorUpdate(float time) => mCurrentState.Execute_IKAnimatorUpdate(time);
         //Animationの更新が終わったLateUpdateで使う関数
         //public void DoAnimatorIKUpdate() => currentState?.DoAnimatorIKUpdate();
         //当たり判定の当たり初めに使う関数
