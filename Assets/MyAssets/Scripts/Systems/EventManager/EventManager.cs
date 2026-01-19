@@ -93,6 +93,9 @@ namespace MyAssets
 
             InitializeEvent();
             PlayOpeningCutscene().Forget();
+
+            ResultManager.IsResulting = false;
+            ResultManager.IsPlayerDeath = false;
         }
 
         public void SetEventMoveTargetPoint(int index)
@@ -144,6 +147,7 @@ namespace MyAssets
         public async UniTaskVoid PlayEndingCutscene()
         {
             if (mEventMovePointList.Count <= 0) { return; }
+            SoundManager.Instance.PlayBGM(4,false);
             GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Tutorial);
             ResultManager.IsResulting = true;
             //3番目のポイントに移動
@@ -181,6 +185,7 @@ namespace MyAssets
             //カーソル固定を解除
             InputManager.SetNoneMouseMode();
             GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Result);
+            SoundManager.Instance.PlayBGM(3, false);
         }
 
         private void OnDestroy()

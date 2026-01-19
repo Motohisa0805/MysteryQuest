@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Pool;
-using static UnityEngine.ParticleSystem;
 
 namespace MyAssets
 {
@@ -9,6 +8,7 @@ namespace MyAssets
         private IObjectPool<ParticleSystem> mPool;
         private ParticleSystem mParticleSystem;
         private Transform mParent;
+        public Transform Parent => mParent;
         public ParticleSystem ParticleSystem => mParticleSystem;
 
         private void Awake()
@@ -24,19 +24,24 @@ namespace MyAssets
             mParent = originParent;
         }
         // 手動で止めたい時に呼ぶメソッド
-        public void StopAndReturn()
+        public void StopAndReturn(bool detachImmediately = true)
         {
-            // ループエフェクトを安全に停止させる
-            // withChildren: true にすると子要素のパーティクルも一緒に止まる
             mParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-            transform.SetParent(mParent);
+
+            if (detachImmediately)
+            {
+                // 今すぐ親をManagerに戻す（置き去りにする）
+                transform.SetParent(mParent);
+            }
+            mParent = null;
+            // falseの場合は、OnParticleSystemStoppedが呼ばれるまで親（燃えている箱など）にくっついたまま
         }
         private void OnParticleSystemStopped()
         {
             if (mPool != null)
             {
                 // 返却前に親をManager（実家）に戻す
-                transform.SetParent(mParent);
+                //transform.SetParent(mParent);
                 mPool.Release(gameObject.GetComponent<ParticleSystem>());
             }
         }

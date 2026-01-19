@@ -37,3 +37,19 @@ MonoBehaviour:
     pitchRange: 0
     mMinDistance: 0
     mMaxDistance: 0
+  - mID: 3
+    mLabel: GameOverBGM
+    mClips:
+    - {fileID: 8300000, guid: 467dd7edba377f24dbd9c1ddc5b23904, type: 3}
+    volume: 0.5
+    pitchRange: 0
+    mMinDistance: 0
+    mMaxDistance: 0
+  - mID: 4
+    mLabel: GameClearBGM
+    mClips:
+    - {fileID: 8300000, guid: 0307647d4f2d9404395f7b62eeab0f8e, type: 3}
+    volume: 0.5
+    pitchRange: 0
+    mMinDistance: 0
+    mMaxDistance: 0

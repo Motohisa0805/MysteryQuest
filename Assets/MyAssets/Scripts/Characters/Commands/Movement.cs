@@ -139,8 +139,23 @@ namespace MyAssets
 
         public void Jump(float power)
         {
+            /*
+            float force = power;
+            if(mRigidbody.linearVelocity.y < 0.0f)
+            {
+                force += Mathf.Abs(mRigidbody.linearVelocity.y) * mRigidbody.mass;
+            }
             //上方向に力を加える
             mRigidbody.AddForce(Vector3.up * power, ForceMode.VelocityChange);
+             */
+            // 現在の速度を取得
+            Vector3 velocity = mRigidbody.linearVelocity;
+
+            // Y軸方向の速度だけをリセットし、計算したジャンプ速度を代入する
+            // ジャンプ速度の計算式: v = sqrt(2 * gravity * height)
+            float jumpVelocity = Mathf.Sqrt(2f * Mathf.Abs(Physics.gravity.y) * power);
+
+            mRigidbody.linearVelocity = new Vector3(velocity.x, jumpVelocity, velocity.z);
         }
 
         private float CalculateStepUpVelocity(Vector3 targetPosition, float stepSmooth)

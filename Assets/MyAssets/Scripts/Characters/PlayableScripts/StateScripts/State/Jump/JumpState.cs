@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Windows;
 
 namespace MyAssets
 {
@@ -26,6 +25,7 @@ namespace MyAssets
             if (StateChanger.IsContain(ClimbJumpingState.mStateKey)) { re.Add(new IsClimbJumpingTransition(actor, StateChanger, ClimbJumpingState.mStateKey)); }
             if (StateChanger.IsContain(MediumImpactPlayerState.mStateKey)) { re.Add(new IsMediumImpactTransition(actor, StateChanger, MediumImpactPlayerState.mStateKey)); }
             if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(DeathPlayerState.mStateKey)) { re.Add(new IsDeathStateTransition(actor, StateChanger, DeathPlayerState.mStateKey)); }
             return re;
         }
 
@@ -95,7 +95,6 @@ namespace MyAssets
         PlayableChracterController mController;
 
         private PlayableInput mPlayableInput;
-        private TargetSearch mTargetSearch;
 
         private Animator mAnimator;//アニメーター
         private DamageChecker mImpactChecker;
@@ -108,6 +107,7 @@ namespace MyAssets
             if (StateChanger.IsContain(ClimbJumpingState.mStateKey)) { re.Add(new IsClimbJumpingTransition(actor, StateChanger, ClimbJumpingState.mStateKey)); }
             if (StateChanger.IsContain(MediumImpactPlayerState.mStateKey)) { re.Add(new IsMediumImpactTransition(actor, StateChanger, MediumImpactPlayerState.mStateKey)); }
             if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(DeathPlayerState.mStateKey)) { re.Add(new IsDeathStateTransition(actor, StateChanger, DeathPlayerState.mStateKey)); }
             return re;
         }
 
@@ -116,7 +116,6 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
             mPlayableInput = actor.GetComponent<PlayableInput>();
-            mTargetSearch = actor.GetComponent<TargetSearch>();
             mAnimator = actor.GetComponentInChildren<Animator>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
@@ -126,15 +125,7 @@ namespace MyAssets
             base.Enter();
             mAnimator.SetInteger("jumpState", 1);
             Vector3 vel = mController.Rigidbody.linearVelocity;
-            vel.y = 0;
-            if (vel.magnitude > 0.0f)
-            {
-                mController.Movement.Jump(mController.StatusProperty.MoveJumpPower);
-            }
-            else
-            {
-                mController.Movement.Jump(mController.StatusProperty.IdleJumpPower);
-            }
+            mController.Movement.Jump(mController.StatusProperty.IdleJumpPower);
             if (SoundManager.Instance != null)
             {
                 SoundManager.Instance.PlayOneShot3D(1007, mController.transform.position);
@@ -149,9 +140,8 @@ namespace MyAssets
 
         public override void Execute_FixedUpdate(float time)
         {
-            //mController.Movement.Gravity();
             mController.InputVelocity();
-            mController.Movement.Move(mController.StatusProperty.MaxSpeed, 5);
+            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.BodyRotate();
         }
@@ -193,6 +183,7 @@ namespace MyAssets
             if (StateChanger.IsContain(ClimbJumpingState.mStateKey)) { re.Add(new IsClimbJumpingTransition(actor, StateChanger, ClimbJumpingState.mStateKey)); }
             if (StateChanger.IsContain(MediumImpactPlayerState.mStateKey)) { re.Add(new IsMediumImpactTransition(actor, StateChanger, MediumImpactPlayerState.mStateKey)); }
             if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(DeathPlayerState.mStateKey)) { re.Add(new IsDeathStateTransition(actor, StateChanger, DeathPlayerState.mStateKey)); }
             return re;
         }
 
@@ -262,6 +253,7 @@ namespace MyAssets
             if (StateChanger.IsContain(ClimbJumpingState.mStateKey)) { re.Add(new IsClimbJumpingTransition(actor, StateChanger, ClimbJumpingState.mStateKey)); }
             if (StateChanger.IsContain(MediumImpactPlayerState.mStateKey)) { re.Add(new IsMediumImpactTransition(actor, StateChanger, MediumImpactPlayerState.mStateKey)); }
             if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(DeathPlayerState.mStateKey)) { re.Add(new IsDeathStateTransition(actor, StateChanger, DeathPlayerState.mStateKey)); }
             return re;
         }
 

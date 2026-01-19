@@ -264,8 +264,8 @@ MonoBehaviour:
     mAcceleration: 100
     mDushMaxSpeed: 7.5
     mCrouchMaxSpeed: 3
-    mIdleJumpPower: 7
-    mMoveJumpPower: 10
+    mIdleJumpPower: 2
+    mMoveJumpPower: 5
     mRotationSpeed: 15
     mShoulderViewRotationSpeed: 1000
   mGrounded: 0

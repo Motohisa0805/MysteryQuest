@@ -43,7 +43,7 @@ namespace MyAssets
         }
         public override bool IsTransition()
         {
-            return mInput.InputJump && !mController.Grounded && IsAnimationName() && mMovement.Rigidbody.linearVelocity.y <= 0;
+            return mInput.InputJump && !mController.Grounded && IsAnimationName();
         }
     }
 
