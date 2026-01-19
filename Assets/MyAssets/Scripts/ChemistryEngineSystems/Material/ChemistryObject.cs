@@ -450,7 +450,12 @@ namespace MyAssets
             // （途中で水か何かで消火されていたら破壊しないため）
             if (mMaterial == MaterialType.Wood && (mCurrentElements & ElementType.Fire) != 0)
             {
-                mElementEffect.StopAndReturn();
+                if (mElementEffect != null)
+                {
+                    // オブジェクトが消えるので、エフェクトは切り離してその場に残す (引数なし = true)
+                    mElementEffect.StopAndReturn(true);
+                    mElementEffect = null;
+                }
                 SoundManager.Instance.PlayOneShot3D(1010, transform.position);
                 Destroy(gameObject);
             }
@@ -460,7 +465,18 @@ namespace MyAssets
         {
             if(mMaterialObjectInfo.mIsExtinguishing)
             {
-                mElementEffect.StopAndReturn();
+                if (mElementEffect != null)
+                {
+                    // オブジェクトは残るので、くっついたままフェードアウトさせる (false)
+                    mElementEffect.StopAndReturn(false);
+                    mElementEffect = null;
+                }
+                if (mPreparationElementEffect != null)
+                {
+                    // 予備エフェクトも同様
+                    mPreparationElementEffect.StopAndReturn(false);
+                    mPreparationElementEffect = null;
+                }
                 mCurrentElements = 0;
                 mCurrentHeatAccumulated = 0;
                 SoundManager.Instance.PlayOneShot3D(1010, transform.position);
@@ -556,9 +572,15 @@ namespace MyAssets
 
         private void OnDestroy()
         {
-            if(mElementEffect != null)
+            if (mElementEffect != null)
             {
-                mElementEffect.StopAndReturn();
+                // 自分が消えるので切り離す
+                mElementEffect.StopAndReturn(true);
+            }
+            if (mPreparationElementEffect != null)
+            {
+                mPreparationElementEffect.StopAndReturn(true);
+                mPreparationElementEffect = null;
             }
             AudioSource[] source = GetComponentsInChildren<AudioSource>();
             for(int i = 0; i < source.Length; i++)

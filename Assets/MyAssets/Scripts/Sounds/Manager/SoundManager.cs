@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MyAssets
 {
@@ -34,7 +35,11 @@ namespace MyAssets
         private Transform           mListenerTarget;
         // これ以上離れたら音を止める距離
         [SerializeField]
-        private float               mCullDistance = 10.0f; 
+        private float               mCullDistance = 10.0f;
+
+        // 開始0.2秒間は音を無視する
+        [SerializeField]
+        private float mMuteDurationAtStart = 0.2f; 
 
         private void Awake()
         {
@@ -49,23 +54,17 @@ namespace MyAssets
 
         private void Start()
         {
-            // リスナーが未設定ならメインカメラを使う
-            if (mListenerTarget == null && Camera.main != null)
-            {
-                mListenerTarget = Camera.main.transform;
-            }
-
+            // 2. CullingGroup自体の作成 (これも一生に一度)
             mCullingGroup = new CullingGroup();
-            // カメラのカリング(視錐台)も考慮する場合は指定
-            mCullingGroup.targetCamera = Camera.main;
-            // 距離バンドの設定
             mCullingGroup.SetBoundingDistances(new float[] { mCullDistance });
-            // 距離計算の中心点 (プレイヤーなど)
-            mCullingGroup.SetDistanceReferencePoint(mListenerTarget);
-            // 状態変化時のコールバック登録
             mCullingGroup.onStateChanged = OnCullingStateChanged;
-            // スフィア配列の確保 (最大数分確保しておくとリサイズ不要で高速)
+            // 配列を確保
             mSpheres = new BoundingSphere[mMaxAudioIndex];
+            mCullingGroup.SetBoundingSpheres(mSpheres);
+            mCullingGroup.SetBoundingSphereCount(0);
+
+            // 最初のシーンのターゲットを設定するために1回呼ぶ
+            RefreshCullingTarget();
 
 
             for (int i = 0; i < mInitSoundIndex;i++)
@@ -80,6 +79,50 @@ namespace MyAssets
                 obj.name = "SoundSorce" + i.ToString();
                 obj.SetActive(false);
                 mAudioObjects.Add(obj.GetComponent<AudioSource>());
+            }
+        }
+
+        private void OnEnable()
+        {
+            // シーンがロードされた時のイベントに登録
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDisable()
+        {
+            // 破棄時にイベント解除（お作法）
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        // シーンがロードされるたびに呼ばれる
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            RefreshCullingTarget();
+        }
+
+        private void RefreshCullingTarget()
+        {
+            // マネージャーが破棄されていたり、CullingGroupが未生成なら中断
+            if (mCullingGroup == null) return;
+
+            // 最新のメインカメラを探してセット
+            Camera mainCam = Camera.main;
+            if (mainCam != null)
+            {
+                mCullingGroup.targetCamera = mainCam;
+
+                // ターゲットをプレイヤーにしたい場合はここで検索
+                GameObject player = GameObject.FindGameObjectWithTag("Player");
+                if (player != null)
+                {
+                    mListenerTarget = player.transform;
+                }
+                else
+                {
+                    mListenerTarget = mainCam.transform;
+                }
+
+                mCullingGroup.SetDistanceReferencePoint(mListenerTarget);
             }
         }
 
@@ -219,6 +262,10 @@ namespace MyAssets
 
         public void PlayOneShot3D(int id,Vector3 postion,Transform parent = null,bool loop = false,bool destroyCollection = false, float endSECount = -1)
         {
+            if (Time.timeSinceLevelLoad < mMuteDurationAtStart)
+            {
+                return;
+            }
             //クリップを取得
             SoundList.SEElement seElement = mSoundList.GetElement(id); ;
             AudioClip clip = seElement.Clips[Random.Range(0, seElement.MaxClips)];
@@ -290,7 +337,7 @@ namespace MyAssets
 
 
 
-
+            audioSource.clip = clip;
             audioSource.PlayOneShot(clip);
             StartCoroutine(ReturnToPool(audioSource, clip.length));
         }

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MyAssets
 {
@@ -22,7 +23,9 @@ namespace MyAssets
 
         [SerializeField]
         private PlayerStatus mPlayerStatus;
-        public PlayerStatus   PlayerStatusData => mPlayerStatus;
+        [SerializeField]
+        private PlayerStatus mKeepStatus;
+        public PlayerStatus   PlayerStatusData => mKeepStatus;
 
         private bool mIsStaminaCoolDown;
         public bool IsStaminaCoolDown => mIsStaminaCoolDown;
@@ -38,16 +41,56 @@ namespace MyAssets
             DontDestroyOnLoad(gameObject);
         }
 
+        private void Start()
+        {
+            mKeepStatus.MaxHP = mPlayerStatus.MaxHP;
+            mKeepStatus.CurrentHP = mPlayerStatus.CurrentHP;
+            mKeepStatus.MaxSP = mPlayerStatus.MaxSP;
+            mKeepStatus.CurrentSP = mPlayerStatus.CurrentSP;
+            mKeepStatus.UseSP = mPlayerStatus.UseSP;
+            mKeepStatus.RecoverySP = mPlayerStatus.RecoverySP;
+            mKeepStatus.ThrowPower = mPlayerStatus.ThrowPower;
+        }
+
+        private void OnEnable()
+        {
+            // シーンがロードされた時のイベントに登録
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDisable()
+        {
+            // 破棄時にイベント解除（お作法）
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        // シーンがロードされるたびに呼ばれる
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            RefreshStatus();
+        }
+
+        private void RefreshStatus()
+        {
+            mKeepStatus.MaxHP = mPlayerStatus.MaxHP;
+            mKeepStatus.CurrentHP = mPlayerStatus.CurrentHP;
+            mKeepStatus.MaxSP = mPlayerStatus.MaxSP;
+            mKeepStatus.CurrentSP = mPlayerStatus.CurrentSP;
+            mKeepStatus.UseSP = mPlayerStatus.UseSP;
+            mKeepStatus.RecoverySP = mPlayerStatus.RecoverySP;
+            mKeepStatus.ThrowPower = mPlayerStatus.ThrowPower;
+        }
+
         public void ChangeHP(float amount)
         {
-            mPlayerStatus.CurrentHP += amount;
-            if (mPlayerStatus.CurrentHP > mPlayerStatus.MaxHP)
+            mKeepStatus.CurrentHP += amount;
+            if (mKeepStatus.CurrentHP > mKeepStatus.MaxHP)
             {
-                mPlayerStatus.CurrentHP = mPlayerStatus.MaxHP;
+                mKeepStatus.CurrentHP = mKeepStatus.MaxHP;
             }
-            else if (mPlayerStatus.CurrentHP < 0)
+            else if (mKeepStatus.CurrentHP < 0)
             {
-                mPlayerStatus.CurrentHP = 0;
+                mKeepStatus.CurrentHP = 0;
             }
             if(amount < 0)
             {
@@ -61,33 +104,33 @@ namespace MyAssets
             {
                 if (input)
                 {
-                    if (mPlayerStatus.CurrentSP > 0)
+                    if (mKeepStatus.CurrentSP > 0)
                     {
-                        mPlayerStatus.CurrentSP -= mPlayerStatus.UseSP * Time.deltaTime;
+                        mKeepStatus.CurrentSP -= mKeepStatus.UseSP * Time.deltaTime;
                     }
                 }
                 else
                 {
-                    if (mPlayerStatus.CurrentSP < mPlayerStatus.MaxSP)
+                    if (mKeepStatus.CurrentSP < mKeepStatus.MaxSP)
                     {
-                        mPlayerStatus.CurrentSP += mPlayerStatus.RecoverySP * Time.deltaTime;
+                        mKeepStatus.CurrentSP += mKeepStatus.RecoverySP * Time.deltaTime;
                     }
                 }
-                if(mPlayerStatus.CurrentSP <= 0)
+                if(mKeepStatus.CurrentSP <= 0)
                 {
-                    mPlayerStatus.CurrentSP = 0;
+                    mKeepStatus.CurrentSP = 0;
                     mIsStaminaCoolDown = true;
                 }
             }
             else
             {
-                if (mPlayerStatus.CurrentSP < mPlayerStatus.MaxSP)
+                if (mKeepStatus.CurrentSP < mKeepStatus.MaxSP)
                 {
-                    mPlayerStatus.CurrentSP += mPlayerStatus.RecoverySP * Time.deltaTime;
+                    mKeepStatus.CurrentSP += mKeepStatus.RecoverySP * Time.deltaTime;
                 }
-                if(mPlayerStatus.CurrentSP >= mPlayerStatus.MaxSP)
+                if(mKeepStatus.CurrentSP >= mKeepStatus.MaxSP)
                 {
-                    mPlayerStatus.CurrentSP = mPlayerStatus.MaxSP;
+                    mKeepStatus.CurrentSP = mKeepStatus.MaxSP;
                     mIsStaminaCoolDown = false;
                 }
             }
@@ -100,26 +143,26 @@ namespace MyAssets
             {
                 if (!input)
                 {
-                    if (mPlayerStatus.CurrentSP < mPlayerStatus.MaxSP)
+                    if (mKeepStatus.CurrentSP < mKeepStatus.MaxSP)
                     {
-                        mPlayerStatus.CurrentSP += mPlayerStatus.RecoverySP * Time.deltaTime;
+                        mKeepStatus.CurrentSP += mKeepStatus.RecoverySP * Time.deltaTime;
                     }
                 }
-                if (mPlayerStatus.CurrentSP <= 0)
+                if (mKeepStatus.CurrentSP <= 0)
                 {
-                    mPlayerStatus.CurrentSP = 0;
+                    mKeepStatus.CurrentSP = 0;
                     mIsStaminaCoolDown = true;
                 }
             }
             else
             {
-                if (mPlayerStatus.CurrentSP < mPlayerStatus.MaxSP)
+                if (mKeepStatus.CurrentSP < mKeepStatus.MaxSP)
                 {
-                    mPlayerStatus.CurrentSP += mPlayerStatus.RecoverySP * Time.deltaTime;
+                    mKeepStatus.CurrentSP += mKeepStatus.RecoverySP * Time.deltaTime;
                 }
-                if (mPlayerStatus.CurrentSP >= mPlayerStatus.MaxSP)
+                if (mKeepStatus.CurrentSP >= mKeepStatus.MaxSP)
                 {
-                    mPlayerStatus.CurrentSP = mPlayerStatus.MaxSP;
+                    mKeepStatus.CurrentSP = mKeepStatus.MaxSP;
                     mIsStaminaCoolDown = false;
                 }
             }

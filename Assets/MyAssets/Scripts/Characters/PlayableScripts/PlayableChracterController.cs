@@ -12,151 +12,151 @@ namespace MyAssets
 
         [Header("キャラクター内部の処理")]
         [SerializeField]
-        private string mCurrentStateKey; //現在の状態
+        private string                      mCurrentStateKey; //現在の状態
         [SerializeField]
-        private StateMachine<string> mStateMachine;
-        public StateMachine<string> StateMachine => mStateMachine;
+        private StateMachine<string>        mStateMachine;
+        public StateMachine<string>         StateMachine => mStateMachine;
 
-        StateBase<string>[] states;
+        private StateBase<string>[]         mStates;
         [Header("状態一覧")]
         [SerializeField]
-        private IdleState mIdleState;
+        private IdleState                   mIdleState;
         [SerializeField]
-        private MoveState mMoveState;
+        private MoveState                   mMoveState;
         [SerializeField]
-        private SpritDushState mSpritDushState;
+        private SpritDushState              mSpritDushState;
         [SerializeField]
-        private FocusingMoveState mFocusingMoveState;
+        private FocusingMoveState           mFocusingMoveState;
         [SerializeField]
-        private JumpUpState mJumpUpState;
+        private JumpUpState                 mJumpUpState;
         [SerializeField]
-        private SecondJumpUpState mSecondJumpUpState;
+        private SecondJumpUpState           mSecondJumpUpState;
         [SerializeField]
-        private JumpingState mJumpState;
+        private JumpingState                mJumpState;
         [SerializeField]
-        private JumpDownState mJumpDownState;
+        private JumpDownState               mJumpDownState;
         [Header("しゃがみ'4'状態")]
         [SerializeField]
-        private StandingToCrouchState mStandingToCrouchState;
+        private StandingToCrouchState       mStandingToCrouchState;
         [SerializeField]
-        private CrouchIdleState mCrouchIdleState;
+        private CrouchIdleState             mCrouchIdleState;
         [SerializeField]
-        private CrouchWalkState mCrouchMoveState;
+        private CrouchWalkState             mCrouchMoveState;
         [SerializeField]
-        private CrouchToStandingState mCrouchToStandingState;
+        private CrouchToStandingState       mCrouchToStandingState;
         [SerializeField]
-        private FallState mFallState;
+        private FallState                   mFallState;
         [SerializeField]
-        private ToLiftState mToLiftState;
+        private ToLiftState                 mToLiftState;
         [SerializeField]
-        private ToLiftIdleState mToLiftIdleState;
+        private ToLiftIdleState             mToLiftIdleState;
         [SerializeField]
-        private ToLiftRunState mToLiftRunState;
+        private ToLiftRunState              mToLiftRunState;
         [SerializeField]
-        private ReleaseLiftState mReleaseLiftState;
+        private ReleaseLiftState            mReleaseLiftState;
         [Header("投げ'3'状態")]
         [SerializeField]
-        private ThrowStartState mThrowStartState;
+        private ThrowStartState             mThrowStartState;
         [SerializeField]
-        private ThrowIdleState mThrowIdleState;
+        private ThrowIdleState              mThrowIdleState;
         [SerializeField]
-        private ThrowingState mThrowingState;
+        private ThrowingState               mThrowingState;
         [Header("押し'3'状態")]
         [SerializeField]
-        private PushStartState mPushStartState;
+        private PushStartState              mPushStartState;
         [SerializeField]
-        private PushingState mPushingState;
+        private PushingState                mPushingState;
         [SerializeField]
-        private PushEndState mPushEndState;
+        private PushEndState                mPushEndState;
         [Header("登り'3'状態")]
         [SerializeField]
-        private ClimbJumpingState mClimbJumpingState;
+        private ClimbJumpingState           mClimbJumpingState;
         [SerializeField]
-        private ClimbJumpState mClimbJumpState;
+        private ClimbJumpState              mClimbJumpState;
         [SerializeField]
-        private ClimbState mClimbState;
+        private ClimbState                  mClimbState;
 
         [SerializeField]
-        private MediumImpactPlayerState mSmallImpactPlayerState;
+        private MediumImpactPlayerState     mSmallImpactPlayerState;
         [SerializeField]
-        private BigImpactPlayerState mBigImpactPlayerState;
+        private BigImpactPlayerState        mBigImpactPlayerState;
         [SerializeField]
-        private StandingUpState mStandingUpState;
+        private StandingUpState             mStandingUpState;
         [SerializeField]
-        private DeathPlayerState mDeathPlayerState;
+        private DeathPlayerState            mDeathPlayerState;
 
         [SerializeField]
-        private WeaponTakingOutState mWeaponTakingOutState;
+        private WeaponTakingOutState        mWeaponTakingOutState;
         [SerializeField]
-        private WeaponStorageState mWeaponStorageState;
+        private WeaponStorageState          mWeaponStorageState;
         [SerializeField]
-        private ReadyFirstAttackState mReadyFirstAttackState;
+        private ReadyFirstAttackState       mReadyFirstAttackState;
         [SerializeField]
-        private FirstAttackState mFirstAttackState;
+        private FirstAttackState            mFirstAttackState;
         [SerializeField]
-        private SecondAttackState mSecondAttackState;
+        private SecondAttackState           mSecondAttackState;
         [SerializeField]
-        private IgnitionMoveState mIgnitionMoveState;
+        private IgnitionMoveState           mIgnitionMoveState;
         //イベント用の状態
         [SerializeField]
-        private EventIdleState mEventIdleState;
+        private EventIdleState              mEventIdleState;
         [SerializeField]
-        private EventMoveState mEventMoveState;
+        private EventMoveState              mEventMoveState;
 
         [Header("キャラクターのステータス")]
         [SerializeField]
-        private PlayerStatusPropaty mStatusProperty;
-        public PlayerStatusPropaty StatusProperty => mStatusProperty;
+        private PlayerStatusPropaty         mStatusProperty;
+        public PlayerStatusPropaty          StatusProperty => mStatusProperty;
 
-        private Rigidbody mRigidbody; //リジッドボディ
-        public Rigidbody Rigidbody => mRigidbody;
-        private PlayableInput mPlayableInput; //インプット
-        public PlayableInput Input => mPlayableInput;
-        private PlayableAnimationFunction mPlayableAnimationFunction;
-        public PlayableAnimationFunction PlayableAnimationFunction => mPlayableAnimationFunction;
-        private Movement mMovement; //ムーブメント
-        public Movement Movement => mMovement;
+        private Rigidbody                   mRigidbody; //リジッドボディ
+        public Rigidbody                    Rigidbody => mRigidbody;
+        private PlayableInput               mPlayableInput; //インプット
+        public PlayableInput                Input => mPlayableInput;
+        private PlayableAnimationFunction   mPlayableAnimationFunction;
+        public PlayableAnimationFunction    PlayableAnimationFunction => mPlayableAnimationFunction;
+        private Movement                    mMovement; //ムーブメント
+        public Movement                     Movement => mMovement;
 
-        private DamageChecker mImpactChecker;
-        public DamageChecker ImpactChecker => mImpactChecker;
+        private DamageChecker               mImpactChecker;
+        public DamageChecker                ImpactChecker => mImpactChecker;
 
-        private TargetSearch mTargetSearch;
-        public TargetSearch TargetSearch => mTargetSearch;
+        private TargetSearch                mTargetSearch;
+        public TargetSearch                 TargetSearch => mTargetSearch;
 
-
-        [SerializeField]
-        private bool mGrounded; //地面に接地しているかどうか
-        public bool Grounded => mGrounded;
-
-        private bool mIsPastGrounded; //前フレームで地面に接地していたかどうか
 
         [SerializeField]
-        private bool mOverHead; //地面に接地しているかどうか
-        public bool OverHead => mOverHead;
+        private bool                        mGrounded; //地面に接地しているかどうか
+        public bool                         Grounded => mGrounded;
+
+        private bool                        mIsPastGrounded; //前フレームで地面に接地していたかどうか
 
         [SerializeField]
-        private Timer mFallTimer;
-        public Timer FallTimer => mFallTimer;
-        [SerializeField]
-        private float mCount;
+        private bool                        mOverHead; //地面に接地しているかどうか
+        public bool                         OverHead => mOverHead;
 
         [SerializeField]
-        private float mRayLength = 0.1f; //地面判定用のRayの長さ
+        private Timer                       mFallTimer;
+        public Timer                        FallTimer => mFallTimer;
+        [SerializeField]
+        private float                       mCount;
 
         [SerializeField]
-        private float mRayRadius = 0.5f; //地面判定用のRayの半径
+        private float                       mRayLength = 0.1f; //地面判定用のRayの長さ
 
         [SerializeField]
-        private LayerMask mGroundLayer; //地面判定用のレイヤー
+        private float                       mRayRadius = 0.5f; //地面判定用のRayの半径
 
         [SerializeField]
-        private float mGroundCheckOffsetY; // 地面判定用の球の半径
+        private LayerMask                   mGroundLayer; //地面判定用のレイヤー
+
+        [SerializeField]
+        private float                       mGroundCheckOffsetY; // 地面判定用の球の半径
 
 
         [Header("キャラクターの手の位置")]
         [SerializeField]
-        private SetItemTransform[] mHandTransforms = new SetItemTransform[2];
-        public SetItemTransform[] HandTransforms 
+        private SetItemTransform[]          mHandTransforms = new SetItemTransform[2];
+        public SetItemTransform[]           HandTransforms 
         {
             get 
             { 
@@ -173,7 +173,7 @@ namespace MyAssets
             mHandTransforms = transform.GetComponentsInChildren<SetItemTransform>();
 
             mStateMachine = new StateMachine<string>();
-            states = new StateBase<string>[]
+            mStates = new StateBase<string>[]
             {
                 mIdleState,
                 mMoveState,
@@ -215,8 +215,8 @@ namespace MyAssets
                 mEventIdleState,
                 mEventMoveState,
             };
-            mStateMachine.Setup(states);
-            foreach (var state in states)
+            mStateMachine.Setup(mStates);
+            foreach (var state in mStates)
             {
                 state.Setup(gameObject);
             }
@@ -324,7 +324,7 @@ namespace MyAssets
             mStateMachine.FixedUpdate(t);
         }
 
-        public void BodyRotate()
+        public void BodyRotate(float magnification = 1.0f)
         {
             if(!mPlayableInput.Focusing)
             {
@@ -335,7 +335,7 @@ namespace MyAssets
                     Vector3 velocity = mRigidbody.linearVelocity;
                     velocity.y = 0; // 水平方向の速度のみを考慮
                     Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusProperty.RotationSpeed);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusProperty.RotationSpeed * magnification);
                 }
             }
             else
@@ -347,7 +347,7 @@ namespace MyAssets
                 Vector3 velocity = mTargetSearch.TargetObject.transform.position - transform.position;
                 velocity.y = 0; // 水平方向の速度のみを考慮
                 Quaternion targetRotation = Quaternion.LookRotation(velocity.normalized, Vector3.up);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusProperty.RotationSpeed);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusProperty.RotationSpeed * magnification);
             }
         }
 
