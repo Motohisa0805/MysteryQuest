@@ -61,15 +61,12 @@ namespace MyAssets
                         }
                         if(mTimerDisable)
                         {
-                            SoundManager.Instance.PauseBGM();
                             mCloseDoorTimer.Start();
-                            CountdownIntervalPlayer.Instance.StartCountdown(mCloseDoorTimer.CloseTime);
                         }
-                        receiver.OnActivate();
+                        receiver.OnActivate(mCloseDoorTimer.CloseTime);
                     }
                     else
                     {
-                        SoundManager.Instance.UnPauseStart();
                         if (mMaterialColorChange != null)
                         {
                             mMaterialColorChange.DisableEmissionColor();
