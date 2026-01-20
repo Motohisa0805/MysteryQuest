@@ -49,11 +49,12 @@ namespace MyAssets
             }
         }
 
-        public void OnActivate()
+        public void OnActivate(float count = 0)
         {
             if (mIsOpening) return;
             mIsOpening = true;
-
+            SoundManager.Instance.PauseBGM();
+            CountdownIntervalPlayer.Instance.StartCountdown(count);
             mTargetPos = mOpenPos;
             enabled = true;
         }
@@ -62,7 +63,7 @@ namespace MyAssets
         {
             if (mIsOpening) return;
             mIsOpening = true;
-
+            SoundManager.Instance.UnPauseStart();
             mTargetPos = mClosedPos;
             enabled = true;
         }
