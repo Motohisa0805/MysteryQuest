@@ -49,6 +49,9 @@ namespace MyAssets
             mController.Movement.Stop();
 
             mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
+            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Left, "アタック");
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)

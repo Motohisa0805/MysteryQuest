@@ -178,6 +178,7 @@ namespace MyAssets
             }
             else if (mCurrentType == Type.ShoulderView)
             {
+                mAttentionPoint = mTarget.transform.position;
                 // カメラの目標位置を計算
                 Quaternion rotation = Quaternion.Euler(mPitch, mYaw, 0);
                 offset = rotation * new Vector3(0, 0, -mShoulderViewSettings.Distance) + mShoulderViewSettings.Offset;

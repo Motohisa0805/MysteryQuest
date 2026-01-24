@@ -13,9 +13,11 @@ namespace MyAssets
 
         PlayableAnimationFunction       mAnimationFunction;
 
+        private Movement                mMovement;
+
         DamageChecker                   mImpactChecker;
 
-        private EquipmentController mEquipmentController;
+        private EquipmentController     mEquipmentController;
 
         private PlayableInput           mPlayableInput;
 
@@ -30,11 +32,14 @@ namespace MyAssets
             if (StateChanger.IsContain(FocusingMoveState.mStateKey)) { re.Add(new IsFocusingMoveTransition(actor, StateChanger, FocusingMoveState.mStateKey)); }
             if (StateChanger.IsContain(JumpUpState.mStateKey)) { re.Add(new IsJumpUpTransition(actor, StateChanger, JumpUpState.mStateKey)); }
             if (StateChanger.IsContain(StandingToCrouchState.mStateKey)) { re.Add(new IsStandingToCrouchTransition(actor, StateChanger, StandingToCrouchState.mStateKey)); }
+            if (StateChanger.IsContain(ClimbJumpingState.mStateKey)) { re.Add(new IsClimbJumpingTransition(actor, StateChanger, ClimbJumpingState.mStateKey)); }
+            if (StateChanger.IsContain(ClimbJumpState.mStateKey)) { re.Add(new IsClimbJumpTransition(actor, StateChanger, ClimbJumpState.mStateKey)); }
             if (StateChanger.IsContain(FallState.mStateKey)) { re.Add(new IsLandingToFallTransition(actor, StateChanger, FallState.mStateKey)); }
             if (StateChanger.IsContain(ToLiftState.mStateKey)) { re.Add(new IsIdleToToLiftTransition(actor, StateChanger, ToLiftState.mStateKey)); }
             if (StateChanger.IsContain(MediumImpactPlayerState.mStateKey)) { re.Add(new IsMediumImpactTransition(actor, StateChanger, MediumImpactPlayerState.mStateKey)); }
             if (StateChanger.IsContain(BigImpactPlayerState.mStateKey)) { re.Add(new IsImpactTransition(actor, StateChanger, BigImpactPlayerState.mStateKey)); }
             if (StateChanger.IsContain(DeathPlayerState.mStateKey)) { re.Add(new IsDeathStateTransition(actor, StateChanger, DeathPlayerState.mStateKey)); }
+            if (StateChanger.IsContain(OutOfBodyExperienceState.mStateKey)) { re.Add(new IsOutOfBodyExperienceTransition(actor, StateChanger, OutOfBodyExperienceState.mStateKey)); }
             return re;
         }
 
@@ -43,6 +48,7 @@ namespace MyAssets
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
+            mMovement = actor.GetComponent<Movement>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
             mTargetSearch = actor.GetComponent<TargetSearch>();
             mPlayableInput = actor.GetComponent<PlayableInput>();
@@ -73,6 +79,14 @@ namespace MyAssets
                 else
                 {
                     mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
+                }
+            }
+            if(PlayerUIManager.Instance)
+            {
+                if(PlayerUIManager.Instance.ActionButtonController)
+                {
+                    PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Left,"アタック");
+                    PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Up,"ジャンプ");
                 }
             }
         }

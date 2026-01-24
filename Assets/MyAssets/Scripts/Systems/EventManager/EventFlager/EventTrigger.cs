@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,12 +7,12 @@ namespace MyAssets
     public class EventTrigger : MonoBehaviour
     {
         [SerializeField]
-        private UnityEvent mOnEvent;
+        private UnityEvent  mOnEvent;
 
         [SerializeField]
-        private bool mIsRePlay = false;
+        private bool        mIsRePlay = false;
 
-        private bool mHasTriggered = false;
+        private bool        mHasTriggered = false;
 
         // Update is called once per frame
         private void Update()
@@ -40,6 +39,10 @@ namespace MyAssets
                 if (!mHasTriggered)
                 {
                     mHasTriggered = true;
+                    if(PlayerUIManager.Instance.ActionButtonController)
+                    {
+                        PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Right, "Šm”F",20);
+                    }
                 }
             }
         }
@@ -49,9 +52,13 @@ namespace MyAssets
             PlayableChracterController controller = other.GetComponentInParent<PlayableChracterController>();
             if (controller != null)
             {
-                if (mIsRePlay)
+                if (mHasTriggered)
                 {
                     mHasTriggered = false;
+                    if (PlayerUIManager.Instance.ActionButtonController)
+                    {
+                        PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Right);
+                    }
                 }
             }
         }

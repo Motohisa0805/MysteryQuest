@@ -62,6 +62,9 @@ namespace MyAssets
             mChecker.CheckTheDistanceHandsAndObject();
             mChecker.UpdateTakedObjectPosition();
             PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -131,6 +134,9 @@ namespace MyAssets
             mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 1);
             mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 1);
             mAnimationFunction.SetModeBlend(0);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -211,6 +217,9 @@ namespace MyAssets
         {
             base.Enter();
             mAnimationFunction.SetModeBlend(0);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -294,6 +303,9 @@ namespace MyAssets
             mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
             mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
             mAnimator.SetInteger("to Lift", -1);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)

@@ -1,9 +1,9 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace MyAssets
 {
+    //プレイヤーのスタミナUI処理クラス
     public class StaminaHUDController : MonoBehaviour
     {
 

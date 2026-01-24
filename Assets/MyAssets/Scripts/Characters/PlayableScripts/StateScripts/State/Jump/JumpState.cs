@@ -8,7 +8,7 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "Jump";
         public override string Key => mStateKey;
-        PlayableChracterController mController;
+        private PlayableChracterController mController;
 
         private PlayableInput mPlayableInput;
         private TargetSearch mTargetSearch;
@@ -57,10 +57,12 @@ namespace MyAssets
             {
                 SoundManager.Instance.PlayOneShot3D(1007, mController.transform.position);
             }
+            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Up, "ƒWƒƒƒ“ƒv");
         }
 
         public override void Execute_Update(float time)
         {
+            mController.Movement.ClimbCheck();
             base.Execute_Update(time);
             PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
@@ -130,10 +132,14 @@ namespace MyAssets
             {
                 SoundManager.Instance.PlayOneShot3D(1007, mController.transform.position);
             }
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
         {
+            mController.Movement.ClimbCheck();
             base.Execute_Update(time);
             PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
@@ -201,10 +207,14 @@ namespace MyAssets
         {
             base.Enter();
             mPlayableAnimationFunction.Animator.SetInteger("jumpState", 2);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
         {
+            mController.Movement.ClimbCheck();
             base.Execute_Update(time);
             PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
@@ -271,10 +281,14 @@ namespace MyAssets
         {
             base.Enter();
             mAnimator.SetInteger("jumpState", 3);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
         {
+            mController.Movement.ClimbCheck();
             base.Execute_Update(time);
             PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }

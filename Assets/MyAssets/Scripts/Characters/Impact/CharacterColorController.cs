@@ -78,7 +78,7 @@ namespace MyAssets
             ResetAllColors();
         }
 
-        private void SetAllColors(Color color)
+        public void SetAllColors(Color color)
         {
             foreach (var data in mMaterialList)
             {
@@ -86,7 +86,7 @@ namespace MyAssets
             }
         }
 
-        private void ResetAllColors()
+        public void ResetAllColors()
         {
             foreach (var data in mMaterialList)
             {

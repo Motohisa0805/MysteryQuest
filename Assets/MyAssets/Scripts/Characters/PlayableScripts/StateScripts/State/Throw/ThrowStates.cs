@@ -52,6 +52,9 @@ namespace MyAssets
             mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
             TPSCamera.CameraType = TPSCamera.Type.ShoulderView;
             PlayerUIManager.Instance.ThrowCircle.gameObject.SetActive(true);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -124,6 +127,9 @@ namespace MyAssets
         {
             base.Enter();
             mAnimationFunction.Animator.SetInteger("to Lift", 3);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -198,6 +204,9 @@ namespace MyAssets
             mAnimationFunction.Animator.SetInteger("to Lift", 4);
 
             mThrowed = false;
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)

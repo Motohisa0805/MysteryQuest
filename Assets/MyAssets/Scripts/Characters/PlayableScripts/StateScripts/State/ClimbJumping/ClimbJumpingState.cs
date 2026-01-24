@@ -3,22 +3,23 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //ÉWÉÉÉìÉvíÜÇ…äRÇìoÇÈéûÇÃìÆçÏ
     [System.Serializable]
     public class ClimbJumpingState : StateBase<string>
     {
-        public static readonly string mStateKey = "ClimbJumping";
-        public override string Key => mStateKey;
+        public static readonly string       mStateKey = "ClimbJumping";
+        public override string              Key => mStateKey;
 
-        private PlayableChracterController mController;
+        private PlayableChracterController  mController;
 
-        private PlayableInput mPlayableInput;
+        private PlayableInput               mPlayableInput;
 
-        private PlayableAnimationFunction mAnimationFunction;
+        private PlayableAnimationFunction   mAnimationFunction;
 
-        private DamageChecker mImpactChecker;
+        private DamageChecker               mImpactChecker;
 
         [SerializeField]
-        private float mClimbJumpingTime;
+        private float                       mClimbJumpingTime;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -45,6 +46,9 @@ namespace MyAssets
             mAnimationFunction.Animator.SetInteger("jumpState", -1);
             mAnimationFunction.Animator.SetInteger("climbState", 0);
             mController.Movement.ClimbJumpingTimer.Start(mClimbJumpingTime);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -57,7 +61,7 @@ namespace MyAssets
         {
             mController.Movement.Climb();
             base.Execute_FixedUpdate(time);
-            mController.BodyRotate();
+            //mController.BodyRotate();
         }
 
         public override void Exit()

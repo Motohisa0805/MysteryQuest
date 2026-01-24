@@ -26,6 +26,7 @@ namespace MyAssets
         eSprint,
         eThrow,
         eFocusing,
+        eSkill,
         eUpSelect,
         eDownSelect,
         eLeftSelect,
@@ -90,6 +91,7 @@ namespace MyAssets
             mButtonActions.Add(mInputAction.Player.Sprint);
             mButtonActions.Add(mInputAction.Player.Throw);
             mButtonActions.Add(mInputAction.Player.Focusing);
+            mButtonActions.Add(mInputAction.Player.Skill);
 
             mButtonActions.Add(mInputAction.UI.Select_Up);
             mButtonActions.Add(mInputAction.UI.Select_Down);

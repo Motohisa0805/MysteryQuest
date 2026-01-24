@@ -7,18 +7,18 @@ namespace MyAssets
     [System.Serializable]
     public class ClimbJumpState : StateBase<string>
     {
-        public static readonly string mStateKey = "ClimbJump";
-        public override string Key => mStateKey;
+        public static readonly string       mStateKey = "ClimbJump";
+        public override string              Key => mStateKey;
 
-        private PlayableChracterController mController;
+        private PlayableChracterController  mController;
 
-        private PlayableInput mPlayableInput;
+        private PlayableInput               mPlayableInput;
 
-        private PlayableAnimationFunction mAnimationFunction;
+        private PlayableAnimationFunction   mAnimationFunction;
 
-        private Movement mMovement;
+        private Movement                    mMovement;
 
-        private DamageChecker mImpactChecker;
+        private DamageChecker               mImpactChecker;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -47,12 +47,15 @@ namespace MyAssets
             mAnimationFunction.Animator.SetInteger("climbState", 0);
 
             mMovement.ClimbJump(mController.Movement.MovementCompensator.StepGoalPosition.y - mController.Movement.MovementCompensator.StepStartPosition.y);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             base.Execute_FixedUpdate(time);
-            mController.BodyRotate();
+            //mController.BodyRotate();
             PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 
@@ -72,19 +75,19 @@ namespace MyAssets
     [System.Serializable]
     public class ClimbState : StateBase<string>
     {
-        public static readonly string mStateKey = "Climb";
-        public override string Key => mStateKey;
+        public static readonly string       mStateKey = "Climb";
+        public override string              Key => mStateKey;
 
-        private PlayableChracterController mController;
+        private PlayableChracterController  mController;
 
-        private PlayableInput mPlayableInput;
+        private PlayableInput               mPlayableInput;
 
-        private PlayableAnimationFunction mAnimationFunction;
+        private PlayableAnimationFunction   mAnimationFunction;
 
-        private DamageChecker mImpactChecker;
+        private DamageChecker               mImpactChecker;
 
         [SerializeField]
-        private float mClimbJumpingTime;
+        private float                       mClimbJumpingTime;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -109,13 +112,16 @@ namespace MyAssets
         {
             base.Enter();
             mController.Movement.ClimbJumpingTimer.Start(mClimbJumpingTime);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             mController.Movement.Climb();
             base.Execute_FixedUpdate(time);
-            mController.BodyRotate();
+            //mController.BodyRotate();
             PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
         }
 

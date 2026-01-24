@@ -60,6 +60,10 @@ namespace MyAssets
         {
             //よじ登りの時間管理
             mClimbJumpingTimer.Update(Time.deltaTime);
+        }
+
+        public void ClimbCheck()
+        {
             // 一定の条件で段差チェック
             if (IsMovementChanged() && mMovementCompensator.Difference == 0.0f && IsPropCheck())
             {
@@ -183,7 +187,6 @@ namespace MyAssets
         {
             if (!mMovementCompensator.IsClimbJumping&& !mMovementCompensator.IsClimb) { return; }
             //  よじ登りの時間は指定時間で行う
-            //仮
             float f = mClimbJumpingTimer.GetNormalize();
             //  左右は後半にかけて早く移動する
             float x = Mathf.Lerp(mMovementCompensator.StepStartPosition.x, mMovementCompensator.StepGoalPosition.x, Ease(f));
@@ -202,9 +205,11 @@ namespace MyAssets
         //段差の高さ分ジャンプする処理
         public void ClimbJump(float h)
         {
+            Vector3 vector = mRigidbody.linearVelocity;
+            vector.y = 0;
+            mRigidbody.linearVelocity = vector;
             float g = Mathf.Abs(Physics.gravity.y) * 2.0f;
             float requiredVelocityY = Mathf.Sqrt(2 * g * h);
-
             // 必要な垂直速度を瞬間的に加える
             mRigidbody.AddForce(Vector3.up * requiredVelocityY, ForceMode.VelocityChange);
         }

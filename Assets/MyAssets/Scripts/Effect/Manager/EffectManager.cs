@@ -7,32 +7,39 @@ namespace MyAssets
 {
     public class EffectManager : MonoBehaviour
     {
-        private static EffectManager mInstance;
+        private static EffectManager                            mInstance;
 
-        public static EffectManager Instance => mInstance;
+        public static EffectManager                             Instance => mInstance;
 
         [SerializeField]
-        private EffectTable mEffectTable;
-        public EffectTable EffectTable => mEffectTable;
+        private EffectTable                                     mEffectTable;
+        public EffectTable                                      EffectTable => mEffectTable;
 
         // エフェクト名ごとにプールを格納する辞書
-        private Dictionary<int, IObjectPool<ParticleSystem>> mPools = new Dictionary<int, IObjectPool<ParticleSystem>>();
+        private Dictionary<int, IObjectPool<ParticleSystem>>    mPools = new Dictionary<int, IObjectPool<ParticleSystem>>();
 
-        private CullingGroup mCullingGroup;
-        private BoundingSphere[] mSpheres;
-        private int mActiveCount = 0;
-        private const int MAX_CULLING_OBJECTS = 500;
+        private CullingGroup                                    mCullingGroup;
+        private BoundingSphere[]                                mSpheres;
+        private int                                             mActiveCount = 0;
+        private const int                                       MAX_CULLING_OBJECTS = 500;
 
         // 稼働中のパーティクルリスト (配列操作用)
-        private List<ParticleSystem> mActiveParticles = new List<ParticleSystem>(MAX_CULLING_OBJECTS);
+        private List<ParticleSystem>                            mActiveParticles = new List<ParticleSystem>(MAX_CULLING_OBJECTS);
 
         // 「パーティクルのInstanceID」から「リストのインデックス」を引く辞書 (高速な削除用)
-        private Dictionary<int, int> mIdToIndex = new Dictionary<int, int>(MAX_CULLING_OBJECTS);
+        private Dictionary<int, int>                            mIdToIndex = new Dictionary<int, int>(MAX_CULLING_OBJECTS);
 
+        // プレイヤーなど
         [SerializeField]
-        private Transform mCullingTarget; // プレイヤーなど
+        private Transform                                       mCullingTarget; 
         [SerializeField]
-        private float mCullDistance = 40.0f; // 表示限界距離
+        // 表示限界距離
+        private float                                           mCullDistance = 40.0f; 
+
+        //マテリアルをレイヤー指定で変更するクラス
+        [SerializeField]
+        private ObjectMaterialSelector                          mObjectMaterialSelector;
+        public ObjectMaterialSelector                           ObjectMaterialSelector => mObjectMaterialSelector;
 
         private void Awake()
         {
@@ -43,6 +50,8 @@ namespace MyAssets
             }
             mInstance = this;
             DontDestroyOnLoad(gameObject);
+
+            mObjectMaterialSelector.Setup();
         }
 
         private void Start()

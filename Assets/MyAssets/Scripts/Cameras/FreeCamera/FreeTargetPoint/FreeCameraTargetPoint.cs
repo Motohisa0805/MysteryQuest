@@ -1,16 +1,8 @@
 using UnityEngine;
 
-public class FreeCameraTargetPoint : MonoBehaviour
+namespace MyAssets
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class FreeCameraTargetPoint : MonoBehaviour
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

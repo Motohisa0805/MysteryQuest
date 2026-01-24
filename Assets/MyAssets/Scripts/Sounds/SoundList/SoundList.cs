@@ -22,6 +22,8 @@ public class SoundList : ScriptableObject, ISerializationCallbackReceiver
         public float volume = 1f;
         [Range(0, 2)] 
         public float pitchRange = 0.1f;
+        [Range(0, 1)]
+        public float mSpatialBlend;
         [SerializeField]
         private float mMinDistance = 1f;
         public float MinDistance => mMinDistance;

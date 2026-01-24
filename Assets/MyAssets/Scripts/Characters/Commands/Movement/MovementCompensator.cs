@@ -8,48 +8,48 @@ namespace MyAssets
     {
         [Header("段差検知用変数")]
         [SerializeField]
-        private float mStepSmooth;
-        public float StepSmooth => mStepSmooth;
+        private float                       mStepSmooth;
+        public float                        StepSmooth => mStepSmooth;
         [SerializeField,Tooltip("乗り越えられる最大の段差の高さ")]
-        private float mMaxStepHeight;
-        public float MaxStepHeight => mMaxStepHeight;
+        private float                       mMaxStepHeight;
+        public float                        MaxStepHeight => mMaxStepHeight;
         [SerializeField, Tooltip("段差検知を開始する最低の高さ(地面の凸凹を無視するため)")]
-        private float mMinStepHeight;
+        private float                       mMinStepHeight;
         [SerializeField,Tooltip("前方への検知距離（キャラクターの半径より少し大きく）")]
-        private float mCheckDistance;
+        private float                       mCheckDistance;
         [SerializeField, Tooltip("乗り越え可能なスロープの角度制限（これより急なら壁とみなして登る）")]
-        private float mMaxSlopeAngle;
+        private float                       mMaxSlopeAngle;
         [SerializeField]
-        private LayerMask mGroundMask;
+        private LayerMask                   mGroundMask;
 
-        private Transform mThisTransform;
-        private PlayableChracterController mController;
+        private Transform                   mThisTransform;
+        private PlayableChracterController  mController;
         
         [SerializeField]
-        private Vector3 mStepGoalPosition;
-        public Vector3 StepGoalPosition => mStepGoalPosition;
+        private Vector3                     mStepGoalPosition;
+        public Vector3                      StepGoalPosition => mStepGoalPosition;
         [SerializeField]
-        private Vector3 mStepStartPosition;
-        public Vector3 StepStartPosition { get { return mStepStartPosition; } set { mStepStartPosition = value; } }
+        private Vector3                     mStepStartPosition;
+        public Vector3                      StepStartPosition { get { return mStepStartPosition; } set { mStepStartPosition = value; } }
 
         [Header("段差乗り越え条件高さ('MaxStepHeight'とhitpointのYの差分の高さ)")]
         [SerializeField]
-        private float mLowHeightThreshold;
+        private float                       mLowHeightThreshold;
         [SerializeField]
-        private float mMiddleHeightThreshold;
+        private float                       mMiddleHeightThreshold;
         [SerializeField]
-        private float mHighHeightThreshold;
+        private float                       mHighHeightThreshold;
 
         [SerializeField]
-        private bool mIsClimbJumping;
-        public bool IsClimbJumping => mIsClimbJumping;
+        private bool                        mIsClimbJumping;
+        public bool                         IsClimbJumping => mIsClimbJumping;
         [SerializeField]
-        private bool mIsClimb;
-        public bool IsClimb => mIsClimb;
+        private bool                        mIsClimb;
+        public bool                         IsClimb => mIsClimb;
 
         [SerializeField]
-        private float mDifference;
-        public float Difference => mDifference;
+        private float                       mDifference;
+        public float                        Difference => mDifference;
 
         public void ClearStepFunc(bool v)
         {
