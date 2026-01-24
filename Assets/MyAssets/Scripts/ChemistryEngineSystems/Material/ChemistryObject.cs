@@ -88,6 +88,7 @@ namespace MyAssets
         private EffectReturner mPreparationElementEffect;
 
         private Rigidbody mRigidbody;
+        public Rigidbody Rigidbody => mRigidbody;
 
         private Vector3 mLastPosition;
 
@@ -495,7 +496,7 @@ namespace MyAssets
             //âπÇÃçƒê∂
             if (mMaterial == MaterialType.Wood)
             {
-                SoundManager.Instance.PlayOneShot3D(1014, transform.position);
+                SoundManager.Instance.PlayOneShot3D(1017, transform.position);
             }
             else if (mMaterial == MaterialType.Stone)
             {
@@ -512,7 +513,7 @@ namespace MyAssets
             //âπÇÃçƒê∂
             if (mMaterial == MaterialType.Wood)
             {
-                SoundManager.Instance.PlayOneShot3D(1015, transform.position);
+                SoundManager.Instance.PlayOneShot3D(1018, transform.position);
             }
             else if (mMaterial == MaterialType.Stone)
             {

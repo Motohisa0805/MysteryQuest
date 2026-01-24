@@ -97,6 +97,8 @@ namespace MyAssets
         private SecondAttackState           mSecondAttackState;
         [SerializeField]
         private IgnitionMoveState           mIgnitionMoveState;
+        [SerializeField]
+        private OutOfBodyExperienceState    mOutOfBodyExperienceState;
         //イベント用の状態
         [SerializeField]
         private EventIdleState              mEventIdleState;
@@ -123,6 +125,12 @@ namespace MyAssets
         private TargetSearch                mTargetSearch;
         public TargetSearch                 TargetSearch => mTargetSearch;
 
+        private CharacterColorController    mCharacterColorController;
+        public CharacterColorController     CharacterColorController => mCharacterColorController;
+
+        //プレイヤーのスキルを管理するクラス
+        private SoulPlayerController        mSoulPlayerController;
+        public SoulPlayerController         SoulPlayerController => mSoulPlayerController;
 
         [SerializeField]
         private bool                        mGrounded; //地面に接地しているかどうか
@@ -211,16 +219,11 @@ namespace MyAssets
                 mFirstAttackState,
                 mSecondAttackState,
                 mIgnitionMoveState,
+                mOutOfBodyExperienceState,
                 //ここから下はイベント用の状態
                 mEventIdleState,
                 mEventMoveState,
             };
-            mStateMachine.Setup(mStates);
-            foreach (var state in mStates)
-            {
-                state.Setup(gameObject);
-            }
-            mStateMachine.ChangeState(mCurrentStateKey);
 
 
             mRigidbody = GetComponent<Rigidbody>();
@@ -253,9 +256,27 @@ namespace MyAssets
                 Debug.LogError("TargetSearch component not found on " + gameObject.name);
             }
 
+            mCharacterColorController = GetComponentInChildren<CharacterColorController>();
+            if(mCharacterColorController == null)
+            {
+                Debug.LogError("CharacterColorController component not found on " + gameObject.name);
+            }
+
+            mSoulPlayerController = GetComponentInChildren<SoulPlayerController>();
+            if(mSoulPlayerController == null)
+            {
+                Debug.LogError("SoulPlayerController component not found on " + gameObject.name);
+            }
         }
         private void Start()
         {
+            mStateMachine.Setup(mStates);
+            foreach (var state in mStates)
+            {
+                state.Setup(gameObject);
+            }
+            mStateMachine.ChangeState(mCurrentStateKey);
+
             mPlayableAnimationFunction.SetUp();
         }
 

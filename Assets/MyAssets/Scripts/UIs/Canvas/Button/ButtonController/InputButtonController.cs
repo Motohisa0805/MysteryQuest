@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
+using System.Collections;
 
 namespace MyAssets
 {
@@ -9,20 +10,20 @@ namespace MyAssets
     {
         //選択中の画像
         [SerializeField]
-        private Image mSelectImage;
+        private Image           mSelectImage;
         //選択してる要素数
-        private int mSelectIndex;
+        private int             mSelectIndex;
         //選択中の画像をボタン横のどれくらいの位置に設置するか
         [SerializeField]
-        private float mSelectImageOffsetX;
+        private float           mSelectImageOffsetX;
         [SerializeField]
-        private float mSelectImageOffsetY;
+        private float           mSelectImageOffsetY;
         //子オブジェクトにボタン
         [SerializeField]
-        private Button[] mButtons;
-        private ButtonHover[] mHovers;
+        private Button[]        mButtons;
+        private ButtonHover[]   mHovers;
 
-        private bool mDecideFlag;
+        private bool            mDecideFlag;
         private void Awake()
         {
             Button[] b = GetComponentsInChildren<Button>();
@@ -184,12 +185,14 @@ namespace MyAssets
         private void OnDecide()
         {
             if (mDecideFlag) { return; }
-            DecideUpdate();
+            StartCoroutine(DecideUpdate());
         }
 
-        private void DecideUpdate()
+        private IEnumerator DecideUpdate()
         {
-            mDecideFlag = true;
+            //mDecideFlag = true;
+            StartCoroutine(mHovers[mSelectIndex].OnEnter());
+            yield return new WaitForSecondsRealtime(0.1f);
             mButtons[mSelectIndex].onClick?.Invoke();
         }
 

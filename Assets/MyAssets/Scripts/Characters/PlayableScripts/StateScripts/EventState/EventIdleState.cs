@@ -40,6 +40,7 @@ namespace MyAssets
             mPlayableInput.enabled = false;
             TPSCamera.CameraType = TPSCamera.Type.Fixed;
             mAnimationFunction.Animator.SetFloat("idleToRun", 0.0f);
+            PlayerUIManager.Instance.ActionButtonController.AllDisableButton();
         }
 
         public override void Execute_Update(float time)

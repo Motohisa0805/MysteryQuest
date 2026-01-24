@@ -15,6 +15,8 @@ namespace MyAssets
 
         private PlayableAnimationFunction mAnimationFunction;
 
+        private Movement mMovement;
+
         private DamageChecker mImpactChecker;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -39,16 +41,21 @@ namespace MyAssets
             mController = actor.GetComponent<PlayableChracterController>();
             mPlayableInput = actor.GetComponent<PlayableInput>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
+            mMovement = actor.GetComponent<Movement>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
         }
 
         public override void Enter()
         {
             base.Enter();
+            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Left, "アタック");
+            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Up, "ジャンプ");
+            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Down, "走る");
         }
 
         public override void Execute_Update(float time)
         {
+            mMovement.ClimbCheck();
             base.Execute_Update(time);
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();

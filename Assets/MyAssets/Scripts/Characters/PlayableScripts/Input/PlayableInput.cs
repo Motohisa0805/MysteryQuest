@@ -38,6 +38,9 @@ namespace MyAssets
         private bool    mAttacking;
         public bool     Attacking => mAttacking;
 
+        private bool    mSkill;
+        public bool     Skill => mSkill;
+
         private void Start()
         {
             mInputMove = Vector2.zero;
@@ -68,6 +71,8 @@ namespace MyAssets
 
                 mAttack = InputManager.GetKeyDown(KeyCode.eAttack);
                 mAttacking = InputManager.GetKey(KeyCode.eAttack);
+
+                mSkill = InputManager.GetKeyDown(KeyCode.eSkill);
             }
         }
 

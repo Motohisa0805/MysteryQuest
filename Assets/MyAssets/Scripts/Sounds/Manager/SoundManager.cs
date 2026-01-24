@@ -352,11 +352,80 @@ namespace MyAssets
 
         public void ReturnAudioSource(AudioSource source)
         {
+            if (source == null) return;
             source.Stop(); // 念のため
             source.transform.SetParent(transform); // 親を戻す
             source.gameObject.SetActive(false);
         }
 
+        public AudioSource PlayLoopSE(int id, Vector3 position,Transform parent = null)
+        {
+            // 開始直後のミュート判定
+            if (Time.timeSinceLevelLoad < mMuteDurationAtStart) return null;
+
+            //クリップの取得
+            SoundList.SEElement seElement = mSoundList.GetElement(id);
+            if (seElement == null) return null;
+
+            AudioClip clip = seElement.Clips[Random.Range(0, seElement.MaxClips)];
+
+            // 空いているAudioSourceを探す
+            AudioSource audioSource = SerchAudios();
+            if (audioSource == null || clip == null) return null;
+
+            // --- 設定 ---
+            audioSource.gameObject.SetActive(true);
+            audioSource.enabled = true;
+            audioSource.clip = clip;
+            audioSource.loop = true; // ループ必須
+            audioSource.volume = seElement.volume;
+            audioSource.spatialBlend = seElement.mSpatialBlend; // 3Dサウンドにする
+            audioSource.maxDistance = seElement.MaxDistance;
+            audioSource.minDistance = seElement.MinDistance;
+
+            // 親子関係の設定
+            if (parent != null)
+            {
+                audioSource.transform.SetParent(parent);
+                audioSource.transform.localPosition = Vector3.zero;
+            }
+            else
+            {
+                audioSource.transform.SetParent(transform);
+                audioSource.transform.position = position;
+            }
+
+            audioSource.Play();
+
+
+            //AudioSource インスタンスを返し、停止権限を呼び出し元に与える
+            return audioSource;
+        }
+
+        public void StopLoopSE(AudioSource source,float fadeDuration = 0.5f)
+        {
+            if(source == null || !source.gameObject.activeSelf)return;
+            StartCoroutine(FadeOutAndReturn(source, fadeDuration));
+        }
+
+        private IEnumerator FadeOutAndReturn(AudioSource source,float duration)
+        {
+            float startVolume = source.volume;
+            float timer = 0;
+
+            while(timer < duration)
+            {
+                timer += Time.unscaledDeltaTime; // タイムスケール無視推奨ならunscaled
+                source.volume = Mathf.Lerp(startVolume, 0f, timer / duration);
+                yield return null;
+            }
+            source.Stop();
+            // ボリュームを戻しておく（再利用時のため）
+            source.volume = startVolume; 
+
+            // 既存の回収メソッドを使ってプールに戻す
+            ReturnAudioSource(source);
+        }
 
         private void OnDestroy()
         {

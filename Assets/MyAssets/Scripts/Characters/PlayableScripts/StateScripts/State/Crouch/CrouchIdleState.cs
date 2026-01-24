@@ -56,6 +56,9 @@ namespace MyAssets
             mColliderController.SetHeight(crouchHeight);
             Vector3 c = mColliderController.CapsuleCollider.center;
             mColliderController.SetCenter(new Vector3(c.x, crouchCenter_Y, c.z));
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -128,6 +131,9 @@ namespace MyAssets
         {
             base.Enter();
             mAnimationFunction.Animator.SetInteger("crouchState", 1);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -198,7 +204,9 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -265,6 +273,9 @@ namespace MyAssets
         {
             base.Enter();
             mAnimationFunction.Animator.SetInteger("crouchState", 2);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)

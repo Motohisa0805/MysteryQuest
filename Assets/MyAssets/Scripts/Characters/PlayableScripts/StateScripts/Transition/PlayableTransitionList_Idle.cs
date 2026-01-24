@@ -62,7 +62,7 @@ namespace MyAssets
         public IsIdleTransitionType5(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
-            mMovement = actor.GetComponentInChildren<Movement>();
+            mMovement = actor.GetComponent<Movement>();
         }
         public override bool IsTransition()
         {
@@ -154,6 +154,20 @@ namespace MyAssets
             mAnimator = actor.GetComponentInChildren<Animator>();
         }
         public override bool IsTransition() => !mInput.Attacking;
+    }
+
+    public class IsOutOfBodyExperienceToIdleTransition : StateTransitionBase
+    {
+
+        readonly private PlayableInput mInput;
+        readonly private Animator mAnimator;
+        public IsOutOfBodyExperienceToIdleTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
+            : base(stateChanger, changeKey)
+        {
+            mInput = actor.GetComponent<PlayableInput>();
+            mAnimator = actor.GetComponentInChildren<Animator>();
+        }
+        public override bool IsTransition() => mInput.Skill;
     }
 
     public class IsReadyAttackToIgnitionTransition : StateTransitionBase

@@ -26,6 +26,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 66bc4577a56ad1046b844ffe4c110e1c, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
   - mID: 1001
@@ -34,6 +35,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: b8d675914378d714baedc0e82d7852c9, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
   - mID: 1002
@@ -42,6 +44,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 03a1d4751121ebd4b820e54ec27703e5, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
   - mID: 1003
@@ -52,6 +55,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 2031905bf39081d4cbd5dbf4573445bf, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
   - mID: 1004
@@ -60,6 +64,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 4c64a8f0a127d594aa015cb39914e448, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
   - mID: 1005
@@ -74,6 +79,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: c0e9315078658c44285f62bef7ee96af, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
   - mID: 1006
@@ -82,6 +88,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 0c9fa2735ba4fcf4b836cdb1a30a09e2, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
   - mID: 1007
@@ -90,6 +97,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 4bf95c82e844dd144b542a2481bb1ff9, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
   - mID: 1008
@@ -98,6 +106,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 9f658626dd9728c4cbf39ce87121c527, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
   - mID: 1009
@@ -106,6 +115,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 4c679a00389dc8b438d5a680a9335db8, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
   - mID: 1010
@@ -114,6 +124,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 5918fd4a2ad82d7478c4f2ee8e9ec1e9, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
   - mID: 1011
@@ -122,6 +133,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 0e2bdd2a77ea03147a31f45bf9b1a712, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
   - mID: 1012
@@ -130,6 +142,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 48f90e8730dae234686972297401fcd8, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
   - mID: 1013
@@ -138,21 +151,51 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 42a6b820ef68416478a2362ec7d54f91, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
   - mID: 1014
+    mLabel: Select_TakeObject
+    mClips:
+    - {fileID: 8300000, guid: 02a6c23d55d9c4f4ab6f124cfa4f4fb2, type: 3}
+    volume: 0.5
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 1015
+    mLabel: Take_Object
+    mClips:
+    - {fileID: 8300000, guid: 6d5b83255fdc7ca4590ce6ae7d4e05b8, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 1016
+    mLabel: Taking_Object
+    mClips:
+    - {fileID: 8300000, guid: e2d340c6f8790954894fef6da3ee7a9f, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 1017
     mLabel: Wood_Hit
     mClips:
     - {fileID: 8300000, guid: 2a600cb58e2a1ad4686b2652495282cf, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1015
+  - mID: 1018
     mLabel: Wood_Hit_Sword
     mClips:
     - {fileID: 8300000, guid: 752e51c8fd9e27d4eaa2e334a42e0743, type: 3}
     volume: 1
     pitchRange: 0
+    mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10

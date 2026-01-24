@@ -48,6 +48,7 @@ namespace MyAssets
             {
                 mAnimationFunction.SetModeBlend(0);
             }
+            PlayerUIManager.Instance.ActionButtonController.AllDisableButton();
         }
 
         public override void Execute_Update(float time)

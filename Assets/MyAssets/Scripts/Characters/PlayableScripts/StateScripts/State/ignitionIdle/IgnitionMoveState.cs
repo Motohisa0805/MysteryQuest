@@ -51,6 +51,9 @@ namespace MyAssets
             mAnimationFunction.Animator.SetInteger("ignitionI", 0);
             mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 1,true);
             mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
+            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
