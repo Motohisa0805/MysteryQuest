@@ -48,10 +48,10 @@ namespace MyAssets
             switch(sceneIndex)
             {
                 case SceneList.Title:
-                    SoundManager.Instance.PlayBGM(1);
+                    SoundManager.Instance.PlayBGM("TitleBGM");
                     break;
                 case SceneList.Select:
-                    SoundManager.Instance.PlayBGM(2);
+                    SoundManager.Instance.PlayBGM("SelectBGM");
                     break;
                 default:
                     SoundManager.Instance.StopBGM();

@@ -52,7 +52,7 @@ namespace MyAssets
 
             mChecker.SetReleaseTakedObject();
             PlayerStatusManager.Instance.ChangeHP(-mImpactChecker.GetCalculatedDamage());
-            SoundManager.Instance.PlayOneShot3D(1003, mImpactChecker.transform.position);
+            SoundManager.Instance.PlayOneShot3D("Damage_Player", mImpactChecker.transform.position);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
@@ -135,7 +135,7 @@ namespace MyAssets
 
             //ƒeƒXƒg
             PlayerStatusManager.Instance.ChangeHP(-mImpactChecker.GetCalculatedDamage());
-            SoundManager.Instance.PlayOneShot3D(1003, mImpactChecker.transform.position);
+            SoundManager.Instance.PlayOneShot3D("Damage_Player", mImpactChecker.transform.position);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
@@ -270,7 +270,7 @@ namespace MyAssets
             mChecker.SetReleaseTakedObject();
 
             PlayerStatusManager.Instance.ChangeHP(-mImpactChecker.GetCalculatedDamage());
-            SoundManager.Instance.PlayOneShot3D(1003, mImpactChecker.transform.position);
+            SoundManager.Instance.PlayOneShot3D("Damage_Player", mImpactChecker.transform.position);
             if(EventManager.Instance)
             {
                 EventManager.Instance.DeathEvent().Forget();

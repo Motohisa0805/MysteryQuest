@@ -15,7 +15,7 @@ namespace MyAssets
             switch(mType)
             {
                 case ElementType.Fire:
-                    SoundManager.Instance.PlayOneShot3D(1009, transform.position, transform, true,true);
+                    SoundManager.Instance.PlayOneShot3D("Object_Fire", transform.position, transform, true,true);
                     break;
             }
         }

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 494436752870562187}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -83,7 +83,7 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 1, z: 0}
-  - {x: 0, y: 1, z: 1}
+  - {x: 0, y: 1, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -92,7 +92,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.0545302
+        value: 0.114878714
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -157,10 +157,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.SpiralLineRenderer
   mLineType: 1
   mStartTransform: {fileID: 0}
+  mStartPosOffset: {x: 0, y: 0, z: 0}
   mEndTransform: {fileID: 0}
+  mEndPosOffset: {x: 0, y: 0.5, z: 0}
   mSpiralLineInfo:
     mOffset: 1
-    mRadius: 0.1
+    mRadius: 0.05
+    mPointsCount: 20
 --- !u!1 &3880417732048087388
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,15 +292,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.SoulPlayerController
   mTakeObjectment:
-    mRayDistance: 5
+    mRayDistance: 15
     mHitMask:
       serializedVersion: 2
       m_Bits: 2147483720
     mChemistryObject: {fileID: 0}
     mIsTaked: 0
-    mRelativePosition: {x: 0, y: 0, z: 0}
-    mRelativeRotation: {x: 0, y: 0, z: 0, w: 0}
-  mLifeLineVFXController: {fileID: 0}
+    mTakeObjectInfo:
+      mDistance: 0
+      mPosition: {x: 0, y: 0, z: 0}
+      mStartPosition: {x: 0, y: 0, z: 0}
+      mPositionDuration: 0.5
+      mPositionElapsedTime: 0
+      mRotation: {x: 0, y: 0, z: 0, w: 0}
+      mStartRotation: {x: 0, y: 0, z: 0, w: 0}
+      mRotationDuration: 0.5
+      mRotationElapsedTime: 0
 --- !u!1 &3995792706760622601
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,7 +335,7 @@ Transform:
   m_GameObject: {fileID: 3995792706760622601}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -381,7 +391,7 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 1, z: 0}
-  - {x: 0, y: 1, z: 1}
+  - {x: 0, y: 1, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -390,7 +400,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.05349915
+        value: 0.11384766
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -455,10 +465,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.LineRendererMovement
   mLineType: 0
   mStartTransform: {fileID: 0}
+  mStartPosOffset: {x: 0, y: 0, z: 0}
   mEndTransform: {fileID: 0}
+  mEndPosOffset: {x: 0, y: 0.5, z: 0}
   mSpiralLineInfo:
     mOffset: 0
     mRadius: 0
+    mPointsCount: 0
 --- !u!1 &4857601249204453290
 GameObject:
   m_ObjectHideFlags: 0

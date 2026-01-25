@@ -58,11 +58,14 @@ namespace MyAssets
             PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Down, "âèú");
 
             TPSCamera.CameraType = TPSCamera.Type.ShoulderView;
+
+            SoundManager.Instance.PlayOneShot2D("EnabledSkil_Playerl");
         }
 
         public override void Execute_Update(float time)
         {
             mController.SoulPlayerController.TakeObjectment.ObjectCheck();
+            mController.SoulPlayerController.TakeObjectment.TakeObjectInput();
             mController.SoulPlayerController.TakeObjectment.InputTakeOffObject();
             base.Execute_Update(time);
         }
@@ -93,6 +96,7 @@ namespace MyAssets
             PlayerUIManager.Instance.ActionButtonController.AllDisableButton();
 
             TPSCamera.CameraType = TPSCamera.Type.Free;
+            SoundManager.Instance.PlayOneShot2D("DisableSkil_Playerl");
         }
 
         public override void CollisionEnter(GameObject thisObject, Collision collision)

@@ -395,6 +395,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b0ba73c04db75b40b050d0a5155127f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.InputTextImage
+  mImage: {fileID: 0}
+  mHovering: 0
   mID: 2
 --- !u!1 &1249600325127737320
 GameObject:
@@ -639,6 +641,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b0ba73c04db75b40b050d0a5155127f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.InputTextImage
+  mImage: {fileID: 0}
+  mHovering: 0
   mID: 3
 --- !u!1 &1927925315276188283
 GameObject:
@@ -1344,7 +1348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281cc68126dbc1a40b30fba2e546ab43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ButtonHover
-  mButton: {fileID: 0}
+  mImage: {fileID: 0}
   mHovering: 0
 --- !u!1 &3767738556985261743
 GameObject:
@@ -1493,7 +1497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281cc68126dbc1a40b30fba2e546ab43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ButtonHover
-  mButton: {fileID: 0}
+  mImage: {fileID: 0}
   mHovering: 0
 --- !u!114 &6313324880463652310
 MonoBehaviour:
@@ -1681,6 +1685,7 @@ RectTransform:
   - {fileID: 9078850895165789910}
   - {fileID: 5372072088702483517}
   - {fileID: 4020605068054227662}
+  - {fileID: 8320466822704946502}
   m_Father: {fileID: 4843845771265904019}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2262,6 +2267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b0ba73c04db75b40b050d0a5155127f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.InputTextImage
+  mImage: {fileID: 0}
+  mHovering: 0
   mID: 1
 --- !u!1 &4480878851161863065
 GameObject:
@@ -2817,7 +2824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281cc68126dbc1a40b30fba2e546ab43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ButtonHover
-  mButton: {fileID: 0}
+  mImage: {fileID: 0}
   mHovering: 0
 --- !u!114 &6678281957966719927
 MonoBehaviour:
@@ -2979,7 +2986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281cc68126dbc1a40b30fba2e546ab43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ButtonHover
-  mButton: {fileID: 0}
+  mImage: {fileID: 0}
   mHovering: 0
 --- !u!114 &880783360765980024
 MonoBehaviour:
@@ -3140,7 +3147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281cc68126dbc1a40b30fba2e546ab43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ButtonHover
-  mButton: {fileID: 0}
+  mImage: {fileID: 0}
   mHovering: 0
 --- !u!114 &7906211109560575057
 MonoBehaviour:
@@ -3244,6 +3251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b0ba73c04db75b40b050d0a5155127f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.InputTextImage
+  mImage: {fileID: 0}
+  mHovering: 0
   mID: 0
 --- !u!1 &6242887469049522552
 GameObject:
@@ -3324,6 +3333,81 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\u30B2\u30FC\u30E0\u7D50\u679C"
+--- !u!1 &6627729937097998336
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8320466822704946502}
+  - component: {fileID: 6690276368028769203}
+  - component: {fileID: 5702344013938333028}
+  m_Layer: 5
+  m_Name: ScopeHUD
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8320466822704946502
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6627729937097998336}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8234376026317267375}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -1915, y: -1075}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6690276368028769203
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6627729937097998336}
+  m_CullTransparentMesh: 1
+--- !u!114 &5702344013938333028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6627729937097998336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &6640268492904797257
 GameObject:
   m_ObjectHideFlags: 0
@@ -3883,7 +3967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281cc68126dbc1a40b30fba2e546ab43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ButtonHover
-  mButton: {fileID: 0}
+  mImage: {fileID: 0}
   mHovering: 0
 --- !u!1 &7190842561160349082
 GameObject:

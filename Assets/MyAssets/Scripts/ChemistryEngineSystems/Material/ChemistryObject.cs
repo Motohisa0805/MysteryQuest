@@ -426,8 +426,8 @@ namespace MyAssets
                 }
                 mElementEffect = EffectManager.Instance.PlayEffect<ParticleSystem>(result.mEffectID, transform.position, Quaternion.identity,Vector3.one,transform).GetComponent<EffectReturner>();
                 SetParticleShapeToCollider(mElementEffect.ParticleSystem);
-                SoundManager.Instance.PlayOneShot3D(1008, transform.position, transform);
-                SoundManager.Instance.PlayOneShot3D(1009, transform.position, transform,true,true, mMaterialObjectInfo.mDestroyDelay);
+                SoundManager.Instance.PlayOneShot3D("Object_InFire", transform.position, transform);
+                SoundManager.Instance.PlayOneShot3D("Object_Fire", transform.position, transform,true,true, mMaterialObjectInfo.mDestroyDelay);
             }
             // 燃え尽きる処理の開始（もし木で、火がついたなら）
             if ((mMaterial == MaterialType.Wood || mMaterial == MaterialType.Organism) &&
@@ -457,7 +457,7 @@ namespace MyAssets
                     mElementEffect.StopAndReturn(true);
                     mElementEffect = null;
                 }
-                SoundManager.Instance.PlayOneShot3D(1010, transform.position);
+                SoundManager.Instance.PlayOneShot3D("Object_OutFire", transform.position);
                 Destroy(gameObject);
             }
         }
@@ -480,7 +480,7 @@ namespace MyAssets
                 }
                 mCurrentElements = 0;
                 mCurrentHeatAccumulated = 0;
-                SoundManager.Instance.PlayOneShot3D(1010, transform.position);
+                SoundManager.Instance.PlayOneShot3D("Object_OutFire", transform.position);
                 AudioSource source = GetComponentInChildren<AudioSource>();
                 if (source != null && SoundManager.Instance != null)
                 {
@@ -496,15 +496,15 @@ namespace MyAssets
             //音の再生
             if (mMaterial == MaterialType.Wood)
             {
-                SoundManager.Instance.PlayOneShot3D(1017, transform.position);
+                SoundManager.Instance.PlayOneShot3D("Wood_Hit", transform.position);
             }
             else if (mMaterial == MaterialType.Stone)
             {
-                SoundManager.Instance.PlayOneShot3D(1012, transform.position);
+                SoundManager.Instance.PlayOneShot3D("Stone_Hit", transform.position);
             }
             else if (mMaterial == MaterialType.Iron)
             {
-                SoundManager.Instance.PlayOneShot3D(1006, transform.position);
+                SoundManager.Instance.PlayOneShot3D("Iron_Hit", transform.position);
             }
         }
         //音を特定の条件下で再生するか調べる
@@ -513,15 +513,15 @@ namespace MyAssets
             //音の再生
             if (mMaterial == MaterialType.Wood)
             {
-                SoundManager.Instance.PlayOneShot3D(1018, transform.position);
+                SoundManager.Instance.PlayOneShot3D("Wood_Hit_Sword", transform.position);
             }
             else if (mMaterial == MaterialType.Stone)
             {
-                SoundManager.Instance.PlayOneShot3D(1012, transform.position);
+                SoundManager.Instance.PlayOneShot3D("Stone_Hit", transform.position);
             }
             else if (mMaterial == MaterialType.Iron)
             {
-                SoundManager.Instance.PlayOneShot3D(1006, transform.position);
+                SoundManager.Instance.PlayOneShot3D("Iron_Hit", transform.position);
             }
         }
         private void OnCollisionEnter(Collision collision)

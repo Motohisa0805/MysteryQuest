@@ -50,7 +50,7 @@ namespace MyAssets
             {
                 hand.enabled = true;
                 //ïêäÌÇÃëfêUÇËSE
-                SoundManager.Instance.PlayOneShot3D(1000, hand.transform.position, mController.transform);
+                SoundManager.Instance.PlayOneShot3D("Attack_Player", hand.transform.position, mController.transform);
                 mEquipmentController.SwingEffectHandler.ActivateSlachEffect(true);
             }
             mAnimationFunction.Animator.SetInteger("attack State", 1);
