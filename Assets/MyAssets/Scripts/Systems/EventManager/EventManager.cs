@@ -136,7 +136,7 @@ namespace MyAssets
 
             await mPlayableChracterController.PlayIdleToAsync();
 
-            SoundManager.Instance.PlayBGM(0);
+            SoundManager.Instance.PlayBGM("StageBGM01");
         }
 
         public void OnPlayEndingCutscene()
@@ -147,7 +147,7 @@ namespace MyAssets
         public async UniTaskVoid PlayEndingCutscene()
         {
             if (mEventMovePointList.Count <= 0) { return; }
-            SoundManager.Instance.PlayBGM(4,false);
+            SoundManager.Instance.PlayBGM("GameClearBGM", false);
             GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Tutorial);
             ResultManager.IsResulting = true;
             //3番目のポイントに移動
@@ -185,7 +185,7 @@ namespace MyAssets
             //カーソル固定を解除
             InputManager.SetNoneMouseMode();
             GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Result);
-            SoundManager.Instance.PlayBGM(3, false);
+            SoundManager.Instance.PlayBGM("GameOverBGM", false);
         }
 
         private void OnDestroy()

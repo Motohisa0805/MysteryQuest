@@ -653,7 +653,7 @@ MonoBehaviour:
     mDistance: 4
     mSensitivity: 0.5
     mMinAngle: -60
-    mMaxAngle: 10
+    mMaxAngle: 60
     mSmoothTime: 0
   mFocusingSettings:
     mOffset: {x: 2, y: 0, z: 0}
@@ -2181,27 +2181,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 94582802937782098, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 94582802937782098, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 94582802937782098, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 433049195036681475, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 433049195036681475, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 433049195036681475, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1509527911995293860, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4345,9 +4345,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1158314509349928831, guid: 0dde8545c2d7fc442b32868bbc50e018, type: 3}
-      propertyPath: mOutOfBodyExperienceState.mCrouchHeight
-      value: 0.9
+    - target: {fileID: 2254488799588581085, guid: 0dde8545c2d7fc442b32868bbc50e018, type: 3}
+      propertyPath: mTakeObjectment.mRayDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2254488799588581085, guid: 0dde8545c2d7fc442b32868bbc50e018, type: 3}
+      propertyPath: mTakeObjectment.mTakeObjectInfo.mPositionDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2254488799588581085, guid: 0dde8545c2d7fc442b32868bbc50e018, type: 3}
+      propertyPath: mTakeObjectment.mTakeObjectInfo.mRotationDuration
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2329240152536482202, guid: 0dde8545c2d7fc442b32868bbc50e018, type: 3}
       propertyPath: m_Positions.Array.data[1].z
@@ -4396,10 +4404,6 @@ PrefabInstance:
     - target: {fileID: 3839969758864955489, guid: 0dde8545c2d7fc442b32868bbc50e018, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3880417732048087388, guid: 0dde8545c2d7fc442b32868bbc50e018, type: 3}
-      propertyPath: m_Name
-      value: SoulPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 4207798375074668401, guid: 0dde8545c2d7fc442b32868bbc50e018, type: 3}
       propertyPath: m_LocalPosition.y

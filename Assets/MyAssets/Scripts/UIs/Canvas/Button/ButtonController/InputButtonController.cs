@@ -88,7 +88,7 @@ namespace MyAssets
                 {
                     if (mSelectIndex != i)
                     {
-                        SoundManager.Instance.PlayOneShot2D(1013, false);
+                        SoundManager.Instance.PlayOneShot2D("Select_Button", false);
                         mSelectIndex = i;
                         SetSelectImagePosition(mSelectIndex);
                         SetActivateSelectImage(true);
@@ -164,7 +164,7 @@ namespace MyAssets
                 }
             }
             if (decideIndex < 0) { return; }
-            SoundManager.Instance.PlayOneShot2D(1013, false);
+            SoundManager.Instance.PlayOneShot2D("Select_Button", false);
             mSelectIndex = decideIndex;
             SetSelectImagePosition(mSelectIndex);
         }

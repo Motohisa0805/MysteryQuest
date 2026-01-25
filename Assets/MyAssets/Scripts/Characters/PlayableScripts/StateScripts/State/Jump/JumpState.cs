@@ -55,7 +55,7 @@ namespace MyAssets
             }
             if (SoundManager.Instance != null)
             {
-                SoundManager.Instance.PlayOneShot3D(1007, mController.transform.position);
+                SoundManager.Instance.PlayOneShot3D("JumpUp", mController.transform.position);
             }
             PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Up, "ƒWƒƒƒ“ƒv");
         }
@@ -130,7 +130,7 @@ namespace MyAssets
             mController.Movement.Jump(mController.StatusProperty.IdleJumpPower);
             if (SoundManager.Instance != null)
             {
-                SoundManager.Instance.PlayOneShot3D(1007, mController.transform.position);
+                SoundManager.Instance.PlayOneShot3D("JumpUp", mController.transform.position);
             }
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);

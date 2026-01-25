@@ -11,9 +11,22 @@ namespace MyAssets
         [Serializable]
         public struct TakeObjectInfo
         {
-            public float mDistance;
+            //オブジェクトとプレイヤーの距離
+            public float        mDistance;
 
-            public Quaternion mRotation;
+            public Vector3      mPosition;
+            public Vector3      mStartPosition;
+            public float        mPositionDuration;
+            public float        mPositionElapsedTime;
+
+            //オブジェクトの最終回転変数
+            public Quaternion   mRotation;
+            //オブジェクトの最初の回転変数
+            public Quaternion   mStartRotation;
+            //オブジェクトの回転にかかる時間
+            public float        mRotationDuration; 
+            //オブジェクトの回転にかかる時間を計測する変数
+            public float        mRotationElapsedTime;
         }
 
         private Transform       mBaseTransform;
@@ -60,13 +73,56 @@ namespace MyAssets
             mIsTaked = false;
         }
 
+        //取得したオブジェクトを操作する処理
+        public void TakeObjectInput()
+        {
+            if(mChemistryObject == null)return;
+
+            float oneRotate = 45.0f;
+            Quaternion deltaRotation = Quaternion.identity;
+            bool pressed = false;
+
+            if (InputManager.GetKeyDown(KeyCode.eRightSelect))
+            {
+                // プレイヤーのUp軸を中心にマイナス回転（時計回り）
+                deltaRotation = Quaternion.AngleAxis(oneRotate, mBaseTransform.up);
+                pressed = true;
+            }
+            else if (InputManager.GetKeyDown(KeyCode.eLeftSelect))
+            {
+                deltaRotation = Quaternion.AngleAxis(-oneRotate, mBaseTransform.up);
+                pressed = true;
+            }
+
+            if (InputManager.GetKeyDown(KeyCode.eUpSelect))
+            {
+                // プレイヤーのRight軸を中心に回転
+                deltaRotation = Quaternion.AngleAxis(oneRotate, mBaseTransform.right);
+                pressed = true;
+            }
+            else if (InputManager.GetKeyDown(KeyCode.eDownSelect))
+            {
+                deltaRotation = Quaternion.AngleAxis(-oneRotate, mBaseTransform.right);
+                pressed = true;
+            }
+
+            if (pressed)
+            {
+                // 現在の「目標回転」の前に差分を掛けて、プレイヤー基準の回転
+                mTakeObjectInfo.mStartRotation = mChemistryObject.transform.rotation;
+                mTakeObjectInfo.mRotation = deltaRotation * mTakeObjectInfo.mRotation;
+
+                mTakeObjectInfo.mRotationElapsedTime = 0f;
+            }
+        }
+
         public void ObjectCheck()
         {
             if (mIsTaked)
             {
                 return;
             }
-            Vector3 origin = mBaseTransform.position;
+            Vector3 origin = Camera.main.transform.position;
             Ray checkRay = new Ray(origin, mBaseTransform.forward);
 
             // レイキャスト判定
@@ -89,6 +145,10 @@ namespace MyAssets
                             SetFocus(target);
                         }
                     }
+                    else
+                    {
+                        ClearFocus();
+                    }
                 }
             }
             else
@@ -110,7 +170,7 @@ namespace MyAssets
         {
             mFocusedObject = target;
             EffectManager.Instance.ObjectMaterialSelector.ActivateEffect(mFocusedObject.gameObject);
-            SoundManager.Instance.PlayOneShot2D(1014);
+            SoundManager.Instance.PlayOneShot2D("Select_TakeObject");
         }
 
         public void ClearFocus()
@@ -132,7 +192,9 @@ namespace MyAssets
                 mTargetRb.isKinematic = false;
             }
             //取得した時の回転を取得
+            mTakeObjectInfo.mRotationElapsedTime = 0f;
             mTakeObjectInfo.mRotation = mChemistryObject.transform.rotation;
+            mTakeObjectInfo.mStartRotation = mChemistryObject.transform.rotation;
 
             //取得した時の距離を取得
             mTakeObjectInfo.mDistance = Math.Abs((mBaseTransform.position - mChemistryObject.transform.position).magnitude);
@@ -146,8 +208,8 @@ namespace MyAssets
             mTakeObjectLineVFXController.SetEndTransform(mChemistryObject.transform);
             mTakeObjectLineVFXController.gameObject.SetActive(true);
 
-            SoundManager.Instance.PlayOneShot2D(1015);
-            mTakingObjectSoundSource = SoundManager.Instance.PlayLoopSE(1016, mBaseTransform.position, mBaseTransform);
+            SoundManager.Instance.PlayOneShot2D("Take_Object");
+            mTakingObjectSoundSource = SoundManager.Instance.PlayLoopSE("Taking_Object", mBaseTransform.position, mBaseTransform);
         }
 
         public void UpdateTakeObject()
@@ -164,10 +226,31 @@ namespace MyAssets
 
             if (mIsTaked && mTargetRb != null)
             {
-                mTargetRb.MoveRotation(mTakeObjectInfo.mRotation);
+                if(mTakeObjectInfo.mRotationElapsedTime <= mTakeObjectInfo.mRotationDuration)
+                {
+                    //回転処理
+                    mTakeObjectInfo.mRotationElapsedTime += Time.deltaTime;
+
+                    float duration = Mathf.Max(mTakeObjectInfo.mRotationDuration,0.01f);
+                    float t = Mathf.Clamp01(mTakeObjectInfo.mRotationElapsedTime / duration);
+
+                    Quaternion nextRot = Quaternion.Slerp(mTakeObjectInfo.mStartRotation, mTakeObjectInfo.mRotation, t);
+                    mTargetRb.MoveRotation(nextRot);
+                    if(mTakeObjectInfo.mRotationElapsedTime > 1f)
+                    {
+                        mTakeObjectInfo.mRotationElapsedTime = 1f;
+                    }
+                }
+
+                //移動処理
                 Vector3 targetWorldPos = mBaseTransform.position + (mBaseTransform.forward * mTakeObjectInfo.mDistance);
-                mTargetRb.MovePosition(targetWorldPos);
-                mTargetRb.linearVelocity = Vector3.zero;
+
+                Vector3 diff = targetWorldPos - mTargetRb.position;
+
+                float followSpeed = 20f;
+                float maxVelocity = 15f;
+                mTargetRb.linearVelocity = Vector3.ClampMagnitude(diff * followSpeed, maxVelocity);
+
                 mTargetRb.angularVelocity = Vector3.zero;
             }
 

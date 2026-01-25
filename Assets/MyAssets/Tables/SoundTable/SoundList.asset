@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SoundList
   m_EditorClassIdentifier: Assembly-CSharp::SoundList
   mSEList:
-  - mID: 1000
+  - mID: 729332794
     mLabel: Attack_Player
     mClips:
     - {fileID: 8300000, guid: 9f7ae4ba8ed5b7644a22d229819fcf19, type: 3}
@@ -29,7 +29,7 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1001
+  - mID: 363376331
     mLabel: CountDown
     mClips:
     - {fileID: 8300000, guid: b8d675914378d714baedc0e82d7852c9, type: 3}
@@ -38,7 +38,7 @@ MonoBehaviour:
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1002
+  - mID: -435006842
     mLabel: Close_Menu
     mClips:
     - {fileID: 8300000, guid: 03a1d4751121ebd4b820e54ec27703e5, type: 3}
@@ -47,7 +47,7 @@ MonoBehaviour:
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1003
+  - mID: 1060187317
     mLabel: Damage_Player
     mClips:
     - {fileID: 8300000, guid: 452f874c13db67b4682cb1dfcd7b4556, type: 3}
@@ -58,7 +58,7 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1004
+  - mID: -435906907
     mLabel: Decide_Button
     mClips:
     - {fileID: 8300000, guid: 4c64a8f0a127d594aa015cb39914e448, type: 3}
@@ -67,7 +67,7 @@ MonoBehaviour:
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1005
+  - mID: -678725141
     mLabel: Foot_Step
     mClips:
     - {fileID: 8300000, guid: 9961e9b246b2bf04aa9d1767d36dc289, type: 3}
@@ -82,7 +82,7 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1006
+  - mID: -115927735
     mLabel: Iron_Hit
     mClips:
     - {fileID: 8300000, guid: 0c9fa2735ba4fcf4b836cdb1a30a09e2, type: 3}
@@ -91,7 +91,7 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1007
+  - mID: 608663733
     mLabel: JumpUp
     mClips:
     - {fileID: 8300000, guid: 4bf95c82e844dd144b542a2481bb1ff9, type: 3}
@@ -100,7 +100,7 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1008
+  - mID: -1681809101
     mLabel: Object_InFire
     mClips:
     - {fileID: 8300000, guid: 9f658626dd9728c4cbf39ce87121c527, type: 3}
@@ -109,7 +109,7 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1009
+  - mID: -479914699
     mLabel: Object_Fire
     mClips:
     - {fileID: 8300000, guid: 4c679a00389dc8b438d5a680a9335db8, type: 3}
@@ -118,7 +118,7 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1010
+  - mID: 1813020934
     mLabel: Object_OutFire
     mClips:
     - {fileID: 8300000, guid: 5918fd4a2ad82d7478c4f2ee8e9ec1e9, type: 3}
@@ -127,7 +127,7 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1011
+  - mID: -432908757
     mLabel: Open_Menu
     mClips:
     - {fileID: 8300000, guid: 0e2bdd2a77ea03147a31f45bf9b1a712, type: 3}
@@ -136,7 +136,7 @@ MonoBehaviour:
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1012
+  - mID: -1783694805
     mLabel: Stone_Hit
     mClips:
     - {fileID: 8300000, guid: 48f90e8730dae234686972297401fcd8, type: 3}
@@ -145,7 +145,7 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1013
+  - mID: 1925479955
     mLabel: Select_Button
     mClips:
     - {fileID: 8300000, guid: 42a6b820ef68416478a2362ec7d54f91, type: 3}
@@ -154,7 +154,7 @@ MonoBehaviour:
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1014
+  - mID: 1389841816
     mLabel: Select_TakeObject
     mClips:
     - {fileID: 8300000, guid: 02a6c23d55d9c4f4ab6f124cfa4f4fb2, type: 3}
@@ -163,7 +163,7 @@ MonoBehaviour:
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1015
+  - mID: 279336837
     mLabel: Take_Object
     mClips:
     - {fileID: 8300000, guid: 6d5b83255fdc7ca4590ce6ae7d4e05b8, type: 3}
@@ -172,7 +172,7 @@ MonoBehaviour:
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1016
+  - mID: -1369022345
     mLabel: Taking_Object
     mClips:
     - {fileID: 8300000, guid: e2d340c6f8790954894fef6da3ee7a9f, type: 3}
@@ -181,7 +181,7 @@ MonoBehaviour:
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1017
+  - mID: -593505281
     mLabel: Wood_Hit
     mClips:
     - {fileID: 8300000, guid: 2a600cb58e2a1ad4686b2652495282cf, type: 3}
@@ -190,10 +190,28 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 1018
+  - mID: -1707239564
     mLabel: Wood_Hit_Sword
     mClips:
     - {fileID: 8300000, guid: 752e51c8fd9e27d4eaa2e334a42e0743, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 102069847
+    mLabel: EnabledSkil_Playerl
+    mClips:
+    - {fileID: 8300000, guid: 7d358b1b0dc4eaf448060993376c0a8e, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 1154449299
+    mLabel: DisableSkil_Playerl
+    mClips:
+    - {fileID: 8300000, guid: 9bdc9cf000cd4734795459e2c7fd7707, type: 3}
     volume: 1
     pitchRange: 0
     mSpatialBlend: 1

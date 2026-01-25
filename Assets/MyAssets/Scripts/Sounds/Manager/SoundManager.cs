@@ -39,7 +39,7 @@ namespace MyAssets
 
         // 開始0.2秒間は音を無視する
         [SerializeField]
-        private float mMuteDurationAtStart = 0.2f; 
+        private float               mMuteDurationAtStart = 0.2f; 
 
         private void Awake()
         {
@@ -232,6 +232,12 @@ namespace MyAssets
             audioSource.Play();
             mPlayingBGMAudioSource = audioSource;
         }
+
+        public void PlayBGM(string label, bool loop = true)
+        {
+            int id = Animator.StringToHash(label);
+            PlayBGM(id, loop);
+        }
         public void StopBGM()
         {
             if(mPlayingBGMAudioSource == null)
@@ -316,6 +322,12 @@ namespace MyAssets
             }
         }
 
+        public void PlayOneShot3D(string label, Vector3 position, Transform parent = null, bool loop = false, bool destroyCollection = false, float endSECount = -1)
+        {
+            // 文字列をハッシュ(int)に変換して、既存のメソッドを呼び出す
+            int id = Animator.StringToHash(label);
+            PlayOneShot3D(id,position,parent,loop,destroyCollection, endSECount);
+        }
         public void PlayOneShot2D(int id, bool loop = false, float endSECount = -1,float pitch = 1)
         {
             //クリップを取得
@@ -342,6 +354,11 @@ namespace MyAssets
             StartCoroutine(ReturnToPool(audioSource, clip.length));
         }
 
+        public void PlayOneShot2D(string label, bool loop = false, float endSECount = -1, float pitch = 1)
+        {
+            int id = Animator.StringToHash(label);
+            PlayOneShot2D(id, loop, endSECount, pitch);
+        }
         private IEnumerator ReturnToPool(AudioSource source, float delay)
         {
             yield return new WaitForSecondsRealtime(delay);
@@ -400,6 +417,13 @@ namespace MyAssets
 
             //AudioSource インスタンスを返し、停止権限を呼び出し元に与える
             return audioSource;
+        }
+
+        public AudioSource PlayLoopSE(string label, Vector3 position, Transform parent = null)
+        {
+            // 文字列をハッシュ(int)に変換して、既存のメソッドを呼び出す
+            int id = Animator.StringToHash(label);
+            return PlayLoopSE(id, position, parent);
         }
 
         public void StopLoopSE(AudioSource source,float fadeDuration = 0.5f)
