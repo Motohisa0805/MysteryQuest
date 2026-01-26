@@ -56,7 +56,7 @@ namespace MyAssets
         {
             base.Execute_FixedUpdate(time);
             //mController.BodyRotate();
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Exit()
@@ -122,7 +122,7 @@ namespace MyAssets
             mController.Movement.Climb();
             base.Execute_FixedUpdate(time);
             //mController.BodyRotate();
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Exit()

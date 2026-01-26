@@ -260,7 +260,7 @@ namespace MyAssets
 
             // 2. 速度を最高速度で正規化し、0～1の値に変換（ブレンドツリーの範囲に合わせる）
             // ※ブレンドツリーの最大値が1の場合を想定
-            float targetBlendValue = targetSpeed / mController.StatusProperty.MaxSpeed;
+            float targetBlendValue = targetSpeed / mController.StatusManager.PlayerStatusData.MaxSpeed;
 
             // 3. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
             mAnimIdleToRunSpeed = Mathf.SmoothDamp(
@@ -322,7 +322,7 @@ namespace MyAssets
 
             // 2. 速度を最高速度で正規化し、0～1の値に変換（ブレンドツリーの範囲に合わせる）
             // ※ブレンドツリーの最大値が1の場合を想定
-            float targetBlendValue = targetSpeed / mController.StatusProperty.DushMaxSpeed;
+            float targetBlendValue = targetSpeed / mController.StatusManager.PlayerStatusData.DushMaxSpeed;
 
             // 3. SmoothDampを使って、現在のブレンド値(mAnimSpeed)を目標値(targetBlendValue)へ滑らかに変化させる
             mSpritDushSpeed = Mathf.SmoothDamp(
@@ -374,7 +374,7 @@ namespace MyAssets
                 return;
             }
             float targetSpeed = mController.Rigidbody.linearVelocity.magnitude;
-            float targetBlendValue = targetSpeed / mController.StatusProperty.CrouchMaxSpeed;
+            float targetBlendValue = targetSpeed / mController.StatusManager.PlayerStatusData.CrouchMaxSpeed;
             mCrouchAnimSpeed = Mathf.SmoothDamp(
                 mCrouchAnimSpeed,
                 targetBlendValue,

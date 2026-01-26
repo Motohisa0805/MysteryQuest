@@ -14,11 +14,6 @@ namespace MyAssets
             //オブジェクトとプレイヤーの距離
             public float        mDistance;
 
-            public Vector3      mPosition;
-            public Vector3      mStartPosition;
-            public float        mPositionDuration;
-            public float        mPositionElapsedTime;
-
             //オブジェクトの最終回転変数
             public Quaternion   mRotation;
             //オブジェクトの最初の回転変数
@@ -62,22 +57,30 @@ namespace MyAssets
 
         private TakeObjectLineVFXController mTakeObjectLineVFXController;
 
+        private float mFollowSpeed = 20f;
+        private float mMaxVelocity = 15f;
+
         public void Setup(Transform transform)
         {
+            //自分のTransformの設定
             mBaseTransform = transform;
+            //入力処理取得
             mPlayableInput = mBaseTransform.parent.GetComponent<PlayableInput>();
+            //演出クラス取得
             mTakeObjectLineVFXController = transform.GetComponentInChildren<TakeObjectLineVFXController>();
             mTakeObjectLineVFXController.SetOriginTransform(transform);
             mTakeObjectLineVFXController.SetEndTransform(transform);
             mTakeObjectLineVFXController.gameObject.SetActive(false);
             mIsTaked = false;
+            //変数の初期化
+            mRayDistance = 15;
         }
 
         //取得したオブジェクトを操作する処理
         public void TakeObjectInput()
         {
             if(mChemistryObject == null)return;
-
+            //一度に回転させる角度
             float oneRotate = 45.0f;
             Quaternion deltaRotation = Quaternion.identity;
             bool pressed = false;
@@ -113,9 +116,9 @@ namespace MyAssets
                 mTakeObjectInfo.mRotation = deltaRotation * mTakeObjectInfo.mRotation;
 
                 mTakeObjectInfo.mRotationElapsedTime = 0f;
+                SoundManager.Instance.PlayOneShot2D("TakeObjectRotate");
             }
         }
-
         public void ObjectCheck()
         {
             if (mIsTaked)
@@ -165,14 +168,12 @@ namespace MyAssets
                 GrabObject();
             }
         }
-
         private void SetFocus(ChemistryObject target)
         {
             mFocusedObject = target;
             EffectManager.Instance.ObjectMaterialSelector.ActivateEffect(mFocusedObject.gameObject);
             SoundManager.Instance.PlayOneShot2D("Select_TakeObject");
         }
-
         public void ClearFocus()
         {
             if (mFocusedObject == null) return;
@@ -180,7 +181,6 @@ namespace MyAssets
 
             mFocusedObject = null;
         }
-
         // 掴む処理
         private void GrabObject()
         {
@@ -211,7 +211,6 @@ namespace MyAssets
             SoundManager.Instance.PlayOneShot2D("Take_Object");
             mTakingObjectSoundSource = SoundManager.Instance.PlayLoopSE("Taking_Object", mBaseTransform.position, mBaseTransform);
         }
-
         public void UpdateTakeObject()
         {
             //オブジェクトが取得途中でなくなった時の処理
@@ -226,9 +225,10 @@ namespace MyAssets
 
             if (mIsTaked && mTargetRb != null)
             {
+                //回転処理
+                //指定した間隔処理する
                 if(mTakeObjectInfo.mRotationElapsedTime <= mTakeObjectInfo.mRotationDuration)
                 {
-                    //回転処理
                     mTakeObjectInfo.mRotationElapsedTime += Time.deltaTime;
 
                     float duration = Mathf.Max(mTakeObjectInfo.mRotationDuration,0.01f);
@@ -236,9 +236,9 @@ namespace MyAssets
 
                     Quaternion nextRot = Quaternion.Slerp(mTakeObjectInfo.mStartRotation, mTakeObjectInfo.mRotation, t);
                     mTargetRb.MoveRotation(nextRot);
-                    if(mTakeObjectInfo.mRotationElapsedTime > 1f)
+                    if(mTakeObjectInfo.mRotationElapsedTime > mTakeObjectInfo.mRotationDuration)
                     {
-                        mTakeObjectInfo.mRotationElapsedTime = 1f;
+                        mTakeObjectInfo.mRotationElapsedTime = mTakeObjectInfo.mRotationDuration;
                     }
                 }
 
@@ -247,15 +247,13 @@ namespace MyAssets
 
                 Vector3 diff = targetWorldPos - mTargetRb.position;
 
-                float followSpeed = 20f;
-                float maxVelocity = 15f;
-                mTargetRb.linearVelocity = Vector3.ClampMagnitude(diff * followSpeed, maxVelocity);
+
+                mTargetRb.linearVelocity = Vector3.ClampMagnitude(diff * mFollowSpeed, mMaxVelocity);
 
                 mTargetRb.angularVelocity = Vector3.zero;
             }
 
         }
-
         public void InputTakeOffObject()
         {
             if (mPlayableInput.Sprit)
@@ -263,7 +261,6 @@ namespace MyAssets
                 TakeOffObject();
             }
         }
-
         public void TakeOffObject()
         {
             if (mChemistryObject == null) return;

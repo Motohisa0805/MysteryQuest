@@ -111,16 +111,16 @@ namespace MyAssets
 
     public class IsDeathStateTransition : StateTransitionBase
     {
-        readonly private DamageChecker mImpactChecker;
+        readonly private PlayableChracterController mController;
         public IsDeathStateTransition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
-            mImpactChecker = actor.GetComponent<DamageChecker>();
+            mController = actor.GetComponent<PlayableChracterController>();
         }
         public override bool IsTransition()
         {
-            return PlayerStatusManager.Instance.PlayerStatusData.CurrentHP <= 0.0f;
+            return mController.StatusManager.PlayerStatusData.CurrentHP <= 0.0f;
         }
     }
 

@@ -56,13 +56,13 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             mController.InputVelocity();
-            mController.Movement.Move(mController.StatusProperty.MaxSpeed, 5);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.MaxSpeed, 5);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }

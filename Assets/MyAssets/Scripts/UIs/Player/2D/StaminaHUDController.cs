@@ -18,13 +18,13 @@ namespace MyAssets
         private void Start()
         {
             PlayerUIManager.Instance.StaminaHUDController = this;
-            mStamina = (int)PlayerStatusManager.Instance.PlayerStatusData.MaxSP;
-            mMaxStamina = (int)PlayerStatusManager.Instance.PlayerStatusData.MaxSP;
+            mStamina = (int)PlayerStatusManager.Instance.PlayerStatusData.MaxStamina;
+            mMaxStamina = (int)PlayerStatusManager.Instance.PlayerStatusData.MaxStamina;
         }
 
         public void CheckStamina()
         {
-            if(PlayerStatusManager.Instance.PlayerStatusData.CurrentSP / PlayerStatusManager.Instance.PlayerStatusData.MaxSP < 1.0f)
+            if(PlayerStatusManager.Instance.PlayerStatusData.CurrentStamina / PlayerStatusManager.Instance.PlayerStatusData.MaxStamina < 1.0f)
             {
                 gameObject.SetActive(true);
             }
@@ -32,8 +32,8 @@ namespace MyAssets
 
         public void UpdateStaminaHUD()
         {
-            mStamina = PlayerStatusManager.Instance.PlayerStatusData.CurrentSP;
-            mMaxStamina = PlayerStatusManager.Instance.PlayerStatusData.MaxSP;
+            mStamina = PlayerStatusManager.Instance.PlayerStatusData.CurrentStamina;
+            mMaxStamina = PlayerStatusManager.Instance.PlayerStatusData.MaxStamina;
             if (InputManager.GetKey(KeyCode.eSprint) && !PlayerStatusManager.Instance.IsStaminaCoolDown)
             {
                 mUsageWheel.value = mStamina / mMaxStamina + 0.05f;

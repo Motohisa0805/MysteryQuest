@@ -4,20 +4,36 @@ using UnityEngine.SceneManagement;
 
 namespace MyAssets
 {
-    [Serializable]
-    public struct PlayerStatus
-    {
-        public float MaxHP;
-        public float CurrentHP;
-        public float MaxSP;
-        public float CurrentSP;
-        public float UseSP;
-        public float RecoverySP;
-        public float ThrowPower;
-    }
 
     public class PlayerStatusManager : MonoBehaviour
     {
+        [Serializable]
+        public struct PlayerStatus
+        {
+            public float MaxHP;
+            public float CurrentHP;
+            public float MaxStamina;
+            public float CurrentStamina;
+            public float UseStamina;
+            public float RecoveryStamina;
+            public float ThrowPower;
+            //最高速度
+            public float MaxSpeed;
+            //加速度
+            public float Acceleration;
+            //最高速度
+            public float DushMaxSpeed;
+            //しゃがみ時の最高速度
+            public float CrouchMaxSpeed;
+            //待機ジャンプ力
+            public float IdleJumpPower;
+            //移動ジャンプ力
+            public float MoveJumpPower;
+            //回転速度
+            public float RotationSpeed;
+            //ショルダービュー時の回転速度
+            public float ShoulderViewRotationSpeed;
+        }
         private static PlayerStatusManager instance;
         public static PlayerStatusManager Instance => instance;
 
@@ -29,7 +45,7 @@ namespace MyAssets
 
         private bool mIsStaminaCoolDown;
         public bool IsStaminaCoolDown => mIsStaminaCoolDown;
-        public bool IsNoSprit => mPlayerStatus.CurrentSP <= 0 && mIsStaminaCoolDown;
+        public bool IsNoSprit => mPlayerStatus.CurrentStamina <= 0 && mIsStaminaCoolDown;
         private void Awake()
         {
             if (instance != null)
@@ -43,13 +59,37 @@ namespace MyAssets
 
         private void Start()
         {
+            mPlayerStatus.MaxHP = 360;
+            mPlayerStatus.CurrentHP = 360;
+            mPlayerStatus.MaxStamina = 70;
+            mPlayerStatus.CurrentStamina = 70;
+            mPlayerStatus.UseStamina = 10;
+            mPlayerStatus.RecoveryStamina = 30;
+            mPlayerStatus.ThrowPower = 10;
+            mPlayerStatus.MaxSpeed = 5;
+            mPlayerStatus.Acceleration = 100;
+            mPlayerStatus.DushMaxSpeed = 7.5f;
+            mPlayerStatus.CrouchMaxSpeed = 3;
+            mPlayerStatus.IdleJumpPower = 2;
+            mPlayerStatus.MoveJumpPower = 5;
+            mPlayerStatus.RotationSpeed = 15;
+            mPlayerStatus.ShoulderViewRotationSpeed = 1000;
+
             mKeepStatus.MaxHP = mPlayerStatus.MaxHP;
             mKeepStatus.CurrentHP = mPlayerStatus.CurrentHP;
-            mKeepStatus.MaxSP = mPlayerStatus.MaxSP;
-            mKeepStatus.CurrentSP = mPlayerStatus.CurrentSP;
-            mKeepStatus.UseSP = mPlayerStatus.UseSP;
-            mKeepStatus.RecoverySP = mPlayerStatus.RecoverySP;
+            mKeepStatus.MaxStamina = mPlayerStatus.MaxStamina;
+            mKeepStatus.CurrentStamina = mPlayerStatus.CurrentStamina;
+            mKeepStatus.UseStamina = mPlayerStatus.UseStamina;
+            mKeepStatus.RecoveryStamina = mPlayerStatus.RecoveryStamina;
             mKeepStatus.ThrowPower = mPlayerStatus.ThrowPower;
+            mKeepStatus.MaxSpeed = mPlayerStatus.MaxSpeed;
+            mKeepStatus.Acceleration = mPlayerStatus.Acceleration;
+            mKeepStatus.DushMaxSpeed = mPlayerStatus.DushMaxSpeed;
+            mKeepStatus.CrouchMaxSpeed = mPlayerStatus.CrouchMaxSpeed;
+            mKeepStatus.IdleJumpPower = mPlayerStatus.IdleJumpPower;
+            mKeepStatus.MoveJumpPower = mPlayerStatus.MoveJumpPower;
+            mKeepStatus.RotationSpeed = mPlayerStatus.RotationSpeed;
+            mKeepStatus.ShoulderViewRotationSpeed = mPlayerStatus.ShoulderViewRotationSpeed;
         }
 
         private void OnEnable()
@@ -74,11 +114,19 @@ namespace MyAssets
         {
             mKeepStatus.MaxHP = mPlayerStatus.MaxHP;
             mKeepStatus.CurrentHP = mPlayerStatus.CurrentHP;
-            mKeepStatus.MaxSP = mPlayerStatus.MaxSP;
-            mKeepStatus.CurrentSP = mPlayerStatus.CurrentSP;
-            mKeepStatus.UseSP = mPlayerStatus.UseSP;
-            mKeepStatus.RecoverySP = mPlayerStatus.RecoverySP;
+            mKeepStatus.MaxStamina = mPlayerStatus.MaxStamina;
+            mKeepStatus.CurrentStamina = mPlayerStatus.CurrentStamina;
+            mKeepStatus.UseStamina = mPlayerStatus.UseStamina;
+            mKeepStatus.RecoveryStamina = mPlayerStatus.RecoveryStamina;
             mKeepStatus.ThrowPower = mPlayerStatus.ThrowPower;
+            mKeepStatus.MaxSpeed = mPlayerStatus.MaxSpeed;
+            mKeepStatus.Acceleration = mPlayerStatus.Acceleration;
+            mKeepStatus.DushMaxSpeed = mPlayerStatus.DushMaxSpeed;
+            mKeepStatus.CrouchMaxSpeed = mPlayerStatus.CrouchMaxSpeed;
+            mKeepStatus.IdleJumpPower = mPlayerStatus.IdleJumpPower;
+            mKeepStatus.MoveJumpPower = mPlayerStatus.MoveJumpPower;
+            mKeepStatus.RotationSpeed = mPlayerStatus.RotationSpeed;
+            mKeepStatus.ShoulderViewRotationSpeed = mPlayerStatus.ShoulderViewRotationSpeed;
         }
 
         public void ChangeHP(float amount)
@@ -104,33 +152,33 @@ namespace MyAssets
             {
                 if (input)
                 {
-                    if (mKeepStatus.CurrentSP > 0)
+                    if (mKeepStatus.CurrentStamina > 0)
                     {
-                        mKeepStatus.CurrentSP -= mKeepStatus.UseSP * Time.deltaTime;
+                        mKeepStatus.CurrentStamina -= mKeepStatus.UseStamina * Time.deltaTime;
                     }
                 }
                 else
                 {
-                    if (mKeepStatus.CurrentSP < mKeepStatus.MaxSP)
+                    if (mKeepStatus.CurrentStamina < mKeepStatus.MaxStamina)
                     {
-                        mKeepStatus.CurrentSP += mKeepStatus.RecoverySP * Time.deltaTime;
+                        mKeepStatus.CurrentStamina += mKeepStatus.RecoveryStamina * Time.deltaTime;
                     }
                 }
-                if(mKeepStatus.CurrentSP <= 0)
+                if(mKeepStatus.CurrentStamina <= 0)
                 {
-                    mKeepStatus.CurrentSP = 0;
+                    mKeepStatus.CurrentStamina = 0;
                     mIsStaminaCoolDown = true;
                 }
             }
             else
             {
-                if (mKeepStatus.CurrentSP < mKeepStatus.MaxSP)
+                if (mKeepStatus.CurrentStamina < mKeepStatus.MaxStamina)
                 {
-                    mKeepStatus.CurrentSP += mKeepStatus.RecoverySP * Time.deltaTime;
+                    mKeepStatus.CurrentStamina += mKeepStatus.RecoveryStamina * Time.deltaTime;
                 }
-                if(mKeepStatus.CurrentSP >= mKeepStatus.MaxSP)
+                if(mKeepStatus.CurrentStamina >= mKeepStatus.MaxStamina)
                 {
-                    mKeepStatus.CurrentSP = mKeepStatus.MaxSP;
+                    mKeepStatus.CurrentStamina = mKeepStatus.MaxStamina;
                     mIsStaminaCoolDown = false;
                 }
             }
@@ -143,26 +191,26 @@ namespace MyAssets
             {
                 if (!input)
                 {
-                    if (mKeepStatus.CurrentSP < mKeepStatus.MaxSP)
+                    if (mKeepStatus.CurrentStamina < mKeepStatus.MaxStamina)
                     {
-                        mKeepStatus.CurrentSP += mKeepStatus.RecoverySP * Time.deltaTime;
+                        mKeepStatus.CurrentStamina += mKeepStatus.RecoveryStamina * Time.deltaTime;
                     }
                 }
-                if (mKeepStatus.CurrentSP <= 0)
+                if (mKeepStatus.CurrentStamina <= 0)
                 {
-                    mKeepStatus.CurrentSP = 0;
+                    mKeepStatus.CurrentStamina = 0;
                     mIsStaminaCoolDown = true;
                 }
             }
             else
             {
-                if (mKeepStatus.CurrentSP < mKeepStatus.MaxSP)
+                if (mKeepStatus.CurrentStamina < mKeepStatus.MaxStamina)
                 {
-                    mKeepStatus.CurrentSP += mKeepStatus.RecoverySP * Time.deltaTime;
+                    mKeepStatus.CurrentStamina += mKeepStatus.RecoveryStamina * Time.deltaTime;
                 }
-                if (mKeepStatus.CurrentSP >= mKeepStatus.MaxSP)
+                if (mKeepStatus.CurrentStamina >= mKeepStatus.MaxStamina)
                 {
-                    mKeepStatus.CurrentSP = mKeepStatus.MaxSP;
+                    mKeepStatus.CurrentStamina = mKeepStatus.MaxStamina;
                     mIsStaminaCoolDown = false;
                 }
             }

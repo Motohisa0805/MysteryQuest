@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 namespace MyAssets
 {
@@ -12,7 +13,7 @@ namespace MyAssets
         private PlayableAnimationFunction mAnimationFunction;
         private PlayableInput mPlayableInput;
         private DamageChecker mImpactChecker;
-        private PlayableChracterController mPlayableChracterController;
+        private PlayableChracterController mController;
         private PropsObjectChecker mChecker;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -29,7 +30,7 @@ namespace MyAssets
             mPlayableInput = actor.GetComponent<PlayableInput>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponentInChildren<DamageChecker>();
-            mPlayableChracterController = actor.GetComponent<PlayableChracterController>();
+            mController = actor.GetComponent<PlayableChracterController>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
         }
 
@@ -39,7 +40,7 @@ namespace MyAssets
             mAnimationFunction.Animator.SetInteger("to Lift", -1);
             mAnimationFunction.Animator.SetInteger("crouchState", -1);
             TPSCamera.CameraType = TPSCamera.Type.Free;
-            if (mPlayableChracterController.Grounded)
+            if (mController.Grounded)
             {
                 mAnimationFunction.Animator.SetInteger("impact State", 0);
             }
@@ -51,7 +52,7 @@ namespace MyAssets
             mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
 
             mChecker.SetReleaseTakedObject();
-            PlayerStatusManager.Instance.ChangeHP(-mImpactChecker.GetCalculatedDamage());
+            mController.StatusManager.ChangeHP(-mImpactChecker.GetCalculatedDamage());
             SoundManager.Instance.PlayOneShot3D("Damage_Player", mImpactChecker.transform.position);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
@@ -61,7 +62,7 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -82,6 +83,7 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "BigImpact";
         public override string Key => mStateKey;
+        private PlayableChracterController mController;
         private PlayableInput mPlayableInput;
         private PlayableAnimationFunction mPlayableAnimationFunction;
         private RagdollController mRagdollController;
@@ -108,6 +110,7 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
+            mController = actor.GetComponent<PlayableChracterController>();
             mPlayableInput = actor.GetComponent<PlayableInput>();
             mPlayableAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
@@ -133,8 +136,7 @@ namespace MyAssets
             mTimer.Start(1.0f);
             mChecker.SetReleaseTakedObject();
 
-            //ƒeƒXƒg
-            PlayerStatusManager.Instance.ChangeHP(-mImpactChecker.GetCalculatedDamage());
+            mController.StatusManager.ChangeHP(-mImpactChecker.GetCalculatedDamage());
             SoundManager.Instance.PlayOneShot3D("Damage_Player", mImpactChecker.transform.position);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
@@ -145,7 +147,7 @@ namespace MyAssets
         {
             base.Execute_Update(time);
             mTimer.Update(time);
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -167,6 +169,8 @@ namespace MyAssets
         public static readonly string mStateKey = "StandingUp";
         public override string Key => mStateKey;
         
+        private PlayableChracterController mController;
+
         private PlayableInput mPlayableInput;
 
         private PlayableAnimationFunction mAnimationFunction;
@@ -182,6 +186,7 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
+            mController = actor.GetComponent<PlayableChracterController>();
             mPlayableInput = actor.GetComponentInChildren<PlayableInput>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mMovement = actor.GetComponent<Movement>();
@@ -199,7 +204,7 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -219,6 +224,8 @@ namespace MyAssets
     {
         public static readonly string mStateKey = "Death";
         public override string Key => mStateKey;
+
+        private PlayableChracterController mController;
         private PlayableInput mPlayableInput;
         private PlayableAnimationFunction mPlayableAnimationFunction;
         private RagdollController mRagdollController;
@@ -244,6 +251,7 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
+            mController = actor.GetComponent<PlayableChracterController>();
             mPlayableInput = actor.GetComponentInChildren<PlayableInput>();
             mPlayableAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
@@ -269,7 +277,7 @@ namespace MyAssets
             mTimer.Start(1.0f);
             mChecker.SetReleaseTakedObject();
 
-            PlayerStatusManager.Instance.ChangeHP(-mImpactChecker.GetCalculatedDamage());
+            mController.StatusManager.ChangeHP(-mImpactChecker.GetCalculatedDamage());
             SoundManager.Instance.PlayOneShot3D("Damage_Player", mImpactChecker.transform.position);
             if(EventManager.Instance)
             {
@@ -288,7 +296,7 @@ namespace MyAssets
         {
             base.Execute_Update(time);
             mTimer.Update(time);
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

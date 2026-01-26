@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //幽体離脱モード時の管理クラス
     public class SoulPlayerController : MonoBehaviour
     {
         private PlayableInput       mPlayableInput;

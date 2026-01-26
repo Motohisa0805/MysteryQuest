@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.SoulPlayerController
   mTakeObjectment:
-    mRayDistance: 15
+    mRayDistance: 20
     mHitMask:
       serializedVersion: 2
       m_Bits: 2147483720

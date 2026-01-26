@@ -97,7 +97,7 @@ namespace MyAssets
             mAnimationFunction.UpdateLayerWeight();
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -106,7 +106,7 @@ namespace MyAssets
             // Idle状態の特定の物理処理をここに追加できます
             // 例: 重力の適用、衝突判定など
             mController.InputVelocity();
-            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.MaxSpeed, mController.StatusManager.PlayerStatusData.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }

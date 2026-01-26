@@ -61,7 +61,7 @@ namespace MyAssets
 
         public override void Execute_Update(float time)
         {
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
             if (mAnimationFunction.IsAnimationClipEnd("second Attack", 0.5f))
             {
                 mController.HandTransforms[(int)SetItemTransform.TransformType.Right].GetCollider().enabled = false;

@@ -47,11 +47,11 @@ namespace MyAssets
             vel.y = 0;
             if (vel.magnitude > 0.0f)
             {
-                mController.Movement.Jump(mController.StatusProperty.MoveJumpPower);
+                mController.Movement.Jump(mController.StatusManager.PlayerStatusData.MoveJumpPower);
             }
             else
             {
-                mController.Movement.Jump(mController.StatusProperty.IdleJumpPower);
+                mController.Movement.Jump(mController.StatusManager.PlayerStatusData.IdleJumpPower);
             }
             if (SoundManager.Instance != null)
             {
@@ -64,14 +64,14 @@ namespace MyAssets
         {
             mController.Movement.ClimbCheck();
             base.Execute_Update(time);
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             //mController.Movement.Gravity();
             mController.InputVelocity();
-            mController.Movement.Move(mController.StatusProperty.MaxSpeed, 5);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.MaxSpeed, 5);
             base.Execute_FixedUpdate(time);
             mController.BodyRotate();
         }
@@ -127,7 +127,7 @@ namespace MyAssets
             base.Enter();
             mAnimator.SetInteger("jumpState", 1);
             Vector3 vel = mController.Rigidbody.linearVelocity;
-            mController.Movement.Jump(mController.StatusProperty.IdleJumpPower);
+            mController.Movement.Jump(mController.StatusManager.PlayerStatusData.IdleJumpPower);
             if (SoundManager.Instance != null)
             {
                 SoundManager.Instance.PlayOneShot3D("JumpUp", mController.transform.position);
@@ -141,13 +141,13 @@ namespace MyAssets
         {
             mController.Movement.ClimbCheck();
             base.Execute_Update(time);
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             mController.InputVelocity();
-            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.MaxSpeed, mController.StatusManager.PlayerStatusData.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.BodyRotate();
         }
@@ -216,13 +216,13 @@ namespace MyAssets
         {
             mController.Movement.ClimbCheck();
             base.Execute_Update(time);
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             mController.InputVelocity();
-            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.MaxSpeed, mController.StatusManager.PlayerStatusData.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.BodyRotate();
         }
@@ -290,13 +290,13 @@ namespace MyAssets
         {
             mController.Movement.ClimbCheck();
             base.Execute_Update(time);
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             mController.InputVelocity();
-            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.MaxSpeed, mController.StatusManager.PlayerStatusData.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.BodyRotate();
         }

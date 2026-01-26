@@ -47,6 +47,13 @@ namespace MyAssets
             mCapsuleCollider.center = center;
         }
 
+        public void ChangeCapsule(float standingHeight, float crouchHeight, float crouchCenter_Y)
+        {
+            SetHeight(crouchHeight);
+            Vector3 c = mCapsuleCollider.center;
+            SetCenter(new Vector3(c.x, crouchCenter_Y, c.z));
+        }
+
         public void SetRagdollModeCollider()
         {
             mCapsuleCollider.radius = 0.1f;

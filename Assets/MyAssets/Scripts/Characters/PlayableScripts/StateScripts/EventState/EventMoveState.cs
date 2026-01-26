@@ -57,7 +57,7 @@ namespace MyAssets
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();
             mAnimationFunction.SpritDushClear();
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -68,7 +68,7 @@ namespace MyAssets
                 eventInput = EventManager.Instance.EventMoveTargetPosition.transform.position - mController.transform.position;
             }
             mController.InputVelocity(eventInput.normalized * 0.5f);
-            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.MaxSpeed, mController.StatusManager.PlayerStatusData.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }

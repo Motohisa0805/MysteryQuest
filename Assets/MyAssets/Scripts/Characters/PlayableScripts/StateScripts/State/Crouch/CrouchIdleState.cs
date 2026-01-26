@@ -53,9 +53,7 @@ namespace MyAssets
             float standingHeight = mColliderController.CapsuleCollider.height;
             float crouchHeight = mCrouchHeight;
             float crouchCenter_Y = mColliderController.CapsuleCollider.center.y - (standingHeight - crouchHeight) / 2;
-            mColliderController.SetHeight(crouchHeight);
-            Vector3 c = mColliderController.CapsuleCollider.center;
-            mColliderController.SetCenter(new Vector3(c.x, crouchCenter_Y, c.z));
+            mColliderController.ChangeCapsule(standingHeight, crouchHeight, crouchCenter_Y);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
@@ -67,13 +65,13 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateCrouchAnimation();
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             mController.InputVelocity();
-            mController.Movement.Move(mController.StatusProperty.CrouchMaxSpeed, mController.StatusProperty.Acceleration);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.CrouchMaxSpeed, mController.StatusManager.PlayerStatusData.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }
@@ -142,13 +140,13 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateCrouchAnimation();
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             mController.InputVelocity();
-            mController.Movement.Move(mController.StatusProperty.CrouchMaxSpeed, mController.StatusProperty.Acceleration);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.CrouchMaxSpeed, mController.StatusManager.PlayerStatusData.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }
@@ -215,13 +213,13 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateCrouchAnimation();
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             mController.InputVelocity();
-            mController.Movement.Move(mController.StatusProperty.CrouchMaxSpeed, mController.StatusProperty.Acceleration);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.CrouchMaxSpeed, mController.StatusManager.PlayerStatusData.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }
@@ -284,13 +282,13 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateCrouchAnimation();
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             mController.InputVelocity();
-            mController.Movement.Move(mController.StatusProperty.CrouchMaxSpeed, mController.StatusProperty.Acceleration);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.CrouchMaxSpeed, mController.StatusManager.PlayerStatusData.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }
