@@ -42,16 +42,16 @@ namespace MyAssets
     // InputManagerクラス
     public class InputManager
     {
-        private static InputSystem_Actions mInputAction;
+        private static InputSystem_Actions  mInputAction;
 
-        public static InputSystem_Actions InputActions => mInputAction;
+        public static InputSystem_Actions   InputActions => mInputAction;
 
-        private static List<InputAction> mButtonActions = new List<InputAction>();
+        private static List<InputAction>    mButtonActions = new List<InputAction>();
 
-        private static string mCurrentControlScheme = "Keyboard&Mouse"; // デフォルト
-        public static string CurrentControlScheme => mCurrentControlScheme;
+        private static string               mCurrentControlScheme = "Keyboard&Mouse"; // デフォルト
+        public static string                CurrentControlScheme => mCurrentControlScheme;
 
-        public static bool IsCurrentControlSchemeKeyBoard => mCurrentControlScheme == "Keyboard&Mouse";
+        public static bool                  IsCurrentControlSchemeKeyBoard => mCurrentControlScheme == "Keyboard&Mouse";
 
         public static System.Action<string> OnControlSchemeChanged;
 

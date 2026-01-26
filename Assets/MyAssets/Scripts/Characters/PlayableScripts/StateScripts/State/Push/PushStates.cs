@@ -62,7 +62,7 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            PlayerStatusManager.Instance.ChangeSP(mPlayableInput.Sprit);
+            mController.StatusManager.ChangeSP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -153,7 +153,7 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            PlayerStatusManager.Instance.ChangeSP(mPlayableInput.Sprit);
+            mController.StatusManager.ChangeSP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -240,7 +240,7 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            PlayerStatusManager.Instance.ChangeSP(mPlayableInput.Sprit);
+            mController.StatusManager.ChangeSP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

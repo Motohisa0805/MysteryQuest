@@ -10,9 +10,9 @@ namespace MyAssets
         {
             None = -1,
             Up = 0,
-            Down = 1,
-            Left = 2,
-            Right = 3,
+            Down,
+            Left,
+            Right,
         }
 
         private List<InputTextImage> mButtonTextures = new List<InputTextImage>();
@@ -31,6 +31,9 @@ namespace MyAssets
         private void Start()
         {
             PlayerUIManager.Instance.ActionButtonController = this;
+
+            ActiveButton(4, "ÉÅÉjÉÖÅ[");
+            ActiveButton(5, "L1");
         }
 
         public void UpdateActionButton()
@@ -55,7 +58,6 @@ namespace MyAssets
             {
                 EnterButton((int)ActionButtonTag.Right);
             }
-
         }
 
         public void ActiveButton(int id,string text,int fontsize = 20)

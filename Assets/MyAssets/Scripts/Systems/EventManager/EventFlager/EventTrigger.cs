@@ -7,12 +7,14 @@ namespace MyAssets
     public class EventTrigger : MonoBehaviour
     {
         [SerializeField]
-        private UnityEvent  mOnEvent;
+        private UnityEvent                  mOnEvent;
 
         [SerializeField]
-        private bool        mIsRePlay = false;
+        private bool                        mIsRePlay = false;
 
-        private bool        mHasTriggered = false;
+        private bool                        mHasTriggered = false;
+
+        private PlayableChracterController  mPlayer;
 
         // Update is called once per frame
         private void Update()
@@ -33,8 +35,8 @@ namespace MyAssets
 
         private void OnTriggerEnter(Collider other)
         {
-            PlayableChracterController controller = other.GetComponentInParent<PlayableChracterController>();
-            if (controller != null)
+            mPlayer = other.GetComponentInParent<PlayableChracterController>();
+            if (mPlayer != null)
             {
                 if (!mHasTriggered)
                 {
@@ -52,12 +54,16 @@ namespace MyAssets
             PlayableChracterController controller = other.GetComponentInParent<PlayableChracterController>();
             if (controller != null)
             {
-                if (mHasTriggered)
+                if(mPlayer == controller)
                 {
-                    mHasTriggered = false;
-                    if (PlayerUIManager.Instance.ActionButtonController)
+                    if (mHasTriggered)
                     {
-                        PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Right);
+                        mHasTriggered = false;
+                        if (PlayerUIManager.Instance.ActionButtonController)
+                        {
+                            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Right);
+                            mPlayer = null;
+                        }
                     }
                 }
             }

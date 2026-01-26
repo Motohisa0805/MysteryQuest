@@ -47,14 +47,14 @@ namespace MyAssets
         {
             base.Execute_Update(time);
             mAnimationFunction.Animator.SetFloat("idleToRun", 0.0f);
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             Vector3 eventInput = Vector3.zero;
             mController.InputVelocity(eventInput);
-            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.MaxSpeed, mController.StatusManager.PlayerStatusData.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }

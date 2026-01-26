@@ -60,9 +60,9 @@ namespace MyAssets
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            mChecker.UpdateTakedObjectThrowDirection(PlayerStatusManager.Instance.PlayerStatusData.ThrowPower);
+            mChecker.UpdateTakedObjectThrowDirection(mController.StatusManager.PlayerStatusData.ThrowPower);
             mChecker.UpdateTakedObjectPosition();
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -134,10 +134,10 @@ namespace MyAssets
 
         public override void Execute_Update(float time)
         {
-            mChecker.UpdateTakedObjectThrowDirection(PlayerStatusManager.Instance.PlayerStatusData.ThrowPower);
+            mChecker.UpdateTakedObjectThrowDirection(mController.StatusManager.PlayerStatusData.ThrowPower);
             mChecker.UpdateTakedObjectPosition();
             base.Execute_Update(time);
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -165,6 +165,8 @@ namespace MyAssets
         public static readonly string mStateKey = "Throwing";
         public override string Key => mStateKey;
 
+        private PlayableChracterController mController;
+
         private PlayableInput mPlayableInput;
 
         private PlayableAnimationFunction mAnimationFunction;
@@ -191,6 +193,7 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
+            mController = actor.GetComponent<PlayableChracterController>();
             mPlayableInput = actor.GetComponent<PlayableInput>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
@@ -216,10 +219,10 @@ namespace MyAssets
             bool flag = mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1.0f && mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.6f && mAnimationFunction.Animator.GetCurrentAnimatorStateInfo(0).IsName("throwing");
             if (!mThrowed && flag)
             {
-                mChecker.Throw(PlayerStatusManager.Instance.PlayerStatusData.ThrowPower);
+                mChecker.Throw(mController.StatusManager.PlayerStatusData.ThrowPower);
                 mThrowed = true;
             }
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

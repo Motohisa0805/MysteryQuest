@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //幽体離脱モード時の状態
     [System.Serializable]
     public class OutOfBodyExperienceState : StateBase<string>
     {
@@ -17,7 +18,7 @@ namespace MyAssets
         private CapsuleColliderController   mColliderController;
 
         [SerializeField]
-        private float mCrouchHeight;
+        private float                       mCrouchHeight;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -43,22 +44,22 @@ namespace MyAssets
             mController.Movement.Stop();
             mAnimationFunction.Animator.SetInteger("outOfBodyState", 0);
             mController.SoulPlayerController.EnableSoul();
-
+            //コライダーの高さ、位置変更
             float standingHeight = mColliderController.CapsuleCollider.height;
             float crouchHeight = mCrouchHeight;
             float crouchCenter_Y = mColliderController.CapsuleCollider.center.y - (standingHeight - crouchHeight) / 2;
-            mColliderController.SetHeight(crouchHeight);
-            Vector3 c = mColliderController.CapsuleCollider.center;
-            mColliderController.SetCenter(new Vector3(c.x, crouchCenter_Y, c.z));
+            mColliderController.ChangeCapsule(standingHeight, crouchHeight, crouchCenter_Y);
 
+            //プレイヤーのモデルカラー変更
             mController.CharacterColorController.SetAllColors(Color.gray);
-
+            //UIの設定
             PlayerUIManager.Instance.ActionButtonController.AllDisableButton();
             PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Right, "取る");
             PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Down, "解除");
-
+            PlayerUIManager.Instance.DotImageController.gameObject.SetActive(true);
+            //カメラの変更
             TPSCamera.CameraType = TPSCamera.Type.ShoulderView;
-
+            //効果音再生
             SoundManager.Instance.PlayOneShot2D("EnabledSkil_Playerl");
         }
 
@@ -72,9 +73,10 @@ namespace MyAssets
 
         public override void Execute_FixedUpdate(float time)
         {
+            mController.Movement.Stop();
             mController.SoulPlayerController.TakeObjectment.UpdateTakeObject();
             mController.SoulPlayerController.InputVelocity();
-            mController.SoulPlayerController.FloatingMovement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
+            mController.SoulPlayerController.FloatingMovement.Move(mController.StatusManager.PlayerStatusData.MaxSpeed, mController.StatusManager.PlayerStatusData.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.SoulPlayerController.SyncRotationWithCamera();
         }
@@ -94,6 +96,7 @@ namespace MyAssets
             mController.SoulPlayerController.TakeObjectment.ClearFocus();
             //プレイヤーUI周りの後処理
             PlayerUIManager.Instance.ActionButtonController.AllDisableButton();
+            PlayerUIManager.Instance.DotImageController.gameObject.SetActive(false);
 
             TPSCamera.CameraType = TPSCamera.Type.Free;
             SoundManager.Instance.PlayOneShot2D("DisableSkil_Playerl");

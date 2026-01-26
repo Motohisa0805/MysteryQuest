@@ -36,6 +36,9 @@ namespace MyAssets
         private ActionButtonController      mButtonController;
         public ActionButtonController       ActionButtonController { get { return mButtonController; } set { mButtonController = value; } }
 
+        private DotImageController          mDotImageController;
+        public DotImageController           DotImageController { get { return mDotImageController; }set{ mDotImageController = value; } }
+
         private void OnEnable()
         {
             // シーンがロードされた時のイベントに登録

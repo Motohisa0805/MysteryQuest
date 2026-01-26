@@ -88,26 +88,28 @@ namespace MyAssets
     {
 
         readonly private PlayableInput mInput;
+        readonly private PlayableChracterController mController;
         public IsSpritDushTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-
+            mController = actor.GetComponentInChildren<PlayableChracterController>();
         }
-        public override bool IsTransition() => mInput.Sprit && !PlayerStatusManager.Instance.IsStaminaCoolDown;
+        public override bool IsTransition() => mInput.Sprit && !mController.StatusManager.IsStaminaCoolDown;
     }
 
     public class IsNotSpritDushTransition : StateTransitionBase
     {
 
         readonly private PlayableInput mInput;
+        readonly private PlayableChracterController mController;
         public IsNotSpritDushTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-
+            mController = actor.GetComponent<PlayableChracterController>();
         }
-        public override bool IsTransition() => !mInput.Sprit || PlayerStatusManager.Instance.IsStaminaCoolDown;
+        public override bool IsTransition() => !mInput.Sprit || mController.StatusManager.IsStaminaCoolDown;
     }
 
     public class IsFocusingMoveTransition : StateTransitionBase

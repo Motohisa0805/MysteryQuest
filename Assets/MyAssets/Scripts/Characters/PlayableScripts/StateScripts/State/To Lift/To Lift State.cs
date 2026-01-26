@@ -61,7 +61,7 @@ namespace MyAssets
             base.Execute_Update(time);
             mChecker.CheckTheDistanceHandsAndObject();
             mChecker.UpdateTakedObjectPosition();
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
             PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
@@ -69,7 +69,7 @@ namespace MyAssets
 
         public override void Execute_FixedUpdate(float time)
         {
-            mController.Movement.Move(mController.StatusProperty.MaxSpeed, 0);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.MaxSpeed, 0);
             base.Execute_FixedUpdate(time);
         }
 
@@ -145,7 +145,7 @@ namespace MyAssets
             mChecker.UpdateTakedObjectPosition();
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -154,7 +154,7 @@ namespace MyAssets
             // Idle状態の特定の物理処理をここに追加できます
             // 例: 重力の適用、衝突判定など
             mController.InputVelocity();
-            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.MaxSpeed, mController.StatusManager.PlayerStatusData.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }
@@ -228,13 +228,13 @@ namespace MyAssets
             mChecker.UpdateTakedObjectPosition();
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             mController.InputVelocity();
-            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.MaxSpeed, mController.StatusManager.PlayerStatusData.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }
@@ -314,7 +314,7 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateIdleToRunAnimation();
-            PlayerStatusManager.Instance.RecoverySP(mPlayableInput.Sprit);
+            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -322,7 +322,7 @@ namespace MyAssets
             // Idle状態の特定の物理処理をここに追加できます
             // 例: 重力の適用、衝突判定など
             mController.InputVelocity();
-            mController.Movement.Move(mController.StatusProperty.MaxSpeed, mController.StatusProperty.Acceleration);
+            mController.Movement.Move(mController.StatusManager.PlayerStatusData.MaxSpeed, mController.StatusManager.PlayerStatusData.Acceleration);
             base.Execute_FixedUpdate(time);
             mController.FreeRotate();
         }

@@ -3,10 +3,16 @@ using UnityEngine;
 
 namespace MyAssets
 {
-    [RequireComponent(typeof(PlayableAnimationFunction))]
+    //下記はコントローラーに必要なクラスのため
+    //絶対にアタッチするようにしている
     [RequireComponent(typeof(PlayableInput))]
     [RequireComponent(typeof(Movement))]
+    [RequireComponent(typeof(PlayableAnimationFunction))]
     [RequireComponent(typeof(PropsObjectChecker))]
+    [RequireComponent(typeof(DamageChecker))]
+    [RequireComponent(typeof(TargetSearch))]
+    [RequireComponent(typeof(ChemistryObject))]
+    [RequireComponent(typeof(CapsuleColliderController))]
     public class PlayableChracterController : MonoBehaviour
     {
 
@@ -18,6 +24,7 @@ namespace MyAssets
         public StateMachine<string>         StateMachine => mStateMachine;
 
         private StateBase<string>[]         mStates;
+        //状態のクラス群
         [Header("状態一覧")]
         [SerializeField]
         private IdleState                   mIdleState;
@@ -75,7 +82,7 @@ namespace MyAssets
         private ClimbJumpState              mClimbJumpState;
         [SerializeField]
         private ClimbState                  mClimbState;
-
+        [Header("ダメージ、死亡関係の状態")]
         [SerializeField]
         private MediumImpactPlayerState     mSmallImpactPlayerState;
         [SerializeField]
@@ -84,7 +91,7 @@ namespace MyAssets
         private StandingUpState             mStandingUpState;
         [SerializeField]
         private DeathPlayerState            mDeathPlayerState;
-
+        [Header("道具、特殊周りの状態")]
         [SerializeField]
         private WeaponTakingOutState        mWeaponTakingOutState;
         [SerializeField]
@@ -107,27 +114,30 @@ namespace MyAssets
 
         [Header("キャラクターのステータス")]
         [SerializeField]
-        private PlayerStatusPropaty         mStatusProperty;
-        public PlayerStatusPropaty          StatusProperty => mStatusProperty;
-
+        private PlayerStatusManager        mStatusManager;
+        public PlayerStatusManager         StatusManager => mStatusManager;
+        //プレイヤーの動作を実行するクラス群
+        //Rigidbody
         private Rigidbody                   mRigidbody; //リジッドボディ
         public Rigidbody                    Rigidbody => mRigidbody;
         private PlayableInput               mPlayableInput; //インプット
+        //入力処理
         public PlayableInput                Input => mPlayableInput;
+        //アニメーション処理
         private PlayableAnimationFunction   mPlayableAnimationFunction;
         public PlayableAnimationFunction    PlayableAnimationFunction => mPlayableAnimationFunction;
+        //動かす処理
         private Movement                    mMovement; //ムーブメント
         public Movement                     Movement => mMovement;
-
+        //ダメージ処理
         private DamageChecker               mImpactChecker;
         public DamageChecker                ImpactChecker => mImpactChecker;
-
+        //追跡処理
         private TargetSearch                mTargetSearch;
         public TargetSearch                 TargetSearch => mTargetSearch;
-
+        //モデルのカラー管理処理
         private CharacterColorController    mCharacterColorController;
         public CharacterColorController     CharacterColorController => mCharacterColorController;
-
         //プレイヤーのスキルを管理するクラス
         private SoulPlayerController        mSoulPlayerController;
         public SoulPlayerController         SoulPlayerController => mSoulPlayerController;
@@ -278,6 +288,8 @@ namespace MyAssets
             mStateMachine.ChangeState(mCurrentStateKey);
 
             mPlayableAnimationFunction.SetUp();
+
+            mStatusManager = PlayerStatusManager.Instance;
         }
 
         private void Update()
@@ -356,7 +368,7 @@ namespace MyAssets
                     Vector3 velocity = mRigidbody.linearVelocity;
                     velocity.y = 0; // 水平方向の速度のみを考慮
                     Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusProperty.RotationSpeed * magnification);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusManager.PlayerStatusData.RotationSpeed * magnification);
                 }
             }
             else
@@ -368,7 +380,7 @@ namespace MyAssets
                 Vector3 velocity = mTargetSearch.TargetObject.transform.position - transform.position;
                 velocity.y = 0; // 水平方向の速度のみを考慮
                 Quaternion targetRotation = Quaternion.LookRotation(velocity.normalized, Vector3.up);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusProperty.RotationSpeed * magnification);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusManager.PlayerStatusData.RotationSpeed * magnification);
             }
         }
 
@@ -381,7 +393,7 @@ namespace MyAssets
                 Vector3 velocity = mRigidbody.linearVelocity;
                 velocity.y = 0; // 水平方向の速度のみを考慮
                 Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusProperty.RotationSpeed);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, mStatusManager.PlayerStatusData.RotationSpeed);
             }
         }
 
@@ -403,7 +415,7 @@ namespace MyAssets
             transform.rotation = Quaternion.RotateTowards(
                 transform.rotation,
                 targetRotation,
-                StatusProperty.ShoulderViewRotationSpeed * Time.deltaTime
+                StatusManager.PlayerStatusData.ShoulderViewRotationSpeed * Time.deltaTime
             );
         }
 

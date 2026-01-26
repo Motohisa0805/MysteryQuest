@@ -217,3 +217,12 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
+  - mID: -2030731545
+    mLabel: TakeObjectRotate
+    mClips:
+    - {fileID: 8300000, guid: bc3a901e6c736da41a9a98bcc3854142, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
