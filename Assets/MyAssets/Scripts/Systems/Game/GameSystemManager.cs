@@ -17,6 +17,9 @@ namespace MyAssets
 
         public ChemistryTable               ChemistryTable => mChemistryTable;
 
+        private AudioSource                 mGameSoundEffect;
+
+
         private void Awake()
         {
             if (instance != null)
@@ -45,16 +48,23 @@ namespace MyAssets
         {
             SceneList sceneIndex = (SceneList)scene.buildIndex;
             
+            if(mGameSoundEffect != null)
+            {
+                SoundManager.Instance.StopLoopSE(mGameSoundEffect);
+            }
+
             switch(sceneIndex)
             {
                 case SceneList.Title:
                     SoundManager.Instance.PlayBGM("TitleBGM");
+                    mGameSoundEffect = SoundManager.Instance.PlayLoopSE("Wind", transform.position, transform);
                     break;
                 case SceneList.Select:
                     SoundManager.Instance.PlayBGM("SelectBGM");
                     break;
                 default:
                     SoundManager.Instance.StopBGM();
+                    mGameSoundEffect = SoundManager.Instance.PlayLoopSE("Wind", transform.position, transform);
                     break;
             }
         }

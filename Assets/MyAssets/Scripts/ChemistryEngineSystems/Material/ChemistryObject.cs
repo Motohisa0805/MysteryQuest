@@ -347,7 +347,7 @@ namespace MyAssets
                 mCurrentHeatAccumulated += heatPower * Time.deltaTime;
                 if(mPreparationElementEffect == null)
                 {
-                    mPreparationElementEffect = EffectManager.Instance.PlayEffect<ParticleSystem>(2, transform.position, Quaternion.identity, Vector3.one, transform).GetComponent<EffectReturner>();
+                    mPreparationElementEffect = EffectManager.Instance.PlayEffect<ParticleSystem>("Smoke", transform.position, Quaternion.identity, Vector3.one, transform).GetComponent<EffectReturner>();
                 }
             }
             else
@@ -424,7 +424,7 @@ namespace MyAssets
                 {
                     transform = GetComponentInChildren<FreeCameraTargetPoint>().transform;
                 }
-                mElementEffect = EffectManager.Instance.PlayEffect<ParticleSystem>(result.mEffectID, transform.position, Quaternion.identity,Vector3.one,transform).GetComponent<EffectReturner>();
+                mElementEffect = EffectManager.Instance.PlayEffect<ParticleSystem>(result.mEffectLabel, transform.position, Quaternion.identity,Vector3.one,transform).GetComponent<EffectReturner>();
                 SetParticleShapeToCollider(mElementEffect.ParticleSystem);
                 SoundManager.Instance.PlayOneShot3D("Object_InFire", transform.position, transform);
                 SoundManager.Instance.PlayOneShot3D("Object_Fire", transform.position, transform,true,true, mMaterialObjectInfo.mDestroyDelay);
@@ -559,7 +559,7 @@ namespace MyAssets
         public void AddBreakPower(Vector3 power, Vector3 hitPoint)
         {
             mRigidbody.AddForce(power, ForceMode.Impulse);
-            EffectManager.Instance.PlayEffect<Transform>(1, hitPoint, Quaternion.identity, Vector3.one);
+            EffectManager.Instance.PlayEffect<Transform>("Impact", hitPoint, Quaternion.identity, Vector3.one);
             if (IsBreakObject)
             {
                 mHitPoint -= power.magnitude;

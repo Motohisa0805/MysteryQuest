@@ -312,5 +312,11 @@ namespace MyAssets
             }
             return default(T);
         }
+
+        public T PlayEffect<T>(string effectLabel, Vector3 position, Quaternion rotation, Vector3 scale, Transform parent = null)
+        {
+            int id = Animator.StringToHash(effectLabel);
+            return PlayEffect<T>(id, position, rotation, scale, parent);
+        }
     }
 }

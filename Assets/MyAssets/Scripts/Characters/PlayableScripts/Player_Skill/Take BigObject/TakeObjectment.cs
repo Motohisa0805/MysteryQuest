@@ -24,41 +24,41 @@ namespace MyAssets
             public float        mRotationElapsedTime;
         }
 
-        private Transform       mBaseTransform;
+        private Transform                   mBaseTransform;
 
-        private PlayableInput   mPlayableInput;
+        private PlayableInput               mPlayableInput;
 
-
-        [SerializeField]
-        private float           mRayDistance = 5f;
 
         [SerializeField]
-        private LayerMask       mHitMask;
+        private float                       mRayDistance = 5f;
 
-        private RaycastHit      mInteractableHit;
+        [SerializeField]
+        private LayerMask                   mHitMask;
+
+        private RaycastHit                  mInteractableHit;
 
         //取得したオブジェクトを格納する変数
         [SerializeField]
-        private ChemistryObject mChemistryObject;
-        public ChemistryObject ChemistryObject => mChemistryObject;
+        private ObjectSizeType              mObjectSizeType;
+        public ObjectSizeType               ObjectSizeType => mObjectSizeType;
         // 今見ている（選択候補の）オブジェクト
-        private ChemistryObject mFocusedObject;      
+        private ObjectSizeType              mFocusedObject;      
         // Rigidbodyを保持
-        private Rigidbody       mTargetRb;
+        private Rigidbody                   mTargetRb;
         [Header("取得しているか")]
         [SerializeField]
-        private bool            mIsTaked;
+        private bool                        mIsTaked;
 
         [SerializeField]
-        private TakeObjectInfo  mTakeObjectInfo;
+        private TakeObjectInfo              mTakeObjectInfo;
 
 
-        private AudioSource     mTakingObjectSoundSource;
+        private AudioSource                 mTakingObjectSoundSource;
 
         private TakeObjectLineVFXController mTakeObjectLineVFXController;
 
-        private float mFollowSpeed = 20f;
-        private float mMaxVelocity = 15f;
+        private float                       mFollowSpeed = 20f;
+        private float                       mMaxVelocity = 15f;
 
         public void Setup(Transform transform)
         {
@@ -79,7 +79,7 @@ namespace MyAssets
         //取得したオブジェクトを操作する処理
         public void TakeObjectInput()
         {
-            if(mChemistryObject == null)return;
+            if(mObjectSizeType == null)return;
             //一度に回転させる角度
             float oneRotate = 45.0f;
             Quaternion deltaRotation = Quaternion.identity;
@@ -112,7 +112,7 @@ namespace MyAssets
             if (pressed)
             {
                 // 現在の「目標回転」の前に差分を掛けて、プレイヤー基準の回転
-                mTakeObjectInfo.mStartRotation = mChemistryObject.transform.rotation;
+                mTakeObjectInfo.mStartRotation = mObjectSizeType.transform.rotation;
                 mTakeObjectInfo.mRotation = deltaRotation * mTakeObjectInfo.mRotation;
 
                 mTakeObjectInfo.mRotationElapsedTime = 0f;
@@ -137,7 +137,7 @@ namespace MyAssets
                 if (hitObj != mPlayableInput.gameObject)
                 {
                     // ChemistryObjectを持っているか確認
-                    if (hitObj.TryGetComponent<ChemistryObject>(out ChemistryObject target))
+                    if (hitObj.TryGetComponent<ObjectSizeType>(out ObjectSizeType target))
                     {
                         // 新しいオブジェクトを見つけた瞬間だけ処理
                         if (mFocusedObject != target)
@@ -168,7 +168,7 @@ namespace MyAssets
                 GrabObject();
             }
         }
-        private void SetFocus(ChemistryObject target)
+        private void SetFocus(ObjectSizeType target)
         {
             mFocusedObject = target;
             EffectManager.Instance.ObjectMaterialSelector.ActivateEffect(mFocusedObject.gameObject);
@@ -184,20 +184,20 @@ namespace MyAssets
         // 掴む処理
         private void GrabObject()
         {
-            mChemistryObject = mFocusedObject;
+            mObjectSizeType = mFocusedObject;
 
-            if (mChemistryObject.TryGetComponent<Rigidbody>(out mTargetRb))
+            if (mObjectSizeType.TryGetComponent<Rigidbody>(out mTargetRb))
             {
                 mTargetRb.useGravity = false;
                 mTargetRb.isKinematic = false;
             }
             //取得した時の回転を取得
             mTakeObjectInfo.mRotationElapsedTime = 0f;
-            mTakeObjectInfo.mRotation = mChemistryObject.transform.rotation;
-            mTakeObjectInfo.mStartRotation = mChemistryObject.transform.rotation;
+            mTakeObjectInfo.mRotation = mObjectSizeType.transform.rotation;
+            mTakeObjectInfo.mStartRotation = mObjectSizeType.transform.rotation;
 
             //取得した時の距離を取得
-            mTakeObjectInfo.mDistance = Math.Abs((mBaseTransform.position - mChemistryObject.transform.position).magnitude);
+            mTakeObjectInfo.mDistance = Math.Abs((mBaseTransform.position - mObjectSizeType.transform.position).magnitude);
             //取得フラグを有効に
             mIsTaked = true;
 
@@ -205,7 +205,7 @@ namespace MyAssets
             // ただしレイヤーは戻さない（掴んでいる間も光らせたい場合）
             mFocusedObject = null;
 
-            mTakeObjectLineVFXController.SetEndTransform(mChemistryObject.transform);
+            mTakeObjectLineVFXController.SetEndTransform(mObjectSizeType.transform);
             mTakeObjectLineVFXController.gameObject.SetActive(true);
 
             SoundManager.Instance.PlayOneShot2D("Take_Object");
@@ -214,12 +214,12 @@ namespace MyAssets
         public void UpdateTakeObject()
         {
             //オブジェクトが取得途中でなくなった時の処理
-            if(mChemistryObject == null)
+            if(mObjectSizeType == null)
             {
                 mTakeObjectLineVFXController.SetEndTransform(mBaseTransform);
                 mTakeObjectLineVFXController.gameObject.SetActive(false);
                 mIsTaked = false;
-                mChemistryObject = null;
+                mObjectSizeType = null;
                 return;
             }
 
@@ -263,7 +263,7 @@ namespace MyAssets
         }
         public void TakeOffObject()
         {
-            if (mChemistryObject == null) return;
+            if (mObjectSizeType == null) return;
 
             if (mTargetRb != null)
             {
@@ -272,11 +272,11 @@ namespace MyAssets
                 mTargetRb = null;
             }
             SoundManager.Instance.StopLoopSE(mTakingObjectSoundSource);
-            EffectManager.Instance.ObjectMaterialSelector.DeactivateEffect(mChemistryObject.gameObject);
+            EffectManager.Instance.ObjectMaterialSelector.DeactivateEffect(mObjectSizeType.gameObject);
             mTakeObjectLineVFXController.SetEndTransform(mBaseTransform);
             mTakeObjectLineVFXController.gameObject.SetActive(false);
             mIsTaked = false;
-            mChemistryObject = null;
+            mObjectSizeType = null;
         }
     }
 }

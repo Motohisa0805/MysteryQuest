@@ -86,7 +86,7 @@ namespace MyAssets
                 mIsOn = !mIsOn;
                 SendSignal(mIsOn);
                 Vector3 hitPoint = other.ClosestPoint(transform.position);
-                EffectManager.Instance.PlayEffect<Transform>(1, hitPoint, Quaternion.identity, Vector3.one);
+                EffectManager.Instance.PlayEffect<Transform>("Impact", hitPoint, Quaternion.identity, Vector3.one);
             }
         }
 

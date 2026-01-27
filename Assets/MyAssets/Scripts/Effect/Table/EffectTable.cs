@@ -47,6 +47,23 @@ namespace MyAssets
             return null;   
         }
 
+        public EffectElement GetEffect(string label)
+        {
+            return GetEffect(Animator.StringToHash(label));
+        }
+
+        // --- Unity Editor用自動処理 ---
+
+        // インスペクターで値が変更された時に呼ばれる（エディタ専用）
+        private void OnValidate()
+        {
+            // リスト内のすべての要素に対してIDを再計算
+            foreach (var element in mEffects)
+            {
+                element.GenerateID();
+            }
+        }
+
         // --- ISerializationCallbackReceiver の実装 ---
         // ScriptableObjectが読み込まれた際にDictionaryを構築する
         public void OnAfterDeserialize()

@@ -1666,7 +1666,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659870673bc9a6942ba0dea2d91c4bfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.LoadSceneButton
-  sceneTag: 2
+  mSceneTag: 2
 --- !u!1 &3786909392616817150
 GameObject:
   m_ObjectHideFlags: 0
@@ -2995,7 +2995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659870673bc9a6942ba0dea2d91c4bfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.LoadSceneButton
-  sceneTag: 2
+  mSceneTag: 2
 --- !u!1 &5702087862628239299
 GameObject:
   m_ObjectHideFlags: 0
@@ -3318,7 +3318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659870673bc9a6942ba0dea2d91c4bfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.LoadSceneButton
-  sceneTag: 2
+  mSceneTag: 0
 --- !u!1 &6065924005173134388
 GameObject:
   m_ObjectHideFlags: 0
