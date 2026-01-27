@@ -13,43 +13,48 @@ MonoBehaviour:
   m_Name: BGMSoundList
   m_EditorClassIdentifier: Assembly-CSharp::SoundList
   mSEList:
-  - mID: 0
+  - mID: -995768140
     mLabel: StageBGM01
     mClips:
     - {fileID: 8300000, guid: 1bd666968bca55c4c87721cdaf471dd4, type: 3}
     volume: 0.5
     pitchRange: 0
+    mSpatialBlend: 0
     mMinDistance: 0
     mMaxDistance: 0
-  - mID: 1
+  - mID: -1365097336
     mLabel: TitleBGM
     mClips:
-    - {fileID: 8300000, guid: e51832921491c404394fa6415cf2a680, type: 3}
+    - {fileID: 8300000, guid: f7012d600fd931046b13ac2fec08de1c, type: 3}
     volume: 0.5
     pitchRange: 0
+    mSpatialBlend: 0
     mMinDistance: 0
     mMaxDistance: 0
-  - mID: 2
+  - mID: -545851219
     mLabel: SelectBGM
     mClips:
     - {fileID: 8300000, guid: bb4a4a79fca2a204f8c48ed8a79a6735, type: 3}
     volume: 0.5
     pitchRange: 0
+    mSpatialBlend: 0
     mMinDistance: 0
     mMaxDistance: 0
-  - mID: 3
+  - mID: -1537090363
     mLabel: GameOverBGM
     mClips:
     - {fileID: 8300000, guid: 467dd7edba377f24dbd9c1ddc5b23904, type: 3}
     volume: 0.5
     pitchRange: 0
+    mSpatialBlend: 0
     mMinDistance: 0
     mMaxDistance: 0
-  - mID: 4
+  - mID: -1903465442
     mLabel: GameClearBGM
     mClips:
     - {fileID: 8300000, guid: 0307647d4f2d9404395f7b62eeab0f8e, type: 3}
     volume: 0.5
     pitchRange: 0
+    mSpatialBlend: 0
     mMinDistance: 0
     mMaxDistance: 0

@@ -226,3 +226,30 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
+  - mID: 1465692184
+    mLabel: Applause and cheers
+    mClips:
+    - {fileID: 8300000, guid: b8b453165766ed749b79b426cb88e60b, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -2126906432
+    mLabel: Wind
+    mClips:
+    - {fileID: 8300000, guid: d94b76eb5ceb3414c96246a392be9f19, type: 3}
+    volume: 0.5
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 1663845691
+    mLabel: GameStart_Decide
+    mClips:
+    - {fileID: 8300000, guid: 08e678a4cf565644dafbe5d453c7ee19, type: 3}
+    volume: 0.5
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10

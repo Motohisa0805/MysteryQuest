@@ -31,24 +31,24 @@ namespace MyAssets
     {
         //ステージ情報を全て持ったスクリプタブルオブジェクト
         [SerializeField]
-        private StageInformationList mStageInformationList;
-        public StageInformationList StageInformationList => mStageInformationList;
+        private StageInformationList    mStageInformationList;
+        public StageInformationList     StageInformationList => mStageInformationList;
         //現在選択中のステージ情報
-        private StageInformation mCurrentStageInformation;
-        public StageInformation CurrentStageInformation => mCurrentStageInformation;
+        private StageInformation        mCurrentStageInformation;
+        public StageInformation         CurrentStageInformation => mCurrentStageInformation;
         //現在のステージ番号
-        private int mCurrentStageIndex;
+        private int                     mCurrentStageIndex;
 
         //ステージ情報を代入する先をまとめて宣言した構造体
         [SerializeField]
-        private StageSelectData mStageDataObject;
+        private StageSelectData         mStageDataObject;
 
 
-        private StageCountController mStageCounter;
+        private StageCountController    mStageCounter;
 
         //ステージをロードするボタンを宣言
         [SerializeField]
-        private LoadSceneButton mLoadSceneButton;
+        private LoadSceneButton         mLoadSceneButton;
 
         public void ChangeStageInformationPage(int index)
         {

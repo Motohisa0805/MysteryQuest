@@ -6,19 +6,19 @@ namespace MyAssets
     public class LoadSceneButton : MonoBehaviour
     {
         [SerializeField]
-        public SceneList sceneTag;
+        public SceneList            mSceneTag;
 
-        private BlackoutController mBlackoutController;
+        private BlackoutController  mBlackoutController;
         public void LoadScene()
         {
             if (mBlackoutController != null)
             {
-                mBlackoutController.StartBlackout((int)sceneTag);
+                mBlackoutController.StartBlackout((int)mSceneTag);
             }
             else
             {
                 mBlackoutController = FindAnyObjectByType<BlackoutController>();
-                mBlackoutController.StartBlackout((int)sceneTag);
+                mBlackoutController.StartBlackout((int)mSceneTag);
             }
             SoundManager.Instance.PlayOneShot2D("Decide_Button", false);
         }
@@ -39,7 +39,7 @@ namespace MyAssets
 
         public void SetTag(SceneList sceneTag)
         {
-            this.sceneTag = sceneTag;
+            this.mSceneTag = sceneTag;
         }
     }
 }

@@ -191,7 +191,7 @@ namespace MyAssets
             for(int i = 0; i < mAudioObjects.Count;i++)
             {
                 //オーディオソースが有効ならコンテニュー
-                if (mAudioObjects[i].gameObject.activeSelf)
+                if (mAudioObjects[i].gameObject.activeSelf || mAudioObjects[i].clip != null)
                 {
                     continue;
                 }
@@ -365,6 +365,7 @@ namespace MyAssets
             source.Stop(); // 念のため
             source.transform.SetParent(transform); // 親を戻す
             source.gameObject.SetActive(false);
+            source.clip = null;
         }
 
         public void ReturnAudioSource(AudioSource source)
@@ -377,9 +378,6 @@ namespace MyAssets
 
         public AudioSource PlayLoopSE(int id, Vector3 position,Transform parent = null)
         {
-            // 開始直後のミュート判定
-            if (Time.timeSinceLevelLoad < mMuteDurationAtStart) return null;
-
             //クリップの取得
             SoundList.SEElement seElement = mSoundList.GetElement(id);
             if (seElement == null) return null;

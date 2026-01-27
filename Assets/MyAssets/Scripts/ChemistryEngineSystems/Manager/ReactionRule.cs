@@ -33,6 +33,8 @@ namespace MyAssets
 
         [Tooltip("発生させるエフェクトID")]
         public int mEffectID;
+        [Tooltip("発生させるエフェクトLabel")]
+        public string mEffectLabel;
     }
     [Serializable]
     public class ReactionRule

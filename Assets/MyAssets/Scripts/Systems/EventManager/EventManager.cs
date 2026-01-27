@@ -22,6 +22,7 @@ namespace MyAssets
         private List<EventPoint> mEventMovePointList = new List<EventPoint>();
         public List<EventPoint> EventMovePointList => mEventMovePointList;
 
+        private EffectReturner mConfettiParticleSystem;
         private void Awake()
         {
             mInstance = this;
@@ -173,6 +174,15 @@ namespace MyAssets
             InputManager.SetNoneMouseMode();
             GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.HUD);
             GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Result);
+
+            TPSCamera camera = FindAnyObjectByType<TPSCamera>();
+            if (camera != null)
+            {
+                mConfettiParticleSystem = EffectManager.Instance.PlayEffect<ParticleSystem>("Confetti", Vector3.zero, Quaternion.identity, Vector3.one, camera.transform).GetComponent<EffectReturner>();
+                mConfettiParticleSystem.transform.localPosition = new Vector3(0, 2.5f, 5);
+
+                SoundManager.Instance.PlayOneShot2D("Applause and cheers");
+            }
         }
 
         public async UniTaskVoid DeathEvent()
@@ -190,6 +200,12 @@ namespace MyAssets
 
         private void OnDestroy()
         {
+            if (mConfettiParticleSystem != null)
+            {
+                // オブジェクトは残るので、くっついたままフェードアウトさせる (false)
+                mConfettiParticleSystem.StopAndReturn(false);
+                mConfettiParticleSystem = null;
+            }
             mInstance = null;
         }
     }

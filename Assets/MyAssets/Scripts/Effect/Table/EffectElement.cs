@@ -10,6 +10,10 @@ namespace MyAssets
         [SerializeField]
         private int mID;
         public int ID => mID;
+        [Tooltip("エフェクトラベル")]
+        [SerializeField]
+        private string mLabel;
+        public string Label => mLabel;
         [Tooltip("エフェクト本体")]
         [SerializeField]
         private ParticleSystem mParticleSystem;
@@ -29,5 +33,18 @@ namespace MyAssets
         [SerializeField]
         private int mDefaultCapacity;
         public int DefaultCapacity => mDefaultCapacity;
+
+        //IDを自動生成するメソッド
+        public void GenerateID()
+        {
+            if (string.IsNullOrEmpty(mLabel))
+            {
+                mID = 0;
+            }
+            else
+            {
+                mID = Animator.StringToHash(mLabel);
+            }
+        }
     }
 }

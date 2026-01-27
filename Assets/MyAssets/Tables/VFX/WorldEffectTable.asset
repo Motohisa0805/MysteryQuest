@@ -13,21 +13,31 @@ MonoBehaviour:
   m_Name: WorldEffectTable
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.EffectTable
   mEffects:
-  - mID: 0
+  - mID: -1608363877
+    mLabel: IgnitionFire
     mParticleSystem: {fileID: 4330705023626989620, guid: 559b2ba1d38220b44a90f415f300b7f4, type: 3}
     mSizeScale: 1
     mInitObjectCount: 0
     mMaxSize: 10
     mDefaultCapacity: 2
-  - mID: 1
+  - mID: -1012546255
+    mLabel: Impact
     mParticleSystem: {fileID: 5247861218473606451, guid: 977e414f38280694895ba2b75d2f733b, type: 3}
     mSizeScale: 1
     mInitObjectCount: 0
     mMaxSize: 10
     mDefaultCapacity: 2
-  - mID: 2
+  - mID: -2004367746
+    mLabel: Smoke
     mParticleSystem: {fileID: 4791726428221895327, guid: 423a4bbeb2b39564abe25184426a58b8, type: 3}
     mSizeScale: 1
     mInitObjectCount: 0
     mMaxSize: 10
     mDefaultCapacity: 2
+  - mID: -1149278177
+    mLabel: Confetti
+    mParticleSystem: {fileID: 6042346474565134084, guid: 27645218a01a6014eb6eb5357e8e4bff, type: 3}
+    mSizeScale: 1
+    mInitObjectCount: 0
+    mMaxSize: 1
+    mDefaultCapacity: 1
