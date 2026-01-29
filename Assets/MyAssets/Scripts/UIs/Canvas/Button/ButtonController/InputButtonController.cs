@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
 using System.Collections;
+using System;
 
 namespace MyAssets
 {
@@ -24,6 +25,9 @@ namespace MyAssets
         private ButtonHover[]   mHovers;
 
         private bool            mDecideFlag;
+
+        private Action          mOnPublicAction;
+        public Action           OnPublicAction { get { return mOnPublicAction; }set { mOnPublicAction = value; } }
         private void Awake()
         {
             Button[] b = GetComponentsInChildren<Button>();
@@ -182,7 +186,7 @@ namespace MyAssets
             return decideNum;
         }
 
-        private void OnDecide()
+        public void OnDecide()
         {
             if (mDecideFlag) { return; }
             StartCoroutine(DecideUpdate());
@@ -194,6 +198,8 @@ namespace MyAssets
             StartCoroutine(mHovers[mSelectIndex].OnEnter());
             yield return new WaitForSecondsRealtime(0.1f);
             mButtons[mSelectIndex].onClick?.Invoke();
+            //äOïîÇ©ÇÁÇÃèàóùÇ™Ç†ÇÈÇ»ÇÁ
+            mOnPublicAction?.Invoke();
         }
 
         public void ActivateStart()

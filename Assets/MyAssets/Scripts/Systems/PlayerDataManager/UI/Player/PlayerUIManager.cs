@@ -34,7 +34,21 @@ namespace MyAssets
         public StaminaHUDController         StaminaHUDController { get { return mStaminaHUDController; } set { mStaminaHUDController = value; } }
 
         private ActionButtonController      mButtonController;
-        public ActionButtonController       ActionButtonController { get { return mButtonController; } set { mButtonController = value; } }
+        public ActionButtonController       ActionButtonController 
+        {
+            get 
+            {
+                if (mButtonController == null)
+                {
+                    mButtonController = FindAnyObjectByType<ActionButtonController>();
+                }
+                return mButtonController; 
+            }
+            set 
+            {
+                mButtonController = value; 
+            } 
+        }
 
         private DotImageController          mDotImageController;
         public DotImageController           DotImageController { get { return mDotImageController; }set{ mDotImageController = value; } }

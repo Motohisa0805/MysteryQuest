@@ -11,6 +11,9 @@ namespace MyAssets
         private float[] mAlpha = new float[0];
 
         private bool mEnabled = false;
+
+        [SerializeField]
+        private TutorialMovementer[] mTutorialMovementers = new TutorialMovementer[0];
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Start()
         {
@@ -42,6 +45,13 @@ namespace MyAssets
                 mEnabled = !mEnabled;
                 SetImageEnabled();
             }
+        }
+
+        public void ActiveTutorial(int index)
+        {
+            //”z—ñ”ÍˆÍŠO‚È‚ç
+            if(index > mTutorialMovementers.Length - 1) { return; }
+            mTutorialMovementers[index].gameObject.SetActive(true);
         }
     }
 }

@@ -253,3 +253,12 @@ MonoBehaviour:
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
+  - mID: -850060794
+    mLabel: Description_Window_Open
+    mClips:
+    - {fileID: 8300000, guid: 91a7b57fe21350c48929b4292ae20369, type: 3}
+    volume: 0.5
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10

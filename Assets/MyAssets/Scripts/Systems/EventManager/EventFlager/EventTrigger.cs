@@ -8,9 +8,13 @@ namespace MyAssets
     {
         [SerializeField]
         private UnityEvent                  mOnEvent;
-
+        [Header("再度使えるようにするか")]
         [SerializeField]
         private bool                        mIsRePlay = false;
+        [Header("コライダーに当たって起動するか【true:当たって起動、false:入力で起動】")]
+        [SerializeField]
+        private bool                        mHitPlay = false;
+
 
         private bool                        mHasTriggered = false;
 
@@ -21,15 +25,20 @@ namespace MyAssets
         {
             if(mHasTriggered && InputManager.GetKeyDown(KeyCode.eInteract))
             {
-                mOnEvent?.Invoke();
-                if (mIsRePlay)
-                {
-                    mHasTriggered = false;
-                }
-                else
-                {
-                    enabled = false;
-                }
+                EventInvoke();
+            }
+        }
+
+        private void EventInvoke()
+        {
+            mOnEvent?.Invoke();
+            if (mIsRePlay)
+            {
+                mHasTriggered = false;
+            }
+            else
+            {
+                gameObject.SetActive(false);
             }
         }
 
@@ -38,13 +47,20 @@ namespace MyAssets
             mPlayer = other.GetComponentInParent<PlayableChracterController>();
             if (mPlayer != null)
             {
-                if (!mHasTriggered)
+                if(!mHitPlay)
                 {
-                    mHasTriggered = true;
-                    if(PlayerUIManager.Instance.ActionButtonController)
+                    if (!mHasTriggered)
                     {
-                        PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Right, "確認",20);
+                        mHasTriggered = true;
+                        if(PlayerUIManager.Instance.ActionButtonController)
+                        {
+                            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Right, "確認",20);
+                        }
                     }
+                }
+                else
+                {
+                    EventInvoke();
                 }
             }
         }
@@ -56,14 +72,21 @@ namespace MyAssets
             {
                 if(mPlayer == controller)
                 {
-                    if (mHasTriggered)
+                    if (!mHitPlay)
+                    {
+                        if (mHasTriggered)
+                        {
+                            mHasTriggered = false;
+                            if (PlayerUIManager.Instance.ActionButtonController)
+                            {
+                                PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Right);
+                                mPlayer = null;
+                            }
+                        }
+                    }
+                    else
                     {
                         mHasTriggered = false;
-                        if (PlayerUIManager.Instance.ActionButtonController)
-                        {
-                            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Right);
-                            mPlayer = null;
-                        }
                     }
                 }
             }
