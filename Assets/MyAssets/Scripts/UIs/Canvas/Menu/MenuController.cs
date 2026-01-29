@@ -18,7 +18,7 @@ namespace MyAssets
 
         private void Update()
         {
-            if (ResultManager.IsResulting) { return; }
+            if (ResultManager.IsStopGameUIInput) { return; }
             if(InputManager.GetKeyDown(KeyCode.eMenu))
             {
                 EnableMenu();
@@ -27,7 +27,7 @@ namespace MyAssets
 
         public void EnableMenu()
         {
-            if (ResultManager.IsResulting) { return; }
+            if (ResultManager.IsStopGameUIInput) { return; }
             mMenuFlag = !mMenuFlag;
             if(mMenuFlag)
             {

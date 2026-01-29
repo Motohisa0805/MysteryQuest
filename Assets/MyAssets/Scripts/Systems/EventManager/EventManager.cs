@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,22 +8,24 @@ namespace MyAssets
 {
     public class EventManager : MonoBehaviour
     {
-        private static EventManager mInstance;
-        public static EventManager Instance => mInstance;
+        private static EventManager         mInstance;
+        public static EventManager          Instance => mInstance;
 
         //プレイヤーに関係するイベント変数
 
-        private PlayableChracterController mPlayableChracterController;
+        private PlayableChracterController  mPlayableChracterController;
 
-        private TPSCamera mTPSCamera;
+        private TPSCamera                   mTPSCamera;
 
-        private EventPoint mEventMoveTargetPosition;
-        public EventPoint EventMoveTargetPosition => mEventMoveTargetPosition;
+        private EventPoint                  mEventMoveTargetPosition;
+        public EventPoint                   EventMoveTargetPosition => mEventMoveTargetPosition;
 
-        private List<EventPoint> mEventMovePointList = new List<EventPoint>();
-        public List<EventPoint> EventMovePointList => mEventMovePointList;
+        private List<EventPoint>            mEventMovePointList = new List<EventPoint>();
+        public List<EventPoint>             EventMovePointList => mEventMovePointList;
 
-        private EffectReturner mConfettiParticleSystem;
+        private EffectReturner              mConfettiParticleSystem;
+
+        private Action                      mStartEventAction;
         private void Awake()
         {
             mInstance = this;
@@ -93,10 +96,16 @@ namespace MyAssets
             }
 
             InitializeEvent();
-            PlayOpeningCutscene().Forget();
+            StartCoroutine(StartEvent());
 
-            ResultManager.IsResulting = false;
+            ResultManager.IsStopGameUIInput = false;
             ResultManager.IsPlayerDeath = false;
+        }
+
+        public IEnumerator StartEvent()
+        {
+            yield return new WaitForSecondsRealtime(0.1f);
+            PlayOpeningCutscene().Forget();
         }
 
         public void SetEventMoveTargetPoint(int index)
@@ -150,7 +159,7 @@ namespace MyAssets
             if (mEventMovePointList.Count <= 0) { return; }
             SoundManager.Instance.PlayBGM("GameClearBGM", false);
             GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Tutorial);
-            ResultManager.IsResulting = true;
+            ResultManager.IsStopGameUIInput = true;
             //3番目のポイントに移動
             SetEventMoveTargetPoint(2);
             await mPlayableChracterController.MoveToAsync();
@@ -187,7 +196,7 @@ namespace MyAssets
 
         public async UniTaskVoid DeathEvent()
         {
-            ResultManager.IsResulting = true;
+            ResultManager.IsStopGameUIInput = true;
             ResultManager.IsPlayerDeath = true;
             GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Tutorial);
             GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.HUD);

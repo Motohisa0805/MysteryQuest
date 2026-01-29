@@ -296,14 +296,10 @@ MonoBehaviour:
     mHitMask:
       serializedVersion: 2
       m_Bits: 2147483720
-    mChemistryObject: {fileID: 0}
+    mObjectSizeType: {fileID: 0}
     mIsTaked: 0
     mTakeObjectInfo:
       mDistance: 0
-      mPosition: {x: 0, y: 0, z: 0}
-      mStartPosition: {x: 0, y: 0, z: 0}
-      mPositionDuration: 0.5
-      mPositionElapsedTime: 0
       mRotation: {x: 0, y: 0, z: 0, w: 0}
       mStartRotation: {x: 0, y: 0, z: 0, w: 0}
       mRotationDuration: 0.5
@@ -731,19 +727,7 @@ MonoBehaviour:
     mClimbJumpingTime: 0.2
   mOutOfBodyExperienceState:
     mCrouchHeight: 0.9
-  mStatusProperty:
-    mHP: 100
-    mMaxHP: 100
-    mStamina: 100
-    mMaxStamina: 100
-    mMaxSpeed: 5
-    mAcceleration: 100
-    mDushMaxSpeed: 7.5
-    mCrouchMaxSpeed: 3
-    mIdleJumpPower: 2
-    mMoveJumpPower: 5
-    mRotationSpeed: 15
-    mShoulderViewRotationSpeed: 1000
+  mStatusManager: {fileID: 0}
   mGrounded: 0
   mOverHead: 0
   mCount: 0.2
@@ -2648,22 +2632,6 @@ PrefabInstance:
     - target: {fileID: 2722245534317117995, guid: 51f52de82142abc44b13cb1465cafbf0, type: 3}
       propertyPath: m_Name
       value: Soul
-      objectReference: {fileID: 0}
-    - target: {fileID: 2722245534317117995, guid: 51f52de82142abc44b13cb1465cafbf0, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4330705023626989620, guid: 51f52de82142abc44b13cb1465cafbf0, type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 4330705023626989620, guid: 51f52de82142abc44b13cb1465cafbf0, type: 3}
-      propertyPath: InitialModule.startSizeY.scalar
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4330705023626989620, guid: 51f52de82142abc44b13cb1465cafbf0, type: 3}
-      propertyPath: InitialModule.startSizeZ.scalar
-      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 4903513569046101975, guid: 51f52de82142abc44b13cb1465cafbf0, type: 3}
       propertyPath: m_IsActive

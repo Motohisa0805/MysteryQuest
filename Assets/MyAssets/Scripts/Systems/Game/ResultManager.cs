@@ -34,7 +34,7 @@ namespace MyAssets
 
         private static bool mIsResulting = false;
 
-        public static bool IsResulting
+        public static bool IsStopGameUIInput
         {
             get
             {

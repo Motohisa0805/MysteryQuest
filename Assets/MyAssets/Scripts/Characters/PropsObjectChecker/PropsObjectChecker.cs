@@ -353,6 +353,18 @@ namespace MyAssets
             }
             return false;
         }
+
+        //大きなオブジェクトがプレイヤーの胴と同じ高さがあるかチェック
+        private bool ObjectHeightCheck()
+        {
+            Ray ray = new Ray(transform.position + Vector3.up, transform.forward);
+            if(Physics.SphereCast(ray,0.2f,0.5f))
+            {
+                return true;
+            }
+            return false;
+        }
+
         private void LargeObjectHitEnter(Collision collision)
         {
             if(IsVerticalCollision(collision.GetContact(0))||!mController.Grounded)
@@ -365,22 +377,25 @@ namespace MyAssets
             {
                 if (obj.Size == ObjectSizeType.SizeType.Large)
                 {
-                    //プレイヤーの向きで押すか押さないか
-                    float dotProduct = Vector3.Dot(transform.forward, mController.Movement.CurrentInputVelocity);
-                    if (dotProduct > 0.8f)
+                    if(ObjectHeightCheck())
                     {
-                        mLargeObject = obj;
-                        CalculateSnapTransform(collision, mLargeObject.transform, GetComponentInChildren<CapsuleCollider>().radius, out mTargetRot);
-                        mPushEnabled = true;
-
-                        if (mLargeObject.GetComponent<Rigidbody>() != null)
+                        //プレイヤーの向きで押すか押さないか
+                        float dotProduct = Vector3.Dot(transform.forward, mController.Movement.CurrentInputVelocity);
+                        if (dotProduct > 0.8f)
                         {
-                            mLargeObjectMass = mLargeObject.GetComponent<Rigidbody>().mass;
+                            mLargeObject = obj;
+                            CalculateSnapTransform(collision, mLargeObject.transform, GetComponentInChildren<CapsuleCollider>().radius, out mTargetRot);
+                            mPushEnabled = true;
+
+                            if (mLargeObject.GetComponent<Rigidbody>() != null)
+                            {
+                                mLargeObjectMass = mLargeObject.GetComponent<Rigidbody>().mass;
+                            }
                         }
-                    }
-                    else
-                    {
-                        mPushEnabled = false;
+                        else
+                        {
+                            mPushEnabled = false;
+                        }
                     }
                 }
             }
