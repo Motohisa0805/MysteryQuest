@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,10 +6,10 @@ namespace MyAssets
 {
     public class GameUserInterfaceManager : MonoBehaviour
     {
-        private static GameUserInterfaceManager mInstance;
-        public static GameUserInterfaceManager Instance => mInstance;
+        private static GameUserInterfaceManager                         mInstance;
+        public static GameUserInterfaceManager                          Instance => mInstance;
 
-        private Dictionary<GameHUDType.GameUIPanelType, GameHUDType> mGameHUDTypes = new Dictionary<GameHUDType.GameUIPanelType, GameHUDType>();
+        private Dictionary<GameHUDType.GameUIPanelType, GameHUDType>    mGameHUDTypes = new Dictionary<GameHUDType.GameUIPanelType, GameHUDType>();
 
         public void InitHUD()
         {
@@ -34,6 +35,25 @@ namespace MyAssets
             DontDestroyOnLoad(gameObject);
             InitHUD();
 
+        }
+
+        private void Start()
+        {
+            StartCoroutine(InitSettingHUD());
+        }
+        //テストシーン用にUIの初期設定を行う
+        public IEnumerator InitSettingHUD()
+        {
+            yield return new WaitForSecondsRealtime(0.05f);
+
+            SetActiveHUD(true, GameHUDType.GameUIPanelType.HUD);
+            SetActiveHUD(false, GameHUDType.GameUIPanelType.Tutorial);
+            SetActiveHUD(false, GameHUDType.GameUIPanelType.Option);
+            SetActiveHUD(false, GameHUDType.GameUIPanelType.Result);
+            if(PlayerUIManager.Instance&& PlayerUIManager.Instance.DotImageController)
+            {
+                PlayerUIManager.Instance.DotImageController.gameObject.SetActive(false);
+            }
         }
 
         public void SetActiveHUD(bool active,GameHUDType.GameUIPanelType enumType)

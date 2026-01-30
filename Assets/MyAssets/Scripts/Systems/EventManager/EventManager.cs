@@ -94,7 +94,6 @@ namespace MyAssets
             {
                 Debug.LogWarning("TPSCameraが見つかりません。");
             }
-
             InitializeEvent();
             StartCoroutine(StartEvent());
 
@@ -131,6 +130,8 @@ namespace MyAssets
             if(mEventMovePointList.Count <= 0) { return; }
             //カーソルを固定
             InputManager.SetLockedMouseMode();
+            GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.HUD);
+
             mPlayableChracterController.transform.position = new Vector3(mEventMovePointList[0].transform.position.x, mEventMovePointList[0].transform.position.y + 0.75f, mEventMovePointList[0].transform.position.z);
             await mPlayableChracterController.EventIdleToAsync();
             //await mPlayableChracterController.PlayIdleToAsync();
@@ -147,6 +148,8 @@ namespace MyAssets
             await mPlayableChracterController.PlayIdleToAsync();
 
             SoundManager.Instance.PlayBGM("StageBGM01");
+            GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.HUD);
+            PlayerUIManager.Instance.DotImageController.gameObject.SetActive(false);
         }
 
         public void OnPlayEndingCutscene()
