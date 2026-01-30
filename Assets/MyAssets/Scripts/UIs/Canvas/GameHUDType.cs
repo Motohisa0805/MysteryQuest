@@ -14,5 +14,24 @@ namespace MyAssets
         [SerializeField]
         private GameUIPanelType mGameUIPanelType;
         public GameUIPanelType GameUIType => mGameUIPanelType;
+
+        [SerializeField]
+        private RectTransform[] mUIPanels = new RectTransform[0];
+
+        private void OnEnable()
+        {
+            for (int i = 0; i < mUIPanels.Length; i++)
+            {
+                mUIPanels[i].gameObject.SetActive(true);
+            }
+        }
+
+        private void OnDisable()
+        {
+            for (int i = 0; i < mUIPanels.Length; i++)
+            {
+                mUIPanels[i].gameObject.SetActive(false);
+            }
+        }
     }
 }

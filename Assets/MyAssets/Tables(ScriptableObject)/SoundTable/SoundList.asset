@@ -1,0 +1,282 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bdad8bbefba0b94c9d61f68d3b6601f, type: 3}
+  m_Name: SoundList
+  m_EditorClassIdentifier: Assembly-CSharp::SoundList
+  mSEList:
+  - mID: 729332794
+    mLabel: Attack_Player
+    mClips:
+    - {fileID: 8300000, guid: 9f7ae4ba8ed5b7644a22d229819fcf19, type: 3}
+    - {fileID: 8300000, guid: 500ebbbc1b0e42443861b9244a73885b, type: 3}
+    - {fileID: 8300000, guid: ac0873a4933f9954691a258fe5acd07d, type: 3}
+    - {fileID: 8300000, guid: 79092e58c495daa40a6f6cc16d3dbf36, type: 3}
+    - {fileID: 8300000, guid: 6017d51da6f6f0844bdb890aa8f4a89d, type: 3}
+    - {fileID: 8300000, guid: 69912fef85b353948a269d91f63e94e9, type: 3}
+    - {fileID: 8300000, guid: dd84ec571d161144aa477a7da22126df, type: 3}
+    - {fileID: 8300000, guid: 66bc4577a56ad1046b844ffe4c110e1c, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 363376331
+    mLabel: CountDown
+    mClips:
+    - {fileID: 8300000, guid: b8d675914378d714baedc0e82d7852c9, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -435006842
+    mLabel: Close_Menu
+    mClips:
+    - {fileID: 8300000, guid: 03a1d4751121ebd4b820e54ec27703e5, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 1060187317
+    mLabel: Damage_Player
+    mClips:
+    - {fileID: 8300000, guid: 452f874c13db67b4682cb1dfcd7b4556, type: 3}
+    - {fileID: 8300000, guid: 6451bb20bd4770b49bebfe203ec7f8e0, type: 3}
+    - {fileID: 8300000, guid: 2031905bf39081d4cbd5dbf4573445bf, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -435906907
+    mLabel: Decide_Button
+    mClips:
+    - {fileID: 8300000, guid: 4c64a8f0a127d594aa015cb39914e448, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -678725141
+    mLabel: Foot_Step
+    mClips:
+    - {fileID: 8300000, guid: 9961e9b246b2bf04aa9d1767d36dc289, type: 3}
+    - {fileID: 8300000, guid: e9f5b6cebfae9354294c6c7af5395c28, type: 3}
+    - {fileID: 8300000, guid: 9f0c35cc6175da4468dc3d90c7fa8e02, type: 3}
+    - {fileID: 8300000, guid: f9073f18d7164964a804abac593b3a33, type: 3}
+    - {fileID: 8300000, guid: 540f025cac3631c4e9e7d33e78a3582d, type: 3}
+    - {fileID: 8300000, guid: 2bb184bdd7931ec41a91276270a5a28a, type: 3}
+    - {fileID: 8300000, guid: c0e9315078658c44285f62bef7ee96af, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -115927735
+    mLabel: Iron_Hit
+    mClips:
+    - {fileID: 8300000, guid: 0c9fa2735ba4fcf4b836cdb1a30a09e2, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 608663733
+    mLabel: JumpUp
+    mClips:
+    - {fileID: 8300000, guid: 4bf95c82e844dd144b542a2481bb1ff9, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -1681809101
+    mLabel: Object_InFire
+    mClips:
+    - {fileID: 8300000, guid: 9f658626dd9728c4cbf39ce87121c527, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -479914699
+    mLabel: Object_Fire
+    mClips:
+    - {fileID: 8300000, guid: 4c679a00389dc8b438d5a680a9335db8, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 1813020934
+    mLabel: Object_OutFire
+    mClips:
+    - {fileID: 8300000, guid: 5918fd4a2ad82d7478c4f2ee8e9ec1e9, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -432908757
+    mLabel: Open_Menu
+    mClips:
+    - {fileID: 8300000, guid: 0e2bdd2a77ea03147a31f45bf9b1a712, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -1783694805
+    mLabel: Stone_Hit
+    mClips:
+    - {fileID: 8300000, guid: 48f90e8730dae234686972297401fcd8, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 1925479955
+    mLabel: Select_Button
+    mClips:
+    - {fileID: 8300000, guid: 42a6b820ef68416478a2362ec7d54f91, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 1389841816
+    mLabel: Select_TakeObject
+    mClips:
+    - {fileID: 8300000, guid: 02a6c23d55d9c4f4ab6f124cfa4f4fb2, type: 3}
+    volume: 0.5
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 279336837
+    mLabel: Take_Object
+    mClips:
+    - {fileID: 8300000, guid: 6d5b83255fdc7ca4590ce6ae7d4e05b8, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -1369022345
+    mLabel: Taking_Object
+    mClips:
+    - {fileID: 8300000, guid: e2d340c6f8790954894fef6da3ee7a9f, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -593505281
+    mLabel: Wood_Hit
+    mClips:
+    - {fileID: 8300000, guid: 2a600cb58e2a1ad4686b2652495282cf, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -1707239564
+    mLabel: Wood_Hit_Sword
+    mClips:
+    - {fileID: 8300000, guid: 752e51c8fd9e27d4eaa2e334a42e0743, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 102069847
+    mLabel: EnabledSkil_Playerl
+    mClips:
+    - {fileID: 8300000, guid: 7d358b1b0dc4eaf448060993376c0a8e, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 1154449299
+    mLabel: DisableSkil_Playerl
+    mClips:
+    - {fileID: 8300000, guid: 9bdc9cf000cd4734795459e2c7fd7707, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -2030731545
+    mLabel: TakeObjectRotate
+    mClips:
+    - {fileID: 8300000, guid: bc3a901e6c736da41a9a98bcc3854142, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 1465692184
+    mLabel: Applause and cheers
+    mClips:
+    - {fileID: 8300000, guid: b8b453165766ed749b79b426cb88e60b, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -2126906432
+    mLabel: Wind
+    mClips:
+    - {fileID: 8300000, guid: d94b76eb5ceb3414c96246a392be9f19, type: 3}
+    volume: 0.5
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 1663845691
+    mLabel: GameStart_Decide
+    mClips:
+    - {fileID: 8300000, guid: 08e678a4cf565644dafbe5d453c7ee19, type: 3}
+    volume: 0.5
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -850060794
+    mLabel: Description_Window_Open
+    mClips:
+    - {fileID: 8300000, guid: 91a7b57fe21350c48929b4292ae20369, type: 3}
+    volume: 0.5
+    pitchRange: 0
+    mSpatialBlend: 0
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 1687205271
+    mLabel: Sword Drawn
+    mClips:
+    - {fileID: 8300000, guid: 30e7344ef08c055438c5d0c54e57790f, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -984001967
+    mLabel: Sword Sheathe
+    mClips:
+    - {fileID: 8300000, guid: 3062fbf641861bc4c8074786b6b9f2ff, type: 3}
+    volume: 1
+    pitchRange: 0
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
