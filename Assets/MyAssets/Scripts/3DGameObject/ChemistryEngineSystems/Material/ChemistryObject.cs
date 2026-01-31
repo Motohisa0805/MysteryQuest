@@ -489,25 +489,6 @@ namespace MyAssets
                 }
             }
         }
-
-        //‰¹‚ğ“Á’è‚ÌğŒ‰º‚ÅÄ¶‚·‚é‚©’²‚×‚é
-        private void CheckPlaySound(Collision collision)
-        {
-            if(collision.impulse.magnitude <= 2.5f) { return; }
-            //‰¹‚ÌÄ¶
-            if (mMaterial == MaterialType.Wood)
-            {
-                SoundManager.Instance.PlayOneShot3D("Wood_Hit", transform.position);
-            }
-            else if (mMaterial == MaterialType.Stone)
-            {
-                SoundManager.Instance.PlayOneShot3D("Stone_Hit", transform.position);
-            }
-            else if (mMaterial == MaterialType.Iron)
-            {
-                SoundManager.Instance.PlayOneShot3D("Iron_Hit", transform.position);
-            }
-        }
         //‰¹‚ğ“Á’è‚ÌğŒ‰º‚ÅÄ¶‚·‚é‚©’²‚×‚é
         private void CheckPlaySound_Sword(Vector3 hitPoint)
         {
@@ -524,12 +505,6 @@ namespace MyAssets
             {
                 SoundManager.Instance.PlayOneShot3D("Iron_Hit", transform.position);
             }
-        }
-        private void OnCollisionEnter(Collision collision)
-        {
-
-            //‰¹‚ÌÄ¶
-            CheckPlaySound(collision);
         }
 
         private void OnCollisionExit(Collision collision)

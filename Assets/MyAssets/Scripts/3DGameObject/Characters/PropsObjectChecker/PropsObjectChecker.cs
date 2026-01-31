@@ -92,6 +92,7 @@ namespace MyAssets
                 {
                     collider.isTrigger = true;
                 }
+                PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Right);
             }
         }
         //オブジェクトの位置を手の位置に更新
@@ -242,6 +243,10 @@ namespace MyAssets
                         {
                             if (obj.Size == ObjectSizeType.SizeType.Small)
                             {
+                                if(mSmallObject == obj)
+                                {
+                                    PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Right, "持つ");
+                                }
                                 mSmallObject = obj;
                                 break;
                             }
@@ -250,6 +255,7 @@ namespace MyAssets
                 }
                 if(!obj&& mSmallObject && !mHasTakedObject)
                 {
+                    PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Right);
                     ClearSmallObject();
                 }
             }

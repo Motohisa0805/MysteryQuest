@@ -286,6 +286,8 @@ namespace MyAssets
             audioSource.gameObject.SetActive(true);
             audioSource.loop = loop;
             audioSource.spatialBlend = 1.0f;
+            audioSource.volume = seElement.volume;
+            audioSource.pitch = seElement.pitchRange;
             audioSource.maxDistance = seElement.MaxDistance;
             audioSource.minDistance = seElement.MinDistance;
 
@@ -328,6 +330,52 @@ namespace MyAssets
             int id = Animator.StringToHash(label);
             PlayOneShot3D(id,position,parent,loop,destroyCollection, endSECount);
         }
+
+        public void PlayOneShot3D_Physic(int id, Vector3 position, float volumeScale, Transform parent = null)
+        {
+            if (Time.timeSinceLevelLoad < mMuteDurationAtStart) return;
+
+            SoundList.SEElement seElement = mSoundList.GetElement(id);
+            if (seElement == null) return; // エラーハンドリング
+
+            AudioClip clip = seElement.Clips[Random.Range(0, seElement.MaxClips)];
+            AudioSource audioSource = SerchAudios();
+
+            if (audioSource == null || clip == null) return;
+
+            audioSource.gameObject.SetActive(true);
+            audioSource.enabled = true;
+            audioSource.loop = false;
+            audioSource.spatialBlend = 1.0f;
+            audioSource.maxDistance = seElement.MaxDistance;
+            audioSource.minDistance = seElement.MinDistance;
+
+            //リストの基本音量 * 物理演算からの倍率
+            audioSource.volume = seElement.volume * volumeScale;
+
+            if (parent)
+            {
+                audioSource.transform.SetParent(parent);
+                audioSource.transform.localPosition = Vector3.zero;
+            }
+            else
+            {
+                audioSource.transform.SetParent(transform);
+                audioSource.transform.position = position;
+            }
+
+            audioSource.clip = clip;
+            audioSource.PlayOneShot(clip);
+            StartCoroutine(ReturnToPool(audioSource, clip.length));
+        }
+
+        public void PlayOneShot3D_Physic(string label,Vector3 position, float volumeScale, Transform parent = null)
+        {
+            // 文字列をハッシュ(int)に変換して、既存のメソッドを呼び出す
+            int id = Animator.StringToHash(label);
+            PlayOneShot3D_Physic(id, position, volumeScale, parent);
+        }
+
         public void PlayOneShot2D(int id, bool loop = false, float endSECount = -1,float pitch = 1)
         {
             //クリップを取得
@@ -374,6 +422,7 @@ namespace MyAssets
             source.Stop(); // 念のため
             source.transform.SetParent(transform); // 親を戻す
             source.gameObject.SetActive(false);
+            source.clip = null;
         }
 
         public AudioSource PlayLoopSE(int id, Vector3 position,Transform parent = null)

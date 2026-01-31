@@ -106,6 +106,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   mIsRePlay: 0
+  mHitPlay: 0
 --- !u!65 &5894666910261424365
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -402,6 +403,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1159813281151208228, guid: 8629a96547ee5fb4883cdd364cdf76ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2188434700234759626, guid: 8629a96547ee5fb4883cdd364cdf76ed, type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3667771778397636742, guid: 8629a96547ee5fb4883cdd364cdf76ed, type: 3}

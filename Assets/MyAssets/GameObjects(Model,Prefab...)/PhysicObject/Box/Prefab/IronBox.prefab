@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1083627962162776388}
   - component: {fileID: -7185961238542235453}
   - component: {fileID: -116928290352852695}
+  - component: {fileID: -33521643129892175}
   m_Layer: 3
   m_Name: IronBox
   m_TagString: Untagged
@@ -170,6 +171,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 72
   mIsBreakObject: 0
+  mHitPoint: 300
 --- !u!114 &-7185961238542235453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,3 +200,20 @@ MonoBehaviour:
   mMovingMaterial: {fileID: 13400000, guid: aaa14c91c1eb2ab4e88653980f41c4ec, type: 2}
   mIdleMaterial: {fileID: 13400000, guid: 592e1d656480cc54c89655c64ee117d9, type: 2}
   mVelocityThreshold: 0.05
+--- !u!114 &-33521643129892175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432991507952276837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9216e4f3c351c0247ba45283ab18e870, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.PhysicsSoundObject
+  mMinImpactForce: 1
+  mMaxImpactForce: 15
+  mMinSlideSpeed: 0.5
+  mMaxSlideSpeed: 10
+  mSoundCullDistance: 20

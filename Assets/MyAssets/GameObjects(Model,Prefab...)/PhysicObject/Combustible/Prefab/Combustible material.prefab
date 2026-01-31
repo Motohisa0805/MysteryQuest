@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4583174753176604970}
   - component: {fileID: 1020752795077568851}
   - component: {fileID: 2327339268599215001}
+  - component: {fileID: 8862339072814524380}
   m_Layer: 6
   m_Name: Combustible material
   m_TagString: Untagged
@@ -143,6 +144,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 72
   mIsBreakObject: 0
+  mHitPoint: 300
 --- !u!114 &4583174753176604970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,3 +197,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &8862339072814524380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6060989768217175386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9216e4f3c351c0247ba45283ab18e870, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.PhysicsSoundObject
+  mMinImpactForce: 1
+  mMaxImpactForce: 15
+  mMinSlideSpeed: 0.5
+  mMaxSlideSpeed: 10
+  mSoundCullDistance: 20

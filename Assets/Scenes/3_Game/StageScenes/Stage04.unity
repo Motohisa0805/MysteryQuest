@@ -12499,6 +12499,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
+--- !u!114 &1297900526 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 44824455939865684, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
+  m_PrefabInstance: {fileID: 1297900525}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c2847795634b4d4cbfdff9a887c64f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.TutorialController
 --- !u!1 &1303971054
 GameObject:
   m_ObjectHideFlags: 0
@@ -12890,6 +12901,89 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4986153382042407329, guid: 27155338ac45ef84b84e37ef11ea4045, type: 3}
   m_PrefabInstance: {fileID: 1350722127}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1353646972
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1353646975}
+  - component: {fileID: 1353646974}
+  - component: {fileID: 1353646973}
+  m_Layer: 0
+  m_Name: TutorialPoint_04
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1353646973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353646972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e41640a02a7256442bdcfa505d5896f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.EventTrigger
+  mOnEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1297900526}
+        m_TargetAssemblyTypeName: MyAssets.TutorialController, Assembly-CSharp
+        m_MethodName: ActiveTutorial
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  mIsRePlay: 0
+  mHitPlay: 1
+--- !u!65 &1353646974
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353646972}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1353646975
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353646972}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 8}
+  m_LocalScale: {x: 20, y: 10, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1354951308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4502691154308428894, guid: fa1ac4cb6ad36f44fad4a53c720db13d, type: 3}
@@ -21706,6 +21800,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StartEventElevator
       objectReference: {fileID: 0}
+    - target: {fileID: 2167287435064177500, guid: 722e8c8914679a84b827cdfaad2db28c, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4398289366597917796, guid: 722e8c8914679a84b827cdfaad2db28c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -21768,6 +21866,7 @@ SceneRoots:
   - {fileID: 1616155314}
   - {fileID: 8705162228202428999}
   - {fileID: 2809898929316271678}
+  - {fileID: 1353646975}
   - {fileID: 686052693}
   - {fileID: 2146033151}
   - {fileID: 1794220135}

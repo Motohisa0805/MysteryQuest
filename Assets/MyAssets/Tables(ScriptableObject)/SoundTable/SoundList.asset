@@ -25,7 +25,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: dd84ec571d161144aa477a7da22126df, type: 3}
     - {fileID: 8300000, guid: 66bc4577a56ad1046b844ffe4c110e1c, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -34,7 +34,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: b8d675914378d714baedc0e82d7852c9, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
@@ -43,7 +43,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 03a1d4751121ebd4b820e54ec27703e5, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
@@ -54,7 +54,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 6451bb20bd4770b49bebfe203ec7f8e0, type: 3}
     - {fileID: 8300000, guid: 2031905bf39081d4cbd5dbf4573445bf, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -63,7 +63,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 4c64a8f0a127d594aa015cb39914e448, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
@@ -78,7 +78,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 2bb184bdd7931ec41a91276270a5a28a, type: 3}
     - {fileID: 8300000, guid: c0e9315078658c44285f62bef7ee96af, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -87,7 +87,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 0c9fa2735ba4fcf4b836cdb1a30a09e2, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -96,7 +96,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 4bf95c82e844dd144b542a2481bb1ff9, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -105,7 +105,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 9f658626dd9728c4cbf39ce87121c527, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -114,7 +114,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 4c679a00389dc8b438d5a680a9335db8, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -123,7 +123,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 5918fd4a2ad82d7478c4f2ee8e9ec1e9, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -132,7 +132,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 0e2bdd2a77ea03147a31f45bf9b1a712, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
@@ -141,7 +141,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 48f90e8730dae234686972297401fcd8, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -150,7 +150,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 42a6b820ef68416478a2362ec7d54f91, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
@@ -159,7 +159,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 02a6c23d55d9c4f4ab6f124cfa4f4fb2, type: 3}
     volume: 0.5
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
@@ -168,7 +168,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 6d5b83255fdc7ca4590ce6ae7d4e05b8, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
@@ -190,12 +190,21 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
+  - mID: -981537398
+    mLabel: Wood_Slide
+    mClips:
+    - {fileID: 8300000, guid: 95438af8212c09d4db69d830cc891b1d, type: 3}
+    volume: 1
+    pitchRange: 1
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
   - mID: -1707239564
     mLabel: Wood_Hit_Sword
     mClips:
     - {fileID: 8300000, guid: 752e51c8fd9e27d4eaa2e334a42e0743, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -204,7 +213,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 7d358b1b0dc4eaf448060993376c0a8e, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -213,7 +222,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 9bdc9cf000cd4734795459e2c7fd7707, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -222,7 +231,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: bc3a901e6c736da41a9a98bcc3854142, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -231,7 +240,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: b8b453165766ed749b79b426cb88e60b, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -240,7 +249,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: d94b76eb5ceb3414c96246a392be9f19, type: 3}
     volume: 0.5
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
@@ -249,7 +258,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 08e678a4cf565644dafbe5d453c7ee19, type: 3}
     volume: 0.5
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
@@ -258,7 +267,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 91a7b57fe21350c48929b4292ae20369, type: 3}
     volume: 0.5
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 1
     mMaxDistance: 10
@@ -267,7 +276,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 30e7344ef08c055438c5d0c54e57790f, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
@@ -276,7 +285,25 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 3062fbf641861bc4c8074786b6b9f2ff, type: 3}
     volume: 1
-    pitchRange: 0
+    pitchRange: 1
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 99002041
+    mLabel: Iron_Slide
+    mClips:
+    - {fileID: 8300000, guid: 8d20284193e27924bb9d23cbe69128b6, type: 3}
+    volume: 1
+    pitchRange: 1
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 1654144204
+    mLabel: Stone_Slide
+    mClips:
+    - {fileID: 8300000, guid: 8a54977462f95c74295fa6df94c681c3, type: 3}
+    volume: 1
+    pitchRange: 1
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
