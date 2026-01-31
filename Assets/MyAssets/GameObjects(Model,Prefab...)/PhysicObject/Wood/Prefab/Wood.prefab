@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2522328796976080378}
   - component: {fileID: 105478390891518304}
   - component: {fileID: 1107354629885913487}
+  - component: {fileID: 6937609523199637338}
   m_Layer: 3
   m_Name: Wood
   m_TagString: Untagged
@@ -171,6 +172,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 72
   mIsBreakObject: 1
+  mHitPoint: 300
 --- !u!114 &1107354629885913487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,3 +186,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ObjectSizeType
   mSize: 2
+--- !u!114 &6937609523199637338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6544569969881656323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9216e4f3c351c0247ba45283ab18e870, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.PhysicsSoundObject
+  mMinImpactForce: 1
+  mMaxImpactForce: 15
+  mMinSlideSpeed: 0.5
+  mMaxSlideSpeed: 10
+  mSoundCullDistance: 20

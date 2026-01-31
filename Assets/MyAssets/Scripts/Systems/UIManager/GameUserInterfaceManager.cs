@@ -47,7 +47,7 @@ namespace MyAssets
             yield return new WaitForSecondsRealtime(0.05f);
 
             SetActiveHUD(true, GameHUDType.GameUIPanelType.HUD);
-            SetActiveHUD(false, GameHUDType.GameUIPanelType.Tutorial);
+            //SetActiveHUD(false, GameHUDType.GameUIPanelType.Tutorial);
             SetActiveHUD(false, GameHUDType.GameUIPanelType.Option);
             SetActiveHUD(false, GameHUDType.GameUIPanelType.Result);
             if(PlayerUIManager.Instance&& PlayerUIManager.Instance.DotImageController)
