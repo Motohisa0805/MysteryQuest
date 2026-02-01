@@ -2087,6 +2087,14 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 178967301974426123, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 178967301974426123, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 433049195036681475, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -2110,6 +2118,10 @@ PrefabInstance:
     - target: {fileID: 1509527911995293860, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795265192163840806, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.000008675609
       objectReference: {fileID: 0}
     - target: {fileID: 3519876751441107747, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
       propertyPath: mUIPanels.Array.size
@@ -2149,6 +2161,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3920320892097504711, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4569261518665177374, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4569261518665177374, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4569261518665177374, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4843845771265904019, guid: b1065fef9b936494596e7db53ef2e701, type: 3}
