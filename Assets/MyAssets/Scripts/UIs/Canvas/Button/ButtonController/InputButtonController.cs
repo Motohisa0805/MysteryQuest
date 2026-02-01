@@ -14,15 +14,10 @@ namespace MyAssets
         private Image           mSelectImage;
         //選択してる要素数
         private int             mSelectIndex;
-        //選択中の画像をボタン横のどれくらいの位置に設置するか
-        [SerializeField]
-        private float           mSelectImageOffsetX;
-        [SerializeField]
-        private float           mSelectImageOffsetY;
         //子オブジェクトにボタン
         [SerializeField]
-        private Button[]        mButtons;
-        private ButtonHover[]   mHovers;
+        private Button[]        mButtons = new Button[0];
+        private ButtonHover[]   mHovers = new ButtonHover[0];
 
         private bool            mDecideFlag;
 
@@ -30,10 +25,27 @@ namespace MyAssets
         public Action           OnPublicAction { get { return mOnPublicAction; }set { mOnPublicAction = value; } }
         private void Awake()
         {
-            Button[] b = GetComponentsInChildren<Button>();
-            mButtons = b;
-            ButtonHover[] h = GetComponentsInChildren<ButtonHover>();
-            mHovers = h;
+            //配列に要素がなければ
+            if(mButtons.Length <= 0)
+            {
+                Button[] b = GetComponentsInChildren<Button>();
+                mButtons = b;
+                ButtonHover[] h = GetComponentsInChildren<ButtonHover>();
+                mHovers = h;
+            }
+            //すでにあれば
+            else
+            {
+                foreach(Button b in mButtons)
+                {
+                    ButtonHover hover = b.GetComponent<ButtonHover>();
+                    if (hover)
+                    {
+                        Array.Resize(ref mHovers, mHovers.Length + 1);
+                        mHovers[mHovers.Length - 1] = hover;
+                    }
+                }
+            }
 
         }
 
@@ -54,13 +66,12 @@ namespace MyAssets
             mSelectImage.rectTransform.sizeDelta = size;
         }
 
+        //選択中のボタン位置に選択画像を移動
         private void SetSelectImagePosition(int index)
         {
             if (mSelectImage == null) { return; }
             if (index < 0) { return; }
             Vector2 pos = mHovers[index].RectTransform.anchoredPosition;
-            pos.x -= mSelectImageOffsetX;
-            pos.y -= mSelectImageOffsetY;
             mSelectImage.rectTransform.anchoredPosition = pos;
             mSelectImage.rectTransform.sizeDelta = mHovers[index].RectTransform.sizeDelta;
             SetSelectImageSize();
@@ -137,6 +148,8 @@ namespace MyAssets
             int decideIndex = -1;
             for (int i = 0; i < mHovers.Length; i++)
             {
+                if (!mHovers[i].gameObject.activeSelf) return;
+
                 if (select.x > 0)
                 {
                     if (mHovers[currentIndex].RectTransform.anchoredPosition.x < mHovers[i].RectTransform.anchoredPosition.x)

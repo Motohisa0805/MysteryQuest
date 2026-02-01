@@ -6,23 +6,37 @@ namespace MyAssets
     {
         private bool mMenuFlag = false;
 
+        [SerializeField]
+        private SettingMenuTrigger mSettingMenu;
+
+        [SerializeField]
+        private bool mEnableMenu = true;
+
         private void Start()
         {
-            mMenuFlag = false;
-            Time.timeScale = 1.0f;
-            InputManager.SetLockedMouseMode();
-            GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Option);
-            GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.HUD);
-            GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Tutorial);
+            if(mEnableMenu)
+            {
+                mMenuFlag = false;
+                Time.timeScale = 1.0f;
+                InputManager.SetLockedMouseMode();
+                GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Option);
+                GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.HUD);
+                GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Tutorial);
+            }
         }
 
         private void Update()
         {
             if (ResultManager.IsStopGameUIInput) { return; }
-            if(InputManager.GetKeyDown(KeyCode.eMenu))
+            if(mEnableMenu)
             {
-                EnableMenu();
+                if(InputManager.GetKeyDown(KeyCode.eMenu))
+                {
+                    EnableMenu();
+                    mSettingMenu.DisableSetting();
+                }
             }
+            mSettingMenu.Update();
         }
 
         public void EnableMenu()
@@ -47,6 +61,12 @@ namespace MyAssets
                 GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Tutorial);
                 SoundManager.Instance.PlayOneShot2D("Close_Menu", false);
             }
+        }
+
+        public void SetSettingMenu(bool active)
+        {
+            mSettingMenu.SetActiveSetting(active);
+            SoundManager.Instance.PlayOneShot2D("Decide_Button", false);
         }
     }
 }
