@@ -11,12 +11,22 @@ namespace MyAssets
             Input,
             Audio,
         }
+        public enum SettingEntryItem
+        {
+            Input,
+            FrameRate,
+            SE,
+            BGM,
+        }
 
         [SerializeField]
-        private SettingEntry mEntry = SettingEntry.Input;
+        private SettingEntry    mEntry = SettingEntry.Input;
 
         [SerializeField]
         private RectTransform[] mSettingMenuEntrys = new RectTransform[0];
+
+        [SerializeField]
+        private OutputText[]    mSettingOutputTexts = new OutputText[0];
 
         public void SetActiveEntry(int entry)
         {
@@ -32,6 +42,13 @@ namespace MyAssets
                 }
             }
             mEntry = (SettingEntry)entry;
+            SoundManager.Instance.PlayOneShot2D("Decide_Button", false);
+        }
+
+        public void SetOutputText(SettingEntryItem entry,string text)
+        {
+            if(mSettingOutputTexts.Length - 1 < (int)entry) { return; }
+            mSettingOutputTexts[(int)entry].SetText(text);
             SoundManager.Instance.PlayOneShot2D("Decide_Button", false);
         }
 
