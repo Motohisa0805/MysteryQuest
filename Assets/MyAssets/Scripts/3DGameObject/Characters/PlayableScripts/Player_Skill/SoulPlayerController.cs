@@ -62,7 +62,7 @@ namespace MyAssets
 
             mTakeObjectment.Setup(transform);
 
-            mFloatingMovement.SetAnchor(mParent, 5.0f);
+            mFloatingMovement.SetAnchor(mParent);
         }
 
         public void DisableSoul()

@@ -31,6 +31,11 @@ namespace MyAssets
             DontDestroyOnLoad(gameObject);
         }
 
+        private void Start()
+        {
+            DataManager.SettingDataAwake();
+        }
+
         void OnEnable()
         {
             // ƒV[ƒ“‚ª“Ç‚İ‚Ü‚ê‚½‚Æ‚«‚ÉÀs‚·‚éŠÖ”‚ğ“o˜^

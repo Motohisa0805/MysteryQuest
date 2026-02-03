@@ -119,8 +119,8 @@ namespace MyAssets
                 float mouseY = mouse.y;
                 float sensitivity = GetCameraSensitivity(mFreeCameraSettings.Sensitivity);
                 // ƒJƒƒ‰‚Ì‰ñ“]Šp‚ğXV
-                mYaw += mouseX * sensitivity;
-                mPitch -= mouseY * sensitivity;
+                mYaw += mouseX * (sensitivity * DataManager.SettingData.gInputRate);
+                mPitch -= mouseY * (sensitivity * DataManager.SettingData.gInputRate);
                 mPitch = Mathf.Clamp(mPitch, mFreeCameraSettings.MinAngle, mFreeCameraSettings.MaxAngle);
             }
             else if(mCurrentType == Type.ShoulderView)
@@ -131,8 +131,8 @@ namespace MyAssets
                 float mouseY = mouse.y;
                 float sensitivity = GetCameraSensitivity(mShoulderViewSettings.Sensitivity);
                 // ƒJƒƒ‰‚Ì‰ñ“]Šp‚ğXV
-                mYaw += mouseX * sensitivity;
-                mPitch -= mouseY * sensitivity;
+                mYaw += mouseX * (sensitivity * DataManager.SettingData.gInputRate);
+                mPitch -= mouseY * (sensitivity * DataManager.SettingData.gInputRate);
                 mPitch = Mathf.Clamp(mPitch, mShoulderViewSettings.MinAngle, mShoulderViewSettings.MaxAngle);
             }
             else if(mCurrentType == Type.Focusing)
@@ -145,8 +145,8 @@ namespace MyAssets
                     float mouseY = mouse.y;
                     float sensitivity = GetCameraSensitivity(mFocusingSettings.Sensitivity);
                     // ƒJƒƒ‰‚Ì‰ñ“]Šp‚ğXV
-                    mYaw += mouseX * sensitivity;
-                    mPitch -= mouseY * sensitivity;
+                    mYaw += mouseX * (sensitivity * DataManager.SettingData.gInputRate);
+                    mPitch -= mouseY * (sensitivity * DataManager.SettingData.gInputRate);
                     mPitch = Mathf.Clamp(mPitch, mFocusingSettings.MinAngle, mFocusingSettings.MaxAngle);
                 }
             }

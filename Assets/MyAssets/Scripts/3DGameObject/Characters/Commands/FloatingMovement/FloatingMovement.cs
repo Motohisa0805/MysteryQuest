@@ -15,7 +15,7 @@ namespace MyAssets
         [SerializeField]
         private Transform mAnchorTransform;
         [SerializeField]
-        private float mLimitRadius = 5.0f;
+        private float mLimitRadius;
 
 
         private void Awake()
@@ -28,7 +28,7 @@ namespace MyAssets
         }
 
         // 起点を設定するメソッド（外部から呼ぶ用）
-        public void SetAnchor(Transform anchor, float radius)
+        public void SetAnchor(Transform anchor, float radius = 10.0f)
         {
             mAnchorTransform = anchor;
             mLimitRadius = radius;

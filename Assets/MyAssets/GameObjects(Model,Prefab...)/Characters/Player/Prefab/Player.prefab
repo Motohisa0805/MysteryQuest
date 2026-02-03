@@ -278,7 +278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.FloatingMovement
   mCurrentInputVelocity: {x: 0, y: 0, z: 0}
   mAnchorTransform: {fileID: 0}
-  mLimitRadius: 5
+  mLimitRadius: 10
 --- !u!114 &2254488799588581085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -893,6 +893,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 72
   mIsBreakObject: 0
+  mHitPoint: 300
 --- !u!114 &3280886677235020846
 MonoBehaviour:
   m_ObjectHideFlags: 0
