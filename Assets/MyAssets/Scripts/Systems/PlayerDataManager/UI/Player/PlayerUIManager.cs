@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace MyAssets
 {
@@ -11,6 +12,7 @@ namespace MyAssets
         public static PlayerUIManager       Instance => mInstance;
 
         private PlayableInput               mPlayableInput;
+
         public PlayableInput PlayableInput
         {
             get 
@@ -22,6 +24,7 @@ namespace MyAssets
                 return mPlayableInput; 
             }
         }
+        private PlayableChracterController  mPlayerController;
 
         [SerializeField]
         private Transform                   mThrowCircle;
@@ -61,14 +64,36 @@ namespace MyAssets
 
         private void OnDisable()
         {
-            // 破棄時にイベント解除（お作法）
+            // 破棄時にイベント解除
             SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        public void ReleaseUIStateChanger()
+        {
+            if (mPlayerController != null && mPlayerController.StateMachine != null)
+            {
+                mPlayerController.StateMachine.OnStateChanged -= HandleStateChanged;
+            }
+            mPlayerController = null;
         }
 
         // シーンがロードされるたびに呼ばれる
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            mPlayableInput = FindAnyObjectByType<PlayableInput>();
+            //古いプレイヤーコントローラーのイベント登録を解除
+            ReleaseUIStateChanger();
+            // 新しいシーンのプレイヤーコントローラーを探してイベント登録
+            mPlayerController = FindAnyObjectByType<PlayableChracterController>();
+            if(mPlayerController)
+            {
+                // 新しいプレイヤーコントローラーの状態変更イベントに登録
+                mPlayerController.StateMachine.OnStateChanged += HandleStateChanged;
+                mPlayableInput = mPlayerController.GetComponent<PlayableInput>();
+            }
+            else
+            {
+                mPlayableInput = FindAnyObjectByType<PlayableInput>();
+            }
         }
 
         private void Awake()
@@ -99,6 +124,31 @@ namespace MyAssets
             if(mButtonController)
             {
                 mButtonController.UpdateActionButton();
+            }
+            if(mDotImageController)
+            {
+                if(!mDotImageController.gameObject.activeSelf && mDotImageController.IsEnhanced)
+                {
+                    mDotImageController.gameObject.SetActive(true);
+                }
+                else if(mDotImageController.gameObject.activeSelf && !mDotImageController.IsEnhanced)
+                {
+                    mDotImageController.gameObject.SetActive(false);
+                }
+            }
+        }
+        private void HandleStateChanged(StateBase<string> newState)
+        {
+            // 1. まず全ボタンを非表示にする（リセット）
+            ActionButtonController.AllDisableButton();
+
+            // 2. 新しいステートが持っているボタン情報を取得
+            var buttons = newState.GetActionButtons();
+
+            // 3. UIに反映
+            foreach (var btn in buttons)
+            {
+                ActionButtonController.ActiveButton(btn.gTag, btn.gLabel);
             }
         }
     }

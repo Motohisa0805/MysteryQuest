@@ -47,16 +47,11 @@ namespace MyAssets
             mAnimationFunction.Animator.SetInteger("climbState", 0);
 
             mMovement.ClimbJump(mController.Movement.MovementCompensator.StepGoalPosition.y - mController.Movement.MovementCompensator.StepStartPosition.y);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             base.Execute_FixedUpdate(time);
-            //mController.BodyRotate();
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Exit()
@@ -112,17 +107,12 @@ namespace MyAssets
         {
             base.Enter();
             mController.Movement.ClimbJumpingTimer.Start(mClimbJumpingTime);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_FixedUpdate(float time)
         {
             mController.Movement.Climb();
             base.Execute_FixedUpdate(time);
-            //mController.BodyRotate();
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Exit()

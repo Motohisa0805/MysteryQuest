@@ -29,6 +29,15 @@ namespace MyAssets
             return re;
         }
 
+        public override List<ActionButtonInfo> GetActionButtons()
+        {
+            return new List<ActionButtonInfo>()
+            {
+                new ActionButtonInfo((int)ActionButtonController.ActionButtonTag.Right, "取る"),
+                new ActionButtonInfo((int)ActionButtonController.ActionButtonTag.Down,"離す")
+            };
+        }
+
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
@@ -53,10 +62,7 @@ namespace MyAssets
             //プレイヤーのモデルカラー変更
             mController.CharacterColorController.SetAllColors(Color.gray);
             //UIの設定
-            PlayerUIManager.Instance.ActionButtonController.AllDisableButton();
-            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Right, "取る");
-            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Down, "解除");
-            PlayerUIManager.Instance.DotImageController.gameObject.SetActive(true);
+            PlayerUIManager.Instance.DotImageController.IsEnhanced = true;
             //カメラの変更
             TPSCamera.CameraType = TPSCamera.Type.ShoulderView;
             //効果音再生
@@ -96,7 +102,7 @@ namespace MyAssets
             mController.SoulPlayerController.TakeObjectment.ClearFocus();
             //プレイヤーUI周りの後処理
             PlayerUIManager.Instance.ActionButtonController.AllDisableButton();
-            PlayerUIManager.Instance.DotImageController.gameObject.SetActive(false);
+            PlayerUIManager.Instance.DotImageController.IsEnhanced = false;
 
             TPSCamera.CameraType = TPSCamera.Type.Free;
             SoundManager.Instance.PlayOneShot2D("DisableSkil_Playerl");

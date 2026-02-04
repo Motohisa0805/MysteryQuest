@@ -47,7 +47,6 @@ namespace MyAssets
         {
             base.Execute_Update(time);
             mAnimationFunction.Animator.SetFloat("idleToRun", 0.0f);
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

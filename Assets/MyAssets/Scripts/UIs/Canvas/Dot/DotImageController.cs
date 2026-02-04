@@ -12,6 +12,9 @@ namespace MyAssets
         private Vector2 mOriginalSize = new Vector2(20.0f, 20.0f);
 
         private Image   mImage;
+
+        private bool    mEnabled = false;
+        public bool     IsEnhanced {  get { return mEnabled; }set { mEnabled = value; } }
         private void Awake()
         {
             mImage = GetComponent<Image>();

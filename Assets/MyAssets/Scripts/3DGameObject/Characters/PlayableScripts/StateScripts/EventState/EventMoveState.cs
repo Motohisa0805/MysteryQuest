@@ -57,7 +57,6 @@ namespace MyAssets
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();
             mAnimationFunction.SpritDushClear();
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

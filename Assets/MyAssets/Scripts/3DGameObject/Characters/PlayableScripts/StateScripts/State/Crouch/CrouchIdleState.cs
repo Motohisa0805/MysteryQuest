@@ -54,9 +54,6 @@ namespace MyAssets
             float crouchHeight = mCrouchHeight;
             float crouchCenter_Y = mColliderController.CapsuleCollider.center.y - (standingHeight - crouchHeight) / 2;
             mColliderController.ChangeCapsule(standingHeight, crouchHeight, crouchCenter_Y);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -65,7 +62,6 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateCrouchAnimation();
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -129,9 +125,6 @@ namespace MyAssets
         {
             base.Enter();
             mAnimationFunction.Animator.SetInteger("crouchState", 1);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -140,7 +133,6 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateCrouchAnimation();
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -202,9 +194,6 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -213,7 +202,6 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateCrouchAnimation();
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -271,9 +259,6 @@ namespace MyAssets
         {
             base.Enter();
             mAnimationFunction.Animator.SetInteger("crouchState", 2);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -282,7 +267,6 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateCrouchAnimation();
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

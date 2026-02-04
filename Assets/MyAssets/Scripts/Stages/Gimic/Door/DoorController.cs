@@ -19,7 +19,6 @@ namespace MyAssets
 
         [SerializeField]
         private bool            mIsOpening = false;
-
         private void Start()
         {
             mClosedPos = transform.position;
@@ -66,6 +65,45 @@ namespace MyAssets
             SoundManager.Instance.UnPauseStart();
             mTargetPos = mClosedPos;
             enabled = true;
+        }
+
+        private void PushPlayer(Transform playerTransform)
+        {
+            CapsuleCollider collider = playerTransform.GetComponent<CapsuleCollider>();
+            float pushDistance = 0.25f;
+            //コライダーを取得出来たら
+            if (collider)
+            {
+                //半径を代入
+                pushDistance = collider.radius;
+            }
+
+            Vector3 doorToPlayer = playerTransform.position - transform.position;
+
+            float dotProduct = Vector3.Dot(transform.forward, doorToPlayer);
+
+            Vector3 pushDirection;
+            if (dotProduct >= 0)
+            {
+                pushDirection = transform.forward;
+            }
+            else
+            {
+                pushDirection = -transform.forward;
+            }
+
+            // 現在位置に加算して強制移動
+            playerTransform.position += pushDirection * pushDistance;
+        }
+
+        public void OnCollisionEnter(Collision collision)
+        {
+            if (!mIsOpening) { return; }
+            PlayableChracterController playableChracter = collision.gameObject.GetComponent<PlayableChracterController>();
+            if (playableChracter != null)
+            {
+                PushPlayer(collision.transform);
+            }
         }
     }
 }

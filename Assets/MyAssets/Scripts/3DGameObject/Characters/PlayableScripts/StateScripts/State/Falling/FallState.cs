@@ -48,15 +48,11 @@ namespace MyAssets
             mAnimationFunction.Animator.SetInteger("pushState", -1);
             TPSCamera.CameraType = TPSCamera.Type.Free;
             mColliderController.ResetCollider();
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

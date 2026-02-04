@@ -51,6 +51,8 @@ namespace MyAssets
         private float                       mDifference;
         public float                        Difference => mDifference;
 
+        private CapsuleCollider             mCapsuleCollider;
+        
         public void ClearStepFunc(bool v)
         {
             mIsClimbJumping = v;
@@ -65,8 +67,9 @@ namespace MyAssets
             mThisTransform = thisTransform;
             mController = mThisTransform.GetComponent<PlayableChracterController>();
             mIsClimbJumping = false;
+            mCapsuleCollider = mThisTransform.GetComponent<CapsuleCollider>();
         }
-
+        //Rayで前方の崖の高さを調べる
         public void HandleStepClimbin()
         {
             //初期化
@@ -77,10 +80,26 @@ namespace MyAssets
             Vector3 forward = mThisTransform.forward;
             Vector3 position = mThisTransform.position;
 
+            Vector3 highRayOrigin = position + Vector3.up;
+
+            // プレイヤーの足元(bottom)と頭頂部(top)を計算
+            float radius = mCapsuleCollider.radius;
+            float height = mCapsuleCollider.height;
+            // 少し内側にオフセットを設けて、床との接触による誤差を防ぐ
+            Vector3 pointBottom = position + Vector3.up * (radius + mMinStepHeight);
+            Vector3 pointTop = position + Vector3.up * (height - radius);
+            /*
+            // カプセルの形状のまま前方に飛ばして、障害物がないか確認
+            if (Physics.CapsuleCast(pointBottom, pointTop, radius, forward, mCheckDistance, mGroundMask))
+            {
+                // 道中に「体」がぶつかるものがあれば登れない
+                return;
+            }
+             */
+
             //下部レイキャスト
             Vector3 lowerRayOrigin = position + Vector3.up * mMinStepHeight;
             Ray lowerRay = new Ray(lowerRayOrigin, forward);
-
             RaycastHit hitLower;
             //距離判定
             if (Physics.SphereCast(lowerRayOrigin,0.2f, forward, out hitLower, mCheckDistance, mGroundMask))
@@ -95,7 +114,6 @@ namespace MyAssets
                 {
                     return;
                 }
-
                 //上部レイキャスト
                 Vector3 upperRayOrigin = position + Vector3.up * mMaxStepHeight;
                 Ray upperRay = new Ray(upperRayOrigin, forward);
@@ -112,8 +130,18 @@ namespace MyAssets
                     //maxStepHeight分の距離を調べて、地面に当たるか確認
                     if(Physics.Raycast(downRay,out hitDown,mMaxStepHeight,mGroundMask))
                     {
+                        // 着地点(hitDown.point)に自分が立ったと仮定して、そこが重なっていないか
+                        Vector3 checkBottom = hitDown.point + Vector3.up * radius;
+                        Vector3 checkTop = hitDown.point + Vector3.up * (height - radius);
+
+                        bool isSpaceEmpty = !Physics.CheckCapsule(
+                            checkBottom,
+                            checkTop,
+                            radius * 0.9f, // 判定をわずかに（10%ほど）小さくすると、ギリギリの場所でも登りやすくなる
+                            mGroundMask
+                        );
                         //ヒットした位置が、現在の足元の高さより高いか確認（低いなら穴かもしれない）
-                        if (hitDown.point.y > position.y + mMinStepHeight)
+                        if (isSpaceEmpty && hitDown.point.y > position.y + mMinStepHeight)
                         {
                             //ヒットのY値とmaxStepHeightの差分で判定
                             float maxStepRayPos = mThisTransform.position.y + mMaxStepHeight;
@@ -123,8 +151,10 @@ namespace MyAssets
                     // デバッグ用描画（着地点確認）
                     Debug.DrawRay(downRay.origin, Vector3.down * mMaxStepHeight, Color.green);
                 }
+                /*
+                 */
                 // デバッグ用描画
-                Debug.DrawRay(upperRay.origin, upperRay.direction * mCheckDistance, Color.red);
+                //Debug.DrawRay(upperRay.origin, upperRay.direction * mCheckDistance, Color.red);
             }
             // デバッグ用描画
             Debug.DrawRay(lowerRay.origin, lowerRay.direction * mCheckDistance, Color.blue);

@@ -52,9 +52,6 @@ namespace MyAssets
             mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
             TPSCamera.CameraType = TPSCamera.Type.ShoulderView;
             PlayerUIManager.Instance.ThrowCircle.gameObject.SetActive(true);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -62,7 +59,6 @@ namespace MyAssets
             base.Execute_Update(time);
             mChecker.UpdateTakedObjectThrowDirection(mController.StatusManager.PlayerStatusData.ThrowPower);
             mChecker.UpdateTakedObjectPosition();
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -127,9 +123,6 @@ namespace MyAssets
         {
             base.Enter();
             mAnimationFunction.Animator.SetInteger("to Lift", 3);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -137,7 +130,6 @@ namespace MyAssets
             mChecker.UpdateTakedObjectThrowDirection(mController.StatusManager.PlayerStatusData.ThrowPower);
             mChecker.UpdateTakedObjectPosition();
             base.Execute_Update(time);
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -207,9 +199,6 @@ namespace MyAssets
             mAnimationFunction.Animator.SetInteger("to Lift", 4);
 
             mThrowed = false;
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -222,7 +211,6 @@ namespace MyAssets
                 mChecker.Throw(mController.StatusManager.PlayerStatusData.ThrowPower);
                 mThrowed = true;
             }
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

@@ -53,9 +53,6 @@ namespace MyAssets
             mEquipmentController.IsBattleMode = false;
             mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 1);
             mAnimationFunction.StartUpdateAnimatorLayerWeight(3, 0,true);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
 
             SoundManager.Instance.PlayOneShot3D("Sword Sheathe", mController.transform.position);
         }
@@ -67,7 +64,6 @@ namespace MyAssets
             mAnimationFunction.UpdateFocusingMoveAnimation();
             mAnimationFunction.SpritDushClear();
             base.Execute_Update(time);
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

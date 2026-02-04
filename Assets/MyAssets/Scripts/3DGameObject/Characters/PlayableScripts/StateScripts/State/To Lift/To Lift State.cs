@@ -61,10 +61,6 @@ namespace MyAssets
             base.Execute_Update(time);
             mChecker.CheckTheDistanceHandsAndObject();
             mChecker.UpdateTakedObjectPosition();
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -134,9 +130,6 @@ namespace MyAssets
             mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 1);
             mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 1);
             mAnimationFunction.SetModeBlend(0);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -145,7 +138,6 @@ namespace MyAssets
             mChecker.UpdateTakedObjectPosition();
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -217,9 +209,6 @@ namespace MyAssets
         {
             base.Enter();
             mAnimationFunction.SetModeBlend(0);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -228,7 +217,6 @@ namespace MyAssets
             mChecker.UpdateTakedObjectPosition();
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -303,9 +291,6 @@ namespace MyAssets
             mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
             mAnimationFunction.StartUpdateAnimatorLayerWeight(2, 0);
             mAnimator.SetInteger("to Lift", -1);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
@@ -314,7 +299,6 @@ namespace MyAssets
             // Idle状態の特定の処理をここに追加できます
             // 例: アニメーションの更新など
             mAnimationFunction.UpdateIdleToRunAnimation();
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

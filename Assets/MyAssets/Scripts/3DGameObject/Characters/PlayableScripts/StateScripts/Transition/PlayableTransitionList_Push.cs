@@ -1,19 +1,22 @@
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 namespace MyAssets
 {
     public class IsPushStartTransition : StateTransitionBase
     {
         readonly private PropsObjectChecker mChecker;
+        readonly private PlayableChracterController mController;
         public IsPushStartTransition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mChecker = actor.GetComponent<PropsObjectChecker>();
+            mController = actor.GetComponent<PlayableChracterController>();
         }
         public override bool IsTransition()
         {
-            return mChecker.LargeObject != null && mChecker.PushEnabled;
+            return !mController.StatusManager.IsStaminaCoolDown && mChecker.LargeObject != null && mChecker.PushEnabled;
         }
     }
 
@@ -37,16 +40,18 @@ namespace MyAssets
     {
         readonly private PlayableInput mInput;
         readonly private PropsObjectChecker mChecker;
+        readonly private PlayableChracterController mController;
         public IsPushEndStartTransition
             (GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
             mChecker = actor.GetComponent<PropsObjectChecker>();
+            mController = actor.GetComponent<PlayableChracterController>();
         }
         public override bool IsTransition()
         {
-            return (mChecker.LargeObject != null && !mChecker.PushEnabled) || mInput.InputMove.magnitude <= 0.0f;
+            return (mChecker.LargeObject != null && !mChecker.PushEnabled) || mInput.InputMove.magnitude <= 0.0f || mController.StatusManager.IsStaminaCoolDown;
         }
     }
 
