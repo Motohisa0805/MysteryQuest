@@ -818,6 +818,7 @@ MonoBehaviour:
   mHasTakedObject: 0
   mLargeObject: {fileID: 0}
   mPushEnabled: 0
+  mPushingEnabled: 0
 --- !u!114 &1184154460903037335
 MonoBehaviour:
   m_ObjectHideFlags: 0

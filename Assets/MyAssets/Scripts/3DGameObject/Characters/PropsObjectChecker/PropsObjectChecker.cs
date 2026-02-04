@@ -31,6 +31,10 @@ namespace MyAssets
 
         public bool                         PushEnabled => mPushEnabled;
 
+        [SerializeField]
+        private bool                        mPushingEnabled;
+        public bool                         IsPushingEnabled {  get { return mPushingEnabled; }set { mPushingEnabled = value; } }
+
         private Vector3                     mTargetPos;
         public Vector3                      TargetPos => mTargetPos;
 
@@ -433,6 +437,7 @@ namespace MyAssets
                     {
                         mLargeObject = null;
                         mPushEnabled = false;
+                        mPushingEnabled = false;
                     }
                 }                
             }

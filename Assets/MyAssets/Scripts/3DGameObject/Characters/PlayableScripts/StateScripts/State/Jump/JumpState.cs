@@ -29,6 +29,13 @@ namespace MyAssets
             return re;
         }
 
+        public override List<ActionButtonInfo> GetActionButtons()
+        {
+            return new List<ActionButtonInfo>()
+            {
+                new ActionButtonInfo((int)ActionButtonController.ActionButtonTag.Up,"ジャンプ")
+            };
+        }
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
@@ -57,14 +64,12 @@ namespace MyAssets
             {
                 SoundManager.Instance.PlayOneShot3D("JumpUp", mController.transform.position);
             }
-            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Up, "ジャンプ");
         }
 
         public override void Execute_Update(float time)
         {
             mController.Movement.ClimbCheck();
             base.Execute_Update(time);
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -132,16 +137,12 @@ namespace MyAssets
             {
                 SoundManager.Instance.PlayOneShot3D("JumpUp", mController.transform.position);
             }
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
         {
             mController.Movement.ClimbCheck();
             base.Execute_Update(time);
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -207,16 +208,12 @@ namespace MyAssets
         {
             base.Enter();
             mPlayableAnimationFunction.Animator.SetInteger("jumpState", 2);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
         {
             mController.Movement.ClimbCheck();
             base.Execute_Update(time);
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -281,16 +278,12 @@ namespace MyAssets
         {
             base.Enter();
             mAnimator.SetInteger("jumpState", 3);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
         {
             mController.Movement.ClimbCheck();
             base.Execute_Update(time);
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

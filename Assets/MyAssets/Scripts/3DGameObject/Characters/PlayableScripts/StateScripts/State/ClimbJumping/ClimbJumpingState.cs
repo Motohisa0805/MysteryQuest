@@ -46,15 +46,11 @@ namespace MyAssets
             mAnimationFunction.Animator.SetInteger("jumpState", -1);
             mAnimationFunction.Animator.SetInteger("climbState", 0);
             mController.Movement.ClimbJumpingTimer.Start(mClimbJumpingTime);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

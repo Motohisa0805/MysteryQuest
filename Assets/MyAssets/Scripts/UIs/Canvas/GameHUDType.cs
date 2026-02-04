@@ -17,6 +17,7 @@ namespace MyAssets
 
         [SerializeField]
         private RectTransform[] mUIPanels = new RectTransform[0];
+        public RectTransform[] UIPanels => mUIPanels;
 
         private void OnEnable()
         {

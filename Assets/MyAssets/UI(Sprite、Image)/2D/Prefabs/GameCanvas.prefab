@@ -4095,6 +4095,7 @@ MonoBehaviour:
     - {fileID: 8407832043615080069}
     mSettingCategorys:
     - {fileID: 3799458594924791620}
+  mEnableMenu: 1
 --- !u!1 &7111184433949625568
 GameObject:
   m_ObjectHideFlags: 0

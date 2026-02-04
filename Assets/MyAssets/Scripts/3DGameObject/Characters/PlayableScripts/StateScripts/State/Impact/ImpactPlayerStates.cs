@@ -54,15 +54,11 @@ namespace MyAssets
             mChecker.SetReleaseTakedObject();
             mController.StatusManager.ChangeHP(-mImpactChecker.GetCalculatedDamage());
             SoundManager.Instance.PlayOneShot3D("Damage_Player", mImpactChecker.transform.position);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -138,16 +134,12 @@ namespace MyAssets
 
             mController.StatusManager.ChangeHP(-mImpactChecker.GetCalculatedDamage());
             SoundManager.Instance.PlayOneShot3D("Damage_Player", mImpactChecker.transform.position);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
             mTimer.Update(time);
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -196,15 +188,11 @@ namespace MyAssets
         {
             base.Enter();
             mAnimationFunction.Animator.SetInteger("standing Up State", 0);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
@@ -287,16 +275,12 @@ namespace MyAssets
             {
                 Debug.LogWarning("Not Find EventManager" + mStateKey + "State");
             }
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Left);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
         {
             base.Execute_Update(time);
             mTimer.Update(time);
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)

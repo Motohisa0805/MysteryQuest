@@ -64,5 +64,14 @@ namespace MyAssets
                 hud.gameObject.SetActive(active);
             }
         }
+
+        public void SetChildHUDActive(bool active, GameHUDType.GameUIPanelType enumType,int index)
+        {
+            mGameHUDTypes.TryGetValue(enumType, out GameHUDType hud);
+            if (hud != null)
+            {
+                hud.UIPanels[index].gameObject.SetActive(active);
+            }
+        }
     }
 }

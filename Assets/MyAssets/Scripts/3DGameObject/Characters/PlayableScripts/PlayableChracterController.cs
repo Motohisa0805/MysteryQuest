@@ -135,6 +135,9 @@ namespace MyAssets
         //追跡処理
         private TargetSearch                mTargetSearch;
         public TargetSearch                 TargetSearch => mTargetSearch;
+
+        private PropsObjectChecker          mPropsObjectChecker;
+
         //モデルのカラー管理処理
         private CharacterColorController    mCharacterColorController;
         public CharacterColorController     CharacterColorController => mCharacterColorController;
@@ -266,6 +269,12 @@ namespace MyAssets
                 Debug.LogError("TargetSearch component not found on " + gameObject.name);
             }
 
+            mPropsObjectChecker = GetComponent<PropsObjectChecker>();
+            if(mPropsObjectChecker == null)
+            {
+                Debug.LogError("PropsObjectChecker component not found on " + gameObject.name);
+            }
+
             mCharacterColorController = GetComponentInChildren<CharacterColorController>();
             if(mCharacterColorController == null)
             {
@@ -298,6 +307,8 @@ namespace MyAssets
             mFallTimer.Update(t);
             GroundCheck();
             OverheadCheck();
+
+            mStatusManager.RecoverySP(!Input.Sprit && !mPropsObjectChecker.IsPushingEnabled);
 
             mStateMachine.Update(t);
             mCurrentStateKey = mStateMachine.CurrentState.Key;
@@ -484,6 +495,10 @@ namespace MyAssets
 
         private void OnDestroy()
         {
+            if(PlayerUIManager.Instance)
+            {
+                PlayerUIManager.Instance.ReleaseUIStateChanger();
+            }
             mStateMachine.Dispose();
         }
 

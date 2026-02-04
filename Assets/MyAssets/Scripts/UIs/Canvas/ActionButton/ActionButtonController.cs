@@ -3,6 +3,17 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    public struct ActionButtonInfo
+    {
+        public int gTag;
+        public string gLabel;
+
+        public ActionButtonInfo(int tag, string label)
+        {
+            gTag = tag;
+            gLabel = label;
+        }
+    }
     //ボタン操作のUIの管理処理クラス
     public class ActionButtonController : MonoBehaviour
     {
@@ -58,6 +69,11 @@ namespace MyAssets
             {
                 EnterButton((int)ActionButtonTag.Right);
             }
+        }
+
+        public void CheckAndSetButtonUI()
+        {
+
         }
 
         public void ActiveButton(int id,string text,int fontsize = 20)

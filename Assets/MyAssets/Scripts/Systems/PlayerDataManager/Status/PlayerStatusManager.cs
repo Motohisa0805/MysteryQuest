@@ -185,11 +185,11 @@ namespace MyAssets
 
         }
 
-        public void RecoverySP(bool input)
+        public void RecoverySP(bool flag)
         {
             if (!mIsStaminaCoolDown)
             {
-                if (!input)
+                if (flag)
                 {
                     if (mKeepStatus.CurrentStamina < mKeepStatus.MaxStamina)
                     {

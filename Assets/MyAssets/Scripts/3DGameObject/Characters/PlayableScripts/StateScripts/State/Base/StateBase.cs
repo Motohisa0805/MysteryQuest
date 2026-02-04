@@ -18,6 +18,11 @@ namespace MyAssets
 
         public abstract List<IStateTransition<string>> CreateTransitionList(GameObject actor);
 
+        public virtual List<ActionButtonInfo> GetActionButtons()
+        {
+            return new List<ActionButtonInfo>();
+        }
+
         public virtual void Setup(GameObject actor)
         {
             mTransitionList = CreateTransitionList(actor);

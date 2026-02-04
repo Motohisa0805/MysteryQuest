@@ -35,6 +35,16 @@ namespace MyAssets
             return re;
         }
 
+        public override List<ActionButtonInfo> GetActionButtons()
+        {
+            return new List<ActionButtonInfo>()
+            {
+                new ActionButtonInfo((int)ActionButtonController.ActionButtonTag.Left, "攻撃"),
+                new ActionButtonInfo((int)ActionButtonController.ActionButtonTag.Up,"ジャンプ"),
+                new ActionButtonInfo((int)ActionButtonController.ActionButtonTag.Down,"走る")
+            };
+        }
+
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
@@ -48,9 +58,6 @@ namespace MyAssets
         public override void Enter()
         {
             base.Enter();
-            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Left, "アタック");
-            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Up, "ジャンプ");
-            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Down, "走る");
         }
 
         public override void Execute_Update(float time)

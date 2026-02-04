@@ -32,6 +32,14 @@ namespace MyAssets
             return re;
         }
 
+        public override List<ActionButtonInfo> GetActionButtons()
+        {
+            return new List<ActionButtonInfo>()
+            {
+                new ActionButtonInfo((int)ActionButtonController.ActionButtonTag.Left, "攻撃")
+            };
+        }
+
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
@@ -54,14 +62,10 @@ namespace MyAssets
                 mEquipmentController.SwingEffectHandler.ActivateSlachEffect(true);
             }
             mAnimationFunction.Animator.SetInteger("attack State", 1);
-            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Left, "アタック");
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Up);
-            PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Down);
         }
 
         public override void Execute_Update(float time)
         {
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
             if(mAnimationFunction.IsAnimationClipEnd("first Attack",0.5f))
             {
                 mController.HandTransforms[(int)SetItemTransform.TransformType.Right].GetCollider().enabled = false;

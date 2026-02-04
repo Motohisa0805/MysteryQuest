@@ -43,6 +43,15 @@ namespace MyAssets
             return re;
         }
 
+        public override List<ActionButtonInfo> GetActionButtons()
+        {
+            return new List<ActionButtonInfo>()
+            {
+                new ActionButtonInfo((int)ActionButtonController.ActionButtonTag.Left, "攻撃"),
+                new ActionButtonInfo((int)ActionButtonController.ActionButtonTag.Up,"ジャンプ")
+            };
+        }
+
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
@@ -81,14 +90,6 @@ namespace MyAssets
                     mAnimationFunction.StartUpdateAnimatorLayerWeight(1, 0);
                 }
             }
-            if(PlayerUIManager.Instance)
-            {
-                if(PlayerUIManager.Instance.ActionButtonController)
-                {
-                    PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Left,"アタック");
-                    PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Up,"ジャンプ");
-                }
-            }
         }
 
         public override void Execute_Update(float time)
@@ -97,7 +98,6 @@ namespace MyAssets
             mAnimationFunction.UpdateLayerWeight();
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();
-            mController.StatusManager.RecoverySP(mPlayableInput.Sprit);
         }
 
         public override void Execute_FixedUpdate(float time)
