@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,7 +22,8 @@ namespace MyAssets
             if(mText == null) { return; }
             float mm = ResultManager.GameTimer.GetMinutes();
             float ss = ResultManager.GameTimer.GetSecond();
-            mText.text = mm.ToString() + " : " + ss.ToString();
+            
+            mText.text = String.Format("{0:00}", mm) + " : " + String.Format("{0:00}", ss);
         }
     }
 }

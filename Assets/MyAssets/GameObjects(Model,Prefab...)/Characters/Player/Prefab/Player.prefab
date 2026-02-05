@@ -735,7 +735,7 @@ MonoBehaviour:
   mRayRadius: 0.2
   mGroundLayer:
     serializedVersion: 2
-    m_Bits: 72
+    m_Bits: 2147483720
   mGroundCheckOffsetY: 0.3
   mHandTransforms:
   - {fileID: 0}

@@ -249,7 +249,7 @@ namespace MyAssets
                             {
                                 if(mSmallObject == obj)
                                 {
-                                    PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Right, "éùÇ¬");
+                                    PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Right, "éùÇ¬",20,true);
                                 }
                                 mSmallObject = obj;
                                 break;
@@ -259,7 +259,7 @@ namespace MyAssets
                 }
                 if(!obj&& mSmallObject && !mHasTakedObject)
                 {
-                    PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Right);
+                    PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Right,false);
                     ClearSmallObject();
                 }
             }

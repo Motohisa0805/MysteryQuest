@@ -54,7 +54,7 @@ namespace MyAssets
                         mHasTriggered = true;
                         if(PlayerUIManager.Instance.ActionButtonController)
                         {
-                            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Right, "確認",20);
+                            PlayerUIManager.Instance.ActionButtonController.ActiveButton((int)ActionButtonController.ActionButtonTag.Right, "確認",20,true);
                         }
                     }
                 }
@@ -79,7 +79,7 @@ namespace MyAssets
                             mHasTriggered = false;
                             if (PlayerUIManager.Instance.ActionButtonController)
                             {
-                                PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Right);
+                                PlayerUIManager.Instance.ActionButtonController.DisableButton((int)ActionButtonController.ActionButtonTag.Right,false);
                                 mPlayer = null;
                             }
                         }
