@@ -26,6 +26,8 @@ namespace MyAssets
 
         private Transform                   mBaseTransform;
 
+        private PlayableChracterController  mPlayerController;
+
         private PlayableInput               mPlayableInput;
 
 
@@ -65,6 +67,7 @@ namespace MyAssets
         {
             //©•ª‚ÌTransform‚Ìİ’è
             mBaseTransform = transform;
+            mPlayerController = mBaseTransform.parent.GetComponent<PlayableChracterController>();
             //“ü—Íˆ—æ“¾
             mPlayableInput = mBaseTransform.parent.GetComponent<PlayableInput>();
             //‰‰oƒNƒ‰ƒXæ“¾
@@ -185,6 +188,14 @@ namespace MyAssets
         // ’Í‚Şˆ—
         private void GrabObject()
         {
+            SoundManager.Instance.PlayOneShot2D("Take_Object");
+            if(mPlayerController.LandingChemistryObject != null)
+            {
+                if (mPlayerController.LandingChemistryObject.gameObject == mFocusedObject.gameObject)
+                {
+                    return;
+                }
+            }
             mObjectSizeType = mFocusedObject;
 
             if (mObjectSizeType.TryGetComponent<Rigidbody>(out mTargetRb))
@@ -211,7 +222,6 @@ namespace MyAssets
             mTakeObjectLineVFXController.SetEndTransform(mObjectSizeType.transform);
             mTakeObjectLineVFXController.gameObject.SetActive(true);
 
-            SoundManager.Instance.PlayOneShot2D("Take_Object");
             mTakingObjectSoundSource = SoundManager.Instance.PlayLoopSE("Taking_Object", mBaseTransform.position, mBaseTransform);
         }
         public void UpdateTakeObject()

@@ -76,14 +76,14 @@ namespace MyAssets
 
         }
 
-        public void ActiveButton(int id,string text,int fontsize = 20)
+        public void ActiveButton(int id,string text,int fontsize = 20,bool look = false)
         {
             foreach (var image in mButtonTextures)
             {
                 if(image.ID == id)
                 {
                     image.gameObject.SetActive(true);
-                    image.SetText(text,fontsize);
+                    image.SetText(text,fontsize, look);
                     break;
                 }
             }
@@ -131,12 +131,13 @@ namespace MyAssets
             }
         }
 
-        public void DisableButton(int id)
+        public void DisableButton(int id,bool look = false)
         {
             foreach (var image in mButtonTextures)
             {
                 if (image.ID == id)
                 {
+                    image.LookImage = look;
                     image.gameObject.SetActive(false);
                     break;
                 }
@@ -147,7 +148,10 @@ namespace MyAssets
         {
             foreach (var image in mButtonTextures)
             {
-                image.gameObject.SetActive(false);
+                if (!image.LookImage)
+                {
+                    image.gameObject.SetActive(false);
+                }
             }
         }
 

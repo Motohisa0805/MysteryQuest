@@ -5,12 +5,19 @@ namespace MyAssets
 {
     public class InputTextImage : ButtonHover
     {
-        private Text mText;
-        public Text Text => mText;
+        private Text    mText;
+        public Text     Text => mText;
 
         [SerializeField]
-        private int mID;
-        public int ID => mID;
+        private int     mID;
+        public int      ID => mID;
+
+        private bool    mLookImage = false;
+        public bool     LookImage
+        {
+            get { return mLookImage; }
+            set { mLookImage = value; }
+        }
 
         public override void Awake()
         {
@@ -18,8 +25,9 @@ namespace MyAssets
             mText = GetComponentInChildren<Text>();
         }
 
-        public void SetText(string text,int size = 15)
+        public void SetText(string text,int size = 15,bool look = false)
         {
+            mLookImage = look;
             mText.text = text;
             mText.fontSize = size;
         }

@@ -151,6 +151,9 @@ namespace MyAssets
 
         private bool                        mIsPastGrounded; //前フレームで地面に接地していたかどうか
 
+        private ChemistryObject             mLandingChemistryObject;
+        public ChemistryObject              LandingChemistryObject => mLandingChemistryObject;
+
         [SerializeField]
         private bool                        mOverHead; //地面に接地しているかどうか
         public bool                         OverHead => mOverHead;
@@ -328,6 +331,11 @@ namespace MyAssets
             if (land)
             {
                 mGrounded = true;
+                ChemistryObject chemistryObject = hit.collider.GetComponent<ChemistryObject>();
+                if(chemistryObject != null && mLandingChemistryObject == null)
+                {
+                    mLandingChemistryObject = chemistryObject;
+                }
             }
             else
             {
@@ -336,6 +344,10 @@ namespace MyAssets
                 {
                     //地面から離れたときの処理
                     mFallTimer.Start(mCount);
+                }
+                if(mLandingChemistryObject != null)
+                {
+                    mLandingChemistryObject = null;
                 }
             }
 
