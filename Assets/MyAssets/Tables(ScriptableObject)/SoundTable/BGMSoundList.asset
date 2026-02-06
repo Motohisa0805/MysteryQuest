@@ -18,7 +18,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 1bd666968bca55c4c87721cdaf471dd4, type: 3}
     volume: 0.5
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 0
     mMaxDistance: 0
@@ -27,7 +27,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: f7012d600fd931046b13ac2fec08de1c, type: 3}
     volume: 0.5
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 0
     mMaxDistance: 0
@@ -36,7 +36,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: bb4a4a79fca2a204f8c48ed8a79a6735, type: 3}
     volume: 0.5
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 0
     mMaxDistance: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 467dd7edba377f24dbd9c1ddc5b23904, type: 3}
     volume: 0.5
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 0
     mMaxDistance: 0
@@ -54,7 +54,7 @@ MonoBehaviour:
     mClips:
     - {fileID: 8300000, guid: 0307647d4f2d9404395f7b62eeab0f8e, type: 3}
     volume: 0.5
-    pitchRange: 0
+    pitchRange: 1
     mSpatialBlend: 0
     mMinDistance: 0
     mMaxDistance: 0

@@ -226,6 +226,7 @@ namespace MyAssets
             audioSource.gameObject.SetActive(true);
             audioSource.loop = loop;
             audioSource.volume = bgmElement.volume;
+            audioSource.pitch = bgmElement.pitchRange;
             audioSource.spatialBlend = 0.0f;
             audioSource.maxDistance = bgmElement.MaxDistance;
             audioSource.minDistance = bgmElement.MinDistance;

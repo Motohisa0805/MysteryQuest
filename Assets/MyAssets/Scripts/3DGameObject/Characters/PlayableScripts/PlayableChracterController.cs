@@ -162,6 +162,8 @@ namespace MyAssets
         private Timer                       mFallTimer;
         public Timer                        FallTimer => mFallTimer;
         [SerializeField]
+        private float                       mFallingCount;
+        [SerializeField]
         private float                       mCount;
 
         [SerializeField]
