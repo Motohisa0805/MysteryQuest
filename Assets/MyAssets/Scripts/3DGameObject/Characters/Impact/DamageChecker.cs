@@ -31,6 +31,10 @@ namespace MyAssets
         private ChemistryObject mChemistryObject;
 
         private CharacterColorController mCharacterColorController;
+
+        //もし他キャラクターを追加するならここはキャラクタークラスになる。
+        private PlayableChracterController mChracterController;
+        private float mFallTimer = 0f; // 落下時間を蓄積する変数
         private void Awake()
         {
             mChemistryObject = GetComponent<ChemistryObject>();
@@ -43,6 +47,11 @@ namespace MyAssets
             {
                 Debug.LogError("Not Found CharacterColorController" + gameObject.name);
             }
+            mChracterController = GetComponent<PlayableChracterController>();
+            if (mChracterController == null)
+            {
+                Debug.LogError("Not Found PlayableChracterController" + gameObject.name);
+            }
         }
 
         private void Update()
@@ -51,6 +60,21 @@ namespace MyAssets
             if(mChemistryObject.CurrentElements != ElementType.None)
             {
                 ApplyElementDamage();
+            }
+
+            // 接地判定（CharacterControllerやレイキャスト、またはGroundedフラグを使用）
+            if (!mChracterController.Grounded) // 空中にいる場合
+            {
+                // 落下速度が下向きの場合のみカウントするとより正確（ジャンプの上昇中を除外）
+                if (GetComponent<Rigidbody>().linearVelocity.y < 0)
+                {
+                    mFallTimer += Time.deltaTime;
+                }
+            }
+            else
+            {
+                // 着地したらタイマーをリセットする（ApplyDamageの後に呼ぶ）
+                // mFallTimer = 0f; 
             }
         }
 
@@ -76,27 +100,53 @@ namespace MyAssets
 
             if (targetRb != null)
             {
-                //相手が「自分より速い」かつ「一定以上の危険な速度（mMinObjectSpeed）」で動いているか
-                //さらに、相手が「自分の方に向かって」動いているかをチェック
-                Vector3 relativePos = transform.position - targetRb.transform.position;
-                float dirDot = Vector3.Dot(targetRb.linearVelocity.normalized, relativePos.normalized);
-
-                // directionDot > 0 なら、相手は自分の方に向かって動いている
-                if (collision.impulse.magnitude > mMinObjectSpeed &&
-                    targetRb.linearVelocity.magnitude > ri.linearVelocity.magnitude &&
-                    dirDot > 0)
+                if (CheckFallImpact(collision, ri))
                 {
-                    Apply(targetRb, collision);
-                    return;
+                    // 垂直方向の相対速度のみを取り出す
+                    float verticalVelocity = Mathf.Abs(collision.relativeVelocity.y);
+
+                    if (verticalVelocity > FallDamageThreshold)
+                    {
+                        float mass = ri != null ? ri.mass : 1f;
+                        mImpactPower = verticalVelocity * (mass * mFallTimer);
+                        mFallTimer = 0f;
+                    }
+                }
+                else
+                {
+                    //相手が「自分より速い」かつ「一定以上の危険な速度（mMinObjectSpeed）」で動いているか
+                    //さらに、相手が「自分の方に向かって」動いているかをチェック
+                    Vector3 relativePos = transform.position - targetRb.transform.position;
+                    float dirDot = Vector3.Dot(targetRb.linearVelocity.normalized, relativePos.normalized);
+
+                    // directionDot > 0 なら、相手は自分の方に向かって動いている
+                    if (collision.impulse.magnitude > mMinObjectSpeed &&
+                        targetRb.linearVelocity.magnitude > ri.linearVelocity.magnitude &&
+                        dirDot > 0)
+                    {
+                        Apply(targetRb, collision);
+                        return;
+                    }
                 }
             }
             else
             {
-                CheckFallImpact(collision, ri);
+                if(CheckFallImpact(collision, ri))
+                {
+                    // 垂直方向の相対速度のみを取り出す
+                    float verticalVelocity = Mathf.Abs(collision.relativeVelocity.y);
+
+                    if (verticalVelocity > FallDamageThreshold)
+                    {
+                        float mass = ri != null ? ri.mass : 1f;
+                        mImpactPower = verticalVelocity * (mass * mFallTimer);
+                        mFallTimer = 0f;
+                    }
+                }
             }
         }
 
-        private void CheckFallImpact(Collision collision, Rigidbody ri)
+        private bool CheckFallImpact(Collision collision, Rigidbody ri)
         {
             // 衝突した面の法線を確認 (真下からの衝撃か)
             // ContactPoint.normalは衝突面から外側へのベクトル
@@ -105,24 +155,21 @@ namespace MyAssets
                 // 法線が上向きか判断
                 if (contact.normal.y > 0.7f)
                 {
-                    // 垂直方向の相対速度のみを取り出す
-                    float verticalVelocity = Mathf.Abs(collision.relativeVelocity.y);
-
-                    if (verticalVelocity > FallDamageThreshold)
-                    {
-                        float mass = ri != null ? ri.mass : 1f;
-                        mImpactPower = verticalVelocity * mass;
-                    }
-                    break;
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
+            return false;
         }
 
         private void Apply(Rigidbody targetRb, Collision collision)
         {
             float impactVelocity = collision.relativeVelocity.magnitude;
             float mass = targetRb.mass;
-            float impactPower = impactVelocity * mass;
+            float impactPower = 0.5f * (mass / 10) * (impactVelocity * impactVelocity);
 
             if (impactPower >= mMinImpactPower)
             {
@@ -138,22 +185,22 @@ namespace MyAssets
 
         public int GetCalculatedDamage()
         {
-            if (mImpactPower < 1000) return 0;
+            if (mImpactPower < mMinImpactPower) return 0;
 
             int damage = 0;
 
             // 1. 物理パワーをベースダメージに変換
-            if (mImpactPower >= 1600)
+            if (mImpactPower >= mMaxImpactPower)
             {
                 // 1600を超えた分、さらにダメージを上乗せする計算
-                float extraPower = mImpactPower - 1600;
+                float extraPower = mImpactPower - mMaxImpactPower;
                 damage = 120 + Mathf.FloorToInt(extraPower / 200f) * 30;
             }
-            else if (mImpactPower >= 1500)
+            else if (mImpactPower >= mMaxImpactPower - 100)
             {
                 damage = 60; // 小ダメージ（ハート半分）
             }
-            else if (mImpactPower >= 1000)
+            else if (mImpactPower >= mMaxImpactPower -600)
             {
                 damage = 30; // 落下・かすり傷（ハート1/4）
             }
