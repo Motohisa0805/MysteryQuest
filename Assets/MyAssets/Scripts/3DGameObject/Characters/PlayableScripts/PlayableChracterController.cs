@@ -111,6 +111,10 @@ namespace MyAssets
         private EventIdleState              mEventIdleState;
         [SerializeField]
         private EventMoveState              mEventMoveState;
+        [SerializeField]
+        private DownIdleState               mDownIdleState;
+        [SerializeField]
+        private WakeUpState                 mWakeUpState;
 
         [Header("キャラクターのステータス")]
         [SerializeField]
@@ -241,6 +245,8 @@ namespace MyAssets
                 //ここから下はイベント用の状態
                 mEventIdleState,
                 mEventMoveState,
+                mDownIdleState,
+                mWakeUpState
             };
 
 
@@ -571,6 +577,46 @@ namespace MyAssets
 
                 // 2. 状態遷移
                 mStateMachine.ChangeState(EventMoveState.mStateKey);
+            }
+            // 3. 到着まで待機
+            await utcs.Task;
+        }
+
+        public async UniTask DownToAsync()
+        {
+            var utcs = new UniTaskCompletionSource();
+
+            if (mStateMachine.IsContain(DownIdleState.mStateKey))
+            {
+                // 本来のStateクラスにキャストしてパラメータを渡す
+                var eventState = mStateMachine.CurrentState as DownIdleState;
+                // ※もし現在がEventMoveでないなら、取得後にセットする必要があります
+                // 安全な手順：
+                var stateInstance = mStateMachine.GetState<DownIdleState>(DownIdleState.mStateKey);
+                stateInstance.SetConfig(() => utcs.TrySetResult());
+
+                // 2. 状態遷移
+                mStateMachine.ChangeState(DownIdleState.mStateKey);
+            }
+            // 3. 到着まで待機
+            await utcs.Task;
+        }
+
+        public async UniTask WakeUpToAsync()
+        {
+            var utcs = new UniTaskCompletionSource();
+
+            if (mStateMachine.IsContain(WakeUpState.mStateKey))
+            {
+                // 本来のStateクラスにキャストしてパラメータを渡す
+                var eventState = mStateMachine.CurrentState as WakeUpState;
+                // ※もし現在がEventMoveでないなら、取得後にセットする必要があります
+                // 安全な手順：
+                var stateInstance = mStateMachine.GetState<WakeUpState>(WakeUpState.mStateKey);
+                stateInstance.SetConfig(() => utcs.TrySetResult());
+
+                // 2. 状態遷移
+                mStateMachine.ChangeState(WakeUpState.mStateKey);
             }
             // 3. 到着まで待機
             await utcs.Task;

@@ -26,6 +26,12 @@ namespace MyAssets
         private EffectReturner              mConfettiParticleSystem;
 
         private Action                      mStartEventAction;
+
+        //イベント管理に必要なクラス変数群
+        private BlackoutController          mBlackoutController;
+
+        private AbyssArea                   mAbyssArea;
+
         private void Awake()
         {
             mInstance = this;
@@ -92,8 +98,21 @@ namespace MyAssets
             mTPSCamera = FindAnyObjectByType<TPSCamera>();
             if (mTPSCamera == null)
             {
-                Debug.LogWarning("TPSCameraが見つかりません。");
+                Debug.LogWarning("Not Found TPSCamera");
             }
+
+            mBlackoutController = FindAnyObjectByType<BlackoutController>();
+            if (mBlackoutController == null)
+            {
+                Debug.LogWarning("Not Found BlackoutController");
+            }
+
+            mAbyssArea = FindAnyObjectByType<AbyssArea>();
+            if(mAbyssArea == null)
+            {
+                Debug.LogWarning("Not Found AbyssArea");
+            }
+
             InitializeEvent();
             StartCoroutine(StartEvent());
 
@@ -208,6 +227,85 @@ namespace MyAssets
             InputManager.SetNoneMouseMode();
             GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Result);
             SoundManager.Instance.PlayBGM("GameOverBGM", false);
+        }
+
+        //奈落に落ちた時のイベント
+        public async UniTaskVoid AbyssFallEvent()
+        {
+            ResultManager.IsStopGameUIInput = true;
+            //UIを一時的に非表示
+            GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Tutorial);
+            GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.HUD);
+            //カメラの追従を解除
+            if (mTPSCamera != null)
+            {
+                mTPSCamera.enabled = false;
+            }
+            else
+            {
+                mTPSCamera = Camera.main.GetComponent<TPSCamera>();
+                if (mTPSCamera != null)
+                {
+                    mTPSCamera.enabled = false;
+                }
+            }
+            //落下演出のため少し待機
+            await UniTask.Delay(TimeSpan.FromSeconds(1));
+            //暗転
+            if (mBlackoutController == null)
+            {
+                mBlackoutController = FindAnyObjectByType<BlackoutController>();
+                mBlackoutController.StartBlackout();
+            }
+            else
+            {
+                mBlackoutController.StartBlackout();
+            }
+            //少し待機
+            await UniTask.Delay(TimeSpan.FromSeconds(2));
+            //カメラの追従を開始
+            if (mTPSCamera != null)
+            {
+                mTPSCamera.enabled = true;
+            }
+            else
+            {
+                mTPSCamera = Camera.main.GetComponent<TPSCamera>();
+                if (mTPSCamera != null)
+                {
+                    mTPSCamera.enabled = true;
+                }
+            }
+            //暗転を解除
+            if (mBlackoutController == null)
+            {
+                mBlackoutController = FindAnyObjectByType<BlackoutController>();
+                mBlackoutController.StartFadeIn();
+            }
+            else
+            {
+                mBlackoutController.StartFadeIn();
+            }
+            //オブジェクトの位置をリセット
+            if (mAbyssArea == null)
+            {
+                mAbyssArea = FindAnyObjectByType<AbyssArea>();
+                mAbyssArea.ObjectPositionReset();
+            }
+            else
+            {
+                mAbyssArea.ObjectPositionReset();
+            }
+            //起き上がる演出
+            //起き上がる
+            await mPlayableChracterController.WakeUpToAsync();
+            //少し待機
+            await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
+            //UIを再表示
+            GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Tutorial);
+            GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.HUD);
+            PlayerUIManager.Instance.DotImageController.gameObject.SetActive(false);
+            ResultManager.IsStopGameUIInput = false;
         }
 
         private void OnDestroy()

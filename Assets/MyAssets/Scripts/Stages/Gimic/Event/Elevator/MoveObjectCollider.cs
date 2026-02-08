@@ -19,11 +19,9 @@ namespace MyAssets
             {
                 Debug.LogError("MoveObjectCollider: BoxCollider component is missing.");
             }
+            //ƒƒbƒVƒ…‚Í‚ ‚Á‚Ä‚à‚È‚­‚Ä‚à—Ç‚¢
+            //‚»‚Ìê‡‚Ínull‚É‚È‚é
             mMeshCollider = GetComponent<MeshCollider>();
-            if (mMeshCollider == null)
-            {
-                Debug.LogError("MoveObjectCollider: MeshCollider component is missing.");
-            }
             mLastPosition = transform.position;
         }
 

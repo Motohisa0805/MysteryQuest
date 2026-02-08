@@ -7,34 +7,35 @@ namespace MyAssets
     public class DamageChecker : MonoBehaviour
     {
         [SerializeField]
-        private float           mImpactPower;
+        private float                       mImpactPower;
 
-        public float            ImpactPower => mImpactPower;
+        public float                        ImpactPower => mImpactPower;
 
-        private float           mMinImpactPower = 1000f;
-        private float           mMaxImpactPower = 1600f;
+        private float                       mMinImpactPower = 1000f;
+        private float                       mMaxImpactPower = 1600f;
 
-        public bool             IsEnabledDamage => mImpactPower > 0;
-        public bool             IsEnabledSmallDamage => mImpactPower > mMinImpactPower && mImpactPower < mMaxImpactPower;
-        public bool             IsEnabledBigDamage => mImpactPower > mMaxImpactPower && mImpactPower > mMinImpactPower;
+        public bool                         IsEnabledDamage => mImpactPower > 0;
+        public bool                         IsEnabledSmallDamage => mImpactPower > mMinImpactPower && mImpactPower < mMaxImpactPower;
+        public bool                         IsEnabledBigDamage => mImpactPower > mMaxImpactPower && mImpactPower > mMinImpactPower;
 
-        public bool             IsEnabledFallDamage => mImpactPower > 1000;
+        public bool                         IsEnabledFallDamage => mImpactPower > 1000;
 
-        private float           mMinObjectSpeed = 5.0f;
+        private float                       mMinObjectSpeed = 5.0f;
 
         // 落下ダメージのしきい値
-        private const float     FallDamageThreshold = 10f;
+        private const float                 mFallDamageThreshold = 10f;
 
         //エレメントの継続的ダメージで使用
-        private Timer           mElementDamageTimer = new Timer();
+        private Timer                       mElementDamageTimer = new Timer();
 
-        private ChemistryObject mChemistryObject;
+        private ChemistryObject             mChemistryObject;
 
-        private CharacterColorController mCharacterColorController;
+        private CharacterColorController    mCharacterColorController;
 
         //もし他キャラクターを追加するならここはキャラクタークラスになる。
-        private PlayableChracterController mChracterController;
-        private float mFallTimer = 0f; // 落下時間を蓄積する変数
+        private PlayableChracterController  mChracterController;
+        private float                       mFallTimer = 0f; // 落下時間を蓄積する変数
+        public float                        FallTimer { get { return mFallTimer; } set { mFallTimer = value; } }
         private void Awake()
         {
             mChemistryObject = GetComponent<ChemistryObject>();
@@ -73,8 +74,8 @@ namespace MyAssets
             }
             else
             {
-                // 着地したらタイマーをリセットする（ApplyDamageの後に呼ぶ）
-                // mFallTimer = 0f; 
+                // 着地したらタイマーをリセットする
+                mFallTimer = 0f; 
             }
         }
 
@@ -105,7 +106,7 @@ namespace MyAssets
                     // 垂直方向の相対速度のみを取り出す
                     float verticalVelocity = Mathf.Abs(collision.relativeVelocity.y);
 
-                    if (verticalVelocity > FallDamageThreshold)
+                    if (verticalVelocity > mFallDamageThreshold)
                     {
                         float mass = ri != null ? ri.mass : 1f;
                         mImpactPower = verticalVelocity * (mass * mFallTimer);
@@ -136,7 +137,7 @@ namespace MyAssets
                     // 垂直方向の相対速度のみを取り出す
                     float verticalVelocity = Mathf.Abs(collision.relativeVelocity.y);
 
-                    if (verticalVelocity > FallDamageThreshold)
+                    if (verticalVelocity > mFallDamageThreshold)
                     {
                         float mass = ri != null ? ri.mass : 1f;
                         mImpactPower = verticalVelocity * (mass * mFallTimer);
@@ -181,6 +182,12 @@ namespace MyAssets
         public void ClearImpactPower()
         {
             mImpactPower = 0f;
+        }
+
+        public void AddDamage(float damage)
+        {
+            mFallTimer = 0f;
+            mImpactPower = damage;
         }
 
         public int GetCalculatedDamage()
