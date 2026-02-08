@@ -110,6 +110,7 @@ namespace MyAssets
 
         private void Start()
         {
+            mBattleMode = false;
             //‰Šú‰»‚Å‰Eè‚ÉŒ•‚ğ‚½‚¹‚é
             SetEquipment(SetItemTransform.TransformType.Weapon,0);
         }
