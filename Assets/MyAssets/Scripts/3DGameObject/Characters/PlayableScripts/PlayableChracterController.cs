@@ -149,11 +149,16 @@ namespace MyAssets
         private SoulPlayerController        mSoulPlayerController;
         public SoulPlayerController         SoulPlayerController => mSoulPlayerController;
 
+        //地面に接地しているかどうか
         [SerializeField]
-        private bool                        mGrounded; //地面に接地しているかどうか
+        private bool                        mGrounded; 
         public bool                         Grounded => mGrounded;
 
-        private bool                        mIsPastGrounded; //前フレームで地面に接地していたかどうか
+        //前フレームで地面に接地していたかどうか
+        private bool                        mIsPastGrounded;
+        //レイヤーが［Ground］の地面に接地したかどうか
+        private bool                        mGroundObjectLanded;
+        public bool                         GroundObjectLanded => mGroundObjectLanded;
 
         private ChemistryObject             mLandingChemistryObject;
         public ChemistryObject              LandingChemistryObject => mLandingChemistryObject;
@@ -344,11 +349,20 @@ namespace MyAssets
                 {
                     mLandingChemistryObject = chemistryObject;
                 }
+                if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+                {
+                    mGroundObjectLanded = true;
+                }
+                else
+                {
+                    mGroundObjectLanded = false;
+                }
             }
             else
             {
                 mGrounded = false;
-                if(mIsPastGrounded != mGrounded)
+                mGroundObjectLanded = false;
+                if (mIsPastGrounded != mGrounded)
                 {
                     //地面から離れたときの処理
                     mFallTimer.Start(mCount);

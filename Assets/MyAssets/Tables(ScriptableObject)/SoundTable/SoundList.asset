@@ -307,3 +307,12 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
+  - mID: -33382487
+    mLabel: CrystalHit
+    mClips:
+    - {fileID: 8300000, guid: 4effb7de4bff81f458a80a676e9cd5bb, type: 3}
+    volume: 1
+    pitchRange: 1
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10

@@ -8,16 +8,16 @@ namespace MyAssets
         [SerializeField]
         private List<MonoBehaviour> mReceivers = new List<MonoBehaviour>();
 
-        private bool mIsOn = false;
+        private bool                mIsOn = false;
 
         private MaterialColorChange mMaterialColorChange;
 
         [Header("スイッチに関係する設定群")]
         [Header("スイッチが時間でオフにする")]
         [SerializeField]
-        private bool mTimerDisable = false;
+        private bool                mTimerDisable = false;
         [SerializeField]
-        private CloseDoorTimer mCloseDoorTimer;
+        private CloseDoorTimer      mCloseDoorTimer;
 
         private void Awake()
         {
@@ -87,6 +87,7 @@ namespace MyAssets
                 SendSignal(mIsOn);
                 Vector3 hitPoint = other.ClosestPoint(transform.position);
                 EffectManager.Instance.PlayEffect<Transform>("Impact", hitPoint, Quaternion.identity, Vector3.one);
+                SoundManager.Instance.PlayOneShot3D("CrystalHit", hitPoint);
             }
         }
 
@@ -98,6 +99,9 @@ namespace MyAssets
                 if (mTimerDisable && !mCloseDoorTimer.Timer.IsEnd() || material.Material == MaterialType.Organism) { return; }
                 mIsOn = !mIsOn;
                 SendSignal(mIsOn);
+                Vector3 hitPoint = collision.collider.ClosestPoint(transform.position);
+                EffectManager.Instance.PlayEffect<Transform>("Impact", hitPoint, Quaternion.identity, Vector3.one);
+                SoundManager.Instance.PlayOneShot3D("CrystalHit", hitPoint);
             }
         }
     }

@@ -6,14 +6,15 @@ namespace MyAssets
     //プレイヤーのスタミナUI処理クラス
     public class StaminaHUDController : MonoBehaviour
     {
-
+        //スタミナ本体(緑色)
         [SerializeField]
-        private Slider mStaminaWheel;
+        private Slider  mStaminaWheel;
+        //スタミナの軌跡(赤色)
         [SerializeField]
-        private Slider mUsageWheel;
+        private Slider  mUsageWheel;
 
-        private float mStamina;
-        private float mMaxStamina;
+        private float   mStamina;
+        private float   mMaxStamina;
 
         private void Start()
         {
@@ -34,7 +35,8 @@ namespace MyAssets
         {
             mStamina = PlayerStatusManager.Instance.PlayerStatusData.CurrentStamina;
             mMaxStamina = PlayerStatusManager.Instance.PlayerStatusData.MaxStamina;
-            if (InputManager.GetKey(KeyCode.eSprint) && !PlayerStatusManager.Instance.IsStaminaCoolDown)
+            bool useStamina = PlayerStatusManager.Instance.UseStamina;
+            if (useStamina && !PlayerStatusManager.Instance.IsStaminaCoolDown)
             {
                 mUsageWheel.value = mStamina / mMaxStamina + 0.05f;
             }

@@ -8,12 +8,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: LightMaterial
-    second: {fileID: 2100000, guid: 006fd7afd9d3fe9439f5c3e0dd78067d, type: 2}
+    second: {fileID: 2100000, guid: c74d2583a512bef4c9cd9a970cfb0e06, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: MoveFootStage_01
-    second: {fileID: 2100000, guid: ba79a95c5359c5f4785e31ed19ef679c, type: 2}
+    second: {fileID: 2100000, guid: 1293ac964da52594ebfdb9070febc125, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
