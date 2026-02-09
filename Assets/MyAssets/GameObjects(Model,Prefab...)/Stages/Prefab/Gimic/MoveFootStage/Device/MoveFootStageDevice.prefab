@@ -50,6 +50,7 @@ MonoBehaviour:
   mReturn: 0
   mSpeed: 2
   mGap: 3
+  mMoveStop: 0
   mWaypoints:
   - {x: 10, y: 0, z: 0}
   - {x: -10, y: 0, z: 0}
@@ -65,6 +66,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MoveFootStage_01
       objectReference: {fileID: 0}
+    - target: {fileID: 7501374894233795330, guid: 86ed6318cf1e4e444ae40ff0433a8c47, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1293ac964da52594ebfdb9070febc125, type: 2}
+    - target: {fileID: 7501374894233795330, guid: 86ed6318cf1e4e444ae40ff0433a8c47, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c74d2583a512bef4c9cd9a970cfb0e06, type: 2}
     - target: {fileID: 8317966835458127742, guid: 86ed6318cf1e4e444ae40ff0433a8c47, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.5

@@ -219,7 +219,7 @@ namespace MyAssets
             {
                 rigidbody.AddForce(mThrowDirction * throwForce, ForceMode.VelocityChange);
             }
-            mHasTakedObject = false;
+            SetReleaseTakedObject();
         }
 
         private void Update()

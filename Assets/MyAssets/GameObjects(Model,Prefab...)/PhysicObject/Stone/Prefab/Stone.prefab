@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7783846604144170331}
   - component: {fileID: 8902099021555260739}
   - component: {fileID: 8393269483995924026}
+  - component: {fileID: 6322623969549728169}
   m_Layer: 3
   m_Name: Stone
   m_TagString: Untagged
@@ -33,7 +34,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -113,8 +114,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5222148, y: 0.27713817, z: 0.47569287}
-  m_Center: {x: 0.0111074, y: 0.0024616942, z: -0.04421515}
+  m_Size: {x: 0.4724196, y: 0.2363966, z: 0.40439495}
+  m_Center: {x: 0.03600514, y: 0.010383666, z: -0.04478105}
 --- !u!54 &5898342829798664391
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -201,3 +202,15 @@ MonoBehaviour:
   mMinSlideSpeed: 0.5
   mMaxSlideSpeed: 10
   mSoundCullDistance: 20
+--- !u!114 &6322623969549728169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9089709525240349853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d997068890bf11419d1cc7b3f640f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.RespawnObject

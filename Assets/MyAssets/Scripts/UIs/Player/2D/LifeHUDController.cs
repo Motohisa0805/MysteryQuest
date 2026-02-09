@@ -13,28 +13,28 @@ namespace MyAssets
     public class LifeHUDController : MonoBehaviour
     {
         [SerializeField]
-        private GameObject mLifeIconPrefab;
+        private GameObject      mLifeIconPrefab;
 
         [SerializeField]
         private List<Transform> mNoLifeIcons = new List<Transform>();
         private List<Transform> mLifeIcons = new List<Transform>();
 
         [SerializeField]
-        private Sprite mLife_FULL;
+        private Sprite          mLife_FULL;
         [SerializeField]
-        private Sprite mLife_THREE_QUARTERS;
+        private Sprite          mLife_THREE_QUARTERS;
         [SerializeField]
-        private Sprite mLife_HALF;
+        private Sprite          mLife_HALF;
         [SerializeField]
-        private Sprite mLife_QUARTER;
+        private Sprite          mLife_QUARTER;
 
         [SerializeField]
-        private Sprite mNoLife;
+        private Sprite          mNoLife;
 
-        private int mLifeCount;
+        private int             mLifeCount;
 
-        private float mDisplayedHP;
-        private Coroutine mUpdateCoroutine;
+        private float           mDisplayedHP;
+        private Coroutine       mUpdateCoroutine;
 
         //ÉâÉCÉtHUDèâä˙âªèàóù
         private void InitilaizeAddLife()

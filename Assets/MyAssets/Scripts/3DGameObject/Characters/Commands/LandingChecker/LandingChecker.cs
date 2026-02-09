@@ -42,7 +42,22 @@ namespace MyAssets
 
         private bool CheckIfGrounded()
         {
-            return mController != null ? mController.Grounded : true;
+            if (mController)
+            {
+                if(mController.Grounded&&mController.GroundObjectLanded)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                // コントローラーが見つからない場合、デフォルトで地上にいると見なす
+                return true;
+            }
         }
     }
 }

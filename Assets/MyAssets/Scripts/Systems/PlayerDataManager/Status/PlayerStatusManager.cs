@@ -34,18 +34,21 @@ namespace MyAssets
             //ショルダービュー時の回転速度
             public float ShoulderViewRotationSpeed;
         }
-        private static PlayerStatusManager instance;
-        public static PlayerStatusManager Instance => instance;
+        private static PlayerStatusManager  instance;
+        public static PlayerStatusManager   Instance => instance;
 
         [SerializeField]
-        private PlayerStatus mPlayerStatus;
+        private PlayerStatus                mPlayerStatus;
         [SerializeField]
-        private PlayerStatus mKeepStatus;
-        public PlayerStatus   PlayerStatusData => mKeepStatus;
+        private PlayerStatus                mKeepStatus;
+        public PlayerStatus                 PlayerStatusData => mKeepStatus;
 
-        private bool mIsStaminaCoolDown;
-        public bool IsStaminaCoolDown => mIsStaminaCoolDown;
-        public bool IsNoSprit => mPlayerStatus.CurrentStamina <= 0 && mIsStaminaCoolDown;
+        private bool                        mIsStaminaCoolDown;
+        public bool                         IsStaminaCoolDown => mIsStaminaCoolDown;
+        public bool                         IsNoSprit => mPlayerStatus.CurrentStamina <= 0 && mIsStaminaCoolDown;
+
+        private bool                        mUseStamina;
+        public bool                         UseStamina => mUseStamina;
         private void Awake()
         {
             if (instance != null)
@@ -150,6 +153,7 @@ namespace MyAssets
         {
             if(!mIsStaminaCoolDown)
             {
+                mUseStamina = input;
                 if (input)
                 {
                     if (mKeepStatus.CurrentStamina > 0)
@@ -172,6 +176,7 @@ namespace MyAssets
             }
             else
             {
+                mUseStamina = input;
                 if (mKeepStatus.CurrentStamina < mKeepStatus.MaxStamina)
                 {
                     mKeepStatus.CurrentStamina += mKeepStatus.RecoveryStamina * Time.deltaTime;
@@ -187,6 +192,7 @@ namespace MyAssets
 
         public void RecoverySP(bool flag)
         {
+            mUseStamina = false;
             if (!mIsStaminaCoolDown)
             {
                 if (flag)
