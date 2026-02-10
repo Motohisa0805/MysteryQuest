@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //ステージギミックのスイッチコントローラー
+    // スイッチが押されたときに、登録されているギミック受信者に信号を送る
     public class SwitchControler : MonoBehaviour
     {
         [SerializeField]

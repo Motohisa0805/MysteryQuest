@@ -4,25 +4,14 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //ãNÇ´è„Ç™ÇÈèÛë‘
     [Serializable]
     public class WakeUpState : StateBase<string>
     {
-        public static readonly string mStateKey = "WakeUp";
-        public override string Key => mStateKey;
+        public static readonly string                   mStateKey = "WakeUp";
+        public override string                          Key => mStateKey;
 
-        PlayableChracterController mController;
-
-        PlayableAnimationFunction mAnimationFunction;
-
-        private Movement mMovement;
-
-        DamageChecker mImpactChecker;
-
-        private EquipmentController mEquipmentController;
-
-        private PlayableInput mPlayableInput;
-
-        private TargetSearch mTargetSearch;
+        private PlayableAnimationFunction               mAnimationFunction;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -33,13 +22,7 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
-            mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
-            mMovement = actor.GetComponent<Movement>();
-            mImpactChecker = actor.GetComponent<DamageChecker>();
-            mTargetSearch = actor.GetComponent<TargetSearch>();
-            mPlayableInput = actor.GetComponent<PlayableInput>();
-            mEquipmentController = actor.GetComponent<EquipmentController>();
         }
 
         public override void Enter()

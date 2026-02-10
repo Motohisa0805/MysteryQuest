@@ -3,19 +3,21 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace MyAssets
 {
+    //装備管理クラス
+    // キャラクターに装備を持たせる管理を行う
     public class EquipmentController : MonoBehaviour
     {
-        private PlayableChracterController mController;
+        private PlayableChracterController  mController;
 
-        private bool mBattleMode = false;
-        public bool IsBattleMode { get { return mBattleMode; }set { mBattleMode = value; } }
+        private bool                        mBattleMode = false;
+        public bool                         IsBattleMode { get { return mBattleMode; }set { mBattleMode = value; } }
 
         //剣のエフェクト管理クラス
-        private SwingEffectHandler mSwingEffectHandler;
-        public SwingEffectHandler SwingEffectHandler => mSwingEffectHandler;
+        private SwingEffectHandler          mSwingEffectHandler;
+        public SwingEffectHandler           SwingEffectHandler => mSwingEffectHandler;
 
-        private SwordStick mSwordStick;
-        public SwordStick SwordStick => mSwordStick;
+        private SwordStick                  mSwordStick;
+        public SwordStick                   SwordStick => mSwordStick;
 
         private void Awake()
         {

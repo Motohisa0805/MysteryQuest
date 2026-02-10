@@ -3,14 +3,16 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //オブジェクトが動く際に、その上に乗っているオブジェクトも一緒に動かすためのコンポーネント
     public class MoveObjectCollider : MonoBehaviour
     {
-        private BoxCollider mBoxCollider;
-
-        private MeshCollider mMeshCollider;
-
+        //必須コンポーネント
+        private BoxCollider     mBoxCollider;
+        //メッシュコライダーはオプション
+        private MeshCollider    mMeshCollider;
+        //乗っているオブジェクトのRigidbodyリスト
         private List<Rigidbody> mAttachedRigidbodies = new List<Rigidbody>();
-
+        //前回の位置
         private Vector3 mLastPosition;
         private void Awake()
         {

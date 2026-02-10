@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    // ゲーム中のHUDの種類を管理するクラス
+    // HUD、チュートリアル、オプション、リザルト画面などのUIパネルを制御
+    // 各HUDが存在するCanvasにアタッチする
     public class GameHUDType : MonoBehaviour
     {
         public enum GameUIPanelType
@@ -12,12 +15,12 @@ namespace MyAssets
             Result,
         }
         [SerializeField]
-        private GameUIPanelType mGameUIPanelType;
-        public GameUIPanelType GameUIType => mGameUIPanelType;
+        private GameUIPanelType     mGameUIPanelType;
+        public GameUIPanelType      GameUIType => mGameUIPanelType;
 
         [SerializeField]
-        private RectTransform[] mUIPanels = new RectTransform[0];
-        public RectTransform[] UIPanels => mUIPanels;
+        private RectTransform[]     mUIPanels = new RectTransform[0];
+        public RectTransform[]      UIPanels => mUIPanels;
 
         private void OnEnable()
         {

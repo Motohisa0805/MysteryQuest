@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 namespace MyAssets
 {
+    // ボタンホバー時の処理
+    /// IPointerEnterHandler, IPointerExitHandlerを実装して、ポインターの入退出イベントを処理
+    /// ボタンがホバーされたときにmHoveringをtrueに設定し、ホバーが解除されたときにfalseに設定
     public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         private RectTransform   mRectTransform;
@@ -20,6 +23,8 @@ namespace MyAssets
 
         private Vector2         mBasePos = Vector2.zero;
         private Vector2         mBaseSize = Vector2.one;
+
+        public virtual bool IsSound => true;
 
         public virtual void Awake()
         {
@@ -42,6 +47,10 @@ namespace MyAssets
 
         public void ChangeButton()
         {
+            if (IsSound)
+            {
+                SoundManager.Instance.PlayOneShot2D("Decide_Button", false);
+            }
             mPressed = true;
             // 押された時の演出
             mBasePos = mRectTransform.anchoredPosition;

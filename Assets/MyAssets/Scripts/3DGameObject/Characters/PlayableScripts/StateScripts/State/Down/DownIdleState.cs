@@ -10,19 +10,8 @@ namespace MyAssets
         public static readonly string mStateKey = "DownIdle";
         public override string Key => mStateKey;
 
-        PlayableChracterController mController;
+        private PlayableAnimationFunction mAnimationFunction;
 
-        PlayableAnimationFunction mAnimationFunction;
-
-        private Movement mMovement;
-
-        DamageChecker mImpactChecker;
-
-        private EquipmentController mEquipmentController;
-
-        private PlayableInput mPlayableInput;
-
-        private TargetSearch mTargetSearch;
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
             List<IStateTransition<string>> re = new List<IStateTransition<string>>();
@@ -33,13 +22,7 @@ namespace MyAssets
         public override void Setup(GameObject actor)
         {
             base.Setup(actor);
-            mController = actor.GetComponent<PlayableChracterController>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
-            mMovement = actor.GetComponent<Movement>();
-            mImpactChecker = actor.GetComponent<DamageChecker>();
-            mTargetSearch = actor.GetComponent<TargetSearch>();
-            mPlayableInput = actor.GetComponent<PlayableInput>();
-            mEquipmentController = actor.GetComponent<EquipmentController>();
         }
 
         public override void Enter()
@@ -54,11 +37,6 @@ namespace MyAssets
             mAnimationFunction.UpdateLayerWeight();
             mAnimationFunction.UpdateModeBlend();
             mAnimationFunction.UpdateIdleToRunAnimation();
-        }
-
-        public override void Exit()
-        {
-            base.Exit();
         }
     }
 }

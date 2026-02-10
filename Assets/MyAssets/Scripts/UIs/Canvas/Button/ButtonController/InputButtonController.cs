@@ -1,9 +1,7 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Users;
-using System.Collections;
-using System;
 
 namespace MyAssets
 {
@@ -18,6 +16,8 @@ namespace MyAssets
         [SerializeField]
         private Button[]        mButtons = new Button[0];
         private ButtonHover[]   mHovers = new ButtonHover[0];
+        [SerializeField]
+        private float           mAddDecideButtonSizeOffset = 50f;
 
         private bool            mDecideFlag;
 
@@ -56,13 +56,13 @@ namespace MyAssets
             mSelectIndex = 0;
             SetSelectImagePosition(mSelectIndex);
         }
-
+        //選択画像のサイズを決定
         private void SetSelectImageSize()
         {
             if (mSelectImage == null) { return; }
             Vector2 size = mSelectImage.rectTransform.sizeDelta;
-            size.x += 50;
-            size.y += 50;
+            size.x += mAddDecideButtonSizeOffset;
+            size.y += mAddDecideButtonSizeOffset;
             mSelectImage.rectTransform.sizeDelta = size;
         }
 
@@ -77,7 +77,7 @@ namespace MyAssets
             SetSelectImageSize();
             mSelectImage.rectTransform.localScale = mHovers[index].RectTransform.localScale;
         }
-
+        //選択画像の有効無効
         private void SetActivateSelectImage(bool b)
         {
             mSelectImage.enabled = b;
@@ -94,7 +94,7 @@ namespace MyAssets
             }
 
         }
-
+        //マウス入力処理
         private void MouseInput()
         {
             for (int i = 0; i < mHovers.Length; i++)
@@ -111,7 +111,7 @@ namespace MyAssets
                 }
             }
         }
-
+        //ゲームパッド入力処理
         private void GamePadInput()
         {
             Vector2 selectVec2 = Vector2.zero;
@@ -140,7 +140,7 @@ namespace MyAssets
                 OnDecide();
             }
         }
-
+        //ベクトル入力処理
         private void SelectVec2Input(Vector2 select)
         {
             int currentIndex = mSelectIndex;
@@ -148,7 +148,7 @@ namespace MyAssets
             int decideIndex = -1;
             for (int i = 0; i < mHovers.Length; i++)
             {
-                if (!mHovers[i].gameObject.activeSelf) return;
+                if (!mHovers[i].transform.parent.gameObject.activeSelf) continue;
 
                 if (select.x > 0)
                 {
@@ -185,7 +185,7 @@ namespace MyAssets
             mSelectIndex = decideIndex;
             SetSelectImagePosition(mSelectIndex);
         }
-
+        //決定インデックスチェック
         private int CheckDecideIndex(int currentNum, int decideNum, int newNum)
         {
             if (decideNum < 0) { return newNum; }
@@ -198,13 +198,13 @@ namespace MyAssets
             }
             return decideNum;
         }
-
+        //決定処理
         public void OnDecide()
         {
             if (mDecideFlag) { return; }
             StartCoroutine(DecideUpdate());
         }
-
+        //決定コルーチン
         private IEnumerator DecideUpdate()
         {
             //mDecideFlag = true;

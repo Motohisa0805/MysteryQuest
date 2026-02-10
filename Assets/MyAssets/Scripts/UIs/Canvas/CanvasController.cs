@@ -3,6 +3,7 @@ using UnityEngine;
 namespace MyAssets
 {
     //全シーンで使えるUIの処理を行う
+    //Canvasにアタッチする
     public class CanvasController : MonoBehaviour
     {
         private BlackoutController mBlackoutController;

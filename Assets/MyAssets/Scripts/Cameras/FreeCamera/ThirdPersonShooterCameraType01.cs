@@ -202,13 +202,6 @@ namespace MyAssets
                     targetPos = mFocusingTarget.position;
                     playerPos = mTarget.position; // mTargetは注視対象(プレイヤー)
                     direction = (targetPos - playerPos).normalized;
-                    /*
-                    // --- 左右のオフセット決定ロジック ---
-                    // プレイヤーから見てカメラが左右どちらにいたかを判定（初回切り替え時のみ保持するのが理想）
-                    side = 1.0f;
-                    Vector3 relativeCameraPos = mTarget.InverseTransformPoint(mCurrentPosition);
-                    side = (relativeCameraPos.x >= 0) ? 1.0f : -1.0f; // 右なら1, 左なら-1
-                     */
                 }
                 else
                 {

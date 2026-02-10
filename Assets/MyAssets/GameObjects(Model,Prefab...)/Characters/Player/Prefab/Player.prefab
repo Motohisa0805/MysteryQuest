@@ -711,15 +711,15 @@ MonoBehaviour:
   mStandingToCrouchState:
     mCrouchHeight: 0.9
   mPushStartState:
-    mPushPower: 400
+    mPushPower: 800
     mBasePushSpeed: 5
     mMinSpeed: 2
   mPushingState:
-    mPushPower: 400
+    mPushPower: 800
     mBasePushSpeed: 5
     mMinSpeed: 2
   mPushEndState:
-    mPushPower: 400
+    mPushPower: 800
     mBasePushSpeed: 5
     mMinSpeed: 2
   mClimbJumpingState:

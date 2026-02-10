@@ -1228,6 +1228,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.InputButtonController
   mSelectImage: {fileID: 417458086}
   mButtons: []
+  mAddDecideButtonSizeOffset: 50
 --- !u!1001 &1624105391
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1586,7 +1587,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c2510ea9bf881f94ca3efb28bc81c6c2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a4aed9aae7934b34bb0a67bf3825abbc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

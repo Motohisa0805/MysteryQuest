@@ -4,20 +4,21 @@ using UnityEngine.UI;
 
 namespace MyAssets
 {
+    //ステージ選択画面でステージの情報を代入する先をまとめた構造体
     [System.Serializable]
     public struct StageSelectData
     {
         [SerializeField]
-        private Text mStageTitle;
-        public Text StageTitle => mStageTitle;
+        private Text    mStageTitle;
+        public Text     StageTitle => mStageTitle;
 
         [SerializeField]
-        private Text mStageExplanation;
-        public Text StageExplanation => mStageExplanation;
+        private Text    mStageExplanation;
+        public Text     StageExplanation => mStageExplanation;
 
         [SerializeField]
-        private Image mStageImage;
-        public Image StageImage => mStageImage;
+        private Image   mStageImage;
+        public Image    StageImage => mStageImage;
         public void SetData(Text stageTitle, Text stageExplanation, Image stageImage)
         {
             mStageTitle = stageTitle;
@@ -37,7 +38,7 @@ namespace MyAssets
         private StageInformation        mCurrentStageInformation;
         public StageInformation         CurrentStageInformation => mCurrentStageInformation;
         //現在のステージ番号
-        private int                     mCurrentStageIndex;
+        private static int              mCurrentStageIndex = 0;
 
         //ステージ情報を代入する先をまとめて宣言した構造体
         [SerializeField]
@@ -70,8 +71,6 @@ namespace MyAssets
                 GetComponentInChildren<ExplanationStringObject>().GetComponent<Text>(),
                 GetComponentInChildren<ImageObject>().GetComponent<Image>()
                 );
-
-            mCurrentStageIndex = 0;
 
             //0番目のデータを参照(後々ゲームの進捗度で変更する)
             mCurrentStageInformation = mStageInformationList.StageInformations[mCurrentStageIndex];

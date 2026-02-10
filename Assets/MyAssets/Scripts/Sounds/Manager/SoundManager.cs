@@ -41,6 +41,26 @@ namespace MyAssets
         [SerializeField]
         private float               mMuteDurationAtStart = 0.2f; 
 
+        public void SetSEVolumeAudios()
+        {
+            foreach(AudioSource audioSource in mAudioObjects)
+            {
+                if(audioSource == mPlayingBGMAudioSource)
+                {
+                    continue;
+                }
+                audioSource.volume = DataManager.SettingData.gSEVolume;
+            }
+        }
+
+        public void SetBGMVolumeAudios()
+        {
+            if(mPlayingBGMAudioSource)
+            {
+                mPlayingBGMAudioSource.volume = DataManager.SettingData.gBGMVolume;
+            }
+        }
+
         private void Awake()
         {
             if (mInstance != null)
@@ -54,7 +74,7 @@ namespace MyAssets
 
         private void Start()
         {
-            // 2. CullingGroup自体の作成 (これも一生に一度)
+            //CullingGroup自体の作成
             mCullingGroup = new CullingGroup();
             mCullingGroup.SetBoundingDistances(new float[] { mCullDistance });
             mCullingGroup.onStateChanged = OnCullingStateChanged;
@@ -174,7 +194,7 @@ namespace MyAssets
             mCullingGroup.SetBoundingSpheres(mSpheres);
             mCullingGroup.SetBoundingSphereCount(count);
         }
-
+        //オーディオソースの生成
         private AudioSource CreateAudioSource()
         {
             if (mAudioObjects.Count > mMaxAudioIndex) { return null; }
@@ -185,7 +205,7 @@ namespace MyAssets
             obj.SetActive(false);
             return obj.GetComponent<AudioSource>();
         }
-
+        //使用可能なオーディオソースの探索
         private AudioSource SerchAudios()
         {
             for(int i = 0; i < mAudioObjects.Count;i++)
@@ -201,7 +221,7 @@ namespace MyAssets
             AudioSource audioSource = CreateAudioSource();
             return audioSource;
         }
-
+        //BGMの再生
         public void PlayBGM(int id, bool loop = true)
         {
             //クリップを取得
@@ -225,7 +245,14 @@ namespace MyAssets
             //オーディオソースを有効に
             audioSource.gameObject.SetActive(true);
             audioSource.loop = loop;
-            audioSource.volume = bgmElement.volume;
+            if (DataManager.SettingData != null)
+            {
+                audioSource.volume = DataManager.SettingData.gBGMVolume;
+            }
+            else
+            {
+                audioSource.volume = 1.0f;
+            }
             audioSource.pitch = bgmElement.pitchRange;
             audioSource.spatialBlend = 0.0f;
             audioSource.maxDistance = bgmElement.MaxDistance;
@@ -233,12 +260,13 @@ namespace MyAssets
             audioSource.Play();
             mPlayingBGMAudioSource = audioSource;
         }
-
+        //BGMの再生(ラベル指定)
         public void PlayBGM(string label, bool loop = true)
         {
             int id = Animator.StringToHash(label);
             PlayBGM(id, loop);
         }
+        //BGMの停止
         public void StopBGM()
         {
             if(mPlayingBGMAudioSource == null)
@@ -247,7 +275,7 @@ namespace MyAssets
             }
             mPlayingBGMAudioSource.Stop();
         }
-
+        //BGMの再開
         public void UnPauseStart()
         {
             if(mPlayingBGMAudioSource == null) 
@@ -256,7 +284,7 @@ namespace MyAssets
             }
             mPlayingBGMAudioSource.UnPause();
         }
-
+        //BGMの一時停止
         public void PauseBGM()
         {
             if (mPlayingBGMAudioSource == null)
@@ -265,8 +293,7 @@ namespace MyAssets
             }
             mPlayingBGMAudioSource.Pause();
         }
-
-
+        //3Dサウンドの再生
         public void PlayOneShot3D(int id,Vector3 postion,Transform parent = null,bool loop = false,bool destroyCollection = false, float endSECount = -1)
         {
             if (Time.timeSinceLevelLoad < mMuteDurationAtStart)
@@ -287,7 +314,14 @@ namespace MyAssets
             audioSource.gameObject.SetActive(true);
             audioSource.loop = loop;
             audioSource.spatialBlend = 1.0f;
-            audioSource.volume = seElement.volume;
+            if (DataManager.SettingData != null)
+            {
+                audioSource.volume = DataManager.SettingData.gSEVolume;
+            }
+            else
+            {
+                audioSource.volume = 1.0f;
+            }
             audioSource.pitch = seElement.pitchRange;
             audioSource.maxDistance = seElement.MaxDistance;
             audioSource.minDistance = seElement.MinDistance;
@@ -324,14 +358,14 @@ namespace MyAssets
                 }
             }
         }
-
+        //3Dサウンドの再生(ラベル指定)
         public void PlayOneShot3D(string label, Vector3 position, Transform parent = null, bool loop = false, bool destroyCollection = false, float endSECount = -1)
         {
             // 文字列をハッシュ(int)に変換して、既存のメソッドを呼び出す
             int id = Animator.StringToHash(label);
             PlayOneShot3D(id,position,parent,loop,destroyCollection, endSECount);
         }
-
+        //物理演算用3Dサウンドの再生
         public void PlayOneShot3D_Physic(int id, Vector3 position, float volumeScale, Transform parent = null)
         {
             if (Time.timeSinceLevelLoad < mMuteDurationAtStart) return;
@@ -352,7 +386,14 @@ namespace MyAssets
             audioSource.minDistance = seElement.MinDistance;
 
             //リストの基本音量 * 物理演算からの倍率
-            audioSource.volume = seElement.volume * volumeScale;
+            if (DataManager.SettingData != null)
+            {
+                audioSource.volume = DataManager.SettingData.gSEVolume * volumeScale;
+            }
+            else
+            {
+                audioSource.volume = 1.0f * volumeScale;
+            }
 
             if (parent)
             {
@@ -369,14 +410,14 @@ namespace MyAssets
             audioSource.PlayOneShot(clip);
             StartCoroutine(ReturnToPool(audioSource, clip.length));
         }
-
+        //物理演算用3Dサウンドの再生(ラベル指定)
         public void PlayOneShot3D_Physic(string label,Vector3 position, float volumeScale, Transform parent = null)
         {
             // 文字列をハッシュ(int)に変換して、既存のメソッドを呼び出す
             int id = Animator.StringToHash(label);
             PlayOneShot3D_Physic(id, position, volumeScale, parent);
         }
-
+        //2Dサウンドの再生
         public void PlayOneShot2D(int id, bool loop = false, float endSECount = -1,float pitch = 1)
         {
             //クリップを取得
@@ -393,6 +434,14 @@ namespace MyAssets
             audioSource.loop = loop;
             audioSource.pitch = pitch;
             audioSource.spatialBlend = 0.0f;
+            if (DataManager.SettingData != null)
+            {
+                audioSource.volume = DataManager.SettingData.gSEVolume;
+            }
+            else
+            {
+                audioSource.volume = 1.0f;
+            }
             audioSource.maxDistance = seElement.MaxDistance;
             audioSource.minDistance = seElement.MinDistance;
 
@@ -402,12 +451,13 @@ namespace MyAssets
             audioSource.PlayOneShot(clip);
             StartCoroutine(ReturnToPool(audioSource, clip.length));
         }
-
+        //2Dサウンドの再生(ラベル指定)
         public void PlayOneShot2D(string label, bool loop = false, float endSECount = -1, float pitch = 1)
         {
             int id = Animator.StringToHash(label);
             PlayOneShot2D(id, loop, endSECount, pitch);
         }
+        //オーディオソースの回収
         private IEnumerator ReturnToPool(AudioSource source, float delay)
         {
             yield return new WaitForSecondsRealtime(delay);
@@ -416,7 +466,7 @@ namespace MyAssets
             source.gameObject.SetActive(false);
             source.clip = null;
         }
-
+        //オーディオソースの回収(即時)
         public void ReturnAudioSource(AudioSource source)
         {
             if (source == null) return;
@@ -425,7 +475,7 @@ namespace MyAssets
             source.gameObject.SetActive(false);
             source.clip = null;
         }
-
+        //ループ3Dサウンドの再生
         public AudioSource PlayLoopSE(int id, Vector3 position,Transform parent = null)
         {
             //クリップの取得
@@ -443,7 +493,14 @@ namespace MyAssets
             audioSource.enabled = true;
             audioSource.clip = clip;
             audioSource.loop = true; // ループ必須
-            audioSource.volume = seElement.volume;
+            if(DataManager.SettingData != null)
+            {
+                audioSource.volume = DataManager.SettingData.gSEVolume;
+            }
+            else
+            {
+                audioSource.volume = 1.0f;
+            }
             audioSource.spatialBlend = seElement.mSpatialBlend; // 3Dサウンドにする
             audioSource.maxDistance = seElement.MaxDistance;
             audioSource.minDistance = seElement.MinDistance;
@@ -466,20 +523,20 @@ namespace MyAssets
             //AudioSource インスタンスを返し、停止権限を呼び出し元に与える
             return audioSource;
         }
-
+        //ループ3Dサウンドの再生(ラベル指定)
         public AudioSource PlayLoopSE(string label, Vector3 position, Transform parent = null)
         {
             // 文字列をハッシュ(int)に変換して、既存のメソッドを呼び出す
             int id = Animator.StringToHash(label);
             return PlayLoopSE(id, position, parent);
         }
-
+        //ループ3Dサウンドの停止
         public void StopLoopSE(AudioSource source,float fadeDuration = 0.5f)
         {
             if(source == null || !source.gameObject.activeSelf)return;
             StartCoroutine(FadeOutAndReturn(source, fadeDuration));
         }
-
+        // フェードアウトしてから回収
         private IEnumerator FadeOutAndReturn(AudioSource source,float duration)
         {
             float startVolume = source.volume;
@@ -498,7 +555,7 @@ namespace MyAssets
             // 既存の回収メソッドを使ってプールに戻す
             ReturnAudioSource(source);
         }
-
+        //CullingGroupの破棄
         private void OnDestroy()
         {
             if (mCullingGroup != null)

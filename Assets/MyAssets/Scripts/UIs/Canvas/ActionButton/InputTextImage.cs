@@ -19,6 +19,8 @@ namespace MyAssets
             set { mLookImage = value; }
         }
 
+        public override bool IsSound => false;
+
         public override void Awake()
         {
             base.Awake();

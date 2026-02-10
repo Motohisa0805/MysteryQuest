@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //イベント全体を管理するクラス
     public class EventManager : MonoBehaviour
     {
         private static EventManager         mInstance;
@@ -24,8 +25,6 @@ namespace MyAssets
         public List<EventPoint>             EventMovePointList => mEventMovePointList;
 
         private EffectReturner              mConfettiParticleSystem;
-
-        private Action                      mStartEventAction;
 
         //イベント管理に必要なクラス変数群
         private BlackoutController          mBlackoutController;

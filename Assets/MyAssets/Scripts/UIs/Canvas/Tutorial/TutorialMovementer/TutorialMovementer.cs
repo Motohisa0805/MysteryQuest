@@ -72,7 +72,6 @@ namespace MyAssets
             Time.timeScale = 1;
             InputManager.SetLockedMouseMode();
             ResultManager.IsStopGameUIInput = false;
-            SoundManager.Instance.PlayOneShot2D("Decide_Button");
             gameObject.SetActive(false);
         }
 
