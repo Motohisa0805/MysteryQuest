@@ -1,16 +1,18 @@
 using System.IO;
-using UnityEditor.Overlays;
 using UnityEngine;
 
 namespace MyAssets
 {
+    // JSONデータの読み書きを行うマネージャークラス
+    // SettingJSONData型のデータを保存・読み込みする
+    //
     public class DataManager
     {
         // 外部から直接SettingDataへアクセスして変更できるようにプロパティを公開
-        public static SettingJSONData SettingData { get; set; }
-        private static string mSettingFilePath;
-        private static string mSettingFileName = "settingData.json";
-
+        public static SettingJSONData   SettingData { get; set; }
+        private static string           mSettingFilePath;
+        private static string           mSettingFileName = "settingData.json";
+        // JSONデータの初期化
         public static void SettingDataAwake()
         {
             // パス名取得
@@ -29,7 +31,7 @@ namespace MyAssets
                 Debug.Log("設定ファイルを読み込みました: " + mSettingFilePath);
             }
         }
-
+        // jsonファイル保存
         public static void Save(SettingJSONData data)
         {
             //念のためnullチェック

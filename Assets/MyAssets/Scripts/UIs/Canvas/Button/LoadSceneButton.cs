@@ -20,7 +20,6 @@ namespace MyAssets
                 mBlackoutController = FindAnyObjectByType<BlackoutController>();
                 mBlackoutController.StartBlackout((int)mSceneTag);
             }
-            SoundManager.Instance.PlayOneShot2D("Decide_Button", false);
         }
 
         public void ReLoadScene()
@@ -34,7 +33,6 @@ namespace MyAssets
                 mBlackoutController = FindAnyObjectByType<BlackoutController>();
                 mBlackoutController.StartBlackout(SceneManager.GetActiveScene().buildIndex);
             }
-            SoundManager.Instance.PlayOneShot2D("Decide_Button", false);
         }
 
         public void SetTag(SceneList sceneTag)

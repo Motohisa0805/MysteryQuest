@@ -7,26 +7,24 @@ namespace MyAssets
     [Serializable]
     public class PushStartState : StateBase<string>
     {
-        public static readonly string mStateKey = "PushStart";
-        public override string Key => mStateKey;
-        private PlayableChracterController mController;
+        public static readonly string       mStateKey = "PushStart";
+        public override string              Key => mStateKey;
+        private PlayableChracterController  mController;
 
-        private PlayableInput mPlayableInput;
+        private PlayableAnimationFunction   mAnimationFunction;
 
-        private PlayableAnimationFunction mAnimationFunction;
+        private PropsObjectChecker          mPropsChecker;
 
-        private PropsObjectChecker mPropsChecker;
-
-        private DamageChecker mImpactChecker;
+        private DamageChecker               mImpactChecker;
 
         [SerializeField]
-        private float mPushPower;
+        private float                       mPushPower;
 
         [SerializeField]
-        private float mBasePushSpeed;
+        private float                       mBasePushSpeed;
 
         [SerializeField]
-        private float mMinSpeed;
+        private float                       mMinSpeed;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -44,7 +42,6 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
-            mPlayableInput = actor.GetComponent<PlayableInput>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mPropsChecker = actor.GetComponent<PropsObjectChecker>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
@@ -96,26 +93,24 @@ namespace MyAssets
     [Serializable]
     public class PushingState : StateBase<string>
     {
-        public static readonly string mStateKey = "Pushing";
-        public override string Key => mStateKey;
-        private PlayableChracterController mController;
+        public static readonly string       mStateKey = "Pushing";
+        public override string              Key => mStateKey;
+        private PlayableChracterController  mController;
 
-        private PlayableInput mPlayableInput;
+        private PlayableAnimationFunction   mAnimationFunction;
 
-        private PlayableAnimationFunction mAnimationFunction;
+        private PropsObjectChecker          mPropsChecker;
 
-        private PropsObjectChecker mPropsChecker;
-
-        private DamageChecker mImpactChecker;
+        private DamageChecker               mImpactChecker;
 
         [SerializeField]
-        private float mPushPower;
+        private float                       mPushPower;
 
         [SerializeField]
-        private float mBasePushSpeed;
+        private float                       mBasePushSpeed;
 
         [SerializeField]
-        private float mMinSpeed;
+        private float                       mMinSpeed;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -134,7 +129,6 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
-            mPlayableInput = actor.GetComponent<PlayableInput>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mPropsChecker = actor.GetComponent<PropsObjectChecker>();
             mImpactChecker = actor.GetComponent<DamageChecker>();
@@ -183,26 +177,24 @@ namespace MyAssets
     [Serializable]
     public class PushEndState : StateBase<string>
     {
-        public static readonly string mStateKey = "PushEnd";
-        public override string Key => mStateKey;
-        private PlayableChracterController mController;
+        public static readonly string       mStateKey = "PushEnd";
+        public override string              Key => mStateKey;
+        private PlayableChracterController  mController;
 
-        private PlayableInput mPlayableInput;
+        private PlayableAnimationFunction   mAnimationFunction;
 
-        private PlayableAnimationFunction mAnimationFunction;
+        private PropsObjectChecker          mPropsChecker;
 
-        private PropsObjectChecker mPropsChecker;
-
-        private DamageChecker mImpactChecker;
+        private DamageChecker               mImpactChecker;
 
         [SerializeField]
-        private float mPushPower;
+        private float                       mPushPower;
 
         [SerializeField]
-        private float mBasePushSpeed;
+        private float                       mBasePushSpeed;
 
         [SerializeField]
-        private float mMinSpeed;
+        private float                       mMinSpeed;
 
         public override List<IStateTransition<string>> CreateTransitionList(GameObject actor)
         {
@@ -218,7 +210,6 @@ namespace MyAssets
         {
             base.Setup(actor);
             mController = actor.GetComponent<PlayableChracterController>();
-            mPlayableInput = actor.GetComponent<PlayableInput>();
             mAnimationFunction = actor.GetComponent<PlayableAnimationFunction>();
             mPropsChecker = actor.GetComponent<PropsObjectChecker>();
             mImpactChecker = actor.GetComponent<DamageChecker>();

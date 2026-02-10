@@ -2,19 +2,12 @@ using UnityEngine;
 
 namespace MyAssets
 {
-
+    //奈落エリアを管理するクラス
     public class AbyssArea : MonoBehaviour
     {
         private Vector3 mResetPosint;
 
         private Collider mCollider;
-
-        private BlackoutController mBlackoutController;
-
-        private void Awake()
-        {
-            mBlackoutController = FindAnyObjectByType<BlackoutController>();
-        }
 
         public void ObjectPositionReset()
         {

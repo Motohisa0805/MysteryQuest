@@ -2,39 +2,33 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //メニュー画面の管理を行うクラス
+    //メニューの開閉、各種メニュー画面の管理を行う
+    //メニューが存在するCanvasにアタッチする
     public class MenuController : MonoBehaviour
     {
-        private bool mMenuFlag = false;
+        private bool                mMenuFlag = false;
 
         [SerializeField]
-        private SettingMenuTrigger mSettingMenu;
-
-        [SerializeField]
-        private bool mEnableMenu = true;
+        private SettingMenuTrigger  mSettingMenu;
 
         private void Start()
         {
-            if(mEnableMenu)
-            {
-                mMenuFlag = false;
-                Time.timeScale = 1.0f;
-                InputManager.SetLockedMouseMode();
-                GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Option);
-                GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.HUD);
-                GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Tutorial);
-            }
+            mMenuFlag = false;
+            Time.timeScale = 1.0f;
+            InputManager.SetLockedMouseMode();
+            GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Option);
+            GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.HUD);
+            GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Tutorial);
         }
 
         private void Update()
         {
             if (ResultManager.IsStopGameUIInput) { return; }
-            if(mEnableMenu)
+            if(InputManager.GetKeyDown(KeyCode.eMenu) || InputManager.GetKeyDown(KeyCode.eSprint) && mMenuFlag)
             {
-                if(InputManager.GetKeyDown(KeyCode.eMenu))
-                {
-                    EnableMenu();
-                    mSettingMenu.DisableSetting();
-                }
+                EnableMenu();
+                mSettingMenu.DisableSetting();
             }
             mSettingMenu.Update();
         }
@@ -66,7 +60,6 @@ namespace MyAssets
         public void SetSettingMenu(bool active)
         {
             mSettingMenu.SetActiveSetting(active);
-            SoundManager.Instance.PlayOneShot2D("Decide_Button", false);
         }
     }
 }

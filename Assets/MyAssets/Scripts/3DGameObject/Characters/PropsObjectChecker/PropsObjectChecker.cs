@@ -2,6 +2,8 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //プレイヤーが持つオブジェクトの管理クラス
+    //小オブジェクトを持つ、投げる、大オブジェクトを押す
     [RequireComponent(typeof(PlayableChracterController))]
     public class PropsObjectChecker : MonoBehaviour
     {

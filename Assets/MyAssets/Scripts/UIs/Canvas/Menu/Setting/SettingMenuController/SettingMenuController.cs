@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 namespace MyAssets
 {
@@ -42,14 +40,12 @@ namespace MyAssets
                 }
             }
             mEntry = (SettingEntry)entry;
-            SoundManager.Instance.PlayOneShot2D("Decide_Button", false);
         }
 
         public void SetOutputText(SettingEntryItem entry,string text)
         {
             if(mSettingOutputTexts.Length - 1 < (int)entry) { return; }
             mSettingOutputTexts[(int)entry].SetText(text);
-            SoundManager.Instance.PlayOneShot2D("Decide_Button", false);
         }
 
         private void OnEnable()

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace MyAssets
@@ -28,6 +29,13 @@ namespace MyAssets
             SetSEVolume(DataManager.SettingData.gSEVolume);
             SetBGMVolume(DataManager.SettingData.gBGMVolume);
         }
+
+        public void OnDisable()
+        {
+            SoundManager.Instance.SetSEVolumeAudios();
+            SoundManager.Instance.SetBGMVolumeAudios();
+        }
+        // 入力速度設定
         public void SetInputRate(float rate)
         {
             DataManager.SettingData.gInputRate = rate;
@@ -46,7 +54,7 @@ namespace MyAssets
             }
 
         }
-
+        // フレームレート設定
         public void SetFrameRate(float rate)
         {
             DataManager.SettingData.gFrameRate = rate;
@@ -54,19 +62,69 @@ namespace MyAssets
             Application.targetFrameRate = (int)rate;
             mController.SetOutputText(SettingMenuController.SettingEntryItem.FrameRate, rate.ToString());
         }
-
+        // SE音量設定
         public void SetSEVolume(float volume)
         {
             DataManager.SettingData.gSEVolume = volume;
+            if (DataManager.SettingData.gSEVolume < 0f)
+            {
+                DataManager.SettingData.gSEVolume = 0f;
+            }
+            else if (DataManager.SettingData.gSEVolume > 1f)
+            {
+                DataManager.SettingData.gSEVolume = 1f;
+            }
             DataManager.Save(DataManager.SettingData);
-            mController.SetOutputText(SettingMenuController.SettingEntryItem.SE, volume.ToString());
+            float seVolume = DataManager.SettingData.gSEVolume * 100;
+            mController.SetOutputText(SettingMenuController.SettingEntryItem.SE, Math.Ceiling(seVolume).ToString());
         }
-
+        // SE音量加算設定
+        public void AddSEVolume(float volume)
+        {
+            DataManager.SettingData.gSEVolume += volume;
+            if(DataManager.SettingData.gSEVolume < 0f)
+            {
+                DataManager.SettingData.gSEVolume = 0f;
+            }
+            else if(DataManager.SettingData.gSEVolume > 1f)
+            {
+                DataManager.SettingData.gSEVolume = 1f;
+            }
+            DataManager.Save(DataManager.SettingData);
+            float seVolume = DataManager.SettingData.gSEVolume * 100;
+            mController.SetOutputText(SettingMenuController.SettingEntryItem.SE, Math.Ceiling(seVolume).ToString());
+        }
+        // BGM音量設定
         public void SetBGMVolume(float volume)
         {
             DataManager.SettingData.gBGMVolume = volume;
+            if (DataManager.SettingData.gBGMVolume < 0f)
+            {
+                DataManager.SettingData.gBGMVolume = 0f;
+            }
+            else if (DataManager.SettingData.gBGMVolume > 1f)
+            {
+                DataManager.SettingData.gBGMVolume = 1f;
+            }
             DataManager.Save(DataManager.SettingData);
-            mController.SetOutputText(SettingMenuController.SettingEntryItem.BGM, volume.ToString());
+            float bgmVolume = DataManager.SettingData.gBGMVolume * 100;
+            mController.SetOutputText(SettingMenuController.SettingEntryItem.BGM, Math.Ceiling(bgmVolume).ToString());
+        }
+        // BGM音量加算設定
+        public void AddBGMVolume(float volume)
+        {
+            DataManager.SettingData.gBGMVolume += volume;
+            if (DataManager.SettingData.gBGMVolume < 0f)
+            {
+                DataManager.SettingData.gBGMVolume = 0f;
+            }
+            else if (DataManager.SettingData.gBGMVolume > 1f)
+            {
+                DataManager.SettingData.gBGMVolume = 1f;
+            }
+            DataManager.Save(DataManager.SettingData);
+            float bgmVolume = DataManager.SettingData.gBGMVolume * 100;
+            mController.SetOutputText(SettingMenuController.SettingEntryItem.BGM, Math.Ceiling(bgmVolume).ToString());
         }
     }
 }

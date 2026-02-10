@@ -51,6 +51,7 @@ namespace MyAssets
         {
             //ƒ^ƒCƒgƒ‹‚É‘JˆÚ
             SceneManager.LoadScene((int)SceneList.Title);
+            Destroy(gameObject);
         }
     }
 }

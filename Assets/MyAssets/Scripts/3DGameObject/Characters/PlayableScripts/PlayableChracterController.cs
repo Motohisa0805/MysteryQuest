@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //プレイヤー管理クラス
     //下記はコントローラーに必要なクラスのため
     //絶対にアタッチするようにしている
     [RequireComponent(typeof(PlayableInput))]

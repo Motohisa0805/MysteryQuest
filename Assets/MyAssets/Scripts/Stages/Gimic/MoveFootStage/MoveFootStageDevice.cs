@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //動く足場を制御する装置
+    // 指定したルートを足場オブジェクト群が移動する
     public class MoveFootStageDevice : MonoBehaviour, IGimmickReceiver
     {
         [Header("足場となるオブジェクト")]
