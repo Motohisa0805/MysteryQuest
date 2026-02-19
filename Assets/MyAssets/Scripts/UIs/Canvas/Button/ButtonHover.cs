@@ -23,8 +23,8 @@ namespace MyAssets
 
         private Vector2         mBasePos = Vector2.zero;
         private Vector2         mBaseSize = Vector2.one;
-
-        public virtual bool IsSound => true;
+        /// ƒTƒEƒ“ƒh‚ðÄ¶‚·‚é‚©‚Ç‚¤‚©
+        public virtual bool     IsSound => true;
 
         public virtual void Awake()
         {

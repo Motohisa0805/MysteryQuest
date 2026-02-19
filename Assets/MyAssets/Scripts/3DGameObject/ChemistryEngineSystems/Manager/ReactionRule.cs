@@ -11,6 +11,7 @@ namespace MyAssets
         Wood,
         Iron,
         Stone,
+        Ice,
     }
 
     //ƒGƒŒƒƒ“ƒg
@@ -20,6 +21,7 @@ namespace MyAssets
         None = 0,
         Fire = 1 << 0,
         Water = 1 << 1,
+        Ice = 1 << 2,
     }
 
     [Serializable]

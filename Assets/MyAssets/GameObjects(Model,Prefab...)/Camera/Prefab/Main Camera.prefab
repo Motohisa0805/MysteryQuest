@@ -155,31 +155,28 @@ MonoBehaviour:
   mAttentionPoint: {x: 0, y: 0, z: 0}
   mYaw: 0
   mPitch: 0
+  mSensitivity: 0.5
   mFreeCameraSettings:
     mOffset: {x: 0, y: 0, z: 0}
     mDistance: 3
-    mSensitivity: 0.5
     mMinAngle: -60
     mMaxAngle: 60
     mSmoothTime: 0
   mShoulderViewSettings:
-    mOffset: {x: 0, y: 1, z: 0}
+    mOffset: {x: 0, y: 2, z: 0}
     mDistance: 4
-    mSensitivity: 0.5
     mMinAngle: -60
     mMaxAngle: 60
     mSmoothTime: 0
   mFocusingSettings:
     mOffset: {x: 2, y: 0, z: 0}
     mDistance: 3
-    mSensitivity: 0.5
     mMinAngle: -60
     mMaxAngle: 60
     mSmoothTime: 0
   mFixedSettings:
     mOffset: {x: 0, y: 0, z: 0}
     mDistance: 3
-    mSensitivity: 0.5
     mMinAngle: -60
     mMaxAngle: 60
     mSmoothTime: 0

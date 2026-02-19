@@ -25,16 +25,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 471902164685521634}
-  m_LocalRotation: {x: -0, y: -0, z: 0.93418235, w: 0.356796}
+  m_LocalRotation: {x: -0, y: -0, z: 0.2732832, w: 0.9619337}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6919927191189773191}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 138.193}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 31.719}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 286.1, y: -56.8}
+  m_AnchoredPosition: {x: -286, y: -61}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1854076997317117555
@@ -111,8 +111,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -372.4, y: 169.2}
-  m_SizeDelta: {x: 453.4, y: 100}
+  m_AnchoredPosition: {x: 316, y: 169.2}
+  m_SizeDelta: {x: 362.62, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4327841143080908151
 CanvasRenderer:
@@ -230,7 +230,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u901A\u5E38\u306E\u79FB\u52D5\u3067\u306F\u901A\u308C\u306A\u3044\u5834\u6240\u306F\n\u5DE6\u30B9\u30C6\u30A3\u30C3\u30AF\u62BC\u3057\u8FBC\u307F\u3067\u3057\u3083\u304C\u3080\u3053\u3068\u304C\u51FA\u6765\u307E\u3059\u3002\n\u307E\u305F\u305D\u306E\u72B6\u614B\u3067\u79FB\u52D5\u3082\u53EF\u80FD\u3067\u3059\u3002"
+  m_Text: "\u30C0\u30F3\u30B8\u30E7\u30F3\u306B\u306F\u885D\u6483\u3092\u4E0E\u3048\u308B\u3068\u5909\u5316\u304C\u8D77\u3053\u308B\u7269\u3082\u3042\u308A\u307E\u3059\u3002\n\u3010X\u30DC\u30BF\u30F3\u3011\u306E\u5DE6\u30DC\u30BF\u30F3\u3092\u62BC\u3059\u3068\n\u5263\u3067\u653B\u6483\u304C\u51FA\u6765\u307E\u3059\u3002"
 --- !u!1 &2158888753925207270
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,7 +309,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uFF3B\u62BC\u3057\u8FBC\u307F\uFF3D\uFF1A\u3057\u3083\u304C\u307F\n\uFF3B\u3057\u3083\u304C\u307F\u4E2D\u30B9\u30C6\u30A3\u30C3\u30AF\u64CD\u4F5C\uFF3D\uFF1A\u79FB\u52D5"
+  m_Text: "\uFF3B\u5358\u62BC\u3057\uFF3D\uFF1A\u653B\u6483\n\uFF3B\u9023\u6253\uFF3D\uFF1A\u9023\u7D9A\u653B\u6483"
 --- !u!1 &2381924556561012648
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,9 +361,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.InputButtonController
   mSelectImage: {fileID: 2960205134675825027}
-  mSelectImageOffsetX: 0
-  mSelectImageOffsetY: 0
   mButtons: []
+  mAddDecideButtonSizeOffset: 50
 --- !u!1 &2933516915329234560
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,19 +484,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2063030230290015439}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5873919876951274126}
-        m_TargetAssemblyTypeName: MyAssets.InputButtonController, Assembly-CSharp
-        m_MethodName: OnDecide
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &6411909451360340000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -590,7 +577,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u64CD\u4F5C\u65B9\u6CD5\uFF3B\u3057\u3083\u304C\u307F\uFF3D"
+  m_Text: "\u64CD\u4F5C\u65B9\u6CD5\uFF3B\u653B\u6483\uFF3D"
 --- !u!1 &4558827648994473448
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,7 +589,7 @@ GameObject:
   - component: {fileID: 7367034867788303525}
   - component: {fileID: 361685880284432799}
   m_Layer: 5
-  m_Name: TutorialPointUI_CruchVer
+  m_Name: TutorialPointUI_AttackVer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -678,7 +665,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 330}
-  m_SizeDelta: {x: 600, y: 100}
+  m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &397583610675678159
 CanvasRenderer:
@@ -928,7 +915,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3736514517404384840, guid: e4a98b9998755fb47ae8dac3b2b245e1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150
+      value: -150
       objectReference: {fileID: 0}
     - target: {fileID: 3736514517404384840, guid: e4a98b9998755fb47ae8dac3b2b245e1, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1020,11 +1007,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7100389956252327644, guid: e4a98b9998755fb47ae8dac3b2b245e1, type: 3}
       propertyPath: m_Padding.x
-      value: 0
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 7100389956252327644, guid: e4a98b9998755fb47ae8dac3b2b245e1, type: 3}
       propertyPath: m_Padding.z
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

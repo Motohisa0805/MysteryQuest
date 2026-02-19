@@ -3,17 +3,19 @@ using UnityEngine.UI;
 
 namespace MyAssets
 {
+    //チュートリアルの表示を制御するクラス
+    // チュートリアル画像の表示・非表示を切り替える
     public class TutorialController : MonoBehaviour
     {
         [SerializeField]
-        private Image[] mImages = new Image[0];
+        private Image[]                 mImages = new Image[0];
 
-        private float[] mAlpha = new float[0];
+        private float[]                 mAlpha = new float[0];
 
-        private bool mEnabled = false;
+        private bool                    mEnabled = false;
 
         [SerializeField]
-        private TutorialMovementer[] mTutorialMovementers = new TutorialMovementer[0];
+        private TutorialMovementer[]    mTutorialMovementers = new TutorialMovementer[0];
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Start()
         {

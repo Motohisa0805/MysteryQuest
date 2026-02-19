@@ -87,6 +87,7 @@ namespace MyAssets
         // 全ての足場の位置を更新
         private void UpdatePlatforms()
         {
+            // 足場がなければ何もしない
             if (mFootStages == null || mFootStages.Length == 0) return;
             if (mTotalDistance <= 0) return;
 

@@ -6,22 +6,19 @@ namespace MyAssets
     public struct CameraSettingsTPS
     {
         [SerializeField]
-        private Vector3 mOffset; //’Ž‹‘ÎÛ‚©‚ç‚ÌƒIƒtƒZƒbƒg
-        public Vector3 Offset => mOffset;
+        private Vector3     mOffset; //’Ž‹‘ÎÛ‚©‚ç‚ÌƒIƒtƒZƒbƒg
+        public Vector3      Offset => mOffset;
         [SerializeField]
-        private float mDistance; //’Ž‹‘ÎÛ‚©‚ç‚Ì‹——£
-        public float Distance => mDistance;
+        private float       mDistance; //’Ž‹‘ÎÛ‚©‚ç‚Ì‹——£
+        public float        Distance => mDistance;
         [SerializeField]
-        private float mSensitivity; //Š´“x
-        public float Sensitivity => mSensitivity;
+        private float       mMinAngle; //Å¬‹ÂŠp
+        public float        MinAngle => mMinAngle;
         [SerializeField]
-        private float mMinAngle; //Å¬‹ÂŠp
-        public float MinAngle => mMinAngle;
+        private float       mMaxAngle; //Å‘å‹ÂŠp
+        public float        MaxAngle => mMaxAngle;
         [SerializeField]
-        private float mMaxAngle; //Å‘å‹ÂŠp
-        public float MaxAngle => mMaxAngle;
-        [SerializeField]
-        private float mSmoothTime; //ƒJƒƒ‰‚Ì’Ç]‚ðŠŠ‚ç‚©‚É‚·‚éŽžŠÔ
-        public float SmoothTime => mSmoothTime;
+        private float       mSmoothTime; //ƒJƒƒ‰‚Ì’Ç]‚ðŠŠ‚ç‚©‚É‚·‚éŽžŠÔ
+        public float        SmoothTime => mSmoothTime;
     }
 }

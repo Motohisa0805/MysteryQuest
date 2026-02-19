@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    // 3Dオブジェクトの物理音管理クラス
     [RequireComponent(typeof(ChemistryObject))]
     [RequireComponent(typeof(Rigidbody))]
     public class PhysicsSoundObject : MonoBehaviour

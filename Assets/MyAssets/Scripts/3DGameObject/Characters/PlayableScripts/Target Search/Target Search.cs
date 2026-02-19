@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //ターゲットを探すスクリプト
+    //PlayableChracterControllerが必要
+    //ターゲットを視界内で探し出す
+    [RequireComponent(typeof(PlayableChracterController))]
     public class TargetSearch : MonoBehaviour
     {
         //検索するタイマー

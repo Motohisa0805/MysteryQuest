@@ -289,15 +289,6 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
-  - mID: 99002041
-    mLabel: Iron_Slide
-    mClips:
-    - {fileID: 8300000, guid: 8d20284193e27924bb9d23cbe69128b6, type: 3}
-    volume: 1
-    pitchRange: 1
-    mSpatialBlend: 1
-    mMinDistance: 1
-    mMaxDistance: 10
   - mID: 1654144204
     mLabel: Stone_Slide
     mClips:
@@ -311,6 +302,33 @@ MonoBehaviour:
     mLabel: CrystalHit
     mClips:
     - {fileID: 8300000, guid: 4effb7de4bff81f458a80a676e9cd5bb, type: 3}
+    volume: 1
+    pitchRange: 1
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: 99002041
+    mLabel: Iron_Slide
+    mClips:
+    - {fileID: 8300000, guid: 8d20284193e27924bb9d23cbe69128b6, type: 3}
+    volume: 1
+    pitchRange: 1
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -1694045775
+    mLabel: Ice_Slide
+    mClips:
+    - {fileID: 8300000, guid: 8d20284193e27924bb9d23cbe69128b6, type: 3}
+    volume: 1
+    pitchRange: 1
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -1644311462
+    mLabel: Ice_Hit
+    mClips:
+    - {fileID: 8300000, guid: 0c9fa2735ba4fcf4b836cdb1a30a09e2, type: 3}
     volume: 1
     pitchRange: 1
     mSpatialBlend: 1

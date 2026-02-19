@@ -3,48 +3,49 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //カウントダウンの間隔再生を行うクラス
     public class CountdownIntervalPlayer : MonoBehaviour
     {
-        private static CountdownIntervalPlayer instance;
-        public static CountdownIntervalPlayer Instance => instance;
+        private static CountdownIntervalPlayer  mInstance;
+        public static CountdownIntervalPlayer   Instance => mInstance;
 
         [SerializeField]
-        private Transform mPlayerTransform;
+        private Transform                       mPlayerTransform;
 
         [Header("時間設定")]
         // 合計時間
         [SerializeField] 
-        private float mTotalDuration = 10f;   
+        private float                           mTotalDuration = 10f;   
         // 開始時の間隔（秒）
         [SerializeField] 
-        private float mStartInterval = 0.4f;  
+        private float                           mStartInterval = 0.4f;  
         // 終了直前の間隔（秒）
         [SerializeField] 
-        private float mEndInterval = 0.1f;
+        private float                           mEndInterval = 0.1f;
 
         [SerializeField]
-        private int mMaxRhythmCount = 3; // 最大リズムカウント
+        private int                             mMaxRhythmCount = 3; // 最大リズムカウント
 
-        private int mCurrentRhythmCount = 0; // 現在のリズムカウント
+        private int                             mCurrentRhythmCount = 0; // 現在のリズムカウント
 
         [Header("演出設定")]
         [SerializeField]
-        private float mAccelCurve = 2.0f; // 加速度カーブ
+        private float                           mAccelCurve = 2.0f; // 加速度カーブ
 
-        private bool mIsRunning = false;
-        private float mElapsedTime = 0f;
+        private bool                            mIsRunning = false;
+        private float                           mElapsedTime = 0f;
 
-        float mCurrentPitch = 1.0f;
-        float mPitchStep = 0.1f; // 1回ごとに0.1ずつ下げる
+        float                                   mCurrentPitch = 1.0f;
+        float                                   mPitchStep = 0.1f; // 1回ごとに0.1ずつ下げる
 
         private void Awake()
         {
-            if(instance != null)
+            if(mInstance != null)
             {
                 Destroy(gameObject);
                 return;
             }
-            instance = this;
+            mInstance = this;
             DontDestroyOnLoad(gameObject);
         }
 
@@ -58,12 +59,15 @@ namespace MyAssets
             mIsRunning = true;
             StartCoroutine(CountdownRoutine());
         }
-
+        //カウントダウン処理
         private IEnumerator CountdownRoutine()
         {
             while(mElapsedTime < mTotalDuration)
             {
+                if(!mIsRunning) yield break;
+                // サウンド再生
                 SoundManager.Instance.PlayOneShot2D("CountDown", false,-1, mCurrentPitch);
+                // ピッチを下げる
                 mCurrentPitch -= mPitchStep;
 
                 // 最低ピッチを下回らないように制限
@@ -86,6 +90,7 @@ namespace MyAssets
                     // リズムカウントが最大に達したらリセット
                     mCurrentRhythmCount = 0;
                     // ここで特別なリズム効果を追加することも可能
+                    // 現在は、間隔を少し長くするだけ
                     currentInterval += Mathf.Lerp(mStartInterval, mEndInterval, curvedProgress); 
                 }
 

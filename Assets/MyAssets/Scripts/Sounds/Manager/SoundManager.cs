@@ -118,6 +118,7 @@ namespace MyAssets
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             RefreshCullingTarget();
+            CountdownIntervalPlayer.Instance?.StopCountdown();
         }
 
         private void RefreshCullingTarget()

@@ -7,8 +7,11 @@ namespace MyAssets
     public class ChemistryElement : MonoBehaviour
     {
         [SerializeField]
-        private ElementType mType;
-        public ElementType Type => mType;
+        private ElementType     mType;
+        public ElementType      Type => mType;
+
+        //エレメント用のループ再生サウンド
+        private AudioSource mElementSoundSource;
 
         private void Start()
         {
@@ -19,5 +22,25 @@ namespace MyAssets
                     break;
             }
         }
+        /*
+        private void Update()
+        {
+            if(mElementSoundSource == null)
+            {
+                mElementSoundSource = SoundManager.Instance.PlayLoopSE("Object_Fire", transform.position, transform);
+            }
+        }
+
+        private void OnDisable()
+        {
+            if(mElementSoundSource != null)
+            {
+                if(SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.StopLoopSE(mElementSoundSource);
+                }
+            }
+        }
+         */
     }
 }

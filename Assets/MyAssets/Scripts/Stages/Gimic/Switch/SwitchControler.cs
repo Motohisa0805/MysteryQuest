@@ -10,9 +10,6 @@ namespace MyAssets
         [SerializeField]
         private List<MonoBehaviour> mReceivers = new List<MonoBehaviour>();
 
-        private bool                mIsOn = false;
-
-        private MaterialColorChange mMaterialColorChange;
 
         [Header("スイッチに関係する設定群")]
         [Header("スイッチが時間でオフにする")]
@@ -20,6 +17,10 @@ namespace MyAssets
         private bool                mTimerDisable = false;
         [SerializeField]
         private CloseDoorTimer      mCloseDoorTimer;
+
+        private bool                mIsOn = false;
+
+        private MaterialColorChange mMaterialColorChange;
 
         private void Awake()
         {

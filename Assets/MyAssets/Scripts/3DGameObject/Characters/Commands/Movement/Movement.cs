@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    // 3Dキャラクターの移動処理を担当するクラス
+    //キャラクターが増えたら継承して使うことを想定
+    [RequireComponent(typeof(PlayableChracterController))]
     // 移動処理全般を担当するクラス
     public class Movement : MonoBehaviour
     {

@@ -2,6 +2,8 @@
 
 namespace MyAssets
 {
+    //ステージギミックのドアコントローラー
+    // ドアの開閉を制御する
     public class DoorController : MonoBehaviour,IGimmickReceiver
     {
         [SerializeField] 

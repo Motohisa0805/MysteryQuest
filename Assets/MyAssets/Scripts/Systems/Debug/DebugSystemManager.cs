@@ -33,6 +33,10 @@ namespace MyAssets
         [SerializeField]
         private Transform mCombustible;
 
+        [SerializeField]
+        private Transform mIceBoxCreateTransform;
+        [SerializeField]
+        private Transform mIceBox;
         private void Awake()
         {
             if (instance != null)
@@ -87,6 +91,13 @@ namespace MyAssets
             if(InputManager.GetKeyDown(KeyCode.Num1))
             {
                 Transform obj = Instantiate(mWoodBox,mWoodBoxCreateTransform);
+                obj.localPosition = Vector3.zero;
+                //obj.localRotation = Quaternion.identity;
+                //obj.localScale = Vector3.one;
+            }
+            if (InputManager.GetKeyDown(KeyCode.Num1))
+            {
+                Transform obj = Instantiate(mIceBox, mIceBoxCreateTransform);
                 obj.localPosition = Vector3.zero;
                 //obj.localRotation = Quaternion.identity;
                 //obj.localScale = Vector3.one;

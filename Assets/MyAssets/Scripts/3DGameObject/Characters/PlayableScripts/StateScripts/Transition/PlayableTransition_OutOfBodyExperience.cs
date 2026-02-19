@@ -6,13 +6,13 @@ namespace MyAssets
     {
 
         readonly private PlayableInput mInput;
-        readonly private Animator mAnimator;
+        readonly private PlayableChracterController mController;
         public IsOutOfBodyExperienceTransition(GameObject actor, IStateChanger<string> stateChanger, string changeKey)
             : base(stateChanger, changeKey)
         {
             mInput = actor.GetComponent<PlayableInput>();
-            mAnimator = actor.GetComponentInChildren<Animator>();
+            mController = actor.GetComponentInChildren<PlayableChracterController>();
         }
-        public override bool IsTransition() => mInput.Skill;
+        public override bool IsTransition() => mInput.Skill && mController.Grounded;
     }
 }

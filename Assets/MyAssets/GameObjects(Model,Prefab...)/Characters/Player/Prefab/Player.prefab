@@ -803,7 +803,7 @@ MonoBehaviour:
     isDrawDebug: 0
     heelOffsetZ: -0.08
     toeOffsetZ: 0.05
-    rayLength: 0.1
+    rayLength: 0.09
 --- !u!114 &4927028302621180963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -993,7 +993,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b754cfe755553e646bdf9a484a673dfa, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.0125
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b754cfe755553e646bdf9a484a673dfa, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1334,6 +1334,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b754cfe755553e646bdf9a484a673dfa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1244767946193413170}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b754cfe755553e646bdf9a484a673dfa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5418851083630730247}
     - targetCorrespondingSourceObject: {fileID: 1082271958561512970, guid: b754cfe755553e646bdf9a484a673dfa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5966183921067624602}
@@ -2019,6 +2022,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a176e79918dd849a8605343805af4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.CharacterColorController
+--- !u!114 &5418851083630730247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4011928750196801241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9082a0ba997c9c64d9af3f1d248492c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.IKRelay
+  mParentManager: {fileID: 0}
 --- !u!1 &4139776020628390350 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -9070493210130169274, guid: b754cfe755553e646bdf9a484a673dfa, type: 3}
