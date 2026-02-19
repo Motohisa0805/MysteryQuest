@@ -64,6 +64,7 @@ namespace MyAssets
 
         private void UpdateStraight()
         {
+            if (!mStartTransform || !mEndTransform) { return; }
             int pointsCount = 2;
             pointsCount = mLineRenderer.positionCount;
             mLineRenderer.SetPosition(0, mStartTransform.position + mStartPosOffset);
@@ -72,6 +73,7 @@ namespace MyAssets
 
         private void UpdateSpiral()
         {
+            if (!mStartTransform || !mEndTransform) { return; }
             mLineRenderer.positionCount = mSpiralLineInfo.PointsCount;
 
             for(int i = 0; i < mSpiralLineInfo.PointsCount; i++)

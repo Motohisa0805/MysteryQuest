@@ -4860,6 +4860,7 @@ GameObject:
   - component: {fileID: 4330705023626989620}
   - component: {fileID: 2907498108393118631}
   - component: {fileID: -4157881134478772501}
+  - component: {fileID: 3003308187343034482}
   m_Layer: 6
   m_Name: IgnitionFire_02
   m_TagString: Untagged
@@ -9699,6 +9700,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cd2757fe0c1c1e42a1ea25260927948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.EffectReturner
+--- !u!114 &3003308187343034482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2722245534317117995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2ba3cae62e3ec34fb764486d72c9b87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ChemistryElement
+  mType: 1
 --- !u!1 &4903513569046101975
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,8 @@ namespace MyAssets
 {
     //キャラクターのダメージ計算を物理・疑似化学エンジン機能を元に管理するクラス
     [RequireComponent(typeof(ChemistryObject))]
+    //キャラクターが増えたらここもキャラクタークラスに変更する。
+    [RequireComponent(typeof(PlayableChracterController))]
     public class DamageChecker : MonoBehaviour
     {
         [SerializeField]
@@ -168,8 +170,11 @@ namespace MyAssets
 
         private void Apply(Rigidbody targetRb, Collision collision)
         {
+            // 衝突の相対速度を取得
             float impactVelocity = collision.relativeVelocity.magnitude;
+            //オブジェクトの質量を取得
             float mass = targetRb.mass;
+            // 物理的なインパクトパワーを計算
             float impactPower = 0.5f * (mass / 10) * (impactVelocity * impactVelocity);
 
             if (impactPower >= mMinImpactPower)

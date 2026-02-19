@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 namespace MyAssets
 {
+    //チュートリアルの移動を制御するクラス
+    // チュートリアル画像を画面内に移動させる
     public class TutorialMovementer : MonoBehaviour
     {
         //ボタン管理クラス

@@ -1,3 +1,4 @@
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -26,6 +27,24 @@ namespace MyAssets
         // éËìÆÇ≈é~ÇﬂÇΩÇ¢éûÇ…åƒÇ‘ÉÅÉ\ÉbÉh
         public void StopAndReturn(bool detachImmediately = true)
         {
+            if (mParent == null || transform == null) { return; }
+            Component[] components = GetComponents<Component>();
+            foreach (var component in components)
+            {
+                if(component is BoxCollider box)
+                {
+                    box.enabled = false;
+                }
+                if (component is SphereCollider sphere)
+                {
+                    sphere.enabled = false;
+                }
+                if (component is CapsuleCollider capsule)
+                {
+                    capsule.enabled = false;
+                }
+            }
+
             mParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 
             if (detachImmediately)

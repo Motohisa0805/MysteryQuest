@@ -41,6 +41,10 @@ namespace MyAssets
         private Vector3             mDesiredPosition; //カメラの目標位置
         private Vector3             mCurrentPosition; //カメラの現在位置
 
+        [SerializeField]
+        private float               mSensitivity; //感度
+        public float                Sensitivity => mSensitivity;
+
         private float               mSensitivityCorrection = 6.0f;
         //==============================
         //フリーカメラ設定
@@ -117,7 +121,7 @@ namespace MyAssets
                 Vector2 mouse = InputManager.GetKeyValue(KeyCode.eLook);
                 float mouseX = mouse.x;
                 float mouseY = mouse.y;
-                float sensitivity = GetCameraSensitivity(mFreeCameraSettings.Sensitivity);
+                float sensitivity = GetCameraSensitivity(mSensitivity);
                 // カメラの回転角を更新
                 mYaw += mouseX * (sensitivity * DataManager.SettingData.gInputRate);
                 mPitch -= mouseY * (sensitivity * DataManager.SettingData.gInputRate);
@@ -129,7 +133,7 @@ namespace MyAssets
                 Vector2 mouse = InputManager.GetKeyValue(KeyCode.eLook);
                 float mouseX = mouse.x;
                 float mouseY = mouse.y;
-                float sensitivity = GetCameraSensitivity(mShoulderViewSettings.Sensitivity);
+                float sensitivity = GetCameraSensitivity(mSensitivity);
                 // カメラの回転角を更新
                 mYaw += mouseX * (sensitivity * DataManager.SettingData.gInputRate);
                 mPitch -= mouseY * (sensitivity * DataManager.SettingData.gInputRate);
@@ -143,7 +147,7 @@ namespace MyAssets
                     Vector2 mouse = InputManager.GetKeyValue(KeyCode.eLook);
                     float mouseX = mouse.x;
                     float mouseY = mouse.y;
-                    float sensitivity = GetCameraSensitivity(mFocusingSettings.Sensitivity);
+                    float sensitivity = GetCameraSensitivity(mSensitivity);
                     // カメラの回転角を更新
                     mYaw += mouseX * (sensitivity * DataManager.SettingData.gInputRate);
                     mPitch -= mouseY * (sensitivity * DataManager.SettingData.gInputRate);

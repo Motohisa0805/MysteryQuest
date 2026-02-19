@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 namespace MyAssets
 {
+    // エフェクト管理クラス
+    // エフェクトの再生、プール管理、距離による描画制御などを担当
+    // これ一つでエフェクト全般を管理するイメージ
     public class EffectManager : MonoBehaviour
     {
         private static EffectManager                            mInstance;

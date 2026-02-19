@@ -12,7 +12,7 @@ namespace MyAssets
             mInput = actor.GetComponent<PlayableInput>();
 
         }
-        public override bool IsTransition() => mInput.InputMove.magnitude > 0.1f;
+        public override bool IsTransition() => mInput.InputMove.magnitude > 0.01f;
     }
     public class IsMoveTransitionType2 : StateTransitionBase
     {

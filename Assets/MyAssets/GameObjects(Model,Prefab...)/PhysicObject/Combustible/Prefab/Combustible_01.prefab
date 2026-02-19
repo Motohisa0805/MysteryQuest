@@ -88,6 +88,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &6060989768217175386
 GameObject:
@@ -184,6 +185,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &6168696463500832075
 SphereCollider:
@@ -224,6 +226,7 @@ MonoBehaviour:
     mIsDestructible: 1
     mDestroyDelay: 30
     mIsExtinguishing: 0
+    mScanScale: 1.25
     mIgnitionResistance: 0.1
     mFireResistance: 0
   mPhysicsMaterialInfo:
@@ -233,7 +236,6 @@ MonoBehaviour:
   mTargetObjectLayer:
     serializedVersion: 2
     m_Bits: 72
-  mIsBreakObject: 0
   mHitPoint: 300
 --- !u!114 &4583174753176604970
 MonoBehaviour:

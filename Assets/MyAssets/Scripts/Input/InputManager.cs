@@ -109,7 +109,34 @@ namespace MyAssets
         // デバイスからコントロールスキーム名を特定するメソッド
         private static void DetermineControlScheme(InputDevice device)
         {
-            foreach(var scheme in mInputAction.controlSchemes)
+            if (device is Gamepad gamepad)
+            {
+                // 1. スティックが一定以上動いているかチェック
+                bool isStickMoving = gamepad.rightStick.ReadValue().magnitude > 0.1f ||
+                                     gamepad.leftStick.ReadValue().magnitude > 0.1f;
+
+                // 2. いずれかのボタンが押されているかチェック
+                bool isAnyButtonPressed = false;
+                foreach (var control in gamepad.allControls)
+                {
+                    // コントロールがボタン（トリガー等を含む）であり、かつ押されている場合
+                    if (control is UnityEngine.InputSystem.Controls.ButtonControl button)
+                    {
+                        if (button.isPressed)
+                        {
+                            isAnyButtonPressed = true;
+                            break;
+                        }
+                    }
+                }
+
+                // スティックも動いておらず、ボタンも押されていない（＝微小なドリフトのみ）なら処理を中断
+                if (!isStickMoving && !isAnyButtonPressed)
+                {
+                    return;
+                }
+            }
+            foreach (var scheme in mInputAction.controlSchemes)
             {
                 // デバイスがそのスキームの要件（Binding）に合致するかチェック
                 if (scheme.SupportsDevice(device))

@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    [RequireComponent(typeof(PlayableChracterController))]
     public class PlayableAnimationFunction : MonoBehaviour
     {
         private PlayableChracterController mController;

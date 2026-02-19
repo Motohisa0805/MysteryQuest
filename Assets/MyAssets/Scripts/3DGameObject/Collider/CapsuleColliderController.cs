@@ -2,20 +2,24 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //カプセルコライダーを制御するクラス
+    //PlayableChracterControllerが必要
+    // キャラクターのカプセルコライダーのサイズや位置を変更・リセットする
+    [RequireComponent(typeof(PlayableChracterController))]
     [RequireComponent(typeof(CapsuleCollider))]
     public class CapsuleColliderController : MonoBehaviour
     {
-        private CapsuleCollider mCapsuleCollider;
-        public CapsuleCollider CapsuleCollider => mCapsuleCollider;
+        private CapsuleCollider     mCapsuleCollider;
+        public CapsuleCollider      CapsuleCollider => mCapsuleCollider;
 
         [SerializeField]
-        private Vector3 mBaseCenter;
+        private Vector3             mBaseCenter;
 
         [SerializeField]
-        private float mBaseHeight;
+        private float               mBaseHeight;
 
         [SerializeField]
-        private float mBaseRadius;
+        private float               mBaseRadius;
 
         private void Awake()
         {

@@ -29,3 +29,11 @@ MonoBehaviour:
       gElementToRemove: 0
       mEffectID: 0
       mEffectLabel: IgnitionFire
+  - gRuleName: "\u84B8\u767A"
+    gTargetMaterial: 5
+    gStimulusElement: 1
+    gResult:
+      gElementToAdd: 1
+      gElementToRemove: 0
+      mEffectID: 0
+      mEffectLabel: IgnitionFire

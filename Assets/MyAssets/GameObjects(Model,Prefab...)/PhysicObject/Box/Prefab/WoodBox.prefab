@@ -94,6 +94,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &988013409420282574
 BoxCollider:
@@ -161,16 +162,16 @@ MonoBehaviour:
     mIsDestructible: 1
     mDestroyDelay: 5
     mIsExtinguishing: 0
+    mScanScale: 1.25
     mIgnitionResistance: 2
     mFireResistance: 0
   mPhysicsMaterialInfo:
     mIsShock: 1
-    mIsDestructible: 0
+    mIsDestructible: 1
     mCollisionForce: 50
   mTargetObjectLayer:
     serializedVersion: 2
     m_Bits: 72
-  mIsBreakObject: 1
   mHitPoint: 300
 --- !u!114 &-7185961238542235453
 MonoBehaviour:

@@ -494,12 +494,6 @@ namespace MyAssets
             mStateMachine.LateUpdate(t);
         }
 
-        private void OnAnimatorIK()
-        {
-            float t = Time.deltaTime;
-            mStateMachine.IKAnimatorUpdate(t);
-        }
-
         private void OnTriggerEnter(Collider other)
         {
             mStateMachine.TriggerEnter(gameObject, other);
