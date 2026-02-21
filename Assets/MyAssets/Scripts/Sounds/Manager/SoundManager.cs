@@ -178,6 +178,12 @@ namespace MyAssets
             int count = mAudioObjects.Count;
             for (int i = 0; i < count; i++)
             {
+                if (!mAudioObjects[i]) 
+                {
+                    mAudioObjects.RemoveAt(i);
+
+                    break;
+                }
                 if (mAudioObjects[i].gameObject.activeSelf)
                 {
                     mSpheres[i].position = mAudioObjects[i].transform.position;
@@ -198,7 +204,7 @@ namespace MyAssets
         //オーディオソースの生成
         private AudioSource CreateAudioSource()
         {
-            if (mAudioObjects.Count > mMaxAudioIndex) { return null; }
+            if (mAudioObjects.Count >= mMaxAudioIndex) { return null; }
             GameObject obj = Instantiate(mAudioSourcePrefab, transform);
             obj.AddComponent<AudioSource>();
             mAudioObjects.Add(obj.GetComponent<AudioSource>());
@@ -211,6 +217,7 @@ namespace MyAssets
         {
             for(int i = 0; i < mAudioObjects.Count;i++)
             {
+                if (!mAudioObjects[i]) { continue; }
                 //オーディオソースが有効ならコンテニュー
                 if (mAudioObjects[i].gameObject.activeSelf || mAudioObjects[i].clip != null)
                 {
