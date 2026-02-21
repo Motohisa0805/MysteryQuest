@@ -37,3 +37,12 @@ MonoBehaviour:
       gElementToRemove: 0
       mEffectID: 0
       mEffectLabel: IgnitionFire
+  gElementToElementRules:
+  - gRuleName: "\u93AE\u706B"
+    gTargetElement: 1
+    gStimulusElement: 2
+    gResult:
+      gElementToAdd: 2
+      gElementToRemove: 1
+      mEffectID: 0
+      mEffectLabel: 

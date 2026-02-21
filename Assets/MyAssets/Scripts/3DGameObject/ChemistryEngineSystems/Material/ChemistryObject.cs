@@ -67,12 +67,10 @@ namespace MyAssets
 
         // 現在溜まっているエレメント
         private float               mCurrentHeatAccumulated = 0f; 
-        //エレメント自然消滅までのタイマー
-        private Timer               mExtinguishingTimer = new Timer();
         //オブジェクト破壊までのタイマー
         private Timer               mDestroyTimer = new Timer();
 
-
+        // 周囲の接触属性を管理する変数（フラグの組み合わせで複数の属性を同時に管理）
         private ElementType         mTotalContactElement;
 
         // 周囲20個まで検出
@@ -84,10 +82,11 @@ namespace MyAssets
 
 
         // 反応待ちの状態を管理する変数
-        private ReactionResult      mPendingReaction;
+        private MaterialToElementReactionResult      mPendingReaction;
 
-        // エフェクト管理用の変数
-        private EffectReturner      mElementEffect;
+        // 反応によって新たに付与された属性を管理するための変数（例: 火がついている状態を管理）
+        private ChemistryElement    mGrantElement; 
+
         // 反応準備中のエフェクト（例: 煙が出ている状態など）を管理する変数
         private EffectReturner      mPreparationElementEffect;
 
@@ -124,10 +123,6 @@ namespace MyAssets
             {
                 mDestroyTimer.OnEnd += ProcessDestruction;
             }
-            if(mMaterialObjectInfo.mIsExtinguishing)
-            {
-                mExtinguishingTimer.OnEnd += ProcessDestructionEffect;
-            }
 
             // 最初の位置を初期化
             mLastPosition = transform.position;
@@ -155,15 +150,6 @@ namespace MyAssets
 
             // タイマー更新処理
             if (mMaterialObjectInfo.mIsDestructible) mDestroyTimer.Update(Time.deltaTime);
-
-            if (mMaterialObjectInfo.mIsExtinguishing && mTotalContactElement == ElementType.None)
-            {
-                mExtinguishingTimer.Update(Time.deltaTime);
-                if (mCurrentElements != ElementType.None && mExtinguishingTimer.IsEnd())
-                {
-                    ProcessDestructionEffect();
-                }
-            }
         }
         // FixedUpdateで物理的な移動ベクトルを算出して保存する関数
         private void FixedUpdate()
@@ -274,7 +260,7 @@ namespace MyAssets
                     if (checkType == ElementType.None) continue;
                     if ((newElements & checkType) == checkType)
                     {
-                        if (mReactionTable.TryGetReaction(mMaterial, checkType, out ReactionResult result))
+                        if (mReactionTable.TryGetReaction(mMaterial, checkType, out MaterialToElementReactionResult result))
                         {
                             StartReactionProcess(result);
                             break;
@@ -329,7 +315,7 @@ namespace MyAssets
             p1 = center + (axis * halfHeight);
         }
         // 反応結果を受け取って反応待ち状態を開始する関数
-        private void StartReactionProcess(ReactionResult result)
+        private void StartReactionProcess(MaterialToElementReactionResult result)
         {
             // 反応待ち状態を開始
             mPendingReaction = result;
@@ -498,7 +484,7 @@ namespace MyAssets
 
         //反応結果を適用する
         // ここで属性の追加・削除を行い、必要に応じてエフェクトを出し、燃え尽きる処理の開始なども行う
-        private void ApplyReaction(ReactionResult result)
+        private void ApplyReaction(MaterialToElementReactionResult result)
         {
             // 属性の追加・削除
             mCurrentElements |= result.gElementToAdd;
@@ -507,26 +493,35 @@ namespace MyAssets
             if ((mMaterial == MaterialType.Wood || mMaterial == MaterialType.Organism) &&
                 (result.gElementToAdd & ElementType.Fire) != 0)
             {
-                // エフェクトの再生
-                if (mElementEffect == null)
+                // 反応によって新たに付与された属性を管理するための変数（例: 火がついている状態を管理）
+                if (mGrantElement == null)
                 {
-                    Transform transform = this.transform;
-                    if (mMaterial == MaterialType.Organism)
+                    Transform t = (mMaterial == MaterialType.Organism) ? GetComponentInChildren<FreeCameraTargetPoint>().transform : this.transform;
+                    // 1. エフェクトを生成
+                    EffectReturner effect = EffectManager.Instance.PlayEffect<ParticleSystem>(result.mEffectLabel, t.position, Quaternion.identity, Vector3.one, t).GetComponent<EffectReturner>();
+                    // 2. エフェクトのGameObjectからChemistryElementを取得（なければ追加）
+                    mGrantElement = effect.GetComponent<ChemistryElement>();
+                    if (mGrantElement == null)
                     {
-                        transform = GetComponentInChildren<FreeCameraTargetPoint>().transform;
+                        mGrantElement = effect.gameObject.AddComponent<ChemistryElement>();
                     }
-                    mElementEffect = EffectManager.Instance.PlayEffect<ParticleSystem>(result.mEffectLabel, transform.position, Quaternion.identity,Vector3.one,transform).GetComponent<EffectReturner>();
-                    SetElement(mElementEffect.ParticleSystem);
+                    // 3. 値をセット
+                    mGrantElement.MyElementEffect = effect;
+                    mGrantElement.ParentMaterial = this;
+
+                    // 4. コライダー等のセットアップ
+                    SetElement(effect.ParticleSystem);
+                    //燃え上がるSE
                     SoundManager.Instance.PlayOneShot3D("Object_InFire", transform.position, transform);
-                    SoundManager.Instance.PlayOneShot3D("Object_Fire", transform.position, transform,true,true, mMaterialObjectInfo.mDestroyDelay);
                 }
+
                 if (mMaterialObjectInfo.mIsDestructible)
                 {
                     mDestroyTimer.Start(mMaterialObjectInfo.mDestroyDelay);
                 }
                 else if(mMaterialObjectInfo.mIsExtinguishing)
                 {
-                    mExtinguishingTimer.Start(mMaterialObjectInfo.mFireResistance);
+                    mGrantElement.ElementEraseTimer.Start(mMaterialObjectInfo.mFireResistance);
                 }
             }
             else if (mMaterial == MaterialType.Ice && (result.gElementToAdd & ElementType.Fire) != 0)
@@ -540,18 +535,18 @@ namespace MyAssets
             }
         }
 
-        //オブジェクトの物理的な処理
+        //マテリアルが削除される時に呼び出すもの
         private void ProcessDestruction()
         {
             // ここで改めて今もエレメントがあるかチェック
             // （途中で水か何かで消火されていたら破壊しないため）
             if (mMaterial == MaterialType.Wood && (mCurrentElements & ElementType.Fire) != 0)
             {
-                if (mElementEffect != null)
+                if (mGrantElement?.MyElementEffect != null)
                 {
                     // オブジェクトが消えるので、エフェクトは切り離してその場に残す (引数なし = true)
-                    mElementEffect.StopAndReturn(true);
-                    mElementEffect = null;
+                    mGrantElement.ProcessDestruction();
+                    mGrantElement = null;
                 }
                 SoundManager.Instance.PlayOneShot3D("Object_OutFire", transform.position);
                 Destroy(gameObject);
@@ -559,41 +554,39 @@ namespace MyAssets
             else if (mMaterial == MaterialType.Ice && (mCurrentElements & ElementType.Fire) != 0)
             {
                 //氷が完全に溶けたときの処理
-                if (mElementEffect != null)
+                if (mGrantElement?.MyElementEffect != null)
                 {
-                    mElementEffect.StopAndReturn(true);
-                    mElementEffect = null;
+                    mGrantElement.ProcessDestruction();
+                    mGrantElement = null;
                 }
                 Destroy(gameObject);
             }
         }
 
-        private void ProcessDestructionEffect()
+        //エレメントだけ消す
+        public void ProcessEraseElement()
         {
-            if(mMaterialObjectInfo.mIsExtinguishing)
+            if (mPreparationElementEffect != null)
             {
-                if (mElementEffect != null)
-                {
-                    // オブジェクトは残るので、くっついたままフェードアウトさせる (false)
-                    mElementEffect.StopAndReturn(false);
-                    mElementEffect = null;
-                }
-                if (mPreparationElementEffect != null)
-                {
-                    // 予備エフェクトも同様
-                    mPreparationElementEffect.StopAndReturn(false);
-                    mPreparationElementEffect = null;
-                }
-                mCurrentElements = 0;
-                mCurrentHeatAccumulated = 0;
-                SoundManager.Instance.PlayOneShot3D("Object_OutFire", transform.position);
-                AudioSource source = GetComponentInChildren<AudioSource>();
-                if (source != null && SoundManager.Instance != null)
-                {
-                    SoundManager.Instance.ReturnAudioSource(source);
-                }
+                // 予備エフェクトも同様
+                mPreparationElementEffect.StopAndReturn(false);
+                mPreparationElementEffect = null;
+            }
+            //現在の付与エレメントを初期化
+            mCurrentElements = ElementType.None;
+            //蓄積値も初期化
+            mCurrentHeatAccumulated = 0;
+            //付与エレメントもnull
+            mGrantElement = null;
+            mDestroyTimer.Reset();
+            SoundManager.Instance.PlayOneShot3D("Object_OutFire", transform.position);
+            AudioSource source = GetComponentInChildren<AudioSource>();
+            if (source != null && SoundManager.Instance != null)
+            {
+                SoundManager.Instance.ReturnAudioSource(source);
             }
         }
+
         //音を特定の条件下で再生するか調べる
         private void CheckPlaySound_Sword(Vector3 hitPoint)
         {
@@ -650,11 +643,10 @@ namespace MyAssets
         // オブジェクトが完全に破壊されるときのクリーンアップ処理
         private void OnDestroy()
         {
-            if (mElementEffect != null)
+            if (mGrantElement?.MyElementEffect != null)
             {
                 // オブジェクトが消えるので、エフェクトは切り離してその場に残す (引数なし = true)
-                mElementEffect.StopAndReturn(true);
-                mElementEffect = null;
+                mGrantElement.StopElement();
             }
             if (mPreparationElementEffect != null)
             {

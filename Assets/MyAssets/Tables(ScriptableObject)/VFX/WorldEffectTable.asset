@@ -20,6 +20,13 @@ MonoBehaviour:
     mInitObjectCount: 0
     mMaxSize: 10
     mDefaultCapacity: 2
+  - mID: -118708495
+    mLabel: Fire
+    mParticleSystem: {fileID: 4330705023626989620, guid: 9cb01422995f4414f8a25272dbcf8add, type: 3}
+    mSizeScale: 1
+    mInitObjectCount: 0
+    mMaxSize: 10
+    mDefaultCapacity: 2
   - mID: -1012546255
     mLabel: Impact
     mParticleSystem: {fileID: 5247861218473606451, guid: 977e414f38280694895ba2b75d2f733b, type: 3}

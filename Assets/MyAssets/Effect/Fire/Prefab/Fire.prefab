@@ -4770,7 +4770,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &6569107793279035624
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4816,6 +4816,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 1
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -4847,7 +4848,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!1 &2722245534317117995
 GameObject:
   m_ObjectHideFlags: 0
@@ -4860,6 +4860,7 @@ GameObject:
   - component: {fileID: 4330705023626989620}
   - component: {fileID: 2907498108393118631}
   - component: {fileID: 1623657548486051316}
+  - component: {fileID: -878822884834637464}
   - component: {fileID: 1763930158176697834}
   m_Layer: 6
   m_Name: Fire
@@ -9610,7 +9611,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &2907498108393118631
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -9656,6 +9657,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 4
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -9687,7 +9689,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!136 &1623657548486051316
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -9711,6 +9712,18 @@ CapsuleCollider:
   m_Height: 0.861156
   m_Direction: 1
   m_Center: {x: 0, y: 0.54998195, z: 0}
+--- !u!114 &-878822884834637464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2722245534317117995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cd2757fe0c1c1e42a1ea25260927948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyAssets.EffectReturner
 --- !u!114 &1763930158176697834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9723,7 +9736,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2ba3cae62e3ec34fb764486d72c9b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ChemistryElement
-  mType: 1
+  mObjectInfo:
+    mIsNaturalTermination: 1
+    mFireResistance: 0
+  mElementType: 1
+  mTargetObjectLayer:
+    serializedVersion: 2
+    m_Bits: 72
 --- !u!1 &4903513569046101975
 GameObject:
   m_ObjectHideFlags: 0
@@ -9766,14 +9785,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4903513569046101975}
   m_Enabled: 1
-  serializedVersion: 11
+  serializedVersion: 12
   m_Type: 2
   m_Color: {r: 1, g: 0.69411767, b: 0, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 0
     m_Resolution: -1
