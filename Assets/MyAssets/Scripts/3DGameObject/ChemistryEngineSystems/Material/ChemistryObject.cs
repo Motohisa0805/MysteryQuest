@@ -44,63 +44,65 @@ namespace MyAssets
 
         [Header("この物体の素材(変わらない)")]
         [SerializeField]
-        private MaterialType        mMaterial;
-        public MaterialType         Material => mMaterial;
+        private MaterialType                        mMaterial;
+        public MaterialType                         Material => mMaterial;
 
         [Header("現在帯びている属性（変化する）")]
         [SerializeField]
-        private ElementType         mCurrentElements;
-        public ElementType          CurrentElements => mCurrentElements;
+        private ElementType                         mCurrentElements;
+        public ElementType                          CurrentElements => mCurrentElements;
         //マテリアルの詳細設定
         [SerializeField]
-        private MaterialObjectInfo  mMaterialObjectInfo;
+        private MaterialObjectInfo                  mMaterialObjectInfo;
 
         [SerializeField]
-        private PhysicsMaterialInfo mPhysicsMaterialInfo;
-        public PhysicsMaterialInfo  PhysicsMaterial => mPhysicsMaterialInfo;
+        private PhysicsMaterialInfo                 mPhysicsMaterialInfo;
+        public PhysicsMaterialInfo                  PhysicsMaterial => mPhysicsMaterialInfo;
 
         [SerializeField]
-        private LayerMask           mTargetObjectLayer = (1 << 3) | (1 << 6);
+        private LayerMask                           mTargetObjectLayer = (1 << 3) | (1 << 6);
 
         //反応判定用のテーブル
-        private ChemistryTable      mReactionTable;
+        private ChemistryTable                      mReactionTable;
 
         // 現在溜まっているエレメント
-        private float               mCurrentHeatAccumulated = 0f; 
+        private float                               mCurrentHeatAccumulated = 0f; 
         //オブジェクト破壊までのタイマー
-        private Timer               mDestroyTimer = new Timer();
+        private Timer                               mDestroyTimer = new Timer();
 
         // 周囲の接触属性を管理する変数（フラグの組み合わせで複数の属性を同時に管理）
-        private ElementType         mTotalContactElement;
+        private ElementType                         mTotalContactElement;
 
         // 周囲20個まで検出
-        private Collider[]          mScanResults = new Collider[20]; 
+        private Collider[]                          mScanResults = new Collider[20]; 
         // 0.2秒ごとに判定（負荷対策）
-        private float               mScanInterval = 0.2f; 
+        private float                               mScanInterval = 0.2f; 
         
-        private float               mScanTimer = 0f;
+        private float                               mScanTimer = 0f;
 
 
         // 反応待ちの状態を管理する変数
         private MaterialToElementReactionResult      mPendingReaction;
 
         // 反応によって新たに付与された属性を管理するための変数（例: 火がついている状態を管理）
-        private ChemistryElement    mGrantElement; 
+        private ChemistryElement                    mGrantElement; 
 
         // 反応準備中のエフェクト（例: 煙が出ている状態など）を管理する変数
-        private EffectReturner      mPreparationElementEffect;
+        private EffectReturner                      mPreparationElementEffect;
 
-        private Rigidbody           mRigidbody;
-        public Rigidbody            Rigidbody => mRigidbody;
+        private AudioSource                         mPreparationElementLoopSound;
 
-        private Vector3             mLastPosition;
+        private Rigidbody                           mRigidbody;
+        public Rigidbody                            Rigidbody => mRigidbody;
 
-        private Vector3             mCurrentVelocity;
-        public Vector3              CurrentVelocity => mCurrentVelocity;
+        private Vector3                             mLastPosition;
+
+        private Vector3                             mCurrentVelocity;
+        public Vector3                              CurrentVelocity => mCurrentVelocity;
 
         [Header("オブジェクトの体力数値")]
         [SerializeField]
-        private float               mHitPoint = 300.0f;
+        private float                               mHitPoint = 300.0f;
 
         private void Awake()
         {
@@ -127,40 +129,7 @@ namespace MyAssets
             // 最初の位置を初期化
             mLastPosition = transform.position;
         }
-        // Updateは毎フレーム呼ばれる関数で、ここで周囲のスキャンや反応の更新、タイマーの管理などを行う
-        private void Update()
-        {
-            // スキャンタイマーを進める
-            mScanTimer += Time.deltaTime;
 
-            // 一定時間ごとに周囲をスキャンして反応を更新
-            if (mScanTimer >= mScanInterval)
-            {
-                mScanTimer = 0f;
-                PerformSurroundScan(); // ここで判定
-            }
-
-            // 反応待ちがある場合、接触状況に応じて蓄熱・冷却を行う
-            if (mPendingReaction.gElementToAdd != ElementType.None)
-            {
-                // 接触している属性の中に、反応を引き起こす属性が含まれているかチェック
-                bool isTouchingTrigger = (mTotalContactElement & mPendingReaction.gElementToAdd) != 0;
-                UpdatePendingReaction(isTouchingTrigger);
-            }
-
-            // タイマー更新処理
-            if (mMaterialObjectInfo.mIsDestructible) mDestroyTimer.Update(Time.deltaTime);
-        }
-        // FixedUpdateで物理的な移動ベクトルを算出して保存する関数
-        private void FixedUpdate()
-        {
-            //現在の座標と前フレームの座標から移動ベクトルを算出
-            Vector3 displacement = transform.position - mLastPosition;
-            //移動ベクトルを経過時間（0.02秒など）で割り、1秒あたりの速度に変換
-            mCurrentVelocity = displacement / Time.deltaTime;
-            //次のフレームのために現在の座標を保存
-            mLastPosition = transform.position;
-        }
         // 周囲をスキャンして、接触している属性を更新する関数
         // これがこのクラスのコアな部分で、オブジェクトのコライダー形状に応じた判定方法で周囲を調べ、
         // 接触している属性を更新し、新しい属性があれば反応を開始する
@@ -181,7 +150,7 @@ namespace MyAssets
                 // Centerはローカル座標なので、ワールド座標に変換が必要
                 Vector3 worldCenter = transform.TransformPoint(box.center);
                 // Sizeの半分 * スケール = 半分の大きさ(HalfExtents)
-                Vector3 halfExtents = Vector3.Scale(box.size * 0.5f, transform.lossyScale) * mMaterialObjectInfo.mScanScale; 
+                Vector3 halfExtents = Vector3.Scale(box.size * 0.5f, transform.lossyScale) * mMaterialObjectInfo.mScanScale;
 
                 hitCount = Physics.OverlapBoxNonAlloc(
                     worldCenter,
@@ -234,7 +203,7 @@ namespace MyAssets
 
             mTotalContactElement = ElementType.None;
 
-            for(int i = 0; i < hitCount; i++)
+            for (int i = 0; i < hitCount; i++)
             {
                 Collider col = mScanResults[i];
 
@@ -268,51 +237,6 @@ namespace MyAssets
                     }
                 }
             }
-        }
-        // カプセルの始点・終点・半径を計算するヘルパー関数
-        private void GetCapsulePoints(CapsuleCollider capsule, out Vector3 p0, out Vector3 p1, out float radius)
-        {
-            // カプセルの向き (0:X, 1:Y, 2:Z)
-            Vector3 dir = Vector3.up;
-            float height = capsule.height;
-            float r = capsule.radius;
-
-            // スケール適用
-            Vector3 scale = transform.lossyScale;
-            float scaleHeight = 1f;
-            float scaleRadius = 1f;
-
-            switch (capsule.direction)
-            {
-                case 0: // X-Axis
-                    dir = Vector3.right;
-                    scaleHeight = scale.x;
-                    scaleRadius = Mathf.Max(scale.y, scale.z);
-                    break;
-                case 1: // Y-Axis
-                    dir = Vector3.up;
-                    scaleHeight = scale.y;
-                    scaleRadius = Mathf.Max(scale.x, scale.z);
-                    break;
-                case 2: // Z-Axis
-                    dir = Vector3.forward;
-                    scaleHeight = scale.z;
-                    scaleRadius = Mathf.Max(scale.x, scale.y);
-                    break;
-            }
-
-            float worldHeight = height * scaleHeight;
-            radius = r * scaleRadius;
-
-            // 中心から上下（または左右前後）にオフセット
-            float halfHeight = Mathf.Max(0, (worldHeight * 0.5f) - radius);
-            Vector3 center = transform.TransformPoint(capsule.center);
-
-            // 回転を考慮した方向ベクトル
-            Vector3 axis = transform.rotation * dir;
-
-            p0 = center - (axis * halfHeight);
-            p1 = center + (axis * halfHeight);
         }
         // 反応結果を受け取って反応待ち状態を開始する関数
         private void StartReactionProcess(MaterialToElementReactionResult result)
@@ -358,6 +282,10 @@ namespace MyAssets
                         mPreparationElementEffect.StopAndReturn();
                         mPreparationElementEffect = null;
                     }
+                    if (mPreparationElementLoopSound)
+                    {
+                        SoundManager.Instance.StopLoopSE(mPreparationElementLoopSound);
+                    }
                 }
 
                 // もし完全に冷めきったら、反応予約自体を消去
@@ -369,6 +297,10 @@ namespace MyAssets
                         mPreparationElementEffect.StopAndReturn();
                         mPreparationElementEffect = null;
                     }
+                    if (mPreparationElementLoopSound)
+                    {
+                        SoundManager.Instance.StopLoopSE(mPreparationElementLoopSound);
+                    }
                 }
             }
             //氷は火に触れているときは徐々に溶ける、触れていないときは何もしない処理を行う（例: 氷が火に触れると溶ける）
@@ -377,7 +309,7 @@ namespace MyAssets
                 if (isTouching)
                 {
                     // 火力
-                    float heatPower = 1.0f;
+                    float heatPower = 0.5f;
 
                     // 溶ける判定
                     //徐々にオブジェクトのサイズを小さくしていく
@@ -385,6 +317,15 @@ namespace MyAssets
                     scale *= 1.0f - (heatPower * Time.deltaTime * 0.5f); // 徐々に小さくする
                     transform.localScale = scale;
                     mRigidbody.mass *= 1.0f - (heatPower * Time.deltaTime * 0.5f); // 質量も同様に減らす 
+                    //水蒸気エフェクト再生
+                    if (mPreparationElementEffect == null)
+                    {
+                        mPreparationElementEffect = EffectManager.Instance.PlayEffect<ParticleSystem>("Water vapor", transform.position, Quaternion.identity, Vector3.one, transform).GetComponent<EffectReturner>();
+                    }
+                    if (mPreparationElementLoopSound == null)
+                    {
+                        mPreparationElementLoopSound = SoundManager.Instance.PlayLoopSE("Water vapor", transform.position, transform);
+                    }
                 }
                 else
                 {
@@ -407,10 +348,113 @@ namespace MyAssets
                         mPreparationElementEffect.StopAndReturn();
                         mPreparationElementEffect = null;
                     }
+                    if (mPreparationElementLoopSound)
+                    {
+                        SoundManager.Instance.StopLoopSE(mPreparationElementLoopSound);
+                    }
+                }
+
+                // もし完全に冷めきったら、反応予約自体を消去
+                if (!isTouching && mCurrentHeatAccumulated <= 0)
+                {
+                    mPendingReaction = default;
+                    if (mPreparationElementEffect != null)
+                    {
+                        mPreparationElementEffect.StopAndReturn();
+                        mPreparationElementEffect = null;
+                    }
+                    if (mPreparationElementLoopSound)
+                    {
+                        SoundManager.Instance.StopLoopSE(mPreparationElementLoopSound);
+                    }
                 }
             }
         }
+        //反応結果を適用する
+        // ここで属性の追加・削除を行い、必要に応じてエフェクトを出し、燃え尽きる処理の開始なども行う
+        private void ApplyReaction(MaterialToElementReactionResult result)
+        {
+            // 属性の追加・削除
+            mCurrentElements |= result.gElementToAdd;
+            mCurrentElements &= ~result.gElementToRemove;
+            // 燃え尽きる処理の開始（もし木で、火がついたなら）
+            if ((mMaterial == MaterialType.Wood || mMaterial == MaterialType.Organism) &&
+                (result.gElementToAdd & ElementType.Fire) != 0)
+            {
+                // 反応によって新たに付与された属性を管理するための変数（例: 火がついている状態を管理）
+                if (mGrantElement == null)
+                {
+                    Transform t = (mMaterial == MaterialType.Organism) ? GetComponentInChildren<FreeCameraTargetPoint>().transform : this.transform;
+                    // 1. エフェクトを生成
+                    EffectReturner effect = EffectManager.Instance.PlayEffect<ParticleSystem>(result.mEffectLabel, t.position, Quaternion.identity, Vector3.one, t).GetComponent<EffectReturner>();
+                    // 2. エフェクトのGameObjectからChemistryElementを取得（なければ追加）
+                    mGrantElement = effect.GetComponent<ChemistryElement>();
+                    if (mGrantElement == null)
+                    {
+                        mGrantElement = effect.gameObject.AddComponent<ChemistryElement>();
+                    }
+                    // 3. 値をセット
+                    mGrantElement.MyElementEffect = effect;
+                    mGrantElement.ParentMaterial = this;
 
+                    // 4. コライダー等のセットアップ
+                    SetElement(effect.ParticleSystem);
+                    //燃え上がるSE
+                    SoundManager.Instance.PlayOneShot3D("Object_InFire", transform.position, transform);
+                }
+
+                if (mMaterialObjectInfo.mIsDestructible)
+                {
+                    mDestroyTimer.Start(mMaterialObjectInfo.mDestroyDelay);
+                }
+                else if (mMaterialObjectInfo.mIsExtinguishing)
+                {
+                    mGrantElement.ElementEraseTimer.Start(mMaterialObjectInfo.mFireResistance);
+                }
+            }
+            else if (mMaterial == MaterialType.Ice && (result.gElementToAdd & ElementType.Fire) != 0)
+            {
+                //氷が火に触れたときの処理
+                if (mMaterialObjectInfo.mIsDestructible)
+                {
+                    mDestroyTimer.Start(0.1f);
+                }
+            }
+        }
+        // Updateは毎フレーム呼ばれる関数で、ここで周囲のスキャンや反応の更新、タイマーの管理などを行う
+        private void Update()
+        {
+            // スキャンタイマーを進める
+            mScanTimer += Time.deltaTime;
+
+            // 一定時間ごとに周囲をスキャンして反応を更新
+            if (mScanTimer >= mScanInterval)
+            {
+                mScanTimer = 0f;
+                PerformSurroundScan(); // ここで判定
+            }
+
+            // 反応待ちがある場合、接触状況に応じて蓄熱・冷却を行う
+            if (mPendingReaction.gElementToAdd != ElementType.None)
+            {
+                // 接触している属性の中に、反応を引き起こす属性が含まれているかチェック
+                bool isTouchingTrigger = (mTotalContactElement & mPendingReaction.gElementToAdd) != 0;
+                UpdatePendingReaction(isTouchingTrigger);
+            }
+
+            // タイマー更新処理
+            if (mMaterialObjectInfo.mIsDestructible) mDestroyTimer.Update(Time.deltaTime);
+        }
+        // FixedUpdateで物理的な移動ベクトルを算出して保存する関数
+        private void FixedUpdate()
+        {
+            //現在の座標と前フレームの座標から移動ベクトルを算出
+            Vector3 displacement = transform.position - mLastPosition;
+            //移動ベクトルを経過時間（0.02秒など）で割り、1秒あたりの速度に変換
+            mCurrentVelocity = displacement / Time.deltaTime;
+            //次のフレームのために現在の座標を保存
+            mLastPosition = transform.position;
+        }
         // パーティクルシステムの形状をこのオブジェクトのコライダー形状に合わせる
         private void SetElement(ParticleSystem particle)
         {
@@ -481,60 +525,6 @@ namespace MyAssets
                 }
             }
         }
-
-        //反応結果を適用する
-        // ここで属性の追加・削除を行い、必要に応じてエフェクトを出し、燃え尽きる処理の開始なども行う
-        private void ApplyReaction(MaterialToElementReactionResult result)
-        {
-            // 属性の追加・削除
-            mCurrentElements |= result.gElementToAdd;
-            mCurrentElements &= ~result.gElementToRemove;
-            // 燃え尽きる処理の開始（もし木で、火がついたなら）
-            if ((mMaterial == MaterialType.Wood || mMaterial == MaterialType.Organism) &&
-                (result.gElementToAdd & ElementType.Fire) != 0)
-            {
-                // 反応によって新たに付与された属性を管理するための変数（例: 火がついている状態を管理）
-                if (mGrantElement == null)
-                {
-                    Transform t = (mMaterial == MaterialType.Organism) ? GetComponentInChildren<FreeCameraTargetPoint>().transform : this.transform;
-                    // 1. エフェクトを生成
-                    EffectReturner effect = EffectManager.Instance.PlayEffect<ParticleSystem>(result.mEffectLabel, t.position, Quaternion.identity, Vector3.one, t).GetComponent<EffectReturner>();
-                    // 2. エフェクトのGameObjectからChemistryElementを取得（なければ追加）
-                    mGrantElement = effect.GetComponent<ChemistryElement>();
-                    if (mGrantElement == null)
-                    {
-                        mGrantElement = effect.gameObject.AddComponent<ChemistryElement>();
-                    }
-                    // 3. 値をセット
-                    mGrantElement.MyElementEffect = effect;
-                    mGrantElement.ParentMaterial = this;
-
-                    // 4. コライダー等のセットアップ
-                    SetElement(effect.ParticleSystem);
-                    //燃え上がるSE
-                    SoundManager.Instance.PlayOneShot3D("Object_InFire", transform.position, transform);
-                }
-
-                if (mMaterialObjectInfo.mIsDestructible)
-                {
-                    mDestroyTimer.Start(mMaterialObjectInfo.mDestroyDelay);
-                }
-                else if(mMaterialObjectInfo.mIsExtinguishing)
-                {
-                    mGrantElement.ElementEraseTimer.Start(mMaterialObjectInfo.mFireResistance);
-                }
-            }
-            else if (mMaterial == MaterialType.Ice && (result.gElementToAdd & ElementType.Fire) != 0)
-            {
-                //氷が火に触れたときの処理（例: 徐々に溶ける）
-                //特にここでタイマーを開始する必要はないかもしれない（UpdatePendingReaction内でスケールを見て処理するため）
-                if (mMaterialObjectInfo.mIsDestructible)
-                {
-                    mDestroyTimer.Start(0.5f);
-                }
-            }
-        }
-
         //マテリアルが削除される時に呼び出すもの
         private void ProcessDestruction()
         {
@@ -559,10 +549,11 @@ namespace MyAssets
                     mGrantElement.ProcessDestruction();
                     mGrantElement = null;
                 }
+                SoundManager.Instance.PlayOneShot3D("IceBreak", transform.position);
+                EffectManager.Instance.PlayEffect<Transform>("HitSmoke", transform.position, Quaternion.identity, Vector3.one);
                 Destroy(gameObject);
             }
         }
-
         //エレメントだけ消す
         public void ProcessEraseElement()
         {
@@ -571,6 +562,10 @@ namespace MyAssets
                 // 予備エフェクトも同様
                 mPreparationElementEffect.StopAndReturn(false);
                 mPreparationElementEffect = null;
+            }
+            if (mPreparationElementLoopSound)
+            {
+                SoundManager.Instance.StopLoopSE(mPreparationElementLoopSound);
             }
             //現在の付与エレメントを初期化
             mCurrentElements = ElementType.None;
@@ -586,7 +581,6 @@ namespace MyAssets
                 SoundManager.Instance.ReturnAudioSource(source);
             }
         }
-
         //音を特定の条件下で再生するか調べる
         private void CheckPlaySound_Sword(Vector3 hitPoint)
         {
@@ -604,7 +598,22 @@ namespace MyAssets
                 SoundManager.Instance.PlayOneShot3D("Iron_Hit", transform.position);
             }
         }
-
+        //破壊出来るか調べる
+        public void AddBreakPower(Vector3 power, Vector3 hitPoint)
+        {
+            mRigidbody.AddForce(power, ForceMode.Impulse);
+            EffectManager.Instance.PlayEffect<Transform>("Impact", hitPoint, Quaternion.identity, Vector3.one);
+            if (mPhysicsMaterialInfo.mIsDestructible)
+            {
+                mHitPoint -= power.magnitude;
+                if(mHitPoint <= 0)
+                {
+                    mHitPoint = 0;
+                    EffectManager.Instance.PlayEffect<Transform>("HitSmoke", transform.position, Quaternion.identity, Vector3.one);
+                    Destroy(gameObject);
+                }
+            }
+        }
         private void OnTriggerEnter(Collider other)
         {
             //剣が当たったか調べる
@@ -624,22 +633,6 @@ namespace MyAssets
                 }
             }
         }
-
-        //破壊出来るか調べる
-        public void AddBreakPower(Vector3 power, Vector3 hitPoint)
-        {
-            mRigidbody.AddForce(power, ForceMode.Impulse);
-            EffectManager.Instance.PlayEffect<Transform>("Impact", hitPoint, Quaternion.identity, Vector3.one);
-            if (mPhysicsMaterialInfo.mIsDestructible)
-            {
-                mHitPoint -= power.magnitude;
-                if(mHitPoint <= 0)
-                {
-                    mHitPoint = 0;
-                    Destroy(gameObject);
-                }
-            }
-        }
         // オブジェクトが完全に破壊されるときのクリーンアップ処理
         private void OnDestroy()
         {
@@ -653,6 +646,10 @@ namespace MyAssets
                 mPreparationElementEffect.StopAndReturn(true);
                 mPreparationElementEffect = null;
             }
+            if (mPreparationElementLoopSound)
+            {
+                SoundManager.Instance.StopLoopSE(mPreparationElementLoopSound);
+            }
             AudioSource[] source = GetComponentsInChildren<AudioSource>();
             for(int i = 0; i < source.Length; i++)
             {
@@ -662,6 +659,52 @@ namespace MyAssets
                 }
             }
         }
+        // カプセルの始点・終点・半径を計算するヘルパー関数
+        private void GetCapsulePoints(CapsuleCollider capsule, out Vector3 p0, out Vector3 p1, out float radius)
+        {
+            // カプセルの向き (0:X, 1:Y, 2:Z)
+            Vector3 dir = Vector3.up;
+            float height = capsule.height;
+            float r = capsule.radius;
+
+            // スケール適用
+            Vector3 scale = transform.lossyScale;
+            float scaleHeight = 1f;
+            float scaleRadius = 1f;
+
+            switch (capsule.direction)
+            {
+                case 0: // X-Axis
+                    dir = Vector3.right;
+                    scaleHeight = scale.x;
+                    scaleRadius = Mathf.Max(scale.y, scale.z);
+                    break;
+                case 1: // Y-Axis
+                    dir = Vector3.up;
+                    scaleHeight = scale.y;
+                    scaleRadius = Mathf.Max(scale.x, scale.z);
+                    break;
+                case 2: // Z-Axis
+                    dir = Vector3.forward;
+                    scaleHeight = scale.z;
+                    scaleRadius = Mathf.Max(scale.x, scale.y);
+                    break;
+            }
+
+            float worldHeight = height * scaleHeight;
+            radius = r * scaleRadius;
+
+            // 中心から上下（または左右前後）にオフセット
+            float halfHeight = Mathf.Max(0, (worldHeight * 0.5f) - radius);
+            Vector3 center = transform.TransformPoint(capsule.center);
+
+            // 回転を考慮した方向ベクトル
+            Vector3 axis = transform.rotation * dir;
+
+            p0 = center - (axis * halfHeight);
+            p1 = center + (axis * halfHeight);
+        }
+
 #if UNITY_EDITOR
         // Unityエディタ上でのみ実行される表示処理
         private void OnDrawGizmosSelected()

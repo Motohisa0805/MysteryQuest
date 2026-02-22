@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static MyAssets.ChemistryObject;
 
 namespace MyAssets
 {
@@ -92,52 +91,6 @@ namespace MyAssets
                     mLoopAudio = SoundManager.Instance.PlayLoopSE("Object_Fire", transform.position, transform);
                     break;
             }
-        }
-
-        // カプセルの始点・終点・半径を計算するヘルパー関数
-        private void GetCapsulePoints(CapsuleCollider capsule, out Vector3 p0, out Vector3 p1, out float radius)
-        {
-            // カプセルの向き (0:X, 1:Y, 2:Z)
-            Vector3 dir = Vector3.up;
-            float height = capsule.height;
-            float r = capsule.radius;
-
-            // スケール適用
-            Vector3 scale = transform.lossyScale;
-            float scaleHeight = 1f;
-            float scaleRadius = 1f;
-
-            switch (capsule.direction)
-            {
-                case 0: // X-Axis
-                    dir = Vector3.right;
-                    scaleHeight = scale.x;
-                    scaleRadius = Mathf.Max(scale.y, scale.z);
-                    break;
-                case 1: // Y-Axis
-                    dir = Vector3.up;
-                    scaleHeight = scale.y;
-                    scaleRadius = Mathf.Max(scale.x, scale.z);
-                    break;
-                case 2: // Z-Axis
-                    dir = Vector3.forward;
-                    scaleHeight = scale.z;
-                    scaleRadius = Mathf.Max(scale.x, scale.y);
-                    break;
-            }
-
-            float worldHeight = height * scaleHeight;
-            radius = r * scaleRadius;
-
-            // 中心から上下（または左右前後）にオフセット
-            float halfHeight = Mathf.Max(0, (worldHeight * 0.5f) - radius);
-            Vector3 center = transform.TransformPoint(capsule.center);
-
-            // 回転を考慮した方向ベクトル
-            Vector3 axis = transform.rotation * dir;
-
-            p0 = center - (axis * halfHeight);
-            p1 = center + (axis * halfHeight);
         }
 
         private void PerformSurroundScan()
@@ -331,6 +284,53 @@ namespace MyAssets
             mParentMaterial = null;
             //ループSEを返還
             SoundManager.Instance.StopLoopSE(mLoopAudio, 0.25f);
+        }
+
+
+        // カプセルの始点・終点・半径を計算するヘルパー関数
+        private void GetCapsulePoints(CapsuleCollider capsule, out Vector3 p0, out Vector3 p1, out float radius)
+        {
+            // カプセルの向き (0:X, 1:Y, 2:Z)
+            Vector3 dir = Vector3.up;
+            float height = capsule.height;
+            float r = capsule.radius;
+
+            // スケール適用
+            Vector3 scale = transform.lossyScale;
+            float scaleHeight = 1f;
+            float scaleRadius = 1f;
+
+            switch (capsule.direction)
+            {
+                case 0: // X-Axis
+                    dir = Vector3.right;
+                    scaleHeight = scale.x;
+                    scaleRadius = Mathf.Max(scale.y, scale.z);
+                    break;
+                case 1: // Y-Axis
+                    dir = Vector3.up;
+                    scaleHeight = scale.y;
+                    scaleRadius = Mathf.Max(scale.x, scale.z);
+                    break;
+                case 2: // Z-Axis
+                    dir = Vector3.forward;
+                    scaleHeight = scale.z;
+                    scaleRadius = Mathf.Max(scale.x, scale.y);
+                    break;
+            }
+
+            float worldHeight = height * scaleHeight;
+            radius = r * scaleRadius;
+
+            // 中心から上下（または左右前後）にオフセット
+            float halfHeight = Mathf.Max(0, (worldHeight * 0.5f) - radius);
+            Vector3 center = transform.TransformPoint(capsule.center);
+
+            // 回転を考慮した方向ベクトル
+            Vector3 axis = transform.rotation * dir;
+
+            p0 = center - (axis * halfHeight);
+            p1 = center + (axis * halfHeight);
         }
     }
 }
