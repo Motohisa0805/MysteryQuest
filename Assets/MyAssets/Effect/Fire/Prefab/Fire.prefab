@@ -9736,9 +9736,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2ba3cae62e3ec34fb764486d72c9b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.ChemistryElement
-  mObjectInfo:
-    mIsNaturalTermination: 1
-    mFireResistance: 0
   mElementType: 1
   mTargetObjectLayer:
     serializedVersion: 2

@@ -334,3 +334,21 @@ MonoBehaviour:
     mSpatialBlend: 1
     mMinDistance: 1
     mMaxDistance: 10
+  - mID: -1330682858
+    mLabel: Water vapor
+    mClips:
+    - {fileID: 8300000, guid: b5d560dbb8a7d824582a3bcdfef1618d, type: 3}
+    volume: 1
+    pitchRange: 1
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10
+  - mID: -1173862659
+    mLabel: IceBreak
+    mClips:
+    - {fileID: 8300000, guid: f362240e189c49543a54d9f948860405, type: 3}
+    volume: 1
+    pitchRange: 1
+    mSpatialBlend: 1
+    mMinDistance: 1
+    mMaxDistance: 10

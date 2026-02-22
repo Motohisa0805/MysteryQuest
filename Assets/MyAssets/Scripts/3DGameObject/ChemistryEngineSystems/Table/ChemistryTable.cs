@@ -51,7 +51,7 @@ namespace MyAssets
 
             return g_lookupCache.TryGetValue((mat,elem),out result);
         }
-
+        //ƒGƒŒƒƒ“ƒg“¯m‚Ì”½‰ŒŸõ
         public bool TryGetElementToElementReaction(ElementType target, ElementType stimulus, out ElementToElementReactionResult result)
         {
             if (g_elementToElementLookupCache == null) Initialize();

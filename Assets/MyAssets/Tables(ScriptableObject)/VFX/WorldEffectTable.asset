@@ -48,3 +48,17 @@ MonoBehaviour:
     mInitObjectCount: 0
     mMaxSize: 1
     mDefaultCapacity: 1
+  - mID: -1330682858
+    mLabel: Water vapor
+    mParticleSystem: {fileID: 4791726428221895327, guid: e443e2a51ff57754aaa9c382342134b6, type: 3}
+    mSizeScale: 1
+    mInitObjectCount: 0
+    mMaxSize: 10
+    mDefaultCapacity: 2
+  - mID: 1600287155
+    mLabel: HitSmoke
+    mParticleSystem: {fileID: 4791726428221895327, guid: 9941f20619141b443a8dde00b5ead084, type: 3}
+    mSizeScale: 1
+    mInitObjectCount: 0
+    mMaxSize: 10
+    mDefaultCapacity: 2
