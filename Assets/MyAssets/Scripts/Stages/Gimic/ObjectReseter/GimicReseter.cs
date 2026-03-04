@@ -39,6 +39,7 @@ namespace MyAssets
             {
                 if(obj != null)
                 {
+                    obj.ProcessEraseElement();
                     Destroy(obj.gameObject);
                 }
             }

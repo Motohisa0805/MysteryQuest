@@ -151,6 +151,7 @@ namespace MyAssets
         {
             if (evt.index >= mAudioObjects.Count) return;
             AudioSource targetSource = mAudioObjects[evt.index];
+            if(targetSource == null) return;
             // 非アクティブなオブジェクトへの処理はスキップ
             if (!targetSource.gameObject.activeSelf) return;
             // BGMなどはカリング対象外にする場合、ここで弾く (例: spatialBlend == 0 は対象外など)
