@@ -26,9 +26,10 @@ namespace MyAssets
             // 例: 草=0.1, 木箱=3.0, 大木=10.0
             [Header("火が消えるまでの消火量")]
             [Tooltip("この値が消火されるまでの時間(秒数換算)")]
-            public float    mFireResistance; 
+            public float    mFireResistance;
 
-            //[Header("Iceの設定")]
+            [Header("Iceの設定")]
+            public float mToMeltSpeed;
         }
 
         [Serializable]
@@ -104,9 +105,12 @@ namespace MyAssets
         [SerializeField]
         private float                               mHitPoint = 300.0f;
 
+        private ModelBreakEffect                    mBreakEffect;
+
         private void Awake()
         {
             mRigidbody = GetComponent<Rigidbody>();
+            mBreakEffect = GetComponentInChildren<ModelBreakEffect>();
         }
         //スタート時にイベント登録
         private void Start()
@@ -285,6 +289,7 @@ namespace MyAssets
                     if (mPreparationElementLoopSound)
                     {
                         SoundManager.Instance.StopLoopSE(mPreparationElementLoopSound);
+                        mPreparationElementLoopSound = null;
                     }
                 }
 
@@ -300,6 +305,7 @@ namespace MyAssets
                     if (mPreparationElementLoopSound)
                     {
                         SoundManager.Instance.StopLoopSE(mPreparationElementLoopSound);
+                        mPreparationElementLoopSound = null;
                     }
                 }
             }
@@ -309,7 +315,7 @@ namespace MyAssets
                 if (isTouching)
                 {
                     // 火力
-                    float heatPower = 0.5f;
+                    float heatPower = mMaterialObjectInfo.mToMeltSpeed;
 
                     // 溶ける判定
                     //徐々にオブジェクトのサイズを小さくしていく
@@ -351,6 +357,7 @@ namespace MyAssets
                     if (mPreparationElementLoopSound)
                     {
                         SoundManager.Instance.StopLoopSE(mPreparationElementLoopSound);
+                        mPreparationElementLoopSound = null;
                     }
                 }
 
@@ -366,6 +373,7 @@ namespace MyAssets
                     if (mPreparationElementLoopSound)
                     {
                         SoundManager.Instance.StopLoopSE(mPreparationElementLoopSound);
+                        mPreparationElementLoopSound = null;
                     }
                 }
             }
@@ -526,7 +534,7 @@ namespace MyAssets
             }
         }
         //マテリアルが削除される時に呼び出すもの
-        private void ProcessDestruction()
+        public void ProcessDestruction()
         {
             // ここで改めて今もエレメントがあるかチェック
             // （途中で水か何かで消火されていたら破壊しないため）
@@ -553,19 +561,27 @@ namespace MyAssets
                 EffectManager.Instance.PlayEffect<Transform>("HitSmoke", transform.position, Quaternion.identity, Vector3.one);
                 Destroy(gameObject);
             }
+            //モデル破壊エフェクトを再生
+            if(mBreakEffect != null)
+            {
+                mBreakEffect.RunEffect();
+            }
         }
         //エレメントだけ消す
         public void ProcessEraseElement()
         {
+            //反応中エフェクト処理
             if (mPreparationElementEffect != null)
             {
                 // 予備エフェクトも同様
                 mPreparationElementEffect.StopAndReturn(false);
                 mPreparationElementEffect = null;
             }
-            if (mPreparationElementLoopSound)
+            //反応中のサウンド処理
+            if (mPreparationElementLoopSound != null)
             {
                 SoundManager.Instance.StopLoopSE(mPreparationElementLoopSound);
+                mPreparationElementLoopSound = null;
             }
             //現在の付与エレメントを初期化
             mCurrentElements = ElementType.None;
@@ -574,7 +590,6 @@ namespace MyAssets
             //付与エレメントもnull
             mGrantElement = null;
             mDestroyTimer.Reset();
-            SoundManager.Instance.PlayOneShot3D("Object_OutFire", transform.position);
             AudioSource source = GetComponentInChildren<AudioSource>();
             if (source != null && SoundManager.Instance != null)
             {
@@ -646,9 +661,10 @@ namespace MyAssets
                 mPreparationElementEffect.StopAndReturn(true);
                 mPreparationElementEffect = null;
             }
-            if (mPreparationElementLoopSound)
+            if (mPreparationElementLoopSound != null)
             {
                 SoundManager.Instance.StopLoopSE(mPreparationElementLoopSound);
+                mPreparationElementLoopSound = null;
             }
             AudioSource[] source = GetComponentsInChildren<AudioSource>();
             for(int i = 0; i < source.Length; i++)

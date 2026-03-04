@@ -9,5 +9,6 @@ namespace MyAssets
         Stage03,
         Stage04,
         Stage05,
+        Stage06,
     }
 }
