@@ -107,14 +107,19 @@ MonoBehaviour:
     mIsDestructible: 0
     mDestroyDelay: 0
     mIsExtinguishing: 0
+    mScanScale: 0
     mIgnitionResistance: 0
     mFireResistance: 0
+    mToMeltSpeed: 0
+    mCoolingPower: 2
   mPhysicsMaterialInfo:
+    mIsShock: 0
+    mIsDestructible: 0
     mCollisionForce: 20
   mTargetObjectLayer:
     serializedVersion: 2
     m_Bits: 72
-  mIsBreakObject: 0
+  mHitPoint: 300
 --- !u!114 &9180721643385888508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +187,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &2826390713659380209
 MonoBehaviour:

@@ -16,7 +16,6 @@ namespace MyAssets
         {
             mMenuFlag = false;
             Time.timeScale = 1.0f;
-            InputManager.SetLockedMouseMode();
             GameUserInterfaceManager.Instance.SetActiveHUD(false, GameHUDType.GameUIPanelType.Option);
             GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.HUD);
             GameUserInterfaceManager.Instance.SetActiveHUD(true, GameHUDType.GameUIPanelType.Tutorial);

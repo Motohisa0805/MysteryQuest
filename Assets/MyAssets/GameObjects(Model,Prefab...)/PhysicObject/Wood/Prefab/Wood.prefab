@@ -166,6 +166,8 @@ MonoBehaviour:
     mScanScale: 1.25
     mIgnitionResistance: 5
     mFireResistance: 10
+    mToMeltSpeed: 0
+    mCoolingPower: 2
   mPhysicsMaterialInfo:
     mIsShock: 1
     mIsDestructible: 0

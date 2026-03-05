@@ -63,13 +63,16 @@ namespace MyAssets
                 case SceneList.Title:
                     SoundManager.Instance.PlayBGM("TitleBGM");
                     mGameSoundEffect = SoundManager.Instance.PlayLoopSE("Wind", transform.position, transform);
+                    InputManager.SetNoneMouseMode();
                     break;
                 case SceneList.Select:
                     SoundManager.Instance.PlayBGM("SelectBGM");
+                    InputManager.SetNoneMouseMode();
                     break;
                 default:
                     SoundManager.Instance.StopBGM();
                     mGameSoundEffect = SoundManager.Instance.PlayLoopSE("Wind", transform.position, transform);
+                    InputManager.SetLockedMouseMode();
                     break;
             }
         }

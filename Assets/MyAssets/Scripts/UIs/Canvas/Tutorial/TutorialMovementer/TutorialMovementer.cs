@@ -8,8 +8,6 @@ namespace MyAssets
     // チュートリアル画像を画面内に移動させる
     public class TutorialMovementer : MonoBehaviour
     {
-        //ボタン管理クラス
-        private InputButtonController   mInputButtonController;
         //操作するImage変数
         [SerializeField]
         private Image                   mMoveImage;
@@ -22,20 +20,6 @@ namespace MyAssets
         private float                   mCurrentMoveTime = 0.0f;
 
         private Coroutine               mMoveCoroutine;
-
-        private void Awake()
-        {
-            InitSetting();
-        }
-
-        private void InitSetting()
-        {
-            mInputButtonController = GetComponentInChildren<InputButtonController>();
-            if (mInputButtonController != null)
-            {
-                mInputButtonController.OnPublicAction += DisableImage;
-            }
-        }
 
         private void InitMoveImage()
         {
@@ -79,20 +63,7 @@ namespace MyAssets
 
         private void OnEnable()
         {
-            InitSetting();
-            if ( mInputButtonController != null )
-            {
-                mInputButtonController.OnPublicAction += DisableImage;
-            }
             InitMoveImage();
-        }
-
-        private void OnDisable()
-        {
-            if (mInputButtonController != null)
-            {
-                mInputButtonController.OnPublicAction -= DisableImage;
-            }
         }
     }
 }

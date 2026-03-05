@@ -2,23 +2,24 @@ using UnityEngine;
 
 namespace MyAssets
 {
+    //アイテムの生成、管理を行うクラス
     public class ItemManager : MonoBehaviour
     {
-        private static ItemManager instance;
-        public static ItemManager Instance => instance;
+        private static ItemManager  mInstance;
+        public static ItemManager   Instance => mInstance;
 
         [SerializeField]
-        private ItemTable mItemTable;
-        public ItemTable ItemTable => mItemTable;
+        private ItemTable           mItemTable;
+        public ItemTable            ItemTable => mItemTable;
 
         private void Awake()
         {
-            if(instance != null)
+            if(mInstance != null)
             {
                 Destroy(gameObject);
                 return;
             }
-            instance = this;
+            mInstance = this;
             DontDestroyOnLoad(gameObject);
         }
 
