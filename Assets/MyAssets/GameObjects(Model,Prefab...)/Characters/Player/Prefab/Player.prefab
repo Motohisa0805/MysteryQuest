@@ -35,7 +35,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &4410415457192346705
 LineRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -81,6 +81,7 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Positions:
   - {x: 0, y: 1, z: 0}
   - {x: 0, y: 1, z: 0}
@@ -139,7 +140,6 @@ LineRenderer:
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
-  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
@@ -339,7 +339,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &2329240152536482202
 LineRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -385,6 +385,7 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Positions:
   - {x: 0, y: 1, z: 0}
   - {x: 0, y: 1, z: 0}
@@ -443,7 +444,6 @@ LineRenderer:
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
-  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 1
   m_ApplyActiveColorSpace: 1
@@ -886,8 +886,11 @@ MonoBehaviour:
     mIsDestructible: 0
     mDestroyDelay: 0
     mIsExtinguishing: 1
+    mScanScale: 0
     mIgnitionResistance: 2.5
     mFireResistance: 5
+    mToMeltSpeed: 0
+    mCoolingPower: 2
   mPhysicsMaterialInfo:
     mIsShock: 0
     mIsDestructible: 0
@@ -895,7 +898,6 @@ MonoBehaviour:
   mTargetObjectLayer:
     serializedVersion: 2
     m_Bits: 72
-  mIsBreakObject: 0
   mHitPoint: 300
 --- !u!114 &3280886677235020846
 MonoBehaviour:
@@ -2034,7 +2036,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9082a0ba997c9c64d9af3f1d248492c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyAssets.IKRelay
-  mParentManager: {fileID: 0}
 --- !u!1 &4139776020628390350 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -9070493210130169274, guid: b754cfe755553e646bdf9a484a673dfa, type: 3}

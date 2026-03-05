@@ -28,8 +28,13 @@ namespace MyAssets
             [Tooltip("この値が消火されるまでの時間(秒数換算)")]
             public float    mFireResistance;
 
+
             [Header("Iceの設定")]
             public float mToMeltSpeed;
+
+            [Header("全マテリアルで共通変数")]
+            [SerializeField]
+            public float mCoolingPower;
         }
 
         [Serializable]
@@ -270,8 +275,7 @@ namespace MyAssets
                 else
                 {
                     // 火から離れた：冷却（秒間2.0で急速に冷める、あるいは 0f 代入で即リセット）
-                    float coolingPower = 2.0f;
-                    mCurrentHeatAccumulated -= coolingPower * Time.deltaTime;
+                    mCurrentHeatAccumulated -= mMaterialObjectInfo.mCoolingPower * Time.deltaTime;
                     mCurrentHeatAccumulated = Mathf.Max(0, mCurrentHeatAccumulated); // 0以下にはならない
                 }
 
@@ -336,8 +340,7 @@ namespace MyAssets
                 else
                 {
                     // 火から離れた：冷却（秒間2.0で急速に冷める、あるいは 0f 代入で即リセット）
-                    float coolingPower = 2.0f;
-                    mCurrentHeatAccumulated -= coolingPower * Time.deltaTime;
+                    mCurrentHeatAccumulated -= mMaterialObjectInfo.mCoolingPower * Time.deltaTime;
                     mCurrentHeatAccumulated = Mathf.Max(0, mCurrentHeatAccumulated); // 0以下にはならない
                 }
 
@@ -434,14 +437,12 @@ namespace MyAssets
         {
             // スキャンタイマーを進める
             mScanTimer += Time.deltaTime;
-
             // 一定時間ごとに周囲をスキャンして反応を更新
             if (mScanTimer >= mScanInterval)
             {
                 mScanTimer = 0f;
                 PerformSurroundScan(); // ここで判定
             }
-
             // 反応待ちがある場合、接触状況に応じて蓄熱・冷却を行う
             if (mPendingReaction.gElementToAdd != ElementType.None)
             {
@@ -449,7 +450,6 @@ namespace MyAssets
                 bool isTouchingTrigger = (mTotalContactElement & mPendingReaction.gElementToAdd) != 0;
                 UpdatePendingReaction(isTouchingTrigger);
             }
-
             // タイマー更新処理
             if (mMaterialObjectInfo.mIsDestructible) mDestroyTimer.Update(Time.deltaTime);
         }
@@ -568,6 +568,7 @@ namespace MyAssets
             }
         }
         //エレメントだけ消す
+        //マテリアルに付与されているエレメントだけを変化させう処理
         public void ProcessEraseElement()
         {
             //反応中エフェクト処理
