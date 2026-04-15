@@ -23,3 +23,5 @@ https://link080520.hatenablog.com/entry/2025/11/19/004559
 　ForkやDesktop(それ以外でも可)のサーバーを使用してCloneするならMysteryQuestの「Code」でHTTPSをコピーし  
 　サーバーで張り付けてCloneすればプロジェクトを確認することができます。  
  
+・コミット履歴について   
+　コミット履歴は閲覧できるように設定しております。   
